@@ -1,0 +1,27 @@
+strategy_id,signal_band,games,share_of_games,mae_points,skill_within_band,directional_accuracy,decided_games,brier,note,source_url
+S0,|projection| under 3 points,96,1.000,10.250,0.0000,,0,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S1,|projection| under 3 points,96,1.000,10.354,-0.0102,0.4043,94,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S2,|projection| under 3 points,23,0.240,11.081,0.0383,0.5652,23,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S2,3 to 7 points,26,0.271,7.375,0.1909,0.7692,26,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S2,7 to 12 points,26,0.271,12.262,-0.1593,0.4800,25,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S2,over 12 points,21,0.219,13.247,-0.3439,0.8095,21,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S3,|projection| under 3 points,44,0.458,9.511,0.0823,0.6977,43,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S3,3 to 7 points,39,0.406,10.180,0.0293,0.5263,38,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S3,7 to 12 points,11,0.115,8.418,0.1427,0.7273,11,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S3,over 12 points,2,0.021,8.448,-0.5360,1.0000,2,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S4,|projection| under 3 points,43,0.448,10.214,0.0369,0.5116,43,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S4,3 to 7 points,38,0.396,9.139,0.1163,0.6486,37,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S4,7 to 12 points,13,0.135,8.039,0.1572,0.6923,13,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S4,over 12 points,2,0.021,8.800,-0.6001,1.0000,2,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S5,|projection| under 3 points,71,0.740,10.166,0.0085,0.6029,68,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S5,3 to 7 points,25,0.260,8.226,0.1967,0.7600,25,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S6,|projection| under 3 points,60,0.625,9.911,0.0171,0.6102,59,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S6,3 to 7 points,29,0.302,8.342,0.2345,0.8214,28,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S6,7 to 12 points,7,0.073,11.033,-0.2259,0.5714,7,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S7,|projection| under 3 points,65,0.677,10.121,0.0268,0.6308,65,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S7,3 to 7 points,27,0.281,7.862,0.1836,0.7308,26,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S7,7 to 12 points,4,0.042,11.994,0.0005,0.7500,4,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S8,|projection| under 3 points,44,0.458,9.964,0.0103,0.5238,42,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S8,3 to 7 points,39,0.406,9.348,0.1502,0.6667,39,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S8,7 to 12 points,9,0.094,5.936,0.2475,0.7778,9,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
+S8,over 12 points,4,0.042,14.889,-0.4526,0.7500,4,,Skill inside the band is measured against predicting zero margin for the same games.,https://www.nfl.com/schedules/2026/by-week/week-1
