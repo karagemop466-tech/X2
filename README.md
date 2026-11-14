@@ -8,6 +8,7 @@ matrix, a verification record, and flagged items.
 
 ## Read in this order
 
+0. **Review path** (`docs/review.html`) — one ordered route through the open decisions, so a reviewer can choose a direction before anything is built.
 1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
 2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
 3. **Model & Week 11 lines** (`docs/model-lines.html`) — the originated spreads and totals, the team ratings, and the method.
@@ -36,7 +37,18 @@ plus a fixed 2.5-point home field):
 |---|---|---|
 | Mean absolute error, margin | 9.16 points | 10.89 points |
 | Improvement | +1.74 points (95% bootstrap CI 0.76 to 2.74) | — |
-| Calibration slope (actual on predicted) | 0.885 (SE 0.28) | — |
+| Calibration slope (actual on predicted) | 0.885 (SE 0.28), 95% CI 0.33 to 1.44 | — |
+
+The calibration slope carries its **own t interval**, not a correlation interval: the slope is not
+distinguishable from 1.0 (p = 0.68 against a null of 1.0), so the data show neither miscalibration nor
+demonstrated calibration. An earlier build published a Pearson-r interval and p = 0.0000 here, which
+applied a correlation formula to a regression coefficient (flag F58).
+
+**Neutral sites are modelled.** Nine 2026 games are international
+([NFL Football Operations](https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games)).
+The model adds no home-field term to the designated home team in those games. The Week 11 Mexico City game
+(MIN at SF) is corrected; the 137 historical rows carry a **blank** `neutral_site` value because every stadium
+was not re-confirmed, so nothing was inferred (flag F57).
 
 **There is no market comparison anywhere in this project.** No licensed odds feed is connected, so no closing
 line, market price, closing-line value or return on investment can be computed. Leaderboard bets are graded
