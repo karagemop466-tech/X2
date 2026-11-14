@@ -1,0 +1,12 @@
+{
+ "seed": 20261114,
+ "draws": 5000,
+ "strategies_in_the_family": 7,
+ "expected_best_units_with_no_skill_mean": 8.71,
+ "expected_best_units_with_no_skill_p95": 16,
+ "observed_best_units": 24,
+ "probability_some_strategy_reaches_that_run_by_chance_alone": 0.0038,
+ "reading": "A best-of-family run this large is uncommon under no skill, but the signal gates \u2014 not the run \u2014 still decide promotion.",
+ "payout_assumption": "flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)",
+ "note": "Simulated by resampling each strategy's own bet count as coin flips; the strategies share games, so the true spread of lucky runs is somewhat wider than this independence assumption implies (recorded, not hidden)."
+}

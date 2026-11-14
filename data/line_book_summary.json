@@ -1,0 +1,16 @@
+{
+ "as_of": "2026-11-14",
+ "markets_recorded": 78,
+ "games_covered": 26,
+ "games_with_all_three_markets": 26,
+ "markets_per_game_expected": 3,
+ "opening_snapshots": 78,
+ "interim_snapshots": 0,
+ "closing_snapshots": 0,
+ "closing_windows_open": 78,
+ "rows_excluded_as_post_kickoff": 0,
+ "earliest_kickoff_in_days": 1,
+ "latest_kickoff_in_days": 9,
+ "market_line_columns_populated": 0,
+ "note": "market_line and fair_minus_market are blank on every row: this project has no authorised odds archive (F07, F16). The store is ready to receive them through data/market_line_intake.csv."
+}

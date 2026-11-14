@@ -1,0 +1,29 @@
+{
+ "as_of": "2026-11-14",
+ "feed_rows": 163,
+ "settled_final": 137,
+ "scheduled_unsettled": 26,
+ "weeks_covered": [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11
+ ],
+ "last_settled_kickoff": "2026-11-12",
+ "days_since_last_settled_game": 2,
+ "next_kickoff": "2026-11-15",
+ "tie_games_in_feed": 1,
+ "standings_reconciliation_mismatches": 0,
+ "grade_rows": 78,
+ "grade_rows_graded": 0,
+ "grade_rows_pending": 78,
+ "roi_computable_against_market": false,
+ "roi_blocker": "no authorised odds archive (F07, F16) \u2014 the feed settles outcomes, not prices"
+}
