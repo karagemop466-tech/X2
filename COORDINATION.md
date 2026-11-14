@@ -44,6 +44,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `45a0ec8c` | `arena/45a0ec8c-x2` | Session 45a0ec8c. Claimed T18/T19 on 2026-11-14 after finding T13–T15 already done on `main` (30beeb55, PR #8). Adds designation/identity cross-check evidence (SRC-25–SRC-29) and new flags F23–F29 only; does not redo T13–T15. **Merged to `main` via PRs #12–#13.** |
 | `52ca9f77` | `arena/52ca9f77-x2` | **Current session — final integration.** Claimed T13 (superseded by 30beeb55's merged PR #8; no duplication — see merge log). Located the official club depth charts both prior passes missed, and as final integration supplemented the merged T13 state with club-chart evidence (Node F-05 update, new Node F-08), reconciled Python F18/SRC-24/README, applied 45a0ec8c's cross-scope requests, and will deliver the final PR/merge/Pages confirmation. Task recorded as **T20** (the IDs T18/T19 were taken by 45a0ec8c). |
 | `324b0cd2` | `arena/324b0cd2-x2` | **Current session.** Claimed T13 before `main` advanced; T13 was completed in parallel by 30beeb55 (PR #8), so this session adopts main's remediation and instead performs the final integration as **T21** (renumbered from locally drafted T20 after 52ca9f77 claimed it): fixes the Node table-token render bug (F30), adds the Node F-09 audit trail, resolves handed-off F21 (stale news rows) and F22 (verified Thursday result), and records the integration. Identifiers renumbered across four main advances: T18 (taken by 45a0ec8c), T20 (taken by 52ca9f77), F23 to F30, SRC-25 to SRC-30, F-08 to F-09. |
+| `c125b2f7` | `arena/c125b2f7-x2` | Session c125b2f7 (2026-11-14): claimed T39 and T40 (T37 was taken by 4c5bc504 after my claim; renumbered, see log) on the brief for the price-snapshot store, fair/market/difference view, signal-vs-staking split and demotion gate. Integration of its own work is recorded in the log below. |
 | `3988bdab` | `arena/3988bdab-x2` | **Current session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
 | `4c5bc504` | `arena/4c5bc504-x2` | **Session 4c5bc504 (claimed T37, 2026-11-14).** Post-merge re-verification of `main` @ `9e90dd3` (all checks re-run, live Pages build confirmed, Week 10 calendar checked against the official schedule) and board reconciliation. Touches `COORDINATION.md` only. |
 
@@ -609,6 +610,10 @@ session's tasks continue from T23.
 | T35 | Link and reproducibility verification | done | 10a76288 | `scripts/check_links.py`, `data/verification_report.csv` | first-party | V01–V23; 22 pages / 630 internal links / 2,445 external links checked; all 7 model outputs reproduce byte for byte |
 | T36 | Integration: rebase, merge registers with fresh IDs, PR, merge, confirm Pages | done (PR #25 and PR #26 merged; status was stale) | 10a76288 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, PR | all | Runs last; IDs renumbered twice because `main` advanced through PRs #8–#24 during this session |
 | T37 | Post-merge re-verification of `main` @ `9e90dd3`; Week 10 calendar check against the official schedule; board reconciliation (T36 stale status) | done | 4c5bc504 | `COORDINATION.md` only | nfl.com Week 10 schedule; NFL.com by-week pages (via the existing SRC register) | Claimed 2026-11-14. Verification record: see session 4c5bc504 log below. No data, script, or generated-page edits in this scope. |
+| T39 | Price-snapshot store: opening and closing numbers for every originated market (side, total, moneyline), blank until an authorised source exists; fair / market / difference columns | done (structure; no prices recorded) | c125b2f7 | `data/price_snapshots.csv` (new, 39 rows), `data/line_comparison_week11.csv` (new), `scripts/markets.py` (new generator), `docs/markets.html` | NFL.com Week 11 by-week schedule (https://www.nfl.com/schedules/2026/by-week/week-11); NFL Support odds FAQ (https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL) | Every opening/closing cell is blank and marked UNVERIFIED (F07, G4). No price was entered. Market and difference columns blank. Flag F44 (constant reference total). |
+
+| T40 | Demotion gate (live → paper) and signal-vs-staking split of the leaderboard | done (proposed; inert) | c125b2f7 | `data/demotion_gate.csv` (new, D1–D7), `data/strategy_gates.csv` (G9 appended), `data/strategy_signal_staking.csv` (new) | NIST interval estimation (https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm); NIST multiple comparisons (https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm); NFL Terms (https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) | Thresholds are proposals, not approved (F17). No strategy is live, so the gate is inert. Ranking uses signal only. Tier labels contradict R36 (F43). |
+
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -820,22 +825,113 @@ implementation is preserved on the branch and its numbers are published on the c
 ### Request (no action taken)
 No new feature was requested in this session. The open decisions on the board remain: F17 (validation cut-offs and reward tiers), F19 (Netherlands legal review), F09 (Japan), F16 (NFL data rights), F07/F32 (no licensed odds feed), F36 (re-run after Week 10). The board does not contain any task that is unclaimed and in scope for a new agent.
 
-## 2026-11-14 · session 8a0bf37e · claim (T38–T48) and integration
+## 2026-11-14 · session 8a0bf37e · claim (T38–T48), collision record, and integration
 
-**Branch:** `arena/8a0bf37e-x2` (branched from `origin/main` @ `c082f7a`) · **Status:** in progress · **Owner:** `8a0bf37e`
+**Branch:** `arena/8a0bf37e-x2` (based on `origin/main` @ `c082f7a`; `origin/main` @ `12162d6` merged in) · **Status:** in progress · **Owner:** `8a0bf37e`
 
-This session takes the remaining gaps against the owner's brief. Every item that cannot be sourced stays blank and is flagged. No market price, closing line or return on investment is invented. Each task is claimed here before work starts, and the file scope is non-overlapping with the other tasks on this board.
+### Collision record (required; read before merging)
 
-| ID | Task | Status | Owner | Files touched (scope) |
-|----|------|--------|-------|-----------------------|
-| T38 | Price-snapshot store: opening and closing numbers for every originated market (side, total, moneyline) with a coverage register | in progress | 8a0bf37e | `data/price_snapshots.csv` (new, header-only), `data/price_coverage_week11.csv` (new), `scripts/desk.py` (new) |
-| T39 | Verified results feed: schema, validator, and official spot-check of transcribed game rows | in progress | 8a0bf37e | `data/results_feed_checks.csv` (new), `scripts/desk.py` |
-| T40 | Line board for Week 11: originate side, then total, then moneyline; fair line, market line and difference as separate columns | in progress | 8a0bf37e | `data/line_board_week11.csv` (new), `scripts/desk.py` |
-| T41 | Leaderboard split: signal ranking separated from staking; staking cannot change signal rank | in progress | 8a0bf37e | `data/leaderboard_split.csv` (new), `scripts/desk.py` |
-| T42 | Replacement-depth tracking: depth of each replacement, not only the fact of one | in progress | 8a0bf37e | `data/replacement_depth_week10_2026.csv` (new) |
-| T43 | Demotion gate: sends a live strategy back to paper | in progress | 8a0bf37e | `data/demotion_gate.csv` (new), `scripts/desk.py` |
-| T44 | Correlation audit: officially sourced inputs only, n published with each value | in progress | 8a0bf37e | `data/correlation_audit.csv` (new), `scripts/desk.py` |
-| T45 | Decision options register: suggestions with options for the owner to choose before any implementation | in progress | 8a0bf37e | `data/decision_options.csv` (new) |
-| T46 | Information-gap register: what we have, what is missing, and how to obtain it | in progress | 8a0bf37e | `data/information_gaps.csv` (new) |
-| T47 | Repo review: line-by-line re-verification sample against official pages, with irregularities | in progress | 8a0bf37e | `data/repo_review_2026-11-14.csv` (new) |
-| T48 | Integration: site pages, navigation, executive summary, README, link check, PR, merge, Pages | in progress | 8a0bf37e | `scripts/build.py`, `README.md`, `docs/**` (generated), `COORDINATION.md` |
+- My original claim (`d9cab44`) listed **T38–T41 and T43** as new work. Session `c125b2f7` had already claimed and merged them on `main` as **T39** (price store, PR #29) and **T40** (demotion gate and signal-vs-staking split, PR #30). My branch was cut from `c082f7a`, so I did not see that work.
+- My branch had written its own copies of those files (`price_snapshots.csv` header-only, `demotion_gate.csv` D1–D4, `line_board_week11.csv`, `leaderboard_split.csv`). Those copies would have **overwritten** `main`'s 39-row price store and D1–D7 gate. I deleted the copies before committing. Nothing from `c125b2f7` was overwritten.
+- My flags **F43–F53** reused IDs already used on `main` (F43, F44). They are renumbered **F45–F55**, and every reference in my files is updated.
+- My requirement and source IDs do not collide: `main` ends at R43 and SRC-60; I add SRC-61 to SRC-71.
+
+### Task status (this session's final mapping)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T38 | Price-snapshot store (original claim) | superseded by T39 (c125b2f7). No files written by 8a0bf37e | 8a0bf37e | none | see T39 on `main` |
+| T39 | (original claim) results feed checks | renumbered to **T49** | 8a0bf37e | — | — |
+| T40 | (original claim) Week 11 line board | superseded by c125b2f7 T39 (`data/line_comparison_week11.csv`). No files written | 8a0bf37e | none | — |
+| T41 | (original claim) signal vs staking split | superseded by c125b2f7 T40 (`data/strategy_signal_staking.csv`). No files written | 8a0bf37e | none | — |
+| T42 | Replacement depth, per availability row | in progress (done in this session) | 8a0bf37e | `data/replacement_depth_week10_2026.csv` (new) | club charts (undated; F45); official statements (F46, F53) |
+| T43 | (original claim) demotion gate | superseded by c125b2f7 T40 (D1–D7, G9). My window check is T50 | 8a0bf37e | none | — |
+| T44 | Correlation audit (owner rule, n with each value) | in progress (done in this session) | 8a0bf37e | `data/correlation_audit.csv` (new) | recomputed C09 (F48) |
+| T45 | Decision options register | in progress (done in this session) | 8a0bf37e | `data/decision_options.csv` (new) | owner decisions DEC-01 to DEC-10 |
+| T46 | Information-gap register | in progress (done in this session) | 8a0bf37e | `data/information_gaps.csv` (new) | G01 to G13 |
+| T47 | Repo review (sampled line-by-line re-verification) | in progress (done in this session) | 8a0bf37e | `data/repo_review_2026-11-14.csv` (new) | RV01 to RV13 |
+| T48 | Integration: pages, navigation, exec summary, README, link check, PR, merge, Pages | in progress | 8a0bf37e | `scripts/build.py`, `README.md`, `docs/**` (generated), `data/flags.csv` (F45–F55), `data/sources.csv` (SRC-61–71), `COORDINATION.md` | — |
+| T49 | Results feed checks (was T39) | in progress (done in this session) | 8a0bf37e | `data/results_feed_checks.csv` (new), `scripts/desk.py` | official game-center spot checks (6), standings reconciliation |
+| T50 | Demotion rule D1 window check (uses D1 as drafted on `main`) | in progress (done in this session) | 8a0bf37e | `data/demotion_window_check.csv` (new), `scripts/desk.py` | NFL.com game pages; NIST bootstrap reference |
+
+### Requests logged (no action taken on these files)
+
+- **REQ-8a-1: apply the C09 correction.** `scripts/model.py` (C09 block) and `data/correlations_computed.csv` (C09 row) are outside this claim. The register still shows the earlier interval (0.830–0.923), which applies a correlation formula to a regression slope. Recomputed from the slope's own standard error (n = 89): slope 0.885, 95% CI 0.335–1.435, p = 0.683 against slope 1.0. Owner of the model files to apply this in the next model pass. Flag F48.
+- **REQ-8a-2: owner decision on demotion rule D1 (DEC-04).** As drafted on `main`, D1 returns a strategy to paper when the lower 95% bound is at or below 0. Over the last 50 out-of-sample games it triggers for all four side models, even though all four have positive point estimates. Flag F54.
+- **REQ-8a-3: correlation C02 does not meet the owner rule.** It uses a fixed 2.5-point home-field constant (`HFA_REF`). Flag F49.
+
+### Irregularities (flagged; none blocks merge)
+
+- F45 (depth charts undated, pre-injury, one omits a starter, one has no kicker); F46 (LA/LAR naming; A05/A06 do not name the injured player); F47 (three game pages show "Hidden Score"); F48 (C09 register value); F49 (four correlations use model outputs, plus C02); F50 (gate G1 is a constant True); F51 (price store has 39 blank rows; no price recorded); F52 (the "weeks 1-10" label is corrected in README and build.py); F53 (A08–A11 unchecked); F54 (D1 design at n = 50); F55 (C06 pairs are not independent).
+
+**Merge record (session 4c5bc504, T37).** PR #27 (base `main`, head `arena/4c5bc504-x2`, https://github.com/karagemop466-tech/X2/pull/27) was merged with `--merge` on 2026-11-14 as merge commit `c082f7a`. GitHub Pages build for `c082f7a` reported `built`. This follow-up PR records that merge.
+
+## 2026-11-14 · session c125b2f7 · market tables, signal vs staking, demotion gate
+
+**Branch:** `arena/c125b2f7-x2` · **Tasks:** T39, T40 (T36 closed as PR #26 merged) · **Base:** `main` @ `9e90dd3`
+
+### Merge / ID collision record (session c125b2f7)
+
+- I claimed **T37 and T38** at 19:13:10 UTC (commit `9dab6a2`). Session `4c5bc504` claimed **T37** at 19:14:00 UTC for a
+  COORDINATION-only re-verification task and merged it as PR #27 (`c082f7a`) and PR #28 (`592e761`) before this branch
+  rebased.
+- Resolution, without discarding either session's work: their T37 row, their T36 status correction and their log are kept
+  as merged on `main`. My tasks are renumbered to **T39** (price store) and **T40** (demotion gate). No data file or page
+  referenced the old IDs.
+- My PR to `main` was blocked by this conflict (`not mergeable`). It was resolved by merging `origin/main` into this branch.
+  No other file conflicted.
+
+### What was added (all derived from existing rows by `scripts/markets.py`; no value typed by hand)
+
+- `data/price_snapshots.csv`: 39 originated markets (13 Week 11 games × side, total, moneyline, in that order). Opening/closing
+  fields are blank and each row is marked UNVERIFIED. **No price was recorded** because no authorised, timestamped source exists.
+- `data/line_comparison_week11.csv`: fair line, market line and difference (market minus fair) as separate columns. The fair
+  line is the model value; the market and difference are blank.
+- `data/strategy_signal_staking.csv`: the leaderboard re-ranked on signal only. Staking is listed as not measured.
+- `data/demotion_gate.csv` (D1–D7) and gate G9 in `data/strategy_gates.csv`: a live-to-paper demotion rule. Thresholds are
+  proposals awaiting owner approval (F17). No strategy is live, so the gate is inert.
+- `docs/markets.html` (new page, linked from the nav and the home page). `scripts/build.py` change is additive.
+- Registers: F43, F44 (flags); R37–R43 (requirements).
+
+### Sources (fetched 2026-11-14)
+
+- https://www.nfl.com/schedules/2026/by-week/week-11 (live; lists IND at HOU, MIA at BUF and the other Week 11 matchups used as row links)
+- https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL (live; says NFL widgets show bookmaker odds, which is not a historical archive)
+- https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm (live; multiple comparisons)
+- https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm (interval estimation, cited in the existing gates)
+
+### Verification performed
+
+- `python3 scripts/markets.py` → 39 / 13 / 7 rows. Each CSV checked for consistent column count.
+- `python3 scripts/build.py` → 23 pages; every table row carries an allow-listed source link.
+- `python3 scripts/check_links.py` → 23 pages, 591 internal links, 2,427 external links, no problems.
+- `python3 scripts/verify_results.py` → all 32 teams reconcile with official standings.
+- `python3 scripts/model.py` re-run → no model output changed.
+- `npm run build && npm run verify` → ALL CHECKS PASSED.
+- The 95% interval claim was checked against `scripts/model.py` (`bootstrap_ci`, alpha 0.05, percentile bootstrap).
+
+### Irregularities found (flagged, not fixed; owned by other scopes)
+
+- **F43 (contradiction):** `scripts/model.py` labels M1–M4 "Tier 1 / Tier 2" on `strategy_leaderboard.csv`, while R36 blocks
+  tiers until the F42 disagreement is resolved. Needs owner decision.
+- **F44 (irregularity):** `reference_total` is 45.9 for all 13 Week 11 games. No derivation is recorded.
+
+### Not done (blocked, not inferred)
+
+- Opening and closing prices, ROI and closing-line value: no authorised price source (F07, G4).
+- Prop-bet and parlay correlations: no licensed player outcomes or prop prices.
+- Replacement depth rank (2nd/3rd/4th string): no official depth-chart order; NFL.com depth-chart pages return 404 (R10, F06, R43).
+- Legal review for any jurisdiction, including the Netherlands (F19) and Japan (F09): still needed before any reward or wagering.
+
+
+
+### PR and deployment record — session c125b2f7 (T39, T40)
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/29 (base `main`, head `arena/c125b2f7-x2`), merged with `--merge`
+  as merge commit `8036ea6` on 2026-11-14. Merged without approval, as the brief directs. Flagged irregularities (F43, F44)
+  and the blocked items do not block the merge.
+- **Pages build:** `built` for commit `8036ea6` (2026-11-14 19:16:21Z).
+- **Live check (fetched, not assumed):** https://karagemop466-tech.github.io/X2/docs/markets.html renders the price store
+  (39 rows, all blank and UNVERIFIED), the fair-line table, the signal-only ranking and the proposed demotion rules.
+- **Tasks T39 and T40:** done. Nothing from this session is left unclaimed or half-merged. The PR-number record is added here
+  as its own follow-up change.

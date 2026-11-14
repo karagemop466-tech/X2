@@ -376,5 +376,23 @@
   "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
   "status": "Irregularity - open",
   "action_requested": "Resolve by pre-registering one primary rule and a fixed sample before testing; do not enable rewards meanwhile."
+ },
+ {
+  "flag_id": "F43",
+  "category": "Internal contradiction - reward tiers",
+  "item": "Leaderboard shows Tier 1 / Tier 2 labels while requirement R36 blocks reward tiers",
+  "detail": "data/strategy_leaderboard.csv labels M1, M2, M3 and M4 as 'Tier 1 (gold)' or 'Tier 2' from gates G1-G8 with cut-offs still marked 'Proposed cut-off - awaiting project-owner approval (F17)'. The cross-check (F42) reports 0 of 8 rules qualify under the multiple-comparison adjustment, and R36 says tiers must not be offered until this is resolved. The tier labels were NOT changed in this session (scripts/model.py is owned by another session). data/strategy_signal_staking.csv shows the signal rank and gates passed as recorded and does not use the tier labels.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/strategy_leaderboard.csv",
+  "status": "needs review",
+  "action_requested": "Owner to decide which pass is authoritative before any tier label is shown; either remove the tier labels or record the decision in R36."
+ },
+ {
+  "flag_id": "F44",
+  "category": "Irregularity - reference total",
+  "item": "Week 11 reference total is identical for all 13 games",
+  "detail": "data/model_lines_week11.csv column reference_total equals 45.9 for every game. This is the naive reference used for the 'model minus reference' column. It may be an intended league-average constant, but no derivation is recorded in the file. Not changed in this session.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_lines_week11.csv",
+  "status": "needs review",
+  "action_requested": "Reviewer to confirm whether a constant league-average total is intended and document the derivation source."
  }
 ]
