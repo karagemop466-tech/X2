@@ -493,5 +493,23 @@
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
   "status": "Open",
   "action_requested": "Recompute on one row per game, or report as descriptive."
+ },
+ {
+  "flag_id": "F56",
+  "category": "Register accuracy (line-by-line review)",
+  "item": "Availability register rows contradicted or superseded by their own cited sources",
+  "detail": "A session 20e6161b line-by-line pass (T53/T54) re-read the body of every source cited by confirmed_availability_week10_2026.csv rows A08-A11. A08 (GB) claimed \"no replacement is named in the official sources checked\" while the body of its own cited NFL.com article names the replacement group (Kaleb Johnson, MarShawn Lloyd, Pierre Strong, Chris Brooks); corrected with the article quote. A10 (KC) carried a Friday snapshot (Walker Questionable) that the Saturday official update supersedes (downgraded to Out, replacement group named); a dated update was added and the snapshot text preserved per the F26 convention. A09 and A11 checked and left unchanged.",
+  "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53/T54) — corrections applied and labelled",
+  "action_requested": "Reviewer to confirm the dated-update style for superseded snapshots (same mechanism as the F26 owner decision)."
+ },
+ {
+  "flag_id": "F57",
+  "category": "Register consistency",
+  "item": "Two registers share the A01-A11 ID scheme for different rows",
+  "detail": "data/confirmed_availability_week10_2026.csv (session 10a76288, T34) and data/replacement_depth_week10_2026.csv (session 8a0bf37e, T42) both number their rows A01-A11, but the rows do not correspond one to one and the columns differ. On the published pages the context is always shown, but a bare \"A08\" citation is ambiguous between the two registers.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open — needs review",
+  "action_requested": "Owner to choose one ID scheme (e.g. AV01- vs RD01-) in a later integration pass; renaming ripples through build.py and flag text, so it is not done unilaterally here."
  }
 ]
