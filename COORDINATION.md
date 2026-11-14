@@ -585,6 +585,7 @@ verification evidence to open flags, and recorded the work.
 | Session | Branch | Scope |
 |---|---|---|
 | `73cbec41` | `arena/73cbec41-x2` (branch name is fixed by session rules; no `session-<id>/<task>` branch was created) | Built the independent line model, the 137-game official results dataset, the walk-forward backtest, validation gates, correlation and parlay studies, the strategy leaderboard and the Week 11 lines; rebuilt the Pages site to 20 pages. Merged sessions `324b0cd2` and `3988bdab`'s registers, decision-path page, verification page and honesty fixes into this branch before publishing. |
+| `10a76288` | `arena/10a76288-x2` | **Second independent implementation, run in parallel.** Transcribed the same 2026 season (weeks 1–10 TNF) and built an independent line model before discovering that 73cbec41 had done the same on `main`. Rather than publish a competing leaderboard, this session folded its work into a **cross-check** (see tasks T31–T36): the two ledgers were compared game by game, the two models compared on method and result, and the one material disagreement (how many strategies qualify) recorded as **F42**. Also adds deficiency tracking, link verification and the register rows Q31–Q42, S19–S28, F37–F42, SRC-44–SRC-60, R35–R36, V01–V23. |
 
 **Tasks (T23-T30).** Session `3988bdab` already used the label T22 for its honesty-consistency pass, so this
 session's tasks continue from T23.
@@ -599,6 +600,13 @@ session's tasks continue from T23.
 | T28 | Correlation study and parlay joint-outcome study | done | 73cbec41 | data/correlations_computed.csv, data/parlay_analysis.csv (new) | SRC-31..SRC-41, SRC-17 | 9 correlations with CIs and p-values; 1 parlay table (24 tickets) |
 | T29 | Registers extended: Q19-Q30, S11-S18, R21-R34, F31-F36, SRC-31..SRC-43 | done | 73cbec41 | data/questions.csv, data/suggestions.csv, data/requirements.csv, data/flags.csv, data/sources.csv | all | ID union with no collisions; every row from sessions 324b0cd2 and 3988bdab is retained |
 | T30 | Site rebuild to 20 pages, integration, PR to main, merge, Pages deploy | done | 73cbec41 | scripts/build.py, docs/**, README.md, COORDINATION.md | all | `python3 scripts/build.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass |
+
+| T31 | Second independent 2026 results transcription + standings reconciliation (session 10a76288) | done | 10a76288 | `data/season_games_2026.csv`, `data/standings_2026_week10.csv` | SRC-44, SRC-45 | 137 games; computed W-L-T/PF/PA reproduce the official standings for all 32 teams with **0 mismatches**; 8 sampled rows checked against their official game pages (8/8 matched) |
+| T32 | Independent line model + walk-forward backtest (session 10a76288) | done | 10a76288 | `scripts/model.py` (kept as the session's own implementation; `main`'s copy is 73cbec41's), `data/strategy_scorecard_2026.csv`, `data/validation_gates_measured_2026.csv`, `data/correlation_values_2026.csv` | SRC-44 | 8 competing rules + a zero baseline on 96 unseen games; 3 beat zero with an interval above zero; **0 clear all 8 gates** after the multiple-comparison adjustment |
+| T33 | Cross-check of the two independent implementations | done | 10a76288 | `docs/cross-check.html` | SRC-44, SRC-45 | 137/137 games match with **0 score disagreements** (after LAR/LA normalisation). Disagreement on qualification recorded as **F42** |
+| T34 | Deficiency tracking: officially named starters and replacements | done | 10a76288 | `data/confirmed_availability_week10_2026.csv`, `docs/depth-deficiency.html` | SRC-48 … SRC-58 | A01–A11; IR players (Jackson, Willis) are absent from the weekly report entirely. String rank stays blank: NFL.com depth-chart pages 404, club charts self-label unofficial (F06, F18) |
+| T35 | Link and reproducibility verification | done | 10a76288 | `scripts/check_links.py`, `data/verification_report.csv` | first-party | V01–V23; 22 pages / 630 internal links / 2,445 external links checked; all 7 model outputs reproduce byte for byte |
+| T36 | Integration: rebase, merge registers with fresh IDs, PR, merge, confirm Pages | in progress | 10a76288 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, PR | all | Runs last; IDs renumbered twice because `main` advanced through PRs #8–#24 during this session |
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -699,3 +707,70 @@ reject), F07/F32 (a licensed odds archive is the only way a market return can
 ever be measured), S12/S16 (additional official model inputs and a
 rights-cleared injury archive), F35 (NFL.com Week 1 date inconsistency), F36
 (re-run `scripts/model.py` after Week 10 completes).
+
+## 2026-11-14 · session 10a76288 · second independent implementation, folded into a cross-check
+
+**Branch:** `arena/10a76288-x2` · **Tasks:** T31–T36 · **Base at finish:** `origin/main` @ `d2325e4`
+
+### What happened
+
+This session transcribed the 2026 season and built its own line model without knowing that session `73cbec41` was doing the
+same thing on `main` (PRs #22–#24 landed while this work was in progress). Rather than ship a second, competing leaderboard,
+the work was folded into a cross-check: two independent transcriptions and two independent models, compared.
+
+**Files added:** `data/season_games_2026.csv`, `data/standings_2026_week10.csv`, `data/confirmed_availability_week10_2026.csv`,
+`data/verification_report.csv`, `data/strategy_scorecard_2026.csv`, `data/validation_gates_measured_2026.csv`,
+`data/correlation_values_2026.csv`, `data/model_lines_week10_2026.csv`, `data/model_holdout_2026.csv`,
+`data/model_selectivity_2026.csv`, `data/model_predictions_2026.csv`, `scripts/check_links.py`,
+`docs/cross-check.html`, `docs/depth-deficiency.html`. **Files edited:** `scripts/build.py` (additive only — every page and
+section already on `main` was preserved), `data/flags.csv`, `data/sources.csv`, `data/questions.csv`,
+`data/suggestions.csv`, `data/requirements.csv`, `README.md`, generated `docs/`.
+
+### Cross-check result (the substantive finding)
+
+| | This session | Session 73cbec41 |
+|---|---|---|
+| Games transcribed | 137, weeks 1–10 TNF | 137, weeks 1–10 TNF |
+| Score disagreements between the two ledgers | **0** (after normalising LAR vs LA) | |
+| Standings reconciliation | 0 mismatches, all 32 teams | 0 mismatches |
+| Out-of-sample window | 96 games (weeks 3–10) | 89 games (weeks 4–10) |
+| Margin error reduction | 7.7% best rule (interval crosses zero); 7.1% best rule with an interval above zero | 1.74 points (10.89 → 9.16 MAE) |
+| Rules clearing every gate | **0 of 8** | 4 of 7 (3 at tier 1) |
+| Game totals | no measurable skill (F39) | totals strategy shows no skill |
+
+The disagreement in the second-to-last row is the reason this page exists. This session's scoring applies a
+multiple-comparison adjustment to the bootstrap intervals — testing eight rules and keeping the best one manufactures
+significance, and once that is charged for the leading rules no longer clear zero. The other implementation does not apply
+that adjustment. Both agree a real but modest forecast gain exists; they differ on whether it is *established*. Recorded as
+**F42**, with the recommendation that **no reward tier be offered or paid** until a pre-registered test on a larger sample
+resolves it. That recommendation sits alongside, and does not replace, the legal, jurisdictional (F09 Japan, F19 Netherlands)
+and data-rights (F16) review already on the board.
+
+### What this session adds that nothing else on `main` had
+
+- **Officially named starters and replacements** (`data/confirmed_availability_week10_2026.csv`, A01–A11), including
+  injured-reserve players who are absent from the weekly injury report entirely. Hedged language ("likely") is marked
+  unconfirmed rather than read as fact.
+- **A link verifier** (`scripts/check_links.py`) that parses every generated page and fails on a broken internal link, an
+  internal link escaping the site root, or any external link that is not HTTPS on the allowlist. It reads the allowlist
+  straight out of `scripts/build.py` so the two cannot drift.
+- **V13**: eight ledger rows drawn with a fixed seed and checked directly against their official game pages (8/8 matched),
+  plus V14 (link check), V15 (byte-for-byte model reproducibility) and V16 (every URL in every data file).
+- **F41**: some official game-center pages render "Hidden Score" instead of the final score; the affected row was verified
+  against the official by-week schedule page instead.
+
+### Verification performed
+
+`python3 scripts/build.py` → 22 pages, all table rows carry an allow-listed HTTPS source link (the build fails otherwise) ·
+`python3 scripts/check_links.py` → 22 pages, 630 internal links, 2,445 external links, no problems ·
+`python3 scripts/model.py` re-run → all 7 output files byte-identical · ledger↔standings reconciliation runs inside the
+builder and fails the build on any mismatch · `npm run build && npm run verify` → all Node checks pass.
+
+### Merge notes
+
+Rebased twice; `main` advanced from `cf2d454` to `d2325e4` (PRs #8–#24) during this session. Every conflict was resolved by
+keeping `main`'s content and appending or merging this session's work — no other session's text was overwritten. Identifier
+collisions were found and fixed before merging: this session's flags became **F37–F42**, sources **SRC-44–SRC-60**,
+questions **Q31–Q42**, suggestions **S19–S28**, requirements **R35–R36**, because `main` had already taken F31–F36,
+SRC-31–43, Q19–Q30, S11–S18 and R21–R34. `scripts/model.py` was left as `main`'s (73cbec41's) version; this session's
+implementation is preserved on the branch and its numbers are published on the cross-check page.

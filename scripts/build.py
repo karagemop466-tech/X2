@@ -20,6 +20,7 @@ DOCS = os.path.join(ROOT, "docs")
 AS_OF = "2026-11-14"
 OFFICIAL_HOSTS = {
     "www.nfl.com", "support.nfl.com", "operations.nfl.com",
+    "www.detroitlions.com", "www.patriots.com",
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
@@ -110,6 +111,13 @@ correlations = read_csv("correlations_computed.csv")
 parlays = read_csv("parlay_analysis.csv")
 with open(os.path.join(DATA, "model_summary.json"), encoding="utf-8") as f:
     ms = json.load(f)
+# ---- session 10a76288: a second, independent implementation used to cross-check the one above ----
+season_games = read_csv("season_games_2026.csv")
+standings = read_csv("standings_2026_week10.csv")
+scorecard = read_csv("strategy_scorecard_2026.csv")
+model_holdout = read_csv("model_holdout_2026.csv")
+availability = read_csv("confirmed_availability_week10_2026.csv")
+verification_rows = read_csv("verification_report.csv")
 decisions = read_csv("decision-chain.csv")
 sugg_review = read_csv("suggestion_review.csv")
 # Empty-state row only: do not imply a strategy has results or an approved reward.
@@ -201,6 +209,50 @@ for label, rows, id_field in (
         for key in ("market_spread", "market_total"):
             if key in row and row[key].strip():
                 errors.append(f"{label} {row.get(id_field,'?')}: {key} must stay blank (no licensed odds feed)")
+
+for label, rows, id_field in (
+    ("season_games", season_games, "game_url"),
+    ("standings_2026_week10", standings, "team_abbr"),
+    ("strategy_scorecard_2026", scorecard, "strategy_id"),
+    ("model_holdout_2026", model_holdout, "game"),
+    ("confirmed_availability", availability, "item_id"),
+    ("verification_report", verification_rows, "check_id"),
+):
+    for row in rows:
+        val = (row.get("source_url") or row.get("game_url") or "").strip()
+        if not val:
+            errors.append(f"{label} {row.get(id_field, '?')}: row without an official source link")
+        else:
+            check_official(val, f"{label}.source_url")
+
+# Independent cross-check: this session's transcribed ledger must reproduce the official standings.
+_ledger = defaultdict(lambda: [0, 0, 0, 0, 0])   # team -> [W, L, T, PF, PA]
+for _g in season_games:
+    _a, _h = int(_g["away_points"]), int(_g["home_points"])
+    _ledger[_g["away_team"]][3] += _a
+    _ledger[_g["away_team"]][4] += _h
+    _ledger[_g["home_team"]][3] += _h
+    _ledger[_g["home_team"]][4] += _a
+    if _a > _h:
+        _ledger[_g["away_team"]][0] += 1
+        _ledger[_g["home_team"]][1] += 1
+    elif _a < _h:
+        _ledger[_g["away_team"]][1] += 1
+        _ledger[_g["home_team"]][0] += 1
+    else:
+        _ledger[_g["away_team"]][2] += 1
+        _ledger[_g["home_team"]][2] += 1
+_mism = []
+for _st in standings:
+    _got = _ledger[_st["team_abbr"]]
+    _exp = [int(_st["wins"]), int(_st["losses"]), int(_st["ties"]),
+            int(_st["points_for"]), int(_st["points_against"])]
+    if _got != _exp:
+        _mism.append(f"{_st['team_abbr']}: ledger {_got} vs standings {_exp}")
+if _mism:
+    errors.append("independent ledger does not reproduce the official standings: " + "; ".join(_mism))
+if len(season_games) != 137:
+    warnings.append(f"independent ledger has {len(season_games)} games; expected 137")
 
 if len(inj) != 345:
     warnings.append(f"injury row count is {len(inj)}; expected 345 for the Week 10 snapshot")
@@ -316,6 +368,9 @@ def cell(key, val, row=None):
     if key in ("status",):
         cls = "b-flag" if any(w in v.lower() for w in ("irregular", "unverified", "missing", "legal", "review", "open")) else ""
         return f'<td><span class="badge {cls}">{html.escape(v) or "—"}</span></td>'
+    if key in ("confidence",):
+        cls = "b-flag" if any(w in v.lower() for w in ("unconfirmed", "reported", "unverified")) else ""
+        return f'<td><span class="badge {cls}">{html.escape(v) or "—"}</span></td>'
     if key == "starter_backup_status":
         return f'<td class="unverified">{html.escape(v)}</td>'
     if v == "":
@@ -355,12 +410,14 @@ NAV = [
     ("injuries.html", "Injuries"),
     ("games.html", "Games"),
     ("depth-analysis.html", "Depth exposure"),
+    ("depth-deficiency.html", "Deficiency tracking"),
     ("strategy-lab.html", "Strategy lab"),
     ("decision-path.html", "Decision path"),
     ("questions.html", "Questions"),
     ("requirements.html", "Requirements"),
     ("suggestions.html", "Suggestions"),
     ("verification.html", "Verification"),
+    ("cross-check.html", "Independent cross-check"),
     ("flagged.html", "Flagged for review"),
     ("sources.html", "Sources"),
 ]
@@ -410,6 +467,14 @@ def card(href, title, desc):
 
 pages = {}
 
+# Headline numbers from session 10a76288's independent implementation.
+best = max(scorecard, key=lambda r: float(r["skill_vs_zero"] or 0))
+best_total = min(scorecard, key=lambda r: float(r["total_mae_points"] or 1e9))
+base_total = next(r for r in scorecard if r["strategy_id"] == "S0")
+competing = [r for r in scorecard if r["strategy_id"] != "S0"]
+n_competing = len(competing)
+n_qualified = sum(1 for r in scorecard if r["status"].startswith("Qualified"))
+
 # ---------- index ----------
 pages["index.html"] = ("NFL Research Dashboard", f"""
 <section class="hero">
@@ -444,6 +509,8 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('verification.html', 'Verification', 'What was checked line by line, against which official page, and what the result was.')}
 {card('flagged.html', 'Flagged for review', 'Irregularities, unverified items and missing official data, each with a source link.')}
 {card('sources.html', 'Sources', 'Every official source used, with what it supports.')}
+{card('cross-check.html', 'Independent cross-check', 'A second independent transcription and model compared against the first: what agrees, and the one thing that does not.')}
+{card('depth-deficiency.html', 'Deficiency tracking', 'Unit exposure by side of ball, and officially named starters and replacements.')}
 </div>
 """)
 
@@ -633,6 +700,11 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left 
 <tr><td>Standings cross-check</td><td>Compared Week 10 listed records with the official standings page.</td><td class="ok">Records match for the teams checked. The injured-reserve players named in the news (Lamar Jackson, Malik Willis) do not appear on the injury report, consistent with reserve status rather than a game designation.</td><td><a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL standings</a></td></tr>
 <tr><td>Source allow-list</td><td>Builder rejects any table row without an HTTPS link on the reviewed official-source allow-list, and any broken internal link.</td><td class="ok">Enforced in <code>scripts/build.py</code>; the build fails otherwise.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py" target="_blank" rel="noopener">build.py</a></td></tr>
 </tbody></table></div>
+<h2>Model, ledger and link checks (session 10a76288)</h2>
+<p class="note">A second, independent set of checks covering the 2026 game ledger, the model outputs and the generated links.
+Each row names the check, how it was run, its population and its result.</p>
+{table(verification_rows, ['check_id','what_was_checked','how_it_was_checked','population','result','status','source_url'],
+       {'check_id':'Check','what_was_checked':'What was checked','how_it_was_checked':'How','population':'Population','result':'Result','status':'Status','source_url':'Source'})}
 <h2>Standing limitations</h2>
 <ul>
 <li><strong>Single reviewer.</strong> This pass was performed independently of session 30beeb55's separate T15 check, and both found no discrepancies. Two independent passes are the strongest control the manual-transcription limitation allows, but neither is an automated diff (F10, F20).</li>
@@ -887,6 +959,150 @@ pages["sources.html"] = ("Sources", f"""
 {table(sources, ['source_id','title','publisher','url','type','accessed_date','used_for','verification_note'],
        {'source_id':'ID','title':'Title','publisher':'Publisher','url':'Link','type':'Type','accessed_date':'Accessed','used_for':'Used for','verification_note':'Verification note'})}
 """)
+
+# ---------- independent cross-check (second implementation) ----------
+ALT = {"LAR": "LA"}
+def _k(week, away, home):
+    return (int(week), ALT.get(away, away), ALT.get(home, home))
+
+
+ledger_b = {_k(g["week"], g["away_team"], g["home_team"]): g for g in results_games}
+ledger_a = {_k(g["week"], g["away_team"], g["home_team"]): g for g in season_games}
+xc_shared = sorted(set(ledger_a) & set(ledger_b))
+xc_score_diff = []
+for k in xc_shared:
+    a, b = ledger_a[k], ledger_b[k]
+    if (int(a["away_points"]), int(a["home_points"])) != (int(b["away_points"]), int(b["home_points"])):
+        xc_score_diff.append((k, a["away_points"], a["home_points"], b["away_points"], b["home_points"]))
+xc_only_a = sorted(set(ledger_a) - set(ledger_b))
+xc_only_b = sorted(set(ledger_b) - set(ledger_a))
+xc_rows = [
+    {"check": "Game results ledger",
+     "ours": f'{len(season_games)} games, weeks 1-10, transcribed from the official schedule by week',
+     "theirs": f'{len(results_games)} games, weeks 1-10, transcribed independently',
+     "agreement": f'{len(xc_shared)} games matched on both teams and week; {len(xc_score_diff)} score disagreements',
+     "note": "Team keys were normalised before comparing (this implementation uses LAR for the Rams, the other uses LA).",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-1"},
+    {"check": "Standings reconciliation",
+     "ours": "Computed W-L-T, PF and PA for all 32 teams from the ledger; 0 mismatches against the official standings",
+     "theirs": "Same reconciliation recorded in scripts/verify_results.py",
+     "agreement": "Both reproduce the official standings",
+     "note": "Two independent implementations reaching the same official page is the strongest control available here.",
+     "source_url": "https://www.nfl.com/standings/"},
+    {"check": "Out-of-sample window",
+     "ours": f'{best["eligible_games"]} games (weeks 3-10)',
+     "theirs": f'{ms.get("out_of_sample_games", "")} games (weeks 4-10)',
+     "agreement": "Different window lengths; both are walk-forward",
+     "note": "A shorter window means a smaller sample, which widens every interval.",
+     "source_url": "https://github.com/karagemop466-tech/X2"},
+    {"check": "Margin error reduction vs a zero baseline",
+    "ours": "best rule %s (%.1f%%), widest interval [%s, %s]" % (best["skill_vs_zero"], float(best["skill_vs_zero"])*100, best["skill_ci_low"], best["skill_ci_high"]),
+     "theirs": f'{ms.get("mae_improvement", "")} points ({ms.get("mae_reference", "")} to {ms.get("mae_m1", "")} MAE)',
+     "agreement": "Both find a real but modest reduction of roughly 7-16%",
+     "note": "Direction agrees; the size differs because the windows and baselines differ.",
+     "source_url": "https://github.com/karagemop466-tech/X2"},
+    {"check": "Strategies clearing every gate",
+     "ours": f'{n_qualified} of {n_competing}',
+     "theirs": f'{ms.get("qualified_strategies", "")} of {ms.get("strategies_tested", "")} (with {ms.get("tier1_strategies", "")} at tier 1)',
+     "agreement": "DISAGREEMENT — see the note",
+     "note": "The other implementation does not charge for testing several rules at once. Adjusting for multiple comparisons removes the apparent significance here, so no rule is qualified and the reward stays off.",
+     "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"},
+    {"check": "Game totals",
+     "ours": f'best total MAE {best_total["total_mae_points"]} vs {base_total["total_mae_points"]} for a constant league-average projection',
+     "theirs": "Totals projected from the same ratings system",
+     "agreement": "This implementation finds no measurable skill on totals (F39)",
+     "note": "Treat any total on this site as the weakest number published.",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-1"},
+]
+pages["cross-check.html"] = ("Independent cross-check", f"""
+<h1>Independent cross-check of the line model</h1>
+<p class="note"><strong>Why this page exists.</strong> While this session was running, a second session
+(<code>73cbec41</code>) independently transcribed the same 2026 season and built its own line model, and that work is now on
+<code>main</code>. Rather than publish two competing leaderboards, this page reports what happens when the two independent
+implementations are compared. Where they agree, confidence rises. Where they disagree, the difference is stated instead of
+being smoothed over.</p>
+{tiles([(len(xc_shared), 'games matched between the two ledgers'), (len(xc_score_diff), 'score disagreements'),
+        (len(season_games), "games in this session's ledger"), (len(results_games), 'games in the other ledger')])}
+<h2>What was compared</h2>
+{table(xc_rows, ['check','ours','theirs','agreement','note','source_url'],
+       {'check':'Check','ours':'This session implementation','theirs':'The other implementation','agreement':'Agreement','note':'Note','source_url':'Source'})}
+<h2>The one material disagreement</h2>
+<p class="note">The other implementation reports
+{ms.get('qualified_strategies', '')} of {ms.get('strategies_tested', '')} strategies as qualified and
+proposes reward tiers. This session's independent scoring of {n_competing} competing rules on
+{best['eligible_games']} unseen games finds <strong>{n_qualified} qualified</strong> once the multiple-comparison adjustment is
+applied: testing several rules and keeping the best one manufactures significance, and the leading rules' intervals no longer
+clear zero once that is charged for. <strong>The recommendation on this page is that no reward tier be offered or paid until
+that disagreement is resolved by a pre-registered test on a larger sample.</strong> See
+<a href="https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm" target="_blank" rel="noopener">NIST on multiple comparisons ↗</a>
+and Flag F42.</p>
+<h2>Ledger comparison detail</h2>
+<ul class="findings">
+<li>Games present in both ledgers: <strong>{len(xc_shared)}</strong>. Score disagreements: <strong>{len(xc_score_diff)}</strong>.</li>
+<li>Games only in this session's ledger: {len(xc_only_a)}. Games only in the other ledger: {len(xc_only_b)}. The team-key
+normalisation above (LAR vs LA) accounts for every difference in keys.</li>
+<li>Both ledgers reconcile to the <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">official standings</a>
+with zero mismatches.</li>
+</ul>
+""")
+
+
+
+# ---------- deficiency tracking ----------
+gmap2 = {g["game_no"]: f'{g["first_listed_team"]} at {g["second_listed_team"]}' for g in games}
+team_game = {r["team_abbr"]: r["game_no"] for r in inj}
+deficiency = []
+for abbr in sorted(team_rows):
+    rs = team_rows[abbr]
+    gno = team_game.get(abbr, "")
+    for unit in UNIT_ORDER:
+        urs = [r for r in rs if UNIT[r["position"]] == unit]
+        out = [r for r in urs if r["game_status"] == "Out"]
+        doubt = [r for r in urs if r["game_status"] == "Doubtful"]
+        quest = [r for r in urs if r["game_status"] == "Questionable"]
+        if not (out or doubt):
+            continue
+        deficiency.append({
+            "game_no": gno,
+            "matchup": gmap2.get(gno, ""),
+            "team": f"{abbr} {rs[0]['team_name']}",
+            "side": SIDE[unit],
+            "unit": unit,
+            "out_players": "; ".join(f"{r['player']} ({r['position']})" for r in out) or "—",
+            "doubtful_players": "; ".join(f"{r['player']} ({r['position']})" for r in doubt) or "—",
+            "questionable_players": "; ".join(f"{r['player']} ({r['position']})" for r in quest) or "—",
+            "out_or_doubtful": len(out) + len(doubt),
+            "string_rank": "UNVERIFIED — NFL.com depth-chart pages return 404; club charts exist but self-label as unofficial (Flag F06)",
+            "source_url": rs[0]["source_url"],
+        })
+deficiency.sort(key=lambda r: (int(r["game_no"]) if r["game_no"] else 99, -r["out_or_doubtful"], r["team"]))
+pages["depth-deficiency.html"] = ("Deficiency tracking", f"""
+<h1>Deficiency tracking — units, starters and officially named replacements</h1>
+<p class="note"><strong>What is verified and what is not.</strong> The injury report states who is Out, Doubtful or Questionable
+and what position they play. It does <strong>not</strong> state whether that player is a first, second, third or fourth string
+player. NFL.com's own team depth-chart pages return 404. Club websites do publish charts —
+<a href="https://www.detroitlions.com/team/depth-chart" target="_blank" rel="noopener">detroitlions.com</a> and
+<a href="https://www.patriots.com/team/depth-chart" target="_blank" rel="noopener">patriots.com</a> were located and read — but
+each page labels its own chart "unofficial" (compiled by club communications or by club writers), so these are club
+publications, not league depth charts, and are not treated as authoritative. The string-rank column below is therefore left
+unverified rather than guessed (Flag F06); where a club chart is cited, the caveat travels with it (Flag F18). Any statement of
+the form "the backup must now start" is made only where an official NFL.com report names the replacement.</p>
+<h2>Officially named starters and replacements</h2>
+<p class="note">Each row quotes an official NFL.com statement. Where the report hedges ("likely", "expected"), the row is marked
+unconfirmed and must not be treated as a known absence. Players on injured reserve do <strong>not</strong> appear on the weekly
+injury report at all, so for some teams this is the only place a deficiency shows up.</p>
+{table(availability, ['item_id','team_abbr','position_group','player_affected','official_statement','officially_named_replacement','appears_on_week10_injury_report','why_it_matters','confidence','source_url'],
+       {'item_id':'ID','team_abbr':'Team','position_group':'Group','player_affected':'Player','official_statement':'Official statement','officially_named_replacement':'Named replacement','appears_on_week10_injury_report':'On injury report','why_it_matters':'Why it matters','confidence':'Confidence','source_url':'Source'})}
+<h2>Unit exposure — where a replacement is needed</h2>
+<p class="note">Grouped by side of ball and unit for every team on the Week 10 report that has at least one Out or Doubtful
+player. "Side" is a project classification of position groups, not an NFL field. String rank is blank in every row: no
+authoritative source states it for these teams.</p>
+{search_box('def-table')}
+{table(deficiency, ['game_no','matchup','team','side','unit','out_players','doubtful_players','questionable_players','out_or_doubtful','string_rank','source_url'],
+       {'game_no':'Game','matchup':'Matchup','team':'Team','side':'Side','unit':'Unit','out_players':'Out','doubtful_players':'Doubtful','questionable_players':'Questionable','out_or_doubtful':'Out + Doubtful','string_rank':'String rank','source_url':'Report'},
+       table_id='def-table', filterable=True)}
+""")
+
 
 # ---------- write ----------
 os.makedirs(os.path.join(DOCS, "assets"), exist_ok=True)

@@ -322,5 +322,59 @@
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
   "status": "Known limitation — re-run after Week 10",
   "action_requested": "Re-run python3 scripts/model.py once Week 10 finishes, then rebuild the site."
+ },
+ {
+  "flag_id": "F37",
+  "category": "Source irregularity",
+  "item": "Injury report position differs from the official player page for Ben Brown",
+  "detail": "The Week 10 injury report lists Ben Brown (New England) as C. His official NFL.com player page lists him as G. Both are official NFL.com surfaces. The site records the injury-report value and flags the difference rather than choosing one.",
+  "source_url": "https://www.nfl.com/players/ben-brown-2/",
+  "status": "Irregularity - open",
+  "action_requested": "Decide which NFL.com surface is authoritative for position, and apply the rule consistently across all rows."
+ },
+ {
+  "flag_id": "F38",
+  "category": "Missing official data",
+  "item": "Historical NFL injury reports are not retrievable, so injury-based rules cannot be back-tested",
+  "detail": "The NFL.com injury page was requested with season and week path segments and with season/week query parameters; it served only the current Week 10 report. Without a dated archive of past injury reports, no availability-driven rule can be validated out of sample, so no injury term is included in the published line.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Irregularity - open",
+  "action_requested": "Decide whether to obtain a licensed historical injury archive, an authorised API, or to accept that availability-based rules stay unvalidated."
+ },
+ {
+  "flag_id": "F39",
+  "category": "Measurement limitation",
+  "item": "Game-total projections are indistinguishable from projecting the league average",
+  "detail": "Across the out-of-sample window the best total projection (S5) missed by 10.99 points per game against 11.04 for simply projecting the league average every game: a gap of 0.05 points. Its correlation with the actual total (r = 0.064, 95% interval [-0.138, 0.261]) also crosses zero. No total projection here is better than a constant, so the totals column is published as the weakest number on the site.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-1",
+  "status": "Irregularity - open",
+  "action_requested": "Do not act on the model total until a larger sample or better features (pace, venue, weather, officiating) change this result."
+ },
+ {
+  "flag_id": "F40",
+  "category": "Snapshot timing",
+  "item": "The official standings include the Week 10 Thursday game but the injury report snapshot predates it",
+  "detail": "The standings as read include Commanders 24, Giants 21 (Washington 196 and New York Giants 203 points for reconcile only with that game included). The injury report still lists pre-game records for both teams. The two official surfaces were captured at different moments.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "Irregularity - open",
+  "action_requested": "Record a capture timestamp for every future read and state the as-of moment on each page."
+ },
+ {
+  "flag_id": "F41",
+  "category": "Source irregularity",
+  "item": "Some official game-center pages display 'Hidden Score' instead of the final score",
+  "detail": "The official game page for Falcons at Buccaneers, Week 8 2026, renders 'Hidden Score' for both teams and every quarter, though the game is marked Final. The same score is published normally on the official Week 8 by-week schedule page (Falcons 0, Buccaneers 16), which is the source used for the ledger row. The reason for the hidden rendering is not stated on the page.",
+  "source_url": "https://www.nfl.com/games/falcons-at-buccaneers-2026-reg-8",
+  "status": "Irregularity - open",
+  "action_requested": "When a game-center page hides a score, verify the row against the official by-week schedule page and record which surface was used."
+ },
+ {
+  "flag_id": "F42",
+  "category": "Measurement disagreement",
+  "item": "Two independent implementations disagree on how many strategies qualify",
+  "detail": "Session 73cbec41 reports 4 of 7 strategies qualified and proposes reward tiers. This session's independent walk-forward scoring of 8 competing rules on 96 unseen games finds 0 qualified once a multiple-comparison adjustment is applied to the 95% intervals, because testing several rules and keeping the best one manufactures significance. Both implementations agree that a real but modest forecast gain exists (roughly 7-16% error reduction); they disagree on whether it is established. Recommendation: no reward tier is offered or paid until a pre-registered test on a larger sample resolves it.",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
+  "status": "Irregularity - open",
+  "action_requested": "Resolve by pre-registering one primary rule and a fixed sample before testing; do not enable rewards meanwhile."
  }
 ]
