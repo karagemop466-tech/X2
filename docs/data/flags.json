@@ -565,5 +565,14 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Verified - no discrepancies",
   "action_requested": "None."
+ },
+ {
+  "flag_id": "F70",
+  "category": "Irregularity - corrected",
+  "item": "The event-risk status column published a source name instead of a status word",
+  "detail": "Found on the live site after PR #40 merged. For the 7 risks carrying official evidence, official_status showed \"NFL.com news\" - which is the register's status_source field, i.e. where the status came from, not what the status was. Publishing a provenance string in a status column is a data-quality defect even though no value was invented. Fixed in scripts/desk_v2.py: the column now says the status word is not stated in the register rather than borrowing a provenance label.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/event_risk_week11.csv",
+  "status": "Resolved - corrected and republished",
+  "action_requested": "None."
  }
 ]
