@@ -1,0 +1,68 @@
+[
+ {
+  "hypothesis_id": "H01",
+  "bet_family": "Single bet (spread/total)",
+  "hypothesis": "A team with a starter Out at a high-usage unit is priced less than its replacement-adjusted value",
+  "signal_inputs": "Out/Doubtful lists by unit (verified); starter identity (unverified)",
+  "required_data_not_yet_verified": "Depth charts (S01); odds (S03); results (S02)",
+  "validation_status": "Not tested",
+  "gates_passed": "None",
+  "row_type": "hypothesis",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "hypothesis_id": "H02",
+  "bet_family": "Single bet (spread)",
+  "hypothesis": "Questionable starter who did not practice all week is priced as a full-strength starter",
+  "signal_inputs": "Practice status by day (verified for Week 10 only); odds (unverified)",
+  "required_data_not_yet_verified": "Daily practice reports (S04); odds (S03)",
+  "validation_status": "Not tested",
+  "gates_passed": "None",
+  "row_type": "hypothesis",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "hypothesis_id": "H03",
+  "bet_family": "Player prop",
+  "hypothesis": "Backup RB/WR usage rises when the primary is Out",
+  "signal_inputs": "Injury status (verified); snap/target counts (unverified)",
+  "required_data_not_yet_verified": "Official player stats (S02); prop prices (S03)",
+  "validation_status": "Not tested",
+  "gates_passed": "None",
+  "row_type": "hypothesis",
+  "evidence_url": ""
+ },
+ {
+  "hypothesis_id": "H04",
+  "bet_family": "Parlay (correlated legs)",
+  "hypothesis": "Two legs from the same game are correlated and must be priced jointly",
+  "signal_inputs": "Game-level outcomes (unverified)",
+  "required_data_not_yet_verified": "Official box scores (S02); odds (S03)",
+  "validation_status": "Not tested",
+  "gates_passed": "None",
+  "row_type": "hypothesis",
+  "evidence_url": ""
+ },
+ {
+  "hypothesis_id": "H05",
+  "bet_family": "Cross-game parlay",
+  "hypothesis": "Legs from different games are close to independent",
+  "signal_inputs": "Game-level outcomes (unverified)",
+  "required_data_not_yet_verified": "Official results (S02)",
+  "validation_status": "Not tested",
+  "gates_passed": "None",
+  "row_type": "hypothesis",
+  "evidence_url": ""
+ },
+ {
+  "hypothesis_id": "H06",
+  "bet_family": "Injury-timing signal",
+  "hypothesis": "Market moves after Friday's game-status report are larger than Wednesday's practice-report moves",
+  "signal_inputs": "Report timestamps (not captured yet); line history (unverified)",
+  "required_data_not_yet_verified": "Snapshots (S04); odds history (S03)",
+  "validation_status": "Not tested",
+  "gates_passed": "None",
+  "row_type": "hypothesis",
+  "evidence_url": ""
+ }
+]
