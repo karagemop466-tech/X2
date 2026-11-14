@@ -619,11 +619,11 @@ session's tasks continue from T23.
 
 **Tasks T51–T55 (session 20e6161b, claimed 2026-11-14; base `main` @ `d22bbd3`):**
 
-| T51 | Board reconciliation: T41 status stale after PR #34 merged without a deployment record; record the merge result and Pages state | in progress (claimed 2026-11-14) | 20e6161b | `COORDINATION.md` only | gh api / GitHub PR #34 first-party records | Claim row pushed first, per the protocol |
-| T52 | Model pass: apply the C09 calibration correction (REQ-8a-1, F48 — slope CI and p from the slope's own SE, p tests slope = 1.0) and make gate G1 a measured walk-forward property instead of a constant True (F50) | in progress (claimed 2026-11-14) | 20e6161b | `scripts/model.py`, `data/correlations_computed.csv` (regenerated), `data/correlation_audit.csv` (via `scripts/desk.py`), `data/flags.csv` (F48, F50 status), `scripts/build.py` (F48 wording), `scripts/desk.py` (C09 audit note) | data/model_backtest.csv (official results, SRC-31..SRC-41); NIST interval/multiple-comparison refs | Correction numbers re-derived independently from the committed OOS data before editing; model outputs re-run twice for byte reproducibility |
-| T53 | Replacement-depth gap F53: check A08–A11 (GB RB, LAR WR, KC RB, IND DE) against official club depth charts and the NFL.com source rows; fill only confirmed values | in progress (claimed 2026-11-14) | 20e6161b | `data/replacement_depth_week10_2026.csv` (A08–A11 rows only), `data/flags.csv` (F53 status) | packers.com, therams.com, chiefs.com, colts.com club depth charts (linked from NFL.com roster pages); the NFL.com news rows already cited by A08–A11 | Club charts self-label "unofficial" (F45 caveat retained); depth rank stays blank where the chart contradicts or omits |
-| T54 | Brief-completeness audit: each of the eight brief asks traced to published pages/columns; questions, information gaps, decisions and suggestions sections checked for coverage and internal consistency; stale wording fixed | in progress (claimed 2026-11-14) | 20e6161b | `scripts/build.py` (wording only), `data/questions.csv`/`data/suggestions.csv` (appended rows only, Q46+/S32+) | first-party repo records; prior register rows | No table value changed; additions are append-only with fresh IDs |
-| T55 | Final integration: fifth verification pass against official sources, all builds and checks, PR to main, merge, confirm Pages, live-site check, record | in progress (claimed 2026-11-14) | 20e6161b | `data/verification_report.csv` (V21+), `data/repo_review_2026-11-14.csv` (RV14+), `data/flags.csv`, `COORDINATION.md`, generated `docs/` | all | Runs last |
+| T51 | Board reconciliation: T41 status stale after PR #34 merged without a deployment record; record the merge result and Pages state | done | 20e6161b | `COORDINATION.md` only | gh api / GitHub PR #34 first-party records | Claim row pushed first, per the protocol |
+| T52 | Model pass: apply the C09 calibration correction (REQ-8a-1, F48 — slope CI and p from the slope's own SE, p tests slope = 1.0) and make gate G1 a measured walk-forward property instead of a constant True (F50) | done | 20e6161b | `scripts/model.py`, `data/correlations_computed.csv` (regenerated), `data/correlation_audit.csv` (via `scripts/desk.py`), `data/flags.csv` (F48, F50 status), `scripts/build.py` (F48 wording), `scripts/desk.py` (C09 audit note) | data/model_backtest.csv (official results, SRC-31..SRC-41); NIST interval/multiple-comparison refs | Correction numbers re-derived independently from the committed OOS data before editing; model outputs re-run twice for byte reproducibility |
+| T53 | Replacement-depth gap F53: check A08–A11 (GB RB, LAR WR, KC RB, IND DE) against official club depth charts and the NFL.com source rows; fill only confirmed values | done (blanks kept where nothing official confirms) | 20e6161b | `data/replacement_depth_week10_2026.csv` (A08–A11 rows only), `data/flags.csv` (F53 status) | packers.com, therams.com, chiefs.com, colts.com club depth charts (linked from NFL.com roster pages); the NFL.com news rows already cited by A08–A11 | Club charts self-label "unofficial" (F45 caveat retained); depth rank stays blank where the chart contradicts or omits |
+| T54 | Brief-completeness audit: each of the eight brief asks traced to published pages/columns; questions, information gaps, decisions and suggestions sections checked for coverage and internal consistency; stale wording fixed | done | 20e6161b | `scripts/build.py` (wording only), `data/questions.csv`/`data/suggestions.csv` (appended rows only, Q46+/S32+) | first-party repo records; prior register rows | No table value changed; additions are append-only with fresh IDs |
+| T55 | Final integration: fifth verification pass against official sources, all builds and checks, PR to main, merge, confirm Pages, live-site check, record | done (PR/merge/Pages record appended below after the merge) | 20e6161b | `data/verification_report.csv` (V21+), `data/repo_review_2026-11-14.csv` (RV14+), `data/flags.csv`, `COORDINATION.md`, generated `docs/` | all | Runs last |
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -1092,3 +1092,72 @@ Claim row and task rows pushed as the first commit of this branch (protocol step
 Work proceeds in the order T52 (model pass), T53 (F53 depth gap), T54 (brief-completeness
 audit), T55 (integration last). Sources, verification and irregularities are recorded at
 close-out below.
+
+### Close-out: sources, verification, irregularities (session 20e6161b)
+
+**Status:** T51–T55 done. T51 is recorded in the PR-and-deployment table above (ca1ea224's
+missing record). T55's PR/merge/Pages result is appended after the merge, as its own entry.
+
+**Sources fetched on 2026-11-14 (read in this session, all live):**
+- NFL.com Week 11 by-week schedule (3 chunks): https://www.nfl.com/schedules/2026/by-week/week-11
+- NFL.com Week 10 injury report (chunk 0): https://www.nfl.com/injuries/
+- Official club depth charts (the four F53 teams): https://www.packers.com/team/depth-chart (self-dates "Unofficial, Nov. 10, 2026") · https://www.therams.com/team/depth-chart · https://www.chiefs.com/team/depth-chart · https://www.colts.com/team/depth-chart (the club's Week 10 chart per its news item; predates Key's Saturday activation)
+- NFL.com source articles for A08–A11: https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week (names the replacement group) · https://www.nfl.com/news/rams-wr-puka-nacua-likely-to-be-placed-on-injured-reserve-with-turf-toe-sprained-mcl-and-pcl (hedged "likely"; names the WR group) · https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13 (Walker questionable; GB/IND sections) · https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-saturday-nov-14 (Key activation; Walker downgrade; Carter elevation) · https://www.nfl.com/news/chiefs-rb-kenneth-walker-groin-downgraded-to-out-for-sunday-s-game-vs-falcons (Walker Out; names Emmett Johnson as lead)
+- Official game center (result sample): https://www.nfl.com/games/titans-at-ravens-2026-reg-4 (TEN 18, BAL 24 Final; page links the official Game Book PDF — noted for DEC-06)
+
+**Verification performed (this session):**
+- **C09 correction (T52):** the slope, its SE, the interval and the calibration p were re-derived
+  independently from the committed `data/model_backtest.csv` rows BEFORE editing (slope 0.887,
+  SE 0.280, CI 0.337–1.436, p 0.687 from the 1-dp rounded CSV; full-precision model values 0.885,
+  0.335–1.435, 0.6830 — the difference is the CSV's 1-dp rounding of margins). The correction in
+  `scripts/model.py` computes from full precision and the regenerated register carries
+  0.885 / 0.335–1.435 / 0.6830 / n = 89. `scripts/model.py` re-run twice: outputs byte-identical.
+- **G1 measured (T52):** the walk-forward loop now checks max(training week) < W at every fit and
+  gate G1 reads the measured flag. Outcome unchanged (the property held by construction); the gate
+  is no longer a constant True (F50 closed).
+- **A08–A11 (T53):** every cell of the four replacement-depth rows and the matching availability
+  rows checked against the fetched club charts and article bodies (recorded as V25 and RV16/RV17).
+- **Fifth verification pass (T55, V21–V25):** Week 11 slate 13/13 + bye list matched live;
+  standings 32 teams x 3 fields 0 mismatches; Week 10 injury spot-check 27 rows x 4 fields
+  0 mismatches (WAS, NYG full sections + NE/DET named rows); results-feed sample TEN@BAL W4
+  matched its game center; A08–A11 depth rows matched their sources.
+- **Brief completeness (T54, RV22):** all eight asks traced to published pages/columns on the
+  25-page site. Questions (Q01–Q45), information gaps (G01–G13), decisions (DEC-01–DEC-10) and
+  the suggestions review matrix confirmed present.
+- **Builds and checks at close-out:** `python3 scripts/build.py` (25 pages; 345 injury rows,
+  28 teams, 61 depth rows; link + row-source checks passed) · `python3 scripts/check_links.py`
+  (25 pages, 701 internal, 2,875 external links; no problems) · `python3 scripts/verify_results.py`
+  (32 teams, 0 mismatches) · `python3 scripts/model.py` re-run clean and byte-reproducible ·
+  `python3 scripts/desk.py` clean · `npm run build` + `npm run verify` (ALL CHECKS PASSED) ·
+  `git diff --check` clean (see the .gitattributes note below).
+
+**Irregularities and flags (this session):**
+- **F48 — resolved:** C09 register corrected (see T52). REQ-8a-1 closed.
+- **F50 — resolved:** G1 is now a measured gate (see T52).
+- **F53 — resolved:** A08–A11 checked against official club charts and article bodies (see T53).
+- **F56 — resolved:** two availability-register claims corrected with evidence: A08 "no
+  replacement is named" was contradicted by the body of its own cited article (group named;
+  corrected with the quote), and A10's Friday snapshot (Walker Questionable) is superseded by
+  the Saturday official downgrade to Out (dated update added, snapshot text preserved per the
+  F26 convention). Reviewer asked to confirm the dated-update style.
+- **F57 — open, needs review:** the two A-numbered registers (`confirmed_availability_week10_2026.csv`
+  A01–A11 and `replacement_depth_week10_2026.csv` A01–A11) share an ID scheme for different rows.
+  Not renamed here (ripples through `scripts/build.py`); owner decision listed.
+
+**Cross-scope note (logged per the coordination rule):** the A08/A10 corrections touch
+`data/confirmed_availability_week10_2026.csv`, written by session 10a76288 (T34, closed). The
+corrections change only claims that the row's own cited source contradicts or supersedes; no
+snapshot status value was overwritten, no value was inferred, and each change is labelled with
+its evidence and date in the cell itself (see F56). Nothing else in that file was touched.
+
+**Process note:** `.gitattributes` now records the repository's existing CSV line-ending
+convention (`data/*.csv whitespace=cr-at-eol`): every data CSV committed by every session uses
+CRLF (Python `csv` module output), which `git diff --check` misreported as trailing whitespace
+on newly added rows. No file content changed; the attribute documents the format.
+
+**Open items unchanged and still owner-owned:** F16 (NFL data rights — critical), F19
+(Netherlands legal review), F09 (Japan), F17 (validation cut-offs), F26/F27/F28 (injury-table
+designation decisions), F42 (qualification disagreement — no reward until resolved), F36
+(re-run `scripts/model.py` after Week 10 completes), F57 (register ID scheme), DEC-01–DEC-10.
+No price, ROI, closing line, player-prop outcome or legal conclusion was added anywhere; every
+blank stays blank and flagged.
