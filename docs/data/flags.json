@@ -160,5 +160,32 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
   "status": "Review request — third-party values not official",
   "action_requested": "Node-dashboard owner: replace the depth evidence with an official primary source or blank/suppress the player/backup values before promoting that output as official-source research."
+ },
+ {
+  "flag_id": "F19",
+  "category": "Verification performed",
+  "item": "All 345 injury rows independently re-verified row by row against the live NFL.com page",
+  "detail": "Session 7c9eb69a re-read the official Week 10 injury report in full (8 chunks) on 2026-11-14 and compared every player, position, injury, practice status and game status against data/injuries_week10_2026.csv. All 28 team sections matched, and the per-team row counts independently recounted to 345, equal to the stored row count. All 14 game headers, kickoff times, broadcasters and listed records also matched. This closes the spot-check request in F10 for a single reviewer pass. It does not replace a second independent reviewer, and it does not resolve the data-rights question in F16.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Verified - no discrepancies found this pass",
+  "action_requested": "Use a second reviewer if a fully independent transcription check is required; otherwise treat the row values as verified against the live page on 2026-11-14."
+ },
+ {
+  "flag_id": "F20",
+  "category": "Site irregularity",
+  "item": "The dashboard table reproduced an older NFL.com news list, not the current one",
+  "detail": "The stored news list in data/news_week10_2026.csv contains two headlines that no longer appear in the NFL.com injury-page news section as read on 2026-11-14: 'Deshaun Watson enters concussion protocol ahead of Browns' Week 9 game vs. Saints' and 'Report: Ravens QB Tyler Huntley out for season with turf toe injury'. The news module on the official page rotates as new items publish, so a stored snapshot can drift from the live page without the underlying injury rows changing. The injury table itself is unaffected.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Irregularity - open, snapshot drift",
+  "action_requested": "Read the news list as a dated snapshot only. Do not treat absence or presence of a headline as a fact about a player; use the linked article."
+ },
+ {
+  "flag_id": "F21",
+  "category": "Missing verified data",
+  "item": "The Thursday night result was not added to the games table",
+  "detail": "The official Week 10 schedule now shows Commanders 24, Giants 21 as FINAL for the Thursday 12 November game. data/games_week10_2026.csv has no result column, so the site cannot display any score. This session did not add scores outside the claimed file scope; the value is verified but unpublished.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Verified value available but not published",
+  "action_requested": "Decide whether final scores belong on the site. If yes, add a result column to the games data and keep the schedule page as the per-row source."
  }
 ]

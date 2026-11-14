@@ -43,3 +43,11 @@ td.unverified{color:var(--flag);font-weight:600;font-size:12.5px}
 .findings li{margin-bottom:8px}
 footer{max-width:1200px;margin:30px auto;padding:0 24px 40px;color:var(--muted);font-size:13px}
 @media (max-width:640px){main{padding:14px}.hero h1{font-size:24px}}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin:10px 0 20px}
+.twocol h3{margin:0 0 6px;font-size:15px}
+.twocol ul{margin:0;padding-left:18px}
+.twocol li{margin-bottom:6px}
+td.ok{color:#1a7f4b;font-weight:600;font-size:12.5px}
+td.warn{color:var(--flag);font-weight:600;font-size:12.5px}
+ol.findings{padding-left:20px}
+@media (max-width:760px){.twocol{grid-template-columns:1fr}}
