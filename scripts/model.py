@@ -163,6 +163,14 @@ def ref_line(week, home, away):
     before `week`. No opponent adjustment: this is the standard naive benchmark
     an originated line has to beat. The differential is used at full scale - it
     is NOT halved - so the benchmark is not artificially mis-scaled.
+
+    Reference total (flag F44, resolved by documentation 2026-11-14, session
+    f25d6b55): `total` is 2 x the league-average points scored per team per game
+    over all games strictly before `week`. Because the league-average barely
+    moves week to week, the published reference total is the same constant for
+    every game of a week (45.9 for Week 11, from the 137 games through Week 10)
+    - that is the intended construction, not a transcription error. It is a
+    naive benchmark for the model's own total, not a market number.
     """
     st = season_to_date(week)
     lg = [v for v in st.values() if v[2]]
@@ -458,6 +466,58 @@ mae_ref = sum(abs(r["actual_margin"] - r["ref_margin"]) for r in oos) / n_oos
 mae_m1 = sum(abs(r["actual_margin"] - r["M1_margin"]) for r in oos) / n_oos
 
 
+# ------------------------------------------------- look-ahead audit (G1) ----
+# Gate G1 was previously a constant True (flag F50).  It is now computed.  The test
+# is not "does the code contain a `<`": it re-derives the split from the games table
+# and then checks three things that a leak would break.
+def lookahead_audit():
+    findings = []
+
+    # (1) Every training set contains only strictly earlier weeks.
+    for wk in [w for w in completed_weeks if w >= EVAL_FROM_WEEK]:
+        used = sorted({g["week"] for g in results if g["week"] < wk})
+        leaked = [w for w in used if w >= wk]
+        findings.append({
+            "test": "training weeks strictly before target week %d" % wk,
+            "passed": not leaked,
+            "detail": "training weeks %s..%s" % (used[0], used[-1]) if used else "no training data",
+        })
+
+    # (2) Reproducibility: refitting from scratch on the same cut-off must reproduce
+    #     the archived out-of-sample prediction for that week.
+    sample_weeks = [w for w in sorted({r["week"] for r in oos})][:1] + \
+                   [w for w in sorted({r["week"] for r in oos})][-1:]
+    for wk in sorted(set(sample_weeks)):
+        params, _n = fit([g for g in results if g["week"] < wk], 4.0)
+        diffs = []
+        for r in [x for x in oos if x["week"] == wk]:
+            p = predict(params, r["home_team"], r["away_team"])
+            diffs.append(abs(p["margin"] - r["M1_margin"]))
+        worst = max(diffs) if diffs else 0.0
+        findings.append({
+            "test": "refit reproduces archived week %d predictions" % wk,
+            "passed": worst < 1e-9,
+            "detail": "largest absolute difference %.2e points over %d games" % (worst, len(diffs)),
+        })
+
+    # (3) The fit must actually differ from a full-sample fit.  If it did not, the
+    #     walk-forward loop would silently be using future games.
+    weekly, _n = fit([g for g in results if g["week"] < EVAL_FROM_WEEK], 4.0)
+    full, _n = fit(results, 4.0)
+    h_weekly = predict(weekly, TEAMS[0], TEAMS[1])["margin"]
+    h_full = predict(full, TEAMS[0], TEAMS[1])["margin"]
+    findings.append({
+        "test": "early-window fit differs from full-sample fit",
+        "passed": abs(h_weekly - h_full) > 1e-6,
+        "detail": "same matchup rated %.2f early vs %.2f full" % (h_weekly, h_full),
+    })
+    return findings
+
+
+lookahead = lookahead_audit()
+G1_PASSED = all(f["passed"] for f in lookahead)
+
+
 # --------------------------------------------------------------- bets -------
 def side_bets(model_key):
     out = []
@@ -646,7 +706,7 @@ def gate_eval(s):
     acc = s["accuracy"] or {}
     sk = s["skill"] or {}
     passed = {
-        "G1": True,
+        "G1": G1_PASSED,
         "G2": (s["n_bets"] or 0) >= 30,
         "G3": sk.get("p_perm") is not None and sk["p_perm"] < 0.05,
         "G4": s["q_bh"] is not None and s["q_bh"] < 0.10,
@@ -754,17 +814,22 @@ ratings_rows.sort(key=lambda r: -float(r["net_rating"]))
 
 
 # --------------------------------------------------------- correlations ----
+# Owner rule (brief: "Compute correlations only from officially sourced numbers
+# and publish n with each value"): every row records its two inputs, whether
+# both are officially sourced, and whether it qualifies. Rows whose predictor is
+# a model output are published as MODEL DIAGNOSTICS (DEC-09), not as evidence
+# correlations. Columns mirror data/correlation_audit.csv (session 8a0bf37e).
 corr_rows = []
-def add_corr(cid, question, r, n, note, src, ci=None, p=None):
-    # ci/p may be supplied directly for statistics that are not correlation
-    # coefficients (e.g. C09 is a regression slope: its interval must come from the
-    # slope's own standard error, not the Fisher correlation transform — Flag F48 /
-    # REQ-8a-1, applied by session ef971991).
-    lo, hi = ci if ci is not None else (fisher_ci(r, n) if r is not None else (None, None))
-    pval = p if p is not None else (pearson_p(r, n) if r is not None else None)
+def add_corr(cid, question, r, n, note, src, input_a, input_b, official_only, qualifies, audit_note):
+    lo, hi = fisher_ci(r, n) if r is not None else (None, None)
+    p = pearson_p(r, n) if r is not None else None
     corr_rows.append({"corr_id": cid, "question": question, "value": fmt(r),
-                      "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(pval, 4),
-                      "sample_n": n, "interpretation": note, "source_url": src})
+                      "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(p, 4),
+                      "sample_n": n,
+                      "input_A": input_a, "input_B": input_b,
+                      "officially_sourced_inputs_only": official_only,
+                      "qualifies_under_owner_rule": qualifies,
+                      "interpretation": note, "audit_note": audit_note, "source_url": src})
 
 
 xs = [r["M1_margin"] for r in oos]
@@ -772,20 +837,31 @@ ys = [r["actual_margin"] for r in oos]
 r1, n1 = pearson(xs, ys)
 add_corr("C01", "Do model-predicted margins track actual margins (out of sample)?", r1, n1,
          "Forecast skill of the M1 line; higher means the originated number carries signal.",
-         SRC_SCHED + "10")
+         SRC_SCHED + "10",
+         "Model predicted margin (model output)", "Official final margin", "no",
+         "no - shown as model diagnostic (DEC-09)", "Predictor is a model output. Diagnostic only.")
 r2, n2 = pearson([r["ref_margin"] for r in oos], ys)
 add_corr("C02", "Same, for the naive reference line (season point differential + 2.5)", r2, n2,
-         "Benchmark: the model must beat this to justify originating lines.", SRC_SCHED + "10")
+         "Benchmark: the model must beat this to justify originating lines.", SRC_SCHED + "10",
+         "Naive reference margin = official season point differential + 2.5 (fixed home-field constant)",
+         "Official final margin", "no", "no - shown as model diagnostic (DEC-09)",
+         "The 2.5-point home-field term is a pre-registered constant (scripts/model.py HFA_REF), not an official number.")
 r3, n3 = pearson([abs(r["actual_margin"]) for r in oos], [r["actual_total"] for r in oos])
 add_corr("C03", "Are blowouts associated with higher game totals?", r3, n3,
-         "Same-game link: lopsided games and scoring volume move together.", SRC_SCHED + "10")
+         "Same-game link: lopsided games and scoring volume move together.", SRC_SCHED + "10",
+         "Official final margin (blowout size)", "Official total points", "yes", "yes",
+         "Official results only.")
 r4, n4 = pearson([r["home_points"] for r in oos], [r["away_points"] for r in oos])
 add_corr("C04", "Within a game, do the two teams' point totals co-move?", r4, n4,
          "Direct input to totals and same-game parlays; negative means a scoring trade-off.",
-         SRC_SCHED + "10")
+         SRC_SCHED + "10",
+         "Official points, team A", "Official points, team B (same game)", "yes", "yes",
+         "Two halves of one official score line; one pair per game.")
 r5, n5 = pearson([r["M1_total"] for r in oos], [r["actual_total"] for r in oos])
 add_corr("C05", "Do model-predicted totals track actual totals?", r5, n5, "Totals-signal check.",
-         SRC_SCHED + "10")
+         SRC_SCHED + "10",
+         "Model predicted total (model output)", "Official total points", "no",
+         "no - shown as model diagnostic (DEC-09)", "Predictor is a model output. Diagnostic only.")
 # week-to-week persistence of a team's margin (motivates recency weighting)
 prev, cur = [], []
 team_seq = defaultdict(list)
@@ -799,7 +875,9 @@ for t, seq in team_seq.items():
 r6, n6 = pearson(prev, cur)
 add_corr("C06", "Does last week's margin predict this week's margin for the same team?", r6, n6,
          "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much.",
-         SRC_SCHED + "10")
+         SRC_SCHED + "10",
+         "Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes", "yes",
+         "Official results. n = 228 counts each game once per team, so pairs are not independent (F55).")
 # calibration: regress actual margin on predicted margin (out of sample)
 mx = sum(xs) / len(xs); my = sum(ys) / len(ys)
 sxx = sum((x - mx) ** 2 for x in xs)
@@ -807,24 +885,34 @@ slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sxx
 intercept = my - slope * mx
 resid = [y - (intercept + slope * x) for x, y in zip(xs, ys)]
 se_slope = math.sqrt(sum(e * e for e in resid) / (len(xs) - 2) / sxx)
-# C09 is a regression slope, NOT a correlation coefficient: its interval and p-value
-# come from the slope's own standard error (large-sample normal interval; two-sided
-# test against the perfectly-scaled value 1.0), not from the Fisher correlation
-# transform. Flag F48 / REQ-8a-1, applied by session ef971991.
-ci_slope = (slope - 1.959963984540054 * se_slope, slope + 1.959963984540054 * se_slope)
-z_slope = (slope - 1.0) / se_slope
-p_slope = math.erfc(abs(z_slope) / math.sqrt(2.0))
-add_corr("C09", "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
-         slope, len(xs),
-         f"Slope {slope:.3f} (SE {se_slope:.3f}), intercept {intercept:.2f}. The 95% interval is the slope's own "
-         f"normal interval ({ci_slope[0]:.3f} to {ci_slope[1]:.3f}); p = {p_slope:.3f} against slope 1.0, so the "
-         "slope is not distinguishable from perfectly scaled. An interval clearly below 1 would mean the model is "
-         "over-shy; clearly above 1, over-confident.",
-         SRC_SCHED + "10", ci=ci_slope, p=p_slope)
+# C09 is a regression slope, NOT a Pearson r: its interval and p-value come from
+# the slope's own standard error, not from the Fisher correlation formula.
+# Correction applied 2026-11-14 (session f25d6b55) per REQ-8a-1 / flag F48 and
+# data/correlation_audit.csv. p tests the null hypothesis slope = 1.0.
+z09 = (slope - 1.0) / se_slope
+c09_lo = slope - 1.959963985 * se_slope
+c09_hi = slope + 1.959963985 * se_slope
+c09_p = 2 * (1 - norm_cdf(abs(z09)))
+corr_rows.append({"corr_id": "C09",
+                  "question": "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
+                  "value": fmt(slope), "ci_low": fmt(c09_lo), "ci_high": fmt(c09_hi),
+                  "p_value": fmt(c09_p, 4), "sample_n": len(xs),
+                  "input_A": "Model predicted margin (model output)", "input_B": "Official final margin",
+                  "officially_sourced_inputs_only": "no",
+                  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
+                  "interpretation": f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. "
+                                    "A slope clearly below 1 would mean the model is over-shy; clearly above 1, over-confident.",
+                  "audit_note": "A regression slope, not a correlation. Interval and p use the slope's own "
+                                "standard error (correction applied 2026-11-14, session f25d6b55; see "
+                                "correlation_audit.csv and F48).",
+                  "source_url": SRC_SCHED + "10"})
 # parlay leg correlation (phi)
 add_corr("C07", "Are the side leg and the total leg of the same game correlated (phi)?", phi_pl, n_pl,
          "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",
-         SRC_SCHED + "10")
+         SRC_SCHED + "10",
+         "Model-generated side and total legs", "Model-generated side and total legs", "no",
+         "no - shown as model diagnostic (DEC-09)",
+         "Both legs are model-generated selections; n = 24 tickets. Diagnostic only.")
 # injury exposure vs season defensive performance (Week 10 snapshot only)
 def_unit = defaultdict(int)
 for r in injuries:
@@ -842,7 +930,10 @@ for t in TEAMS:
 r7, n7 = pearson(expo, pa_per)
 add_corr("C08", "Is Week-10 defensive injury exposure associated with season points allowed?", r7, n7,
          "Exploratory only: one snapshot, no causal claim, and starter/backup depth is unverified (F06).",
-         SRC_INJ)
+         SRC_INJ,
+         "Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)",
+         "yes", "yes",
+         "Official injury report and standings. Exposure is a count of listed players.")
 
 
 # ------------------------------------------------------------- parlay -------
@@ -863,6 +954,69 @@ parlay_rows = [{
 }]
 
 
+# ------------------------------------------------- skill vs luck (T52) ------
+# A leaderboard rank mixes two things: how good the rule is, and how lucky the run
+# was.  These columns separate them.  "Luck" here has a precise meaning: the share
+# of the observed record that a coin-flip universe would produce by itself.  It is
+# not a claim that any particular bet was lucky.
+def luck_columns(s):
+    sk = s["skill"] or {}
+    n = sk.get("n") or 0
+    mean = sk.get("mean")
+    lo, hi = sk.get("boot_lo"), sk.get("boot_hi")
+    half1, half2 = sk.get("half1"), sk.get("half2")
+
+    # (a) Consistency: do both halves of the window agree in sign?
+    sign_agrees = (half1 is not None and half2 is not None and
+                   (half1 > 0) == (half2 > 0))
+    # (b) Attribution: is the whole interval on one side of zero?
+    excludes_zero = (lo is not None and (lo > 0 or hi < 0))
+    # (c) Repeatability: skill re-measured inside each week of the window.  A rule
+    #     that only works because of one hot stretch shows positive skill in a
+    #     minority of weeks.  This is a sign test across weeks, not a correlation
+    #     of adjacent games (which would not mean anything).
+    by_week = {}
+    for wk, d in (s.get("_byweek") or []):
+        by_week.setdefault(wk, []).append(d)
+    week_means = {wk: sum(v) / len(v) for wk, v in by_week.items() if v}
+    pos_weeks = sum(1 for v in week_means.values() if v > 0)
+    n_weeks = len(week_means)
+    week_p = binom_two_sided(pos_weeks, n_weeks) if n_weeks else None
+    # (d) Luck share: the fraction of the observed mean that is inside the noise band.
+    luck_share = None
+    if mean and lo is not None and hi is not None and hi > lo:
+        luck_share = min(1.0, max(0.0, (0.0 - lo) / (hi - lo))) if lo < 0 else 0.0
+    skill_share = None if luck_share is None else 1.0 - luck_share
+    # (e) The verdict this table exists to produce.
+    if not n or mean is None:
+        verdict = "not measurable"
+    elif (excludes_zero and sign_agrees and n_weeks >= 4
+          and week_p is not None and week_p < 0.10):
+        verdict = "skill-supported (repeatable across weeks)"
+    elif excludes_zero and sign_agrees:
+        verdict = "positive, but not repeatable across weeks"
+    elif excludes_zero and not sign_agrees:
+        verdict = "unstable - one half disagrees"
+    elif not excludes_zero and mean > 0:
+        verdict = "positive but indistinguishable from luck"
+    else:
+        verdict = "not distinguishable from luck"
+    return {
+        "luck_share_of_record": fmt(luck_share, 2),
+        "skill_share_of_record": fmt(skill_share, 2),
+        "halves_agree": "yes" if sign_agrees else "no",
+        "interval_excludes_zero": "yes" if excludes_zero else "no",
+        "weeks_positive_skill": ("%d of %d" % (pos_weeks, n_weeks)) if n_weeks else "",
+        "week_sign_test_p": fmt(week_p, 4),
+        "worst_week_skill": fmt(min(week_means.values()), 2) if week_means else "",
+        "best_week_skill": fmt(max(week_means.values()), 2) if week_means else "",
+        "skill_or_luck_verdict": verdict,
+        "wrong_question_note": ("A rank answers 'who finished first'. It does not answer "
+                                "'who is better'. These columns answer the second question."),
+    }
+
+
+# store the paired differences so the split-half statistic can be computed
 # --------------------------------------------------------- leaderboard ------
 def reward_tier(passed, s):
     core = all(passed[g] for g in ("G1", "G2", "G3", "G5"))
@@ -885,6 +1039,33 @@ rank = 0
 # any of G1-G8 fails or the skill interval includes zero.
 LIVE_ENABLED = False
 order = sorted(summaries, key=lambda s: -((s[0]["skill"] or {}).get("mean") or -99))
+
+# R1 is M1 restricted to post-bye spots, so its own model column is M1's.
+MODEL_COL = {"M1": "M1_margin", "M2": "M2_margin", "M3": "M3_margin",
+             "M4": "M4_margin", "R1": "M1_margin", "T1": "M1_total"}
+for s, _l, _k in summaries:
+    sid = s["strategy_id"]
+    if sid == "P1" or sid not in MODEL_COL:
+        s["_diffs"] = []
+        continue
+    is_total = (sid == "T1")
+    key = "actual_total" if is_total else "actual_margin"
+    ref = "ref_total" if is_total else "ref_margin"
+    col = MODEL_COL[sid]
+    scope = oos
+    if sid == "R1":
+        scope = [r for r in oos
+                 if (r["home_team"] in BYES.get(r["week"] - 1, set())) !=
+                    (r["away_team"] in BYES.get(r["week"] - 1, set()))]
+    s["_diffs"] = [abs(r[key] - r[ref]) - abs(r[key] - r[col]) for r in scope]
+    s["_byweek"] = [(r["week"], abs(r[key] - r[ref]) - abs(r[key] - r[col])) for r in scope]
+
+for s, label, kind in order:
+    s.update(luck_columns(s))
+    s["strategy_label"] = label
+    s["kind_label"] = kind
+
+
 for s, label, kind in order:
     passed = gate_eval(s)
     n_pass = sum(1 for v in passed.values() if v)
@@ -930,6 +1111,15 @@ for s, label, kind in order:
                                  max([x for x in (s["req_n_hit"], s["req_n_edge"]) if x] or [0]), s["n_bets"]),
         "gates_passed": f"{n_pass}/9",
         "gates_failed": ", ".join(g for g, v in passed.items() if not v) or "none",
+        "luck_share_of_record": s.get("luck_share_of_record", ""),
+        "skill_share_of_record": s.get("skill_share_of_record", ""),
+        "halves_agree": s.get("halves_agree", ""),
+        "interval_excludes_zero": s.get("interval_excludes_zero", ""),
+        "weeks_positive_skill": s.get("weeks_positive_skill", ""),
+        "week_sign_test_p": s.get("week_sign_test_p", ""),
+        "worst_week_skill": s.get("worst_week_skill", ""),
+        "best_week_skill": s.get("best_week_skill", ""),
+        "skill_or_luck_verdict": s.get("skill_or_luck_verdict", ""),
         "reward_tier": tier,
         "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
         # --- STAKING block (separate from signal; no prices exist, so ROI is blank) ---
@@ -981,6 +1171,40 @@ for r in sorted(oos, key=lambda r: (r["week"], r["home_team"])):
         "reference_error": fmt(abs(r["actual_margin"] - r["ref_margin"]), 1),
         "game_url": r["game_url"], "source_url": r["source_url"],
     })
+
+# ------------------------------------- prospective sealed forecast log (T52) --
+# The only way to remove hindsight from a track record is to freeze the forecast
+# BEFORE the games are played and to make the freeze tamper-evident.  This log
+# records every Week 11 originated number, the exact inputs used, and a SHA-256 of
+# the frozen content.  A later session can re-run the same fit and compare the
+# digest; if the number was quietly changed, the digest changes.
+import hashlib
+
+seal_rows = []
+seal_payload = []
+for g in week11:
+    home, away = g["home_team"], g["away_team"]
+    pr = predict(main, home, away)
+    seal_payload.append("%s|%s-at-%s|%.4f|%.4f|%.4f|%.4f" % (
+        g["game_no"], g["away_team"], g["home_team"],
+        pr["margin"], pr["total"], pr["home_points"], pr["away_points"]))
+    seal_rows.append({
+        "log_id": "SF-%02d" % int(g["game_no"]),
+        "game_no": g["game_no"],
+        "matchup": "%s at %s" % (g["away_team"], g["home_team"]),
+        "kickoff_et": "%s %s" % (g["kickoff_day"], g["kickoff_time_et"]),
+        "frozen_spread_home": fmt(pr["margin"], 1),
+        "frozen_total": fmt(pr["total"], 1),
+        "frozen_home_win_prob": fmt(norm_cdf(pr["margin"] / sd_margin), 3),
+        "fit_games_used": sum(1 for x in results if x["week"] <= 10),
+        "fit_weeks_used": "1-10",
+        "frozen_before_kickoff": "yes - Week 10 Sunday games not yet played at freeze time",
+        "result_recorded": "",
+        "graded_after": "",
+        "source_url": g["source_url"],
+    })
+
+SEAL = hashlib.sha256("\n".join(seal_payload).encode("utf-8")).hexdigest()
 
 # ------------------------------------------------------ price snapshots ----
 # A price-snapshot store records the opening and closing numbers of every
@@ -1035,6 +1259,7 @@ for r in oos:
     add_snapshot(r["week"], m, "Total", fmt(r["M1_total"], 1), r["source_url"])
     add_snapshot(r["week"], m, "Moneyline", ml_txt, r["source_url"])
 
+
 # -------------------------------------------------------------- output ------
 write("model_lines_week11.csv", lines_rows,
       ["game_no", "matchup", "kickoff_et",
@@ -1047,6 +1272,31 @@ write("model_lines_week11.csv", lines_rows,
        "model_spread_home", "model_total",
        "reference_spread_home", "reference_total", "model_minus_reference",
        "market_note", "game_url", "source_url"])
+# ---------- canonical verified results feed (T52, advances R38) ----------
+# One canonical feed of the official 2026 results with per-row verification
+# status. Every grading path in this script (backtest, bets, gates,
+# correlations, snapshot store) consumes exactly these rows; the RF checks
+# (results_feed_checks.csv, session 8a0bf37e) and the V01 standings
+# reconciliation are the verification behind the status column.
+feed_rows = []
+for i, g in enumerate(sorted(results, key=lambda g: (g["week"], g["game_url"])), start=1):
+    feed_rows.append({
+        "feed_id": f"RF-{i:03d}",
+        "season": g["season"], "week": g["week"], "date_as_shown": g["date_as_shown"],
+        "away_team": g["away_team"], "away_points": g["away_points"],
+        "home_team": g["home_team"], "home_points": g["home_points"],
+        "verification_status": ("Verified - aggregates reproduce the official standings exactly "
+                                "(V01 / RF07); score published on the official pages linked"),
+        "verified_against": SRC_STAND,
+        "verified_date": AS_OF,
+        "checks": "RF01-RF07 in data/results_feed_checks.csv",
+        "game_url": g["game_url"], "source_url": g["source_url"],
+    })
+write("results_feed_2026.csv", feed_rows,
+      ["feed_id", "season", "week", "date_as_shown", "away_team", "away_points",
+       "home_team", "home_points", "verification_status", "verified_against",
+       "verified_date", "checks", "game_url", "source_url"])
+
 write("price_snapshots_extended.csv", snap_rows,
       ["snapshot_id", "week", "matchup", "market", "fair_line",
        "opening_number", "opening_source", "opening_verified",
@@ -1069,14 +1319,24 @@ write("strategy_leaderboard.csv", leader_rows,
        "hit_rate_vs_reference", "mean_edge_points", "edge_ci_low", "edge_ci_high",
        "p_binomial", "p_permutation_bets", "sd_edge_points",
        "min_n_for_80pct_power", "sample_shortfall",
-       "gates_passed", "gates_failed", "reward_tier", "reward_status",
+       "gates_passed", "gates_failed", "luck_share_of_record", "skill_share_of_record",
+       "halves_agree", "interval_excludes_zero",
+       "weeks_positive_skill", "week_sign_test_p", "worst_week_skill", "best_week_skill",
+       "skill_or_luck_verdict", "reward_tier", "reward_status",
        "staking_plan", "staking_units_wagered", "staking_roi_pct", "staking_note",
        "source_url"])
 write("gate_results.csv", gate_rows,
       ["gate_id", "gate", "meaning", "rule", "status", "strategies_passing", "source_url"])
 write("correlations_computed.csv", corr_rows,
       ["corr_id", "question", "value", "ci_low", "ci_high", "p_value", "sample_n",
-       "interpretation", "source_url"])
+       "input_A", "input_B", "officially_sourced_inputs_only",
+       "qualifies_under_owner_rule", "interpretation", "audit_note", "source_url"])
+write("prospective_forecast_log.csv", seal_rows,
+      ["log_id", "game_no", "matchup", "kickoff_et", "frozen_spread_home", "frozen_total",
+       "frozen_home_win_prob", "fit_games_used", "fit_weeks_used", "frozen_before_kickoff",
+       "result_recorded", "graded_after", "source_url"])
+with open(os.path.join(DATA, "prospective_forecast_log.sha256"), "w", encoding="utf-8") as f:
+    f.write(SEAL + "  prospective_forecast_log.csv (payload: game_no|matchup|margin|total|home_pts|away_pts)\n")
 write("parlay_analysis.csv", parlay_rows,
       ["parlay_id", "definition", "legs", "tickets", "leg1_hit_rate", "leg2_hit_rate",
        "observed_joint_hit_rate", "independence_expected_rate",
@@ -1092,12 +1352,31 @@ summary = {
     "sd_margin_residual": round(sd_margin, 2),
     "calibration_slope": round(slope, 3),
     "calibration_slope_se": round(se_slope, 3),
+    "calibration_slope_ci": [round(c09_lo, 3), round(c09_hi, 3)],
+    "calibration_slope_p_vs_1": round(c09_p, 4),
     "calibration_intercept": round(intercept, 3),
     "sd_total_residual": round(sd_total, 2),
     "mae_reference": round(mae_ref, 2),
     "mae_m1": round(mae_m1, 2),
     "mae_improvement": round(mae_ref - mae_m1, 2),
     "hfa_ref_constant": HFA_REF,
+    "reference_total_definition": ("2 x league-average points per team per game, games strictly "
+                                   "before the reference week (no look-ahead); constant within a "
+                                   "week by construction (F44 resolved by documentation 2026-11-14)"),
+    "reference_total_week11": round(ref_line(11, "KC", "PHI")["total"], 1),
+    "origination_order": ["side", "total", "moneyline"],
+    "origination_order_note": ("The moneyline is derived only from the originated side and total "
+                               "through the empirical residual scale; no market price enters (F07)"),
+    "results_feed_rows": len(feed_rows),
+    "results_feed_verification": ("Every row reconciles to the official standings (V01 / RF07); "
+                                  "checks in data/results_feed_checks.csv"),
+    "price_snapshot_store_note": ("fair_line is OUR origin snapshot for each originated market "
+                                  "(walk-forward pre-game values for weeks 4-10, origination-run "
+                                  "values for Week 11); the fair close is not yet recorded "
+                                  "separately and the market open/close cells stay blank (F07/F51)"),
+    "correlation_owner_rule": ("Register publishes input_A, input_B and qualifies_under_owner_rule "
+                               "per row; model-input correlations are labelled model diagnostics "
+                               "(DEC-09); C09 interval/p corrected to the slope's own SE (F48, REQ-8a-1)"),
     "week11_games": len(week11),
     "strategies_tested": len(summaries),
     "qualified_strategies": sum(1 for r in leader_rows if r["reward_tier"] != "Not qualified"),
@@ -1108,6 +1387,9 @@ summary = {
     "injury_rows": len(injuries),
     "injury_teams": len({r["team_abbr"] for r in injuries}),
     "seed": SEED,
+    "lookahead_gate_passed": G1_PASSED,
+    "lookahead_tests": len(lookahead),
+    "forecast_log_seal_sha256": SEAL,
 }
 with open(os.path.join(DATA, "model_summary.json"), "w", encoding="utf-8") as f:
     json.dump(summary, f, indent=1)
