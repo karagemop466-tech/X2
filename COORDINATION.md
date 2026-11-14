@@ -38,7 +38,8 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `e98c7ba0` | `arena/e98c7ba0-x2` | Built the **live** `docs/` site (Python `scripts/build.py`), 345 injury rows. PRs #1–#3 merged to `main`. |
 | `d80442c2` | `arena/d80442c2-x2` | Supplemental post-merge source/compliance audit and handoff (T11). PRs #5–#6 merged to `main`. Touches `COORDINATION.md` only. |
 | `session-09d7cc77` | `arena/09d7cc77-x2` | Parallel Node dashboard (`src/`), docs, JSON data. PR #4 merged into `main`; Node output remains separate from the root-forwarded Python Pages site. |
-| `7678436e` | `arena/7678436e-x2` | Source-link/validation follow-up to the live Python dashboard; rebased onto the latest `main`, PR pending. F16 terms/data-rights, F17 numeric-cutoff, and F18 Node third-party-depth review flags remain explicit. |
+| `7678436e` | `arena/7678436e-x2` | Source-link/validation follow-up to the live Python dashboard; rebased onto the latest `main`, merged in PR #7. F16 terms/data-rights, F17 numeric-cutoff, and F18 Node third-party-depth review flags remain explicit. |
+| `7c9eb69a` | `arena/7c9eb69a-x2` | **Current session.** Independent line-by-line re-verification of the Week 10 injury and games snapshot against the live NFL.com pages (closes the F10 spot-check gap), source-liveness audit, and a decision-ready Suggestions review matrix. No other session is active, so this session also performs the final integration step. |
 
 ## Task board (combined — all sessions)
 
