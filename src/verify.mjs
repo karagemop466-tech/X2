@@ -72,8 +72,13 @@ function listHtml(dir) {
 
 const htmlFiles = listHtml(SITE_DIR);
 let linkChecks = 0;
+let tokenLeftovers = 0;
 for (const file of htmlFiles) {
   const html = readFileSync(file, 'utf8');
+  if (/\{\{TABLE:[^}]*\}\}/.test(html)) {
+    log(false, `${file}: unrendered {{TABLE: …}} token left in output (data table missing)`);
+    tokenLeftovers++;
+  }
   const dir = dirname(file);
   const links = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
   for (const href of links) {
@@ -89,6 +94,7 @@ for (const file of htmlFiles) {
   }
 }
 log(true, `checked ${linkChecks} internal links across ${htmlFiles.length} HTML files`);
+log(tokenLeftovers === 0, `no unrendered {{TABLE}} tokens in generated output`);
 
 console.log(`\n[verify] ${errors === 0 ? 'ALL CHECKS PASSED' : `${errors} FAILURE(S)`}`);
 process.exit(errors === 0 ? 0 : 1);

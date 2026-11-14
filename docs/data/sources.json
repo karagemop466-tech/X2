@@ -288,5 +288,15 @@
   "accessed_date": "2026-11-14",
   "used_for": "Saturday updates not reflected in the injury table: Freiermuth added as questionable; Walker and Mallory downgraded to out; Key no game designation (Flag F19).",
   "verification_note": "Fetched 2026-11-14 (single chunk). Items are NFL.com reporting of club and league updates."
+ },
+ {
+  "source_id": "SRC-30",
+  "title": "NFL Game Center — Commanders at Giants (Week 10, 2026)",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/games/commanders-at-giants-2026-reg-10",
+  "type": "Official league game page",
+  "accessed_date": "2026-11-14",
+  "used_for": "F22 Thursday-night result verification (Commanders 24, Giants 21 final).",
+  "verification_note": "Cross-checked against the official Week 10 schedule page (SRC-05); the game-page and schedule values agree. Not a depth chart or unrestricted dataset (see SRC-20 note). (Originally drafted as SRC-25; renumbered after session 45a0ec8c claimed SRC-25-SRC-29 in PR #12.)"
  }
 ]

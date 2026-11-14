@@ -185,8 +185,8 @@
   "item": "The dashboard table reproduced an older NFL.com news list, not the current one",
   "detail": "The stored news list in data/news_week10_2026.csv contains two headlines that no longer appear in the NFL.com injury-page news section as read on 2026-11-14: 'Deshaun Watson enters concussion protocol ahead of Browns' Week 9 game vs. Saints' and 'Report: Ravens QB Tyler Huntley out for season with turf toe injury'. The news module on the official page rotates as new items publish, so a stored snapshot can drift from the live page without the underlying injury rows changing. The injury table itself is unaffected.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Irregularity - open, snapshot drift",
-  "action_requested": "Read the news list as a dated snapshot only. Do not treat absence or presence of a headline as a fact about a player; use the linked article."
+  "status": "Resolved — stale headlines removed from the stored list 2026-11-14 (T20, session 324b0cd2); remaining headlines match the live NFL.com news section as read on 2026-11-14.",
+  "action_requested": "The list is a point-in-time snapshot; re-compare against the live news section at each refresh. No injury row was affected."
  },
  {
   "flag_id": "F22",
@@ -194,8 +194,8 @@
   "item": "The Thursday night result was not added to the games table",
   "detail": "The official Week 10 schedule now shows Commanders 24, Giants 21 as FINAL for the Thursday 12 November game. data/games_week10_2026.csv has no result column, so the site cannot display any score. This session did not add scores outside the claimed file scope; the value is verified but unpublished.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Verified value available but not published",
-  "action_requested": "Decide whether final scores belong on the site. If yes, add a result column to the games data and keep the schedule page as the per-row source."
+  "status": "Resolved — result published in the games table 2026-11-14 (T20, session 324b0cd2): game 1 carries \"Final — Commanders 24, Giants 21\" from the official Week 10 schedule; other results blank until played.",
+  "action_requested": "Add future results only after reading them from the official schedule or game center; leave cells blank until then."
  },
  {
   "flag_id": "F23",
@@ -259,5 +259,14 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Open - label only",
   "action_requested": "Owner review: note which label the site uses for OL players"
+ },
+ {
+  "flag_id": "F30",
+  "category": "Dashboard build",
+  "item": "Node dashboard table tokens never rendered (pre-existing build bug, fixed in T20, session 324b0cd2)",
+  "detail": "The Node static-site generator (src/build.mjs) matched data-table tokens with a regex that did not allow the space after the colon used by every doc file ({{TABLE: name}}), so no generated Node page rendered any data table and the literal token text was shown instead. The Node verifier checked data and links but not token rendering, so the defect passed all prior checks including PRs #4 and #9. Session 324b0cd2 fixed the regex on 2026-11-14, added an automated verifier check for unrendered tokens, and confirmed all Node data tables now render (12 pages). The published GitHub Pages site is the Python build in docs/, which renders tables correctly and was not affected. (Originally drafted as F23; renumbered F30 after session 45a0ec8c claimed F23-F29 in PR #12.)",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/src/build.mjs",
+  "status": "Resolved — fixed and covered by a new automated check",
+  "action_requested": "Re-run npm run build && npm run verify before any future Node dashboard publication."
  }
 ]
