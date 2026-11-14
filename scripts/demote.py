@@ -156,18 +156,35 @@ def main():
             "Return the strategy from live to paper until a new pre-registered window clears zero")
 
     # ---------------- D2: multiplicity-adjusted significance ----------------
-    ps = []
-    for r in board:
+    # BH family = the strategies that HAVE a skill permutation test (this is what model.py
+    # does, so the published q_bh_fdr column is reproducible). A strategy with no test is
+    # excluded rather than charged a p of 1; the choice is recorded as flag F56 because it
+    # scales every q by m+1/m.
+    ps, idx = [], []
+    for i, r in enumerate(board):
         try:
             ps.append(float(r["skill_p_permutation"]))
+            idx.append(i)
         except (TypeError, ValueError):
-            ps.append(1.0)
-    qs = bh(ps)
+            pass
+    qfam = bh(ps)
+    qs = [None] * len(board)
+    for j, i in enumerate(idx):
+        qs[i] = qfam[j]
     for r, q in zip(board, qs):
         pub = r.get("q_bh_fdr", "")
+        if q is None:
+            add("D2", r["strategy_id"], "no skill test exists for this strategy", "family of "
+                f"{len(ps)} tested strategies", "q > 0.10 demotes", "NOT COMPUTABLE",
+                "the strategy has no permutation p-value, so there is nothing to adjust; the family size "
+                "is therefore 6, not 7 (flag F56 documents the convention)",
+                "Cannot be promoted without a pre-registered skill test; a live strategy in this state "
+                "would be demoted for having no measurement")
+            continue
         verdict = "FIRES" if q > 0.10 else "does not fire"
         add("D2", r["strategy_id"], f"recomputed BH q = {q:.4f} (register publishes {pub or 'blank'}) "
-                                    f"across {len(ps)} tested strategies",
+                                    f"across {len(ps)} tested strategies; excluded: "
+                                    + (", ".join(x["strategy_id"] for x in board if x["skill_p_permutation"] in ("", None)) or "none"),
             f"all {len(ps)} strategies tested on the same walk-forward window",
             "q > 0.10 demotes", verdict,
             ("the result does not survive the charge for testing this many rules at once"
