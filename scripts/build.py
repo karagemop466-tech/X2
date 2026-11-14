@@ -22,6 +22,7 @@ OFFICIAL_HOSTS = {
     "www.nfl.com", "support.nfl.com", "operations.nfl.com",
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
+    "wetten.overheid.nl", "www.kansspelautoriteit.nl",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 

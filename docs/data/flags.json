@@ -84,10 +84,10 @@
   "flag_id": "F10",
   "category": "Transcription check",
   "item": "345 injury rows were transcribed manually",
-  "detail": "Rows were transcribed from the NFL.com page as read. Row counts per team and game were checked against the page structure. Each row links to the official page, but every row should be spot-checked against the link.",
+  "detail": "Rows were transcribed from the NFL.com page as read. Session 30beeb55 (T15, 2026-11-14) compared all 345 CSV rows with the NFL.com Week 10 injury report across all 14 games (player, position, injury, practice status, game status; per-game counts match). No discrepancies were found. The comparison was a manual read of the page, not an automated diff, and the page is a point-in-time snapshot.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Needs reviewer spot-check",
-  "action_requested": "Spot-check any rows you care about against the linked page."
+  "status": "Checked 2026-11-14 - no discrepancies found (manual comparison)",
+  "action_requested": "Re-check the live page if the snapshot is updated; a reviewer may still spot-check any row."
  },
  {
   "flag_id": "F11",
@@ -156,9 +156,18 @@
   "flag_id": "F18",
   "category": "Source-scope review",
   "item": "Separate Node depth-deficiency entries cite third-party Ourlads charts, not an official NFL depth chart",
-  "detail": "The separate Node dashboard data/depth-deficiencies.json contains six player/backup rows sourced from the official NFL injury report plus Ourlads, which the Node source register labels as reputable third-party. The official-only Python Pages dashboard does not publish these entries. Under the current official-source requirement, these third-party depth values are not verified official facts and must not be represented as such. T12 did not edit the Node data owned by session-09d7cc77.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
-  "status": "Review request — third-party values not official",
-  "action_requested": "Node-dashboard owner: replace the depth evidence with an official primary source or blank/suppress the player/backup values before promoting that output as official-source research."
+  "detail": "Resolved in the Node data by T13 (session 30beeb55, 2026-11-14). Each row now carries only the official NFL.com injury status. Starter/backup ordering, backup names and deficiency text are blank and marked unverified, because no official NFL depth chart was found (the NFL.com Detroit Lions depth-chart URL returned a 404 page). Third-party values are not used as evidence. The Python dashboard does not publish these entries.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Resolved by T13 - pending review",
+  "action_requested": "Reviewer: confirm the blank-field approach. Obtain an official depth-chart source before restoring any ordering or backup value."
+ },
+ {
+  "flag_id": "F19",
+  "category": "Jurisdiction gap",
+  "item": "Netherlands (NL) jurisdiction not reviewed; repo flagged only Japan (F09)",
+  "detail": "The project owner is located in the Netherlands. Wet op de kansspelen art. 1 lid 1 (current text, in force since 12-02-2025) prohibits (a) offering a prize contest decided by chance that participants cannot dominantly influence, without a licence; (b) promoting participation in an unlicensed opportunity; and (c) knowingly using one. Whether skill-based leaderboards, referral features or rewards fall inside or outside that test is a legal question that this repository does not answer. The Kansspelautoriteit Kansspelwijzer lists licensed providers. Notes: research/nl-legal-review.md. Not a legal conclusion.",
+  "source_url": "https://wetten.overheid.nl/BWBR0002469/2025-02-12",
+  "status": "Legal review needed - Netherlands",
+  "action_requested": "Keep wagering, referral and reward features disabled until Dutch-law review. Check the Kansspelwijzer status of any sportsbook or price source before use."
  }
 ]

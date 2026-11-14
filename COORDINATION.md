@@ -38,7 +38,8 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `e98c7ba0` | `arena/e98c7ba0-x2` | Built the **live** `docs/` site (Python `scripts/build.py`), 345 injury rows. PRs #1–#3 merged to `main`. |
 | `d80442c2` | `arena/d80442c2-x2` | Supplemental post-merge source/compliance audit and handoff (T11). PRs #5–#6 merged to `main`. Touches `COORDINATION.md` only. |
 | `session-09d7cc77` | `arena/09d7cc77-x2` | Parallel Node dashboard (`src/`), docs, JSON data. PR #4 merged into `main`; Node output remains separate from the root-forwarded Python Pages site. |
-| `7678436e` | `arena/7678436e-x2` | Source-link/validation follow-up to the live Python dashboard; rebased onto the latest `main`, PR pending. F16 terms/data-rights, F17 numeric-cutoff, and F18 Node third-party-depth review flags remain explicit. |
+| `7678436e` | `arena/7678436e-x2` | Source-link/validation follow-up to the live Python dashboard; merged to `main` as PR #7 (cf2d454). F16 terms/data-rights, F17 numeric-cutoff, and F18 Node third-party-depth review flags remain explicit. |
+| `30beeb55` | `arena/30beeb55-x2` | Session 30beeb55 (this session): claimed T13, T14, T15 on 2026-11-14. Branch from `main` @ `cf2d454`. |
 
 ## Task board (combined — all sessions)
 
@@ -55,8 +56,11 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | T09 | Site: landing, category subpages, Flagged for Review | done | e98c7ba0 | docs/, scripts/build.py | all | Static HTML, no external dependencies |
 | T10 | Integration: validate, build, PR, merge, Pages | done | e98c7ba0 | COORDINATION.md, PRs | all | PR #1 (0563aab), PR #2 (2c9f374). Live: https://karagemop466-tech.github.io/X2/ |
 | T11 | Supplemental post-merge source/compliance audit and handoff | done (audit merged; follow-up recommendations remain) | d80442c2 | COORDINATION.md only; T01–T10-owned `docs/`, `data/*.csv`, and `scripts/build.py` left untouched | T11-S1–T11-S4 | PR #5 (71e65aa), PR #6 (241a142). Findings handed off to the dashboard owner. No duplicate dashboard/data changes published. |
-| T12 | Source-link completeness and research-gate remediation for the Python Pages site | in progress | 7678436e | README.md, data/questions.csv, data/requirements.csv, data/suggestions.csv, data/strategy_gates.csv, data/strategy_hypotheses.csv, data/sources.csv, data/flags.csv, scripts/build.py, generated legacy `docs/*.html` and `docs/data/*.json`, COORDINATION.md | NFL, Government of Japan/NPA, NIST; first-party GitHub records for project facts | Repaired 41 source-less table rows; universal builder checks; independent line/correlation plan and leaderboard empty state; F16 terms/data rights, F17 thresholds. F18 requests review of third-party Node depth values without editing session-09d files. PR/deploy pending. |
-| T13 | Review third-party depth values in the separate Node dashboard against official-only requirement | unclaimed | — | `data/depth-deficiencies.json`, Node dashboard source/output | Official NFL primary sources; current entries also cite Ourlads (third-party) | Python dashboard flags these as F18; no T12 edits to the completed Node task. Keep them blank/unverified or replace with official evidence before describing as official NFL facts. |
+| T12 | Source-link completeness and research-gate remediation for the Python Pages site | done (merged: PR #7, merge commit cf2d454; board status corrected by 30beeb55) | 7678436e | README.md, data/questions.csv, data/requirements.csv, data/suggestions.csv, data/strategy_gates.csv, data/strategy_hypotheses.csv, data/sources.csv, data/flags.csv, scripts/build.py, generated legacy `docs/*.html` and `docs/data/*.json`, COORDINATION.md | NFL, Government of Japan/NPA, NIST; first-party GitHub records for project facts | Repaired 41 source-less table rows; universal builder checks; F16 terms/data rights, F17 thresholds, F18 review request. |
+| T13 | Review third-party depth values in the separate Node dashboard against official-only requirement | done (30beeb55, 2026-11-14) | 30beeb55 | `data/depth-deficiencies.json`, `data/flagged.json` (F-01, F-05), `docs/08-injuries-and-depth.md` (Node source) | NFL.com Week 10 injury report (official); NFL.com depth-chart URL checked (404) | Rows limited to official NFL.com injury status; Ourlads/ESPN ordering, backup names and deficiency text removed from the table (unverified). Python F18 updated by the integration step. Needs reviewer confirmation of the blank-field approach (F-05). |
+| T14 | Jurisdiction gap: user location is the Netherlands (NL); repo flags only Japan (F09) | needs review (30beeb55, 2026-11-14) | 30beeb55 | `research/nl-legal-review.md` (new); `data/flags.csv` F19 (integration); `README.md` note | Wet op de kansspelen art. 1 (wetten.overheid.nl/BWBR0002469/2025-02-12); Kamerstuk 33996 nr. 3; Kansspelautoriteit Kansspelwijzer | Flag only. No legal conclusion stated. Dutch-law review needed before any wagering, referral, reward or leaderboard use by a person in NL. Published as F19 on Flagged for Review. |
+| T15 | Spot-check Week 10 injury CSV rows against the NFL.com official injury report (F10) | done (30beeb55, 2026-11-14) | 30beeb55 | Read-only check; F10 status updated in `data/flags.csv` (integration) | NFL.com Week 10 injury report (https://www.nfl.com/injuries/) | All 345 CSV rows compared with all 14 games: no discrepancies. Manual read, not an automated diff. Snapshot is point-in-time. |
+| T16 | Integration: merge 30beeb55 branch into main, rebuild Python site and Node site, verify, PR, merge, confirm Pages | in progress | 30beeb55 | `COORDINATION.md`, `data/flags.csv` (F10, F18, F19), `README.md`, `scripts/build.py` (allow-list: wetten.overheid.nl, www.kansspelautoriteit.nl), generated `docs/` | Sources as listed for T13, T14, T15 | Integration per board rule (all other tasks done or needs review). Record PR link and merge result when complete. |
 | T1 | Scaffold repo, coordination board, static-site build system | done | session-09d7cc77 | COORDINATION.md, package.json, .gitignore, src/**, README.md | Build verified: `npm run build` emits 12 pages; `npm run verify` passes | Node generator foundation |
 | T2 | Requirements, executive summary, questions & answers, suggestions | done | session-09d7cc77 | docs/00-*.md … docs/03-*.md, data/requirements.json, data/questions.json, data/suggestions.json | Official NFL sources + methodology | 28 requirements, 14 questions, 13 suggestions |
 | T3 | Strategy research, validation gates, correlation values, leaderboard | done | session-09d7cc77 | docs/04-*.md … docs/07-*.md, data/strategies.json, data/validation-gates.json, data/correlations.json, data/leaderboard.json | CLV/market-efficiency methodology | Correlation values blank + flagged |
@@ -130,6 +134,12 @@ Every verified value links to one of these official pages (full lists also at
 - The NFL Week 10 schedule explicitly confirms CHI, DEN, PHI and TB were on bye (F05). Injury values were not changed. Numeric strategy cutoffs remain blank (F17); no odds, forecast, replacement-impact, correlation or performance value was invented.
 - F16 records that written permission for systematic NFL injury-data collection/publication is not found in this repo; F17 records unapproved numeric cutoffs. F18 flags separate Node depth rows that cite third-party Ourlads charts; T12 did not edit the Node-owned data. These flags do not establish a legal conclusion.
 
+**Session 30beeb55 (T13, T14, T15, T16):**
+- T15 (F10): Read the NFL.com Week 10 injury report (`https://www.nfl.com/injuries/`, 8 chunks, read 2026-11-14) and compared the 345 rows of `data/injuries_week10_2026.csv` with it, game by game (all 14 games). Fields: player, position, injury, practice status, game status, plus per-game row counts (they sum to 345). No discrepancies found. This was a manual read, not an automated diff. Programmatic checks: one source URL (`https://www.nfl.com/injuries/`) on all 345 rows, no duplicate game/player pairs, all player URLs well-formed. The Hummel link slug (`jake-hummel`) is the one NFL.com itself uses.
+- T13: Checked the NFL.com Detroit Lions depth-chart URL (`https://www.nfl.com/teams/detroit-lions/depth-chart`): returned a 404 page on 2026-11-14. Official injury statuses for the seven Node rows were confirmed on the NFL.com report (Mays C Out; D.J. Reed CB Out; St. Brown WR Questionable; Stevenson RB Questionable; Henderson RB Out; Walter Rouse T Questionable; Ben Brown C Out). Depth ordering and backup names could not be verified and were removed from the table. `npm run build` and `npm run verify` pass (194 internal links).
+- T14: Read the current consolidated Wok at `https://wetten.overheid.nl/BWBR0002469/2025-02-12` (geldend 12-02-2025 t/m heden, retrieved 2026-11-14), art. 1 lid 1 a–d. Read Kamerstuk 33996 nr. 3 (`https://zoek.officielebekendmakingen.nl/kst-33996-3.html`), section I.1. Read the Kansspelautoriteit pages `https://kansspelautoriteit.nl/` and `https://www.kansspelautoriteit.nl/kansspelwijzer`. Secondary-site claims about tax and enforcement were NOT used.
+- Board reconciliation: T12 status changed from "in progress" to done because PR #7 (`cf2d454`) is merged on `main`.
+
 ## Irregularities (combined)
 
 **Session e98c7ba0 flags (F01–F15, published at `docs/flagged.html`):**
@@ -149,6 +159,14 @@ Every verified value links to one of these official pages (full lists also at
   `data/flags.csv` F16 and a prominent homepage warning. No automated NFL.com data
   collection is implemented; permission for the existing published snapshot is not
   recorded, so this remains a critical open rights gate.
+
+**Session 30beeb55 flags (integration: published as F-rows in `data/flags.csv`):**
+- F19 (new): Netherlands jurisdiction not reviewed. The project owner is located in NL; the register flagged only Japan. Dutch-law review needed before any wagering, referral, reward or leaderboard use. Not a legal conclusion. See `research/nl-legal-review.md`.
+- F10 (updated): all 345 injury rows checked against the NFL.com Week 10 page on 2026-11-14; no discrepancies found (manual read).
+- F18 (updated): Node depth-deficiency rows were reduced to the official injury status; Ourlads ordering is removed (T13).
+- Node F-01 / F-05 updated: F-01 now cites only the official C position; F-05 records the NFL.com depth-chart 404.
+- Official depth chart still not found (the NFL.com depth-chart URL is a 404). Starter/backup ordering stays blank across all sessions until an official source is identified.
+- The live Pages site is built from `docs/` by the Python builder. The Node output in `site/` is gitignored and is not published.
 
 **Session 09d7cc77 flags (F-01–F-07, published on the Node Flagged for Review page):**
 - F-01: Ben Brown position discrepancy (C in injury report vs RG on depth chart).
@@ -196,6 +214,10 @@ by session-09d7cc77:
 
 **T13 request (unclaimed):** The separate Node `data/depth-deficiencies.json` contains player/backup values sourced partly from Ourlads, a third-party chart provider. The Node docs disclose that limitation, but the user's official-source-only rule means these cannot be described as official NFL facts. T12 added Python Flag F18 with a link to that project file; it did not edit the completed Node task's owned data. A Node dashboard owner should blank/suppress these values or locate an official primary depth-chart source before promoting that output.
 
+**T13 request — resolved (30beeb55).** Node depth rows now carry only official NFL.com injury status. F18 was updated by the integration step to say so.
+
+**T14 request (30beeb55 → integration):** added F19 (Netherlands) to `data/flags.csv`; added `wetten.overheid.nl` and `www.kansspelautoriteit.nl` to the builder's official-host allow-list; added a README note.
+
 ## Merge / conflict log
 
 - **2026-11-14 · session-09d7cc77 · merge conflict on PR #4 (session 1 vs 2).**
@@ -231,3 +253,4 @@ integration session (09d7cc77) merged them into `main` and re-verified the combi
 data and live site._
 
 - **2026-11-14 · 7678436e · rebase onto latest main.** The first `git pull --rebase` against the session branch failed on the add/add coordination file, so that rebase was aborted. After `origin/main` advanced through PR #4 and the d80442c2 audit, T12 was rebased onto `origin/main` at `9608561`. Conflicts were limited to `README.md` and `COORDINATION.md`; resolution retained the complete latest main records (including the Node dashboard/audit history) and added T12 without changing Node files or discarding prior session notes. The current branch remains `arena/7678436e-x2`; its remote still has the earlier pre-rebase history, so publish with a lease-protected update only after final verification.
+- **2026-11-14 · 30beeb55 · claims and integration.** Claimed T13, T14 and T15 (and added T16 integration) on `arena/30beeb55-x2` from `main` @ `cf2d454`. No handoff from another session. Results are in the Verification and Irregularities sections above. The integration session (30beeb55) updated only F10, F18 and F19 in `data/flags.csv`, the allow-list in `scripts/build.py`, the README note, and regenerated `docs/`.
