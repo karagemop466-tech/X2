@@ -97,5 +97,16 @@
   "source_needed": "Government of Japan/NPA online-gambling guidance; counsel required for project-specific conclusions",
   "row_type": "method",
   "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
+ },
+ {
+  "gate_id": "G9",
+  "gate": "Demotion gate (live to paper)",
+  "what_it_tests": "Whether a strategy that is live is returned to paper when its signal evidence, multiplicity control, sample, provenance or legal clearance fails (rules D1-D7 in demotion_gate.csv)",
+  "numeric_threshold": "See demotion_gate.csv (proposed, not approved)",
+  "current_status": "Defined, proposed - inert because no strategy is live",
+  "data_needed": "Authorised live-status decision record and the rolling evidence window",
+  "source_needed": "NIST interval-estimation and multiple-comparison guidance; NFL Terms and Support FAQ",
+  "row_type": "method",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
  }
 ]
