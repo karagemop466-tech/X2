@@ -598,7 +598,7 @@ session's tasks continue from T23.
 | T27 | Validation gates and strategy leaderboard with proposed reward tiers | done (tiers proposed; nothing is paid or enabled) | 73cbec41 | data/gate_results.csv, data/strategy_leaderboard.csv (new) | SRC-16, SRC-19 | 8 gates, 7 strategies graded, 4 qualify. Cut-off approval still open (F17) |
 | T28 | Correlation study and parlay joint-outcome study | done | 73cbec41 | data/correlations_computed.csv, data/parlay_analysis.csv (new) | SRC-31..SRC-41, SRC-17 | 9 correlations with CIs and p-values; 1 parlay table (24 tickets) |
 | T29 | Registers extended: Q19-Q30, S11-S18, R21-R34, F31-F36, SRC-31..SRC-43 | done | 73cbec41 | data/questions.csv, data/suggestions.csv, data/requirements.csv, data/flags.csv, data/sources.csv | all | ID union with no collisions; every row from sessions 324b0cd2 and 3988bdab is retained |
-| T30 | Site rebuild to 20 pages, integration, PR to main, merge, Pages deploy | in progress | 73cbec41 | scripts/build.py, docs/**, README.md, COORDINATION.md | all | `python3 scripts/build.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass |
+| T30 | Site rebuild to 20 pages, integration, PR to main, merge, Pages deploy | done | 73cbec41 | scripts/build.py, docs/**, README.md, COORDINATION.md | all | `python3 scripts/build.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass |
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -660,3 +660,23 @@ had already been raised by session `324b0cd2`, so it was not duplicated.
   `data/standings_2026_snapshot.csv`, `data/schedule_week11_2026.csv` and `data/model_*.csv` are owned by this
   session. The registers in `data/*.csv` are append-only and ID-ordered — continue from the highest existing ID
   and record the change here.
+
+## PR and deployment record — session 73cbec41 (T23-T30, final integration)
+
+| Item | Result |
+|---|---|
+| PR #22 | https://github.com/karagemop466-tech/X2/pull/22 — **MERGED** (merge commit `ee281d8`, 2026-11-14T18:47:51Z). Independent line model, official results dataset, walk-forward backtest, validation gates, correlations, parlay study, strategy leaderboard, Week 11 lines, 8 new site pages (20 total). |
+| Conflicts handled | `main` advanced three times while this session was working (PRs #19, #20, #21 from sessions 324b0cd2 and 3988bdab). Each time the branch was re-based and the shared registers re-merged by ID union. Nothing any session wrote was discarded; the branch was force-updated once (lease-protected) to replace this session's own superseded pre-rebase commit, as session 45a0ec8c and 3988bdab did before it. |
+| `git checkout --theirs` caveat | During the first rebase, `git checkout --theirs -- <paths>` reported success but did not apply, which silently dropped the other session's work. **Verify any conflict resolution by size or marker string before committing.** The registers were rebuilt from `origin/main` as the base instead. |
+| GitHub Pages | Build for `ee281d8` reported `built` (`gh api repos/karagemop466-tech/X2/pages/builds/latest`, 2026-11-14T18:48:27Z). Source remains `main /` with the root `index.html` forwarding to `docs/index.html` (F15). |
+| Live site check | Cache-busted fetches of `docs/leaderboard.html` and `docs/flagged.html` (`?v=ee281d8`) serve the merged content: 7 strategies with 4 qualified and 3 at Tier 1, and flags F31-F36 alongside every prior flag. |
+| Checks at merge time | `python3 scripts/verify_results.py`: 137 games, 32 teams, 0 mismatches · `python3 scripts/model.py`: clean · `python3 scripts/build.py`: 20 pages, 345 injury rows, 28 teams, 61 depth rows, link + row-source checks passed · `npm run build` + `npm run verify`: 12 pages, 194 internal links, all checks passed. |
+| No market claim | No odds feed is connected, so no price, closing line, closing-line value or return on investment appears anywhere. Leaderboard bets are graded against a naive reference line and the page says so (F32). No reward has monetary value; wagering, referral and reward mechanics stay disabled (F09, F16, F19). |
+
+**Session close-out (73cbec41):** T23-T30 done and merged as PR #22. Open items for the
+owner: F19 jurisdiction (confirm NL before any reward/entry/referral mechanic),
+F17 validation cut-offs and the three proposed reward tiers (approve, amend or
+reject), F07/F32 (a licensed odds archive is the only way a market return can
+ever be measured), S12/S16 (additional official model inputs and a
+rights-cleared injury archive), F35 (NFL.com Week 1 date inconsistency), F36
+(re-run `scripts/model.py` after Week 10 completes).
