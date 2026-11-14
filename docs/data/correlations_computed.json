@@ -7,7 +7,12 @@
   "ci_high": "0.496",
   "p_value": "0.0022",
   "sample_n": "89",
+  "input_A": "Model predicted margin (model output)",
+  "input_B": "Official final margin",
+  "officially_sourced_inputs_only": "no",
+  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
   "interpretation": "Forecast skill of the M1 line; higher means the originated number carries signal.",
+  "audit_note": "Predictor is a model output. Diagnostic only.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -18,7 +23,12 @@
   "ci_high": "0.456",
   "p_value": "0.0093",
   "sample_n": "89",
+  "input_A": "Naive reference margin = official season point differential + 2.5 (fixed home-field constant)",
+  "input_B": "Official final margin",
+  "officially_sourced_inputs_only": "no",
+  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
   "interpretation": "Benchmark: the model must beat this to justify originating lines.",
+  "audit_note": "The 2.5-point home-field term is a pre-registered constant (scripts/model.py HFA_REF), not an official number.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -29,7 +39,12 @@
   "ci_high": "0.228",
   "p_value": "0.8448",
   "sample_n": "89",
+  "input_A": "Official final margin (blowout size)",
+  "input_B": "Official total points",
+  "officially_sourced_inputs_only": "yes",
+  "qualifies_under_owner_rule": "yes",
   "interpretation": "Same-game link: lopsided games and scoring volume move together.",
+  "audit_note": "Official results only.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -40,7 +55,12 @@
   "ci_high": "0.249",
   "p_value": "0.6929",
   "sample_n": "89",
+  "input_A": "Official points, team A",
+  "input_B": "Official points, team B (same game)",
+  "officially_sourced_inputs_only": "yes",
+  "qualifies_under_owner_rule": "yes",
   "interpretation": "Direct input to totals and same-game parlays; negative means a scoring trade-off.",
+  "audit_note": "Two halves of one official score line; one pair per game.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -51,7 +71,12 @@
   "ci_high": "0.295",
   "p_value": "0.3913",
   "sample_n": "89",
+  "input_A": "Model predicted total (model output)",
+  "input_B": "Official total points",
+  "officially_sourced_inputs_only": "no",
+  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
   "interpretation": "Totals-signal check.",
+  "audit_note": "Predictor is a model output. Diagnostic only.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -62,7 +87,12 @@
   "ci_high": "0.214",
   "p_value": "0.1907",
   "sample_n": "228",
+  "input_A": "Official margin, week W-1 (team)",
+  "input_B": "Official margin, week W (same team)",
+  "officially_sourced_inputs_only": "yes",
+  "qualifies_under_owner_rule": "yes",
   "interpretation": "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much.",
+  "audit_note": "Official results. n = 228 counts each game once per team, so pairs are not independent (F55).",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -73,7 +103,12 @@
   "ci_high": "1.443",
   "p_value": "0.6830",
   "sample_n": "89",
+  "input_A": "Model predicted margin (model output)",
+  "input_B": "Official final margin",
+  "officially_sourced_inputs_only": "no",
+  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
   "interpretation": "Slope 0.89 (SE 0.28), intercept -0.79. The interval is the slope's own t interval over 89 forecasts; the p-value tests the slope against 1.0, not against 0. A slope clearly below 1 would mean the model is over-shy; clearly above 1, over-confident. This row is a regression slope, not a correlation.",
+  "audit_note": "A regression slope, not a correlation. Interval and p use the coefficient's own standard error with the exact t quantile at df = n - 2 (session cf6709c0); see F59.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -84,7 +119,12 @@
   "ci_high": "0.119",
   "p_value": "0.1561",
   "sample_n": "24",
+  "input_A": "Model-generated side and total legs",
+  "input_B": "Model-generated side and total legs",
+  "officially_sourced_inputs_only": "no",
+  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
   "interpretation": "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",
+  "audit_note": "Both legs are model-generated selections; n = 24 tickets. Diagnostic only.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -95,7 +135,12 @@
   "ci_high": "0.291",
   "p_value": "0.7264",
   "sample_n": "32",
+  "input_A": "Official Week 10 injury-report exposure (team)",
+  "input_B": "Official season points allowed (standings)",
+  "officially_sourced_inputs_only": "yes",
+  "qualifies_under_owner_rule": "yes",
   "interpretation": "Exploratory only: one snapshot, no causal claim, and starter/backup depth is unverified (F06).",
+  "audit_note": "Official injury report and standings. Exposure is a count of listed players.",
   "source_url": "https://www.nfl.com/injuries/"
  }
 ]

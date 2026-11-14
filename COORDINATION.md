@@ -48,6 +48,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `3988bdab` | `arena/3988bdab-x2` | **Current session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
 | `4c5bc504` | `arena/4c5bc504-x2` | **Session 4c5bc504 (claimed T37, 2026-11-14).** Post-merge re-verification of `main` @ `9e90dd3` (all checks re-run, live Pages build confirmed, Week 10 calendar checked against the official schedule) and board reconciliation. Touches `COORDINATION.md` only. |
 | `ca1ea224` | `arena/ca1ea224-x2` | **Current session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claims **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). |
+| `f25d6b55` | `arena/f25d6b55-x2` | **Current session (2026-11-14, after PR #34 merged).** Drafted claims for T37–T45 before `main` advanced; every ID was taken in parallel (T37 by 4c5bc504; T39/T40 by c125b2f7; T42/T44–T50 by 8a0bf37e; T37–T41 by ca1ea224). **Final scope T51–T55**, the gaps still open after PR #34: apply REQ-8a-1 (C09) and adopt the owner rule in the published correlation register; canonical verified results feed; verify and document the extended price-snapshot store's origin/close semantics; suggestions and verification rows; integration. Additive only; ca1ea224's and 8a0bf37e's outputs are consumed, not rewritten. |
 
 ## Task board (combined — all sessions)
 
@@ -854,6 +855,11 @@ No new feature was requested in this session. The open decisions on the board re
 | T48 | Integration: pages, navigation, exec summary, README, link check, PR, merge, Pages | in progress | 8a0bf37e | `scripts/build.py`, `README.md`, `docs/**` (generated), `data/flags.csv` (F45–F55), `data/sources.csv` (SRC-61–71), `COORDINATION.md` | — |
 | T49 | Results feed checks (was T39) | done | 8a0bf37e | `data/results_feed_checks.csv` (new), `scripts/desk.py` | official game-center spot checks (6), standings reconciliation |
 | T50 | Demotion rule D1 window check (uses D1 as drafted on `main`) | done | 8a0bf37e | `data/demotion_window_check.csv` (new), `scripts/desk.py` | NFL.com game pages; NIST bootstrap reference |
+| T51 | Correlations register: apply REQ-8a-1 (C09 correction) and adopt the owner rule from `correlation_audit.csv` in the published register | done | f25d6b55 | `scripts/model.py` (C09 slope interval/p + register columns), `data/correlations_computed.csv`, `scripts/build.py` (correlations page) | `data/correlation_audit.csv` (8a0bf37e); F48, F49, F55 | C09 republished using the slope's own standard error (slope 0.885, 95% CI 0.335–1.435, p 0.6820 vs slope 1.0; p differs from the audit's 0.683 only by the audit's rounded SE). Register gains input_A, input_B, officially_sourced_inputs_only and qualifies_under_owner_rule columns; model-input rows labelled model diagnostics (DEC-09); n, CI and p on every row. Flag F48 status updated to Resolved. |
+| T52 | Canonical verified results feed | done | f25d6b55 | `scripts/model.py` (feed writer), `data/results_feed_2026.csv` (new), `scripts/build.py` (results page feed section), README.md | RF01–RF07 checks (8a0bf37e); V01 standings reconciliation; official by-week pages | Advances R38: one canonical feed of the 137 official 2026 results with per-row verification status (V01 / RF07), verified date and official links; every grading path (backtest, bets, gates, correlations, snapshot store) consumes exactly this feed. ROI stays uncomputable until an authorised price source exists (F07). |
+| T53 | Extended price-snapshot store verified and documented (origin/close semantics) | done | f25d6b55 | `scripts/model.py` (store note + summary keys), `scripts/build.py` (price-snapshots page), `data/verification_report.csv` (V23) | ca1ea224's store (PR #34); walk-forward predictions; F07/F31/F51 | Adopts ca1ea224's 306-row store as the canonical model-side record instead of creating a parallel file (this session's pre-rebase draft `model_line_snapshots.csv` was dropped as redundant). Documented: fair_line is OUR origin snapshot (walk-forward pre-game for weeks 4–10, origination-run for Week 11); the fair close is not yet recorded separately (cadence proposed, S32); market open/close cells stay blank. Store reproduces byte for byte from its declared sources; ML prices recompute from the fair probabilities (V23). F44 resolved by documentation (reference total = 2 × league-average points per team per game, no look-ahead). |
+| T54 | Registers: flags, suggestions, verification | done | f25d6b55 | `data/flags.csv` (F44/F48 resolved; F56 new), `data/suggestions.csv` (S32–S34), `data/verification_report.csv` (V21–V23), docs exec summary, README.md | see rows | F56 records that ca1ea224's close-out cites F45/F46 for the blank price-store columns while the register assigns those IDs to 8a0bf37e's findings — the conditions are covered by F07/F31/F51. S32–S34: snapshot cadence, formula unit tests after F48, masking-check column. |
+| T55 | Integration: full pipeline rebuild, link/row checks, PR, merge, confirm Pages | in progress | f25d6b55 | `docs/**`, `scripts/check_links.py`, PR, Pages, COORDINATION.md | first-party records | model.py → markets.py → verify_results.py → build.py → check_links.py → npm build/verify all pass (25 pages). PR from `arena/f25d6b55-x2` to `main`; record appended below on completion. |
 
 ### Requests logged (no action taken on these files)
 
@@ -1198,3 +1204,27 @@ No `F` or `G` ID collided: F56–F58 and G14–G16 were free on `main` and are m
 **Important consequence of the merge.** `main`'s week-11 block recomputes the fair lines with the
 side → total → moneyline order, and this branch made that block neutral-aware, so the published Mexico City
 line now carries **both** corrections. No file from `ca1ea224` was reverted.
+
+**Second collision record — session cf6709c0 vs PR #36 (f25d6b55), resolved without discarding work.**
+PR #36 merged to `main` while this branch was open and also corrected C09 (REQ-8a-1), taking `F56` and
+`V21–V23`. Resolved as follows.
+
+- **C09 — two independent fixes, both kept in substance.** f25d6b55 publishes `0.335–1.435`, `p = 0.68`
+  using the **normal** quantile 1.959964 at df = 87. This branch publishes `0.328–1.443`, `p = 0.683` using
+  the **exact Student-t** quantile `t(0.975, 87) = 1.98761`, which is the correct reference when a
+  coefficient's variance is estimated from the sample. The two differ by 0.007 at each end; the point
+  estimate (0.885) and the conclusion (the data do not distinguish the slope from 1.0) are identical. The
+  build keeps the exact-t version and records the overlap and the reason in the code comment and in F59, so
+  neither session's work is lost or misrepresented.
+- **`add_slope()` was extended, not replaced,** to emit f25d6b55's new owner-rule columns
+  (`input_A`, `input_B`, `officially_sourced_inputs_only`, `qualifies_under_owner_rule`, `audit_note`), so
+  the register keeps the richer schema PR #36 introduced.
+- **ID renumbering, keeping `main`'s rows untouched.** f25d6b55's `F56` is kept and my three flags move to
+  **F57** (gate G1), **F58** (neutral sites) and **F59** (C09 formula). My verification rows move to
+  **V24–V27**. Every reference in `README.md`, `scripts/model.py` and `scripts/build.py` was updated to match.
+- **Not touched:** f25d6b55's F56 (the citation-misreference flag), its canonical results feed (R38), its
+  extended price-store documentation, and its `V21–V23` rows all stand exactly as merged.
+
+State after both merges: **26 pages**, every row source-checked, **758 internal** and **3,184 external**
+links all resolve and are allow-listed, 137 games with 32/32 teams reconciling against the official
+standings, `npm run build` + `npm run verify` PASS, and `scripts/model.py` reproduces byte for byte.

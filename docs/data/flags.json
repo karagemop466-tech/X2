@@ -392,8 +392,8 @@
   "item": "Week 11 reference total is identical for all 13 games",
   "detail": "data/model_lines_week11.csv column reference_total equals 45.9 for every game. This is the naive reference used for the 'model minus reference' column. It may be an intended league-average constant, but no derivation is recorded in the file. Not changed in this session.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_lines_week11.csv",
-  "status": "needs review",
-  "action_requested": "Reviewer to confirm whether a constant league-average total is intended and document the derivation source."
+  "status": "Resolved 2026-11-14 (session f25d6b55): derivation documented in scripts/model.py ref_line() and model_summary.json - the reference total is 2 x league-average points per team per game over games strictly before the reference week, constant within a week by construction (45.9 for Week 11). No value changed. Note: session ca1ea224's COORDINATION entry cites F44 for the staking return, which is a different item; see F56 for the misreference record.",
+  "action_requested": "Done: derivation documented where the reviewer asked for it."
  },
  {
   "flag_id": "F45",
@@ -428,8 +428,8 @@
   "item": "Calibration row C09 applies a correlation interval to a regression slope",
   "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim).",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Open - correction requested (COORDINATION.md, REQ-8a-1)",
-  "action_requested": "Owner of scripts/model.py and data/correlations_computed.csv applies the C09 correction in the next model pass."
+  "status": "Resolved 2026-11-14 (session f25d6b55, REQ-8a-1 applied): C09 in scripts/model.py and data/correlations_computed.csv now uses the slope's own standard error - slope 0.885, 95% CI 0.335-1.435, p 0.6820 against slope 1.0 (p differs from the audit's 0.683 only through the rounded SE the audit used). The register also gains input_A / input_B / owner-rule columns per row (verification V21).",
+  "action_requested": "Applied and verified against data/correlation_audit.csv (V21)."
  },
  {
   "flag_id": "F49",
@@ -496,6 +496,15 @@
  },
  {
   "flag_id": "F56",
+  "category": "Register inconsistency",
+  "item": "Session ca1ea224's COORDINATION entry cites F45/F46 for the blank price-store columns, but those IDs are different items in the register",
+  "detail": "The COORDINATION close-out of session ca1ea224 (PR #34) says its new flags are F45 (price-snapshot store blank) and F46 (staking return blank). In data/flags.csv, F45-F55 were already taken by session 8a0bf37e for other findings (depth charts undated, LA/LAR naming, hidden scores, C09, correlation inputs, gate G1, price store blanks, weeks label, unchecked availability rows, demotion window, C06 independence), and no F45/F46 row was added by ca1ea224 (data/flags.csv is unchanged in PR #34). The conditions ca1ea224 describes are covered by F07 (no licensed odds feed), F31 (no prop/price data) and F51 (price store rows blank). This row records the misreference so every flag citation on the site resolves to the right item.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md",
+  "status": "Irregularity - open (bookkeeping; no data value affected)",
+  "action_requested": "Owner review: keep the register IDs stable and cite by ID only after checking the register; F44/F48 are resolved 2026-11-14 by session f25d6b55."
+ },
+ {
+  "flag_id": "F57",
   "category": "Gate integrity (resolved)",
   "item": "Gate G1 \"No look-ahead\" was a hardcoded True",
   "detail": "scripts/model.py set G1 to True for every strategy, so the gate was a constant that could never fail. The property did hold, but no code computed it. Remediated: audit_no_lookahead() now checks every out-of-sample week for empty or temporally overlapping training sets and publishes the result in model_summary.json (lookahead_audit_pass, lookahead_audit_weeks).",
@@ -504,7 +513,7 @@
   "action_requested": "G1 is now an audited check, not a constant. Audit result on the 2026 dataset: 7 of 7 evaluation weeks pass (model_summary.json). No owner action needed."
  },
  {
-  "flag_id": "F57",
+  "flag_id": "F58",
   "category": "Methodology (partly resolved)",
   "item": "Nine 2026 games are at neutral sites but the model added home-field to all of them",
   "detail": "The 2026 season has a record nine international games (NFL Football Operations, SRC-72). The results dataset carried no neutral-site column, so the fit and the naive reference line added the home-field term for the designated home team even though the game was not in its stadium. On the 89 out-of-sample games this changed no rounded output, because only two affected games fall inside the evaluation window (wk5 PHI at JAX, wk7 PIT at NO); the measurable effect is on the Week 11 Mexico City line (fair margin 2.5 to 2.9; model-minus-reference -6.2 to -3.3). Remediated with a neutral_site column threaded through fit(), predict() and ref_line().",
@@ -513,7 +522,7 @@
   "action_requested": "Week 11 MIN at SF is modelled as neutral. All 137 completed rows carry a BLANK neutral_site value because this session did not re-open every schedule page to confirm each stadium; nothing was inferred. The historical fit therefore still treats those games as home games, so the no-op above is a reported finding, not a correction. Open item for review: confirm the nine individual games against a stadium field before the historical column is populated."
  },
  {
-  "flag_id": "F58",
+  "flag_id": "F59",
   "category": "Statistical error (resolved)",
   "item": "C09 published a Fisher correlation interval for a regression slope",
   "detail": "C09 is the slope of actual margin on predicted margin (0.885, SE 0.280, n 89). The register applied the Pearson-r interval (Fisher z, SE = 1/sqrt(n-3)) and a p-value for r, publishing 0.830-0.923 and p 0.0000. Recomputed with the coefficient's own t interval: 0.328-1.443, p = 0.683 against a slope of 1.0. Remediated by add_slope(), which uses estimate +/- t(0.975, df)*SE and tests against the null the question actually asks about. Closes handoff REQ-8a-1, logged by session 8a0bf37e.",

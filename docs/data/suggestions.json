@@ -370,5 +370,41 @@
   "status": "For review - not implemented",
   "row_type": "decision",
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "suggestion_id": "S32",
+  "area": "Price store",
+  "suggestion": "Adopt a fixed snapshot cadence for the fair line: origin at origination, one interim snapshot per week, close at the scheduled kickoff.",
+  "benefit_for_decisions": "The store records one fair value per market (the origin). With a fixed cadence the fair open/close series gains real content, line movement becomes measurable on our own numbers, and the store is ready to compare against a market feed the day one is authorised.",
+  "effort": "Low",
+  "main_risk": "Interim snapshots add rows; they are our own model outputs, so no new rights exposure.",
+  "options": "A) Adopt the cadence and record it in model_summary.json; B) record origin and close only; C) leave the cadence unset.",
+  "status": "For review - not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "suggestion_id": "S33",
+  "area": "Model quality",
+  "suggestion": "Add a formula unit-test harness for every published statistic after the C09 formula error (F48).",
+  "benefit_for_decisions": "C09 carried a correlation interval applied to a regression slope across several review passes. A small test file (known-value cases per formula: Fisher CI, slope CI, Wilson interval, permutation p, BH q) would catch the next defect before publication.",
+  "effort": "Low",
+  "main_risk": "None - tests only; no published value changes unless a test finds a defect.",
+  "options": "A) Add scripts/test_formulas.py with known-value cases and wire it into the build order; B) review by hand each pass; C) do nothing.",
+  "status": "For review - not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
+ },
+ {
+  "suggestion_id": "S34",
+  "area": "Leaderboard",
+  "suggestion": "Add a computed masking-check verdict to the signal/staking register: flag a positive staking record whose signal interval includes zero, and the reverse.",
+  "benefit_for_decisions": "The brief requires staking luck not to mask a bad signal. Ranking already uses signal only; an explicit computed column makes any masking visible at a glance instead of requiring the reader to compare two intervals by hand.",
+  "effort": "Low",
+  "main_risk": "None - derived from published intervals; no new claim.",
+  "options": "A) Add the column in the signal/staking generator; B) keep the prose rule only; C) drop the check.",
+  "status": "For review - not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
  }
 ]

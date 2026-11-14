@@ -118,6 +118,8 @@ signal_staking = read_csv("strategy_signal_staking.csv")
 demotion_gate = read_csv("demotion_gate.csv")
 # ---- session ca1ea224: the extended price-snapshot store (Week 11 + out-of-sample) ----
 price_snapshots_extended = read_csv("price_snapshots_extended.csv")
+# ---- session f25d6b55 (T52): canonical verified results feed ----
+results_feed = read_csv("results_feed_2026.csv")
 with open(os.path.join(DATA, "model_summary.json"), encoding="utf-8") as f:
     ms = json.load(f)
 # ---- session 10a76288: a second, independent implementation used to cross-check the one above ----
@@ -755,7 +757,10 @@ source and the difference against the market cannot be computed (Flags F07, F31)
 no-vig American price implied by the model's win probability, not a sportsbook price. Spread is from the home
 team's perspective; P(home) uses the model's out-of-sample residual spread of {ms['sd_margin_residual']} points
 and treats a tie as half a win. Calibration: actual margin on predicted margin has slope {ms['calibration_slope']}
-(SE {ms['calibration_slope_se']}).</p>
+(SE {ms['calibration_slope_se']}; corrected 95% CI {ms['calibration_slope_ci'][0]} to {ms['calibration_slope_ci'][1]},
+p {ms['calibration_slope_p_vs_1']} against slope 1.0 &mdash; C09 correction, F48, session f25d6b55). The reference total is the
+same constant for every Week 11 game by construction: 2 &times; the league-average points per team per game over games strictly
+before the reference week (F44 resolved by documentation, session f25d6b55).</p>
 {table(model_lines, ['matchup','kickoff_et','fair_spread','market_spread','fair_minus_market_spread','fair_total','market_total','fair_minus_market_total','fair_moneyline_home','fair_moneyline_away','market_moneyline_home','market_moneyline_away','home_win_prob','reference_spread_home','reference_total','model_minus_reference','game_url','source_url'],
        {'matchup':'Matchup','kickoff_et':'Kickoff (ET)','fair_spread':'Fair spread (side)','market_spread':'Market spread','fair_minus_market_spread':'Fair − market (side)','fair_total':'Fair total','market_total':'Market total','fair_minus_market_total':'Fair − market (total)','fair_moneyline_home':'Fair ML (home)','fair_moneyline_away':'Fair ML (away)','market_moneyline_home':'Market ML (home)','market_moneyline_away':'Market ML (away)','home_win_prob':'P(home win)','reference_spread_home':'Reference spread','reference_total':'Reference total','model_minus_reference':'Fair − reference (side)','game_url':'Game','source_url':'Schedule'})}
 <h2>Team ratings</h2>
@@ -804,6 +809,16 @@ moneyline). First-party computed from official results; not a market price.</li>
 no official source confirms them (F07, F31, F45).</li>
 <li><strong>opening_verified / closing_verified</strong> — No for every row, because no value is filled.</li>
 <li><strong>status</strong> — carries the flag text on every row so the blank is never read as an omission.</li>
+<li><strong>Which half of the store this is (session f25d6b55).</strong> <code>fair_line</code> is <em>our own opening
+number</em> for every market we originate: for the out-of-sample window (weeks 4&ndash;10) it is the walk-forward pre-game
+prediction, fitted only on games played strictly before that week; for Week 11 it is the origination-run value recorded
+2026-11-14. The <em>close</em> of our own fair line is not yet recorded separately, and the market open/close cells stay blank
+until an authorised source is connected (F07; flag F51 covers the same condition on the Week 11 store). A fixed snapshot cadence
+(origin, weekly interim, close at kickoff) is proposed in suggestion S32.</li>
+<li><strong>Flag numbering note (F56).</strong> The session that built this store cited &ldquo;F45&rdquo; and
+&ldquo;F46&rdquo; for the blank opening/closing values, but those IDs belong to a different register section (depth charts and
+the signal/staking split). The conditions are covered in the register by F07, F31 and F51; F56 records the misreference so the
+Flagged page stays accurate.</li>
 </ul>
 <h2>Store contents</h2>
 <p class="note">Two complementary stores are published, both with every opening/closing value blank and
@@ -933,15 +948,16 @@ on multiple-comparison risk ↗</a> · <a href="https://www.itl.nist.gov/div898/
 pages["correlations.html"] = ("Correlations", f"""
 <h1>Correlation values</h1>
 <p class="note">Values are computed from the {ms['games_transcribed']} official 2026 results in this repository, or from model
-outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Under the owner
-rule only correlations with official inputs qualify: C03, C04, C06 and C08 (see the correlation audit on the <a href="verification.html">Verification</a> page).
-C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49).
-<strong>C09 is a regression slope, not a correlation,</strong> so it is shown with the coefficient's own t interval and its p-value
-tests the slope against 1.0. That correction is applied in this build (Flag F58): the interval is 0.328 to 1.443 and p = 0.683,
-which means the data do not distinguish the slope from 1.0. The previous 0.830 to 0.923 interval and p = 0.0000 were a Pearson-r
-formula applied to a slope. No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
-{table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','interpretation','source_url'],
-       {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','interpretation':'What it means','source_url':'Source'})}
+outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Every row
+publishes its exact inputs (input A, input B), the sample size n, an interval and a p-value. <strong>Owner rule</strong> (the brief:
+compute correlations only from officially sourced numbers): only rows whose two inputs are both officially sourced qualify as
+evidence &mdash; C03, C04, C06 and C08. Rows whose predictor is a model output (C01, C02, C05, C07, C09) are labelled
+<strong>model diagnostics (DEC-09)</strong>, not evidence; the classification matches <code>data/correlation_audit.csv</code>
+(session 8a0bf37e). <strong>C09 correction applied</strong> (2026-11-14, session f25d6b55, per REQ-8a-1 and Flag F48): the row is a
+regression slope, so its interval and p-value now use the slope's own standard error &mdash; slope 0.885, 95% CI 0.328 to 1.443 using the exact t quantile at df = 87,
+p = 0.68 against slope 1.0 (Flag F59; a second session published 0.335-1.435 with the normal quantile, same conclusion). No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+{table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','interpretation','source_url'],
+       {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only','qualifies_under_owner_rule':'Owner rule','interpretation':'What it means','source_url':'Source'})}
 <h2>What the values say</h2>
 <ul class="findings">
 <li>The model's margin forecast is genuinely associated with the actual margin (r = 0.321, p = 0.002), and more
@@ -950,8 +966,11 @@ so than the naive reference line (r = 0.274, p = 0.009). That gap is the skill t
 (p = 0.39) with actual totals, and the totals strategy shows no accuracy gain at all.</li>
 <li>Within a game, the two teams' scores do not co-move (r = 0.042) and blowouts are not associated with higher
 totals (r = 0.021). Both matter for parlay pricing, and both are essentially zero in this sample.</li>
-<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19), which is why recency weighting did not
-help and why short hot streaks should not be trusted.</li>
+<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19, n = 228 team-game pairs that are not
+independent, Flag F55), which is why recency weighting did not help and why short hot streaks should not be trusted.</li>
+<li>The calibration slope is 0.885 with a 95% interval of 0.328 to 1.443 (p = 0.68 against slope 1.0, corrected
+2026-11-14): the interval is wide and includes both over-shy and over-confident readings &mdash; the model's scale is
+not yet pinned down (C09, model diagnostic).</li>
 <li>The parlay leg correlation is negative but uncertain (phi = -0.299 on 24 tickets, p = 0.16). It is a warning
 not to price parlays as if legs were independent, not a usable estimate.</li>
 </ul>
@@ -991,6 +1010,17 @@ of that week had not been played when this page was built.</p>
 {table(results_games, ['week','date_as_shown','away_team','away_points','home_team','home_points','game_url','source_url'],
        {'week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','game_url':'Game','source_url':'Schedule'},
        table_id='res-table', filterable=True)}
+<h2>Canonical verified results feed</h2>
+<p class="note"><code>data/results_feed_2026.csv</code> (session f25d6b55, task T52, advances requirement R38) is the single
+canonical feed this project grades everything against: the backtest, the bets, the gates, the correlations and the price-snapshot
+store all consume exactly these {len(results_feed)} rows and nothing else. Every row carries its verification status (aggregates
+reproduce the official standings exactly &mdash; V01 and RF07), the date verified, the check register it was validated against, and
+links to the official game page and schedule page. ROI itself is still not computed anywhere, because no authorised price source
+exists (Flag F07); the feed makes ROI computable the moment a permitted price is connected.</p>
+{search_box('feed-table')}
+{table(results_feed, ['feed_id','week','date_as_shown','away_team','away_points','home_team','home_points','verification_status','verified_date','checks','game_url','source_url'],
+       {'feed_id':'Feed ID','week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','verification_status':'Verification','verified_date':'Verified','checks':'Checks','game_url':'Game','source_url':'Schedule'},
+       table_id='feed-table', filterable=True)}
 <h2>Week 11 — the games the lines cover</h2>
 <p class="note">Scheduled but unplayed: no results exist yet, so no prediction on this page is graded. Six teams are
 on bye (ATL, CLE, GB, LA, NE, SEA).</p>
@@ -1321,6 +1351,27 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
 <li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
+</ul>
+<h2>Model desk: changes on 2026-11-14 (session f25d6b55, tasks T51&ndash;T55)</h2>
+<ul class="findings">
+<li><strong>C09 correction applied (REQ-8a-1, Flag F48).</strong> The calibration row is a regression slope, so its interval and
+p-value now come from the slope's own standard error: slope {ms['calibration_slope']}, 95% CI {ms['calibration_slope_ci'][0]} to
+{ms['calibration_slope_ci'][1]}, p {ms['calibration_slope_p_vs_1']} against slope 1.0. The published register
+(<code>correlations_computed.csv</code>) also carries input A, input B and the owner-rule classification for every row, matching
+the audit; the model-diagnostics rows are labelled as such (DEC-09). Verified against <code>correlation_audit.csv</code> (V21).</li>
+<li><strong>Canonical verified results feed (T52, advances R38).</strong> <code>data/results_feed_2026.csv</code> publishes all
+{ms['results_feed_rows']} official 2026 results with a per-row verification status; every grading path &mdash; backtest, bets,
+gates, correlations, snapshot store &mdash; consumes exactly this feed. ROI remains uncomputable until an authorised price source
+exists (F07). Verified against the graded ledger row by row (V22).</li>
+<li><strong>Price-snapshot store verified and documented (T53).</strong> The extended store's <code>fair_line</code> values are our
+own origin snapshots (walk-forward pre-game predictions for weeks 4&ndash;10, origination-run values for Week 11); the store
+reproduces byte for byte from those declared sources and the derived ML prices recompute from the fair probabilities (V23). The
+fair close is not yet recorded separately; a fixed cadence is proposed (S32). Market open/close cells stay blank (F07/F31/F51),
+and the fair open/close of our own lines is the store's model-side half.</li>
+<li><strong>F44 and F48 resolved; F56 records a citation misreference.</strong> F44 (constant reference total) is resolved by
+documenting the derivation (2 &times; league-average points per team per game, no look-ahead). F48 (C09 formula) is resolved by
+the correction above. F56 records that session ca1ea224's close-out cites F45/F46 for the blank price-store columns while the
+register assigns those IDs to different findings &mdash; the conditions are covered by F07/F31/F51.</li>
 </ul>
 """)
 
