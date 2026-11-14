@@ -388,38 +388,74 @@
  },
  {
   "req_id": "R44",
-  "requirement (from brief)": "Add a price-snapshot store that records opening and closing numbers for every market originated",
-  "status": "Done - store created; opening/closing values blank and flagged",
-  "where_addressed": "price-snapshots.html; data/price_snapshots_extended.csv",
-  "blocker_or_note": "No licensed odds feed or official free source of opening/closing market numbers exists; schema in place, values blank + flagged (F07/F31/F45).",
+  "requirement (from brief)": "Add a price-snapshot store that records opening and closing numbers for every market we originate",
+  "status": "Done for our own lines; market side blank by rule",
+  "where_addressed": "scripts/line_book.py; data/line_book_snapshots.csv (78 rows); docs/line-book.html; data/price_snapshots.csv (c125b2f7) holds the market side",
+  "blocker_or_note": "Opening numbers for all 26 originated games are recorded with the commit that published them and the official kickoff used as the closing deadline. Closing numbers cannot exist yet - no kickoff has passed since the store was built. Market prices stay blank: F07, F16, F51.",
   "row_type": "status",
-  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
  },
  {
   "req_id": "R45",
-  "requirement (from brief)": "Originate the side first, then the total, then the moneyline; publish fair line, market line and difference as separate columns",
-  "status": "Done",
-  "where_addressed": "model-lines.html; data/model_lines_week11.csv",
-  "blocker_or_note": "Origination order fixed (side, total, moneyline); fair_line/market_line/fair_minus_market columns added. Market columns blank (F07) - no official odds source.",
+  "requirement (from brief)": "Add a verified results feed so backtests and ROI can be computed at all",
+  "status": "Done for outcomes; ROI still blocked by the absence of prices",
+  "where_addressed": "scripts/results_feed.py; data/results_feed.csv (163 rows); data/results_feed_grades.csv (78 rows); docs/results-feed.html",
+  "blocker_or_note": "137 settled finals reconcile to the official standings for all 32 clubs; 26 fixtures are recorded as scheduled and unsettled and cannot be graded; all 78 originated markets join to a feed row. Outcome grading is computable; monetary ROI is not (F07, F16).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
  },
  {
   "req_id": "R46",
-  "requirement (from brief)": "Separate signal from staking in the leaderboard",
-  "status": "Done - two blocks; staking return blank and flagged",
-  "where_addressed": "leaderboard.html; data/strategy_leaderboard.csv",
-  "blocker_or_note": "Signal block (skill, CI, p-values) separated from staking block (plan, ROI blank). No prices, so staking ROI not computable (F07/F32/F46).",
+  "requirement (from brief)": "Originate the side first, then the total, then the moneyline",
+  "status": "Done, and enforced by an audit rather than by column order",
+  "where_addressed": "scripts/originate.py; data/origination_contract.csv; data/originated_markets_week11.csv (39 rows); data/origination_audit.csv",
+  "blocker_or_note": "The moneyline is derived from stage 1 and checked against the published number; the side and the total are two readings of ONE fitted system, which is stated on the page instead of being hidden behind an ordering that looks independent.",
   "row_type": "status",
-  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
  },
  {
   "req_id": "R47",
-  "requirement (from brief)": "Define a demotion gate that sends a live strategy back to paper",
-  "status": "Done - G9 defined and armed; no strategy is live",
-  "where_addressed": "validation-gates.html; leaderboard.html; data/gate_results.csv",
-  "blocker_or_note": "G9 demotion gate defined: a live strategy is demoted to paper when any of G1-G8 fails, the skill CI includes zero, or the mean edge turns negative. Live operation not enabled (F17/F42), so every strategy is Paper today.",
+  "requirement (from brief)": "Publish the model's fair line, the market line, and the difference as separate columns",
+  "status": "Done - three separate columns in both the store and the originated view",
+  "where_addressed": "data/originated_markets_week11.csv (model_fair_line / market_line / fair_minus_market); data/price_snapshots.csv and data/line_comparison_week11.csv (c125b2f7)",
+  "blocker_or_note": "fair_minus_market is blank in every row because no market line exists; a fourth column, fair_minus_reference, is populated because both of those numbers belong to this project.",
   "row_type": "status",
-  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+ },
+ {
+  "req_id": "R48",
+  "requirement (from brief)": "Separate signal from staking in the leaderboard so a lucky staking run cannot mask a bad signal",
+  "status": "Done - the split is now populated and checked",
+  "where_addressed": "data/strategy_signal_staking.csv (structure, c125b2f7); scripts/staking_book.py; data/staking_book.csv; data/staking_canary.json; docs/staking-ledger.html",
+  "blocker_or_note": "Rank comes from the signal columns only. The staking block is computed (units, drawdown, streaks, bootstrap interval, run probability) and a divergence canary publishes any case where the two orders disagree: M2 staked +24 units against M1's +22 and still ranks second, which is the split working as intended.",
+  "row_type": "status",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R49",
+  "requirement (from brief)": "Track the depth of the replacement, not just the fact of a replacement",
+  "status": "Partially done - two clubs read directly by this session, more by 8a0bf37e; the rest is blank by rule",
+  "where_addressed": "data/replacement_depth_detail_week10_2026.csv (14 rows, 9 with a verified depth position); data/replacement_depth_week10_2026.csv (availability-led, 8a0bf37e); docs/replacement-depth.html",
+  "blocker_or_note": "levels_down, charted_bodies_at_slot, depth_consumed_in_unit and a shared-backup note are recorded where an official club chart supports them. Five rows are deliberately blank with the reason (F62). Club charts are undated and self-labelled unofficial (F45, F18).",
+  "row_type": "status",
+  "evidence_url": "https://www.patriots.com/team/depth-chart"
+ },
+ {
+  "req_id": "R50",
+  "requirement (from brief)": "Compute correlations only from officially sourced numbers and publish n with each value",
+  "status": "Done, with the gate enforced in code",
+  "where_addressed": "scripts/correlation_register.py; data/correlation_register.csv (9 rows); data/correlation_audit.csv (rule audit, 8a0bf37e); docs/correlations.html",
+  "blocker_or_note": "Every published row names both variables, their kind and their source; two rows are blank because their inputs are not both official (club chart) or have no settled sample yet. n, interval, p and the smallest detectable |r| at 80% power are printed with every value.",
+  "row_type": "status",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
+ },
+ {
+  "req_id": "R51",
+  "requirement (from brief)": "Define a demotion gate that sends a live strategy back to paper",
+  "status": "Defined by c125b2f7 (D1-D7), evaluated here, plus two triggers proposed by this session (D8, D9)",
+  "where_addressed": "data/demotion_gate.csv; scripts/demote.py; data/demotion_evaluation.csv (63 rows); docs/demotion-gates.html",
+  "blocker_or_note": "Each trigger is run against measured numbers for all seven strategies: D1 fires on all four ridge variants, D2 on T1 and R1, D3 on the two short samples, D5 on the unresolved rights and jurisdiction flags, D7 is not computable without prices, and D8/D9 (feed staleness, uncaptured closing windows) are armed and currently clear. No strategy is live, so nothing is demoted today; thresholds remain proposals (F17, F54).",
+  "row_type": "status",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
  }
 ]

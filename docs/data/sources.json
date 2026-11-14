@@ -708,5 +708,65 @@
   "accessed_date": "2026-11-14",
   "used_for": "Spot check: matches 17-19 (RV03).",
   "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-72",
+  "title": "NFL Week 11 Schedule 2026: Games, Times, Matchups",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Kickoff dates and times for all 13 Week 11 games, used as the closing-capture deadlines in the line book and as the unsettled rows of the results feed",
+  "verification_note": "Read again by this session on 2026-11-14: TNF Thu 19 Nov 20:15; eleven Sunday games at 13:00, 16:05, 16:25 and 20:20; SNF MIN at SF 20:20 (Mexico City); MNF Mon 23 Nov 20:15. Matchups and pre-game records match the transcription already on main."
+ },
+ {
+  "source_id": "SRC-73",
+  "title": "2026 Lions Depth Chart (self-labelled 'Unofficial Depth Chart Compiled by Lions Football Communications')",
+  "publisher": "DetroitLions.com (club official site)",
+  "url": "https://www.detroitlions.com/team/depth-chart",
+  "type": "Official club publication, self-labelled unofficial",
+  "accessed_date": "2026-11-14",
+  "used_for": "Chart order for the CB, C, S, WR and RB groups used by data/replacement_depth_detail_week10_2026.csv",
+  "verification_note": "Read in full by this session. The page carries no date, so the fetch time is recorded per row (F45). Kerby Joseph, listed Out on the league report, appears on neither safety row (F62)."
+ },
+ {
+  "source_id": "SRC-74",
+  "title": "New England Patriots Unofficial Depth Chart ('published by the writers of Patriots.com')",
+  "publisher": "Patriots.com (club official site)",
+  "url": "https://www.patriots.com/team/depth-chart",
+  "type": "Official club publication, self-labelled unofficial",
+  "accessed_date": "2026-11-14",
+  "used_for": "Chart order for the OL, CB, RB, S and TE groups used by data/replacement_depth_detail_week10_2026.csv",
+  "verification_note": "Read in full (3 chunks) by this session. Ben Brown appears twice (LG1 and C2); Walter Rouse is the charted backup at both left guard and right guard; Van Roten and Gilliam appear on no row (F62)."
+ },
+ {
+  "source_id": "SRC-75",
+  "title": "Repository history: merge commit of PR #22 (Week 11 lines enter main)",
+  "publisher": "First-party project record",
+  "url": "https://github.com/karagemop466-tech/X2/commit/ee281d8661b5cd63e721c8e4cf68d8236a6ddd22",
+  "type": "Project record",
+  "accessed_date": "2026-11-14",
+  "used_for": "Publication timestamp of data/model_lines_week11.csv for the line book",
+  "verification_note": "Commit date 2026-11-14T18:47:51Z, read after deepening the shallow clone (F60). It is earlier than every Week 11 kickoff, so the Week 11 numbers qualify as opening snapshots."
+ },
+ {
+  "source_id": "SRC-76",
+  "title": "Repository history: merge commit of PR #25 (Week 10 lines enter main)",
+  "publisher": "First-party project record",
+  "url": "https://github.com/karagemop466-tech/X2/commit/3bf69e626abd418b13def9c7517f892c6ca7640f",
+  "type": "Project record",
+  "accessed_date": "2026-11-14",
+  "used_for": "Publication timestamp of data/model_lines_week10_2026.csv",
+  "verification_note": "Commit date 2026-11-14T19:07:22Z, earlier than the Sunday 15 November kickoffs the file predicts, so those 13 games also carry valid opening snapshots. F36 still applies to what the fit was allowed to see."
+ },
+ {
+  "source_id": "SRC-77",
+  "title": "NIST/SEMATECH e-Handbook: sample size and power guidance",
+  "publisher": "NIST (official)",
+  "url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm",
+  "type": "Official statistical methodology",
+  "accessed_date": "2026-11-14",
+  "used_for": "Basis for publishing the smallest correlation a given n could have detected beside every value",
+  "verification_note": "General methodology reference only; no number on this site is taken from it."
  }
 ]

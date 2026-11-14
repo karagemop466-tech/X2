@@ -139,13 +139,15 @@ def build():
             "away_team": first, "home_team": second,
             "away_points": "", "home_points": "", "margin_home": "", "total": "",
             "settlement_state": "SCHEDULED-UNSETTLED",
-            "source_url": g["source_url"], "verified_against_url": SCHED + "week-10",
+            "source_url": SCHED + "10", "verified_against_url": SCHED + "10",
             "verification_ref": "fixture and kickoff window read on the official Week 10 "
                                 "schedule and the live NFL.com injury report (both read " + AS_OF + ")",
             "verified_at": AS_OF,
             "capture_method": "fixture list, not a result: no score exists for this game yet",
-            "notes": "The listed records (pre-game) are on the injury report page; the game is "
-                     "scheduled for 2026-11-15/16 and is deliberately NOT graded.",
+            "notes": "Linked page is the official Week 10 schedule, which lists the fixture; the pre-game "
+                     "records shown on the injury report page (https://www.nfl.com/injuries/, read "
+                     + AS_OF + ") are where the absence of a result was confirmed. The game is scheduled "
+                     "for 2026-11-15/16 and is deliberately NOT graded.",
         })
     # --- Week 11 fixtures
     for s in read("schedule_week11_2026.csv"):

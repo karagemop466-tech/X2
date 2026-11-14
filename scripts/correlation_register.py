@@ -136,37 +136,37 @@ def main():
     marg = [int(r["margin_home"]) for r in feed]
     tot = [int(r["total"]) for r in feed]
     add("CR01", "Do bigger margins come with bigger totals across the season?",
-        "home margin, points", "official-league-record", NFL_SCHED + "week-1",
-        "combined points", "official-league-record", NFL_SCHED + "week-1",
+        "home margin, points", "official-league-record", NFL_SCHED + "1",
+        "combined points", "official-league-record", NFL_SCHED + "1",
         "Pearson r, Fisher-z interval and two-sided p", marg, tot,
         "Blowouts and shootouts are close to unrelated: the scoring level of a game does not "
         "follow from how lopsided it is.")
 
     # ---- forecast-vs-reality, on the walk-forward set
     add("CR02", "Does our originated side line track what actually happened?",
-        "model side line (home margin)", "project-estimate-from-official-record", NFL_SCHED + "week-10",
-        "actual home margin", "official-league-record", NFL_SCHED + "week-10",
+        "model side line (home margin)", "project-estimate-from-official-record", NFL_SCHED + "10",
+        "actual home margin", "official-league-record", NFL_SCHED + "10",
         "Pearson r on the out-of-sample set", [float(r["m1_spread_home"]) for r in bt],
         [float(r["actual_margin"]) for r in bt],
         "This is the correlation that a spread strategy depends on. It is far from 1: the line "
         "carries information, it does not know the score.")
     add("CR03", "Does the naive reference line track what actually happened?",
         "reference side line (point differential + 2.5)", "project-estimate-from-official-record",
-        NFL_SCHED + "week-10", "actual home margin", "official-league-record", NFL_SCHED + "week-10",
+        NFL_SCHED + "10", "actual home margin", "official-league-record", NFL_SCHED + "10",
         "Pearson r on the same games, same rules", [float(r["reference_spread_home"]) for r in bt],
         [float(r["actual_margin"]) for r in bt],
         "The benchmark row. Our line must beat this value, not merely exceed zero, for the model "
         "to justify existing.")
     add("CR04", "Does our originated total track the actual combined score?",
-        "model total", "project-estimate-from-official-record", NFL_SCHED + "week-10",
-        "actual combined points", "official-league-record", NFL_SCHED + "week-10",
+        "model total", "project-estimate-from-official-record", NFL_SCHED + "10",
+        "actual combined points", "official-league-record", NFL_SCHED + "10",
         "Pearson r on the out-of-sample set", [float(r["m1_total"]) for r in bt],
         [float(r["actual_total"]) for r in bt],
         "Totals are dominated by a league-wide level that barely moves, so a high r here is weak "
         "evidence of skill — read it against the constant-total baseline, not against zero.")
     add("CR05", "How redundant are the side line and the total we publish for the same game?",
-        "model side line", "project-estimate-from-official-record", NFL_SCHED + "week-10",
-        "model total", "project-estimate-from-official-record", NFL_SCHED + "week-10",
+        "model side line", "project-estimate-from-official-record", NFL_SCHED + "10",
+        "model total", "project-estimate-from-official-record", NFL_SCHED + "10",
         "Pearson r between our own two published numbers", [float(r["m1_spread_home"]) for r in bt],
         [float(r["m1_total"]) for r in bt],
         "Both readings come from one fitted system, so they are not independent forecasts. This is "
@@ -225,8 +225,8 @@ def main():
     out.append({"corr_id": "CR06", "question": "On a same-game side+total ticket, do the two legs hit together?",
                 "variable_a": "side leg hit (0/1, registered directional rule)",
                 "variable_a_kind": "project-estimate-from-official-record",
-                "variable_a_source": NFL_SCHED + "week-10", "variable_b": "total leg hit (0/1)",
-                "variable_b_kind": "project-estimate-from-official-record", "variable_b_source": NFL_SCHED + "week-10",
+                "variable_a_source": NFL_SCHED + "10", "variable_b": "total leg hit (0/1)",
+                "variable_b_kind": "project-estimate-from-official-record", "variable_b_source": NFL_SCHED + "10",
                 "method": f"phi coefficient on the {n_legs}-ticket 2x2 (both={a}, side only={b}, total only={c}, "
                           f"neither={d}); bootstrap interval, {DRAWS} resamples, seed {SEED}",
                 "n": n_legs, "value": f"{phi:.3f}" if phi is not None else "",
@@ -240,7 +240,7 @@ def main():
                            "The sign of the dependence is stable, its size is not — at this n nothing smaller "
                            "than about 0.55 is resolvable, so the row supports 'do not multiply the two marginals' "
                            "and supports nothing else.",
-                "source_url": NFL_SCHED + "week-10"})
+                "source_url": NFL_SCHED + "10"})
 
     # ---- availability exposure: descriptive, and explicitly not a forecast
     cnt = {}
@@ -258,7 +258,7 @@ def main():
     add("CR07", "Do teams with more Out/Doubtful players have worse season ratings?",
         "Out or Doubtful players on the Week 10 report", "official-league-record", "https://www.nfl.com/injuries/",
         "net team rating from settled 2026 scores", "project-estimate-from-official-record",
-        NFL_SCHED + "week-10", "Pearson r, cross-sectional",
+        NFL_SCHED + "10", "Pearson r, cross-sectional",
         [p[0] for p in pairs], [p[1] for p in pairs],
         "DESCRIPTIVE ONLY and read backwards in time: the Week 10 report follows weeks 1-9, so this is "
         "'do worse teams lose more players', not a forecast. It must not be quoted as evidence that "
@@ -267,7 +267,7 @@ def main():
     # ---- the two correlations the project actually wants, which cannot be computed yet
     add("CR08", "Does the availability deficiency in front of a game predict that game's margin?",
         "Out or Doubtful count, Week 10 report", "official-league-record", "https://www.nfl.com/injuries/",
-        "actual margin of the Week 10 game", "official-league-record", NFL_SCHED + "week-10",
+        "actual margin of the Week 10 game", "official-league-record", NFL_SCHED + "10",
         "Pearson r on games that have been played", [], [],
         "The report describes games scheduled for 2026-11-15/16, which have not been played while this "
         "site was built. The fifteen Sunday/Monday results are the missing half; the register goes live "
@@ -275,7 +275,7 @@ def main():
     add("CR09", "Does replacement depth (how far down the chart the fix reaches) predict the margin?",
         "levels down the depth chart to the first available player", "third-party or club-published chart",
         "https://www.nfl.com/injuries/", "actual margin of the same game", "official-league-record",
-        NFL_SCHED + "week-10", "Pearson r once enough teams have both fields", [], [],
+        NFL_SCHED + "10", "Pearson r once enough teams have both fields", [], [],
         "Rejected twice over: the depth field is club-published and self-labelled unofficial (so it is "
         "not an official-league record), and only two clubs have been transcribed. Both blockers are "
         "listed in Flagged for review; no value is estimated from n=2.")

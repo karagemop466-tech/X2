@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
-  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a><a href="line-book.html">Line book</a><a href="results-feed.html">Results feed</a><a href="origination.html">Origination</a><a href="staking-ledger.html">Staking ledger</a><a href="replacement-depth.html">Replacement depth</a><a href="demotion-gates.html">Demotion gates</a></nav>
 </header>
 <main>
 
@@ -26,10 +26,6 @@
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
 <li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
 <li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the 137 official 2026 results now produces our own spreads and totals for all 13 Week 11 games. Out of sample it is 1.74 points closer to the actual margin per game than a naive published reference line (mean absolute error 9.16 vs 10.89 points over 89 games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is 0.885 (SE 0.28), so the lines are neither over-shy nor over-confident.</li>
-<li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
-<li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — 306 rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F45). The schema is in place for a rights-cleared odds feed to fill it.</li>
-<li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32, F46).</li>
-<li><strong>Demotion gate (new).</strong> A demotion gate (G9) is defined and armed: a live strategy is sent back to paper the moment any of G1–G8 fails, the skill interval includes zero, or the mean edge turns negative. No strategy is live today — the qualification is disputed by the independent cross-check (F42) and wagering and rewards stay disabled — so every strategy is Paper (Flags F17, F42).</li>
 <li><strong>Leaderboard (new).</strong> 7 strategies were pre-registered and graded walk-forward: 4 qualify and 3 reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
 <li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
 <li><strong>Results verified line by line.</strong> Every one of the 137 transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
@@ -80,26 +76,38 @@ See the <a href="decision-path.html">Decision path</a> for the exact question, t
 <li><strong>Results feed.</strong> The second transcription agrees on all 137 games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
 </ul>
-<h2>Model desk: changes on 2026-11-14 (session f25d6b55, tasks T51&ndash;T55)</h2>
+
+<h2>Line book, results feed, origination, staking, depth and gates (session e4e71368, 2026-11-14)</h2>
 <ul class="findings">
-<li><strong>C09 correction applied (REQ-8a-1, Flag F48).</strong> The calibration row is a regression slope, so its interval and
-p-value now come from the slope's own standard error: slope 0.885, 95% CI 0.335 to
-1.435, p 0.682 against slope 1.0. The published register
-(<code>correlations_computed.csv</code>) also carries input A, input B and the owner-rule classification for every row, matching
-the audit; the model-diagnostics rows are labelled as such (DEC-09). Verified against <code>correlation_audit.csv</code> (V21).</li>
-<li><strong>Canonical verified results feed (T52, advances R38).</strong> <code>data/results_feed_2026.csv</code> publishes all
-137 official 2026 results with a per-row verification status; every grading path &mdash; backtest, bets,
-gates, correlations, snapshot store &mdash; consumes exactly this feed. ROI remains uncomputable until an authorised price source
-exists (F07). Verified against the graded ledger row by row (V22).</li>
-<li><strong>Price-snapshot store verified and documented (T53).</strong> The extended store's <code>fair_line</code> values are our
-own origin snapshots (walk-forward pre-game predictions for weeks 4&ndash;10, origination-run values for Week 11); the store
-reproduces byte for byte from those declared sources and the derived ML prices recompute from the fair probabilities (V23). The
-fair close is not yet recorded separately; a fixed cadence is proposed (S32). Market open/close cells stay blank (F07/F31/F51),
-and the fair open/close of our own lines is the store's model-side half.</li>
-<li><strong>F44 and F48 resolved; F56 records a citation misreference.</strong> F44 (constant reference total) is resolved by
-documenting the derivation (2 &times; league-average points per team per game, no look-ahead). F48 (C09 formula) is resolved by
-the correction above. F56 records that session ca1ea224's close-out cites F45/F46 for the blank price-store columns while the
-register assigns those IDs to different findings &mdash; the conditions are covered by F07/F31/F51.</li>
+<li><strong>Line book.</strong> 78 opening snapshots across 26 games are recorded for the markets this project originates,
+each tied to the commit that published it and timed against the official kickoff. Market prices stay blank by rule — an
+opening number for a line we publish is a first-party fact; a bookmaker price is not something we hold (Flags F07, F16).
+No closing window has elapsed yet. <a href="line-book.html">Line book</a></li>
+<li><strong>Results feed.</strong> 163 fixtures: 137 settled finals that reconcile to the official standings for all 32
+clubs with 0 mismatches, and 26 recorded as scheduled and unsettled with no score and no grade. All 78 originated markets
+join to a feed row; 78 are pending because their game has not been played.
+<a href="results-feed.html">Results feed</a></li>
+<li><strong>Origination.</strong> 39 Week 11 markets in side → total → moneyline order, with the moneyline derived from
+the side; 0 of 13 internal consistency checks pass, and the 13 that do not are published rounding (a tenth of a point on
+the score grid), recorded as F57 rather than smoothed away. <a href="origination.html">Origination</a></li>
+<li><strong>Staking kept apart from signal.</strong> Units, drawdown, streaks and a bootstrap interval are computed by a
+separate script into a file the ranking step never reads — which is what makes the separation checkable rather than
+rhetorical. The best run in the family (+24 units) is reached by chance alone in 0.0038 of no-skill simulations, and the
+staking order and the signal order do not coincide. <a href="staking-ledger.html">Staking ledger</a></li>
+<li><strong>Replacement depth.</strong> 14 slot records, 9 carrying a depth position verified against a club chart read
+the same day and 5 left blank with the reason. Two club charts omit a player the league report lists as Out or
+Questionable entirely, which is recorded as a source inconsistency (F62) rather than filled in.
+<a href="replacement-depth.html">Replacement depth</a></li>
+<li><strong>Correlations and gates.</strong> 9 correlation rows with n, interval and the smallest detectable |r|
+published beside every value; 63 demotion trigger evaluations against measured numbers, of which 16 would fire today and
+10 are not computable because the input does not exist. <a href="correlations.html">Correlations</a> ·
+<a href="demotion-gates.html">Demotion gates</a></li>
+<li><strong>Store-level checks.</strong> <code>python3 scripts/verify_stores.py</code> re-runs 11 independent checks over
+every file this session wrote — values against their published sources, timing against the official schedule, market cells
+empty, standings reconciliation, join integrity, reproduced q-values and reproduced correlations. It is the one command
+that says whether the six stores still agree with the records they came from.</li>
+<li><strong>Nothing in this block settles or grades a Week 10 game.</strong> At the read, the Sunday 15 November fixtures
+were still unplayed on the league's own pages, so they are recorded as scheduled and unsettled.</li>
 </ul>
 
 </main>

@@ -392,8 +392,8 @@
   "item": "Week 11 reference total is identical for all 13 games",
   "detail": "data/model_lines_week11.csv column reference_total equals 45.9 for every game. This is the naive reference used for the 'model minus reference' column. It may be an intended league-average constant, but no derivation is recorded in the file. Not changed in this session.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_lines_week11.csv",
-  "status": "Resolved 2026-11-14 (session f25d6b55): derivation documented in scripts/model.py ref_line() and model_summary.json - the reference total is 2 x league-average points per team per game over games strictly before the reference week, constant within a week by construction (45.9 for Week 11). No value changed. Note: session ca1ea224's COORDINATION entry cites F44 for the staking return, which is a different item; see F56 for the misreference record.",
-  "action_requested": "Done: derivation documented where the reviewer asked for it."
+  "status": "needs review",
+  "action_requested": "Reviewer to confirm whether a constant league-average total is intended and document the derivation source."
  },
  {
   "flag_id": "F45",
@@ -428,8 +428,8 @@
   "item": "Calibration row C09 applies a correlation interval to a regression slope",
   "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim).",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Resolved 2026-11-14 (session f25d6b55, REQ-8a-1 applied): C09 in scripts/model.py and data/correlations_computed.csv now uses the slope's own standard error - slope 0.885, 95% CI 0.335-1.435, p 0.6820 against slope 1.0 (p differs from the audit's 0.683 only through the rounded SE the audit used). The register also gains input_A / input_B / owner-rule columns per row (verification V21).",
-  "action_requested": "Applied and verified against data/correlation_audit.csv (V21)."
+  "status": "Open - correction requested (COORDINATION.md, REQ-8a-1)",
+  "action_requested": "Owner of scripts/model.py and data/correlations_computed.csv applies the C09 correction in the next model pass."
  },
  {
   "flag_id": "F49",
@@ -496,11 +496,65 @@
  },
  {
   "flag_id": "F56",
-  "category": "Register inconsistency",
-  "item": "Session ca1ea224's COORDINATION entry cites F45/F46 for the blank price-store columns, but those IDs are different items in the register",
-  "detail": "The COORDINATION close-out of session ca1ea224 (PR #34) says its new flags are F45 (price-snapshot store blank) and F46 (staking return blank). In data/flags.csv, F45-F55 were already taken by session 8a0bf37e for other findings (depth charts undated, LA/LAR naming, hidden scores, C09, correlation inputs, gate G1, price store blanks, weeks label, unchecked availability rows, demotion window, C06 independence), and no F45/F46 row was added by ca1ea224 (data/flags.csv is unchanged in PR #34). The conditions ca1ea224 describes are covered by F07 (no licensed odds feed), F31 (no prop/price data) and F51 (price store rows blank). This row records the misreference so every flag citation on the site resolves to the right item.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md",
-  "status": "Irregularity - open (bookkeeping; no data value affected)",
-  "action_requested": "Owner review: keep the register IDs stable and cite by ID only after checking the register; F44/F48 are resolved 2026-11-14 by session f25d6b55."
+  "category": "Statistical convention",
+  "item": "Benjamini-Hochberg family size is not written down anywhere in the project",
+  "detail": "model.py adjusts over the strategies that HAVE a skill permutation test (six today), so the published q_bh_fdr column is reproducible: recomputing it this session returned 0.0060 / 0.0204 / 0.0483 / 0.0060 / 0.8114 / 0.6068 for M1, M2, M3, M4, T1 and R1 - identical to the published values. Adjusting over all seven leaderboard rows instead multiplies every q by 7/6 and would move no gate outcome today. The choice only needs to be recorded because a reward decision that sits on the boundary between the two conventions must not be decided after the fact.",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
+  "status": "Documented - owner ratification requested before any reward decision",
+  "action_requested": "Ratify the family rule in writing: m = strategies with a pre-registered skill test on the same window (six today), or declare a different one and re-publish every q."
+ },
+ {
+  "flag_id": "F57",
+  "category": "Published rounding",
+  "item": "The model's team-score lines cannot reproduce its own margin or total exactly",
+  "detail": "data/model_lines_week11.csv publishes home and away points rounded to one decimal and the margin and total to two, so 4 of 13 games show a 0.10 gap when the margin or the total is re-derived from the score grid (for example NO at CHI: 29.3 + 22.4 = 51.7 against a published total of 51.8). This is not an arithmetic error - it is rounding - but a consumer that derives a total from the two score columns gets a different number from the one published as the total. The origination audit now publishes all three gaps per game with a stated tolerance of 0.105 for the score grid.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Documented - tolerance published in data/origination_audit.csv",
+  "action_requested": "Publish the un-rounded margin and total (or drop the score grid). Until then no downstream number may be computed from the score columns."
+ },
+ {
+  "flag_id": "F58",
+  "category": "Model specification",
+  "item": "The originated moneyline has no tie term, although the 2026 season contains a tie",
+  "detail": "The derived home probability is norm_cdf(margin / residual spread) and the away probability is its complement, so the two always sum to 1. The verified results feed contains a tie: NYG 27 at WAS 27, week 5 (1 of 137 settled games, about 0.7%). A published probability that silently folds the tie mass into the two sides is a small but real mis-specification, and it is the kind that shows up as a grading argument later ('a tie is not a loss on a moneyline'). The results feed now reports the tie count, and the grade table grades a tie as a tie for the moneyline row.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Open - specification decision needed",
+  "action_requested": "Decide whether to (a) publish a three-way probability (home / tie / away), (b) keep two ways and state that ties are pushed or split, or (c) do nothing and accept a documented 0.7% bias."
+ },
+ {
+  "flag_id": "F59",
+  "category": "Reproducibility",
+  "item": "The backtest file publishes an error column only for M1 and the reference line",
+  "detail": "data/model_backtest.csv carries m1_spread_home, m2/m3/m4_spread_home, m1_total, actual_margin and actual_total, but only m1_error and reference_error. A rolling gate (demotion trigger D1) therefore cannot be run from the published errors for M2, M3, M4 or T1. This session recomputed their absolute errors from the prediction columns and first confirmed that the same recomputation reproduces the published m1_error to within 0.05 points, which is what makes the extension legitimate. That step should not have to be re-derived by every session.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open - fix is one line in scripts/model.py",
+  "action_requested": "Add per-strategy error columns (m2_error ... m4_error, m1_total_error) to model_backtest.csv so any reviewer can re-run the gates without re-implementing the scorer."
+ },
+ {
+  "flag_id": "F60",
+  "category": "Tooling hazard",
+  "item": "The agent clone of this repository is shallow, so provenance commands silently report 'not found'",
+  "detail": "This session's line-book provenance step asks which commit first put a line file on main. In a freshly cloned sandbox the repository is grafted (.git/shallow present) and 'git cat-file -e <older-sha>:<path>' returns failure for commits that are simply not downloaded. Read naively, that looks like a missing merge commit - this session nearly published a flag saying PR #22's merge commit ee281d8 did not exist - when it is only an absent object. After 'git fetch --deepen=200 origin main' the commit resolves and the provenance is: model_lines_week11.csv entered main in ee281d8 (2026-11-14T18:47:51Z) and model_lines_week10_2026.csv in 3bf69e6 (2026-11-14T19:07:22Z).",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Documented - scripts/line_book.py states when it is at the graft boundary",
+  "action_requested": "Any future session that uses commit history as evidence must run 'git fetch --deepen' (or a full fetch) first, and must say which boundary it checked."
+ },
+ {
+  "flag_id": "F61",
+  "category": "Coordination",
+  "item": "Open PR #14 is not on the board, is stale against main, and re-uses flag IDs F31 to F33",
+  "detail": "PR #14 (branch arena/25d6114f-x2, opened 2026-11-14T18:17Z, last touched 18:22Z) adds a verification ledger, gamebook starter evidence and signal/skill/correlation/decision registers. It does not appear in the Sessions table or the task board on main; 'git merge-base --is-ancestor' shows it does not contain main's tip; its data/flags.csv has 34 lines against main's 55 and its requirements end at R20; and its own new flags are numbered F31-F33, which main already uses for three different items. Some of its content (the gamebook use restriction, the point that the verification ledger is not independent of the transcription it checks) is worth keeping. This session did not merge, close or renumber it - that is the owner's call.",
+  "source_url": "https://github.com/karagemop466-tech/X2/pull/14",
+  "status": "Needs review - owner decision",
+  "action_requested": "Decide: close it, or ask for a rebase onto main with its flags renumbered from F56 onward and its task IDs registered on the board."
+ },
+ {
+  "flag_id": "F62",
+  "category": "Source inconsistency",
+  "item": "Three players on the Week 10 injury report appear on no row of their own club's depth chart",
+  "detail": "Read side by side on 2026-11-14: the league report lists Kerby Joseph (DET, S, knee, Out, did not participate) but the Lions' chart publishes only two safety rows - Chuck Clark alone, and Brian Branch with Christian Izien - with no Joseph. Greg Van Roten (NE, G, hamstring, Questionable) is on the league report and on no guard row of the Patriots' chart. Reggie Gilliam (NE, FB, knee, Questionable) is on the report; the Patriots chart has no fullback row at all. A club chart is an alignment snapshot, not an injury record, so an omission means 'this source cannot place him', not 'he is fine'. The three rows in data/replacement_depth_detail_week10_2026.csv are left blank with this reason instead of being filled from a third-party chart.",
+  "source_url": "https://www.patriots.com/team/depth-chart",
+  "status": "Documented - fields left blank, do not infer",
+  "action_requested": "Confirm with the owner that leaving depth fields blank on a chart omission is the preferred behaviour over sourcing the rank from a third-party chart (which the official-source rule rejects)."
  }
 ]

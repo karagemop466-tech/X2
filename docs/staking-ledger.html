@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Staking ledger · NFL Research Dashboard</title>
+<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Data as of 2026-11-14.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html">Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a><a href="line-book.html">Line book</a><a href="results-feed.html">Results feed</a><a href="origination.html">Origination</a><a href="staking-ledger.html" class=active aria-current=page>Staking ledger</a><a href="replacement-depth.html">Replacement depth</a><a href="demotion-gates.html">Demotion gates</a></nav>
+</header>
+<main>
+
+<h1>Staking ledger</h1>
+<p class="note">The brief keeps <strong>signal</strong> and <strong>staking</strong> apart so a lucky run of bets cannot
+disguise a bad forecast. That only works if the two are computed in different places, so this block is produced by its own
+script and written to a file the ranking step never reads. The signal rank below is copied through from the leaderboard;
+nothing to its right can move it.</p>
+<div class="tiles"><div class="tile"><div class="num">7</div><div class="lbl">strategies staked</div></div><div class="tile"><div class="num">24</div><div class="lbl">best observed run (units)</div></div><div class="tile"><div class="num">0.0038</div><div class="lbl">P(chance alone gets that run)</div></div><div class="tile"><div class="num">7</div><div class="lbl">signal/staking divergences</div></div></div>
+<h2>1. Assumptions, stated in the file</h2>
+<p class="note"><strong>Payout:</strong> flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price). Every unit figure here is a units-against-the-reference-line number under
+that assumption — not a return, not an ROI, and not comparable with a bookmaker result, because there is no price (Flags
+F07, F16, F51). A <code>roi_units_pct</code> column is published only because the payout is declared in the same row: it is
+units divided by stakes under that flat assumption, nothing more. Moneyline rows would need a price to settle and are
+excluded from the unit ledger entirely.</p>
+<h2>2. Signal rank against staking outcome</h2>
+<div class="tablewrap"><table class="data"><thead><tr><th>ID</th><th>Strategy</th><th>Market</th><th>Signal rank</th><th>Signal skill (pts)</th><th>BH q</th><th>Bets</th><th>W</th><th>L</th><th>Push</th><th>Hit rate</th><th>p vs coin (exact)</th><th>Units</th><th>Units ROI*</th><th>Units CI low</th><th>Units CI high</th><th>Max drawdown</th><th>Best streak</th><th>Worst streak</th><th>Mean edge (pts)</th><th>Coverage</th><th>Staking rank</th><th>Divergence</th><th>Canary</th><th>Payout assumption</th><th>Source</th></tr></thead><tbody><tr><td>M1</td><td>Ridge attack/defence, uniform weights</td><td>Game side (spread)</td><td>1</td><td>1.74</td><td>0.0060</td><td>50</td><td>36</td><td>14</td><td>0</td><td>0.720</td><td>0.00130</td><td>+22</td><td>+44.0%</td><td>+10</td><td>+34</td><td>-6</td><td>18</td><td>4</td><td>8.31</td><td>50/89 = 0.56</td><td>2</td><td>-1</td><td>WATCH — one slot of divergence (staking did better or worse than the signal rank); the split is working, no action</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-4" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>M2</td><td>Ridge attack/defence, 3-week recency half-life</td><td>Game side (spread)</td><td>2</td><td>1.59</td><td>0.0204</td><td>58</td><td>41</td><td>17</td><td>0</td><td>0.707</td><td>0.00112</td><td>+24</td><td>+41.4%</td><td>+10</td><td>+36</td><td>-5</td><td>14</td><td>4</td><td>7.92</td><td>58/89 = 0.65</td><td>1</td><td>+1</td><td>WATCH — one slot of divergence (staking did better or worse than the signal rank); the split is working, no action</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-4" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>M3</td><td>Ridge attack/defence, heavy shrinkage</td><td>Game side (spread)</td><td>3</td><td>1.40</td><td>0.0483</td><td>58</td><td>39</td><td>19</td><td>0</td><td>0.672</td><td>0.00596</td><td>+20</td><td>+34.5%</td><td>+6</td><td>+34</td><td>-7</td><td>10</td><td>4</td><td>6.87</td><td>58/89 = 0.65</td><td>3</td><td>+0</td><td>OK — staking order matches the signal order</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-4" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>M4</td><td>Ridge attack/defence, light shrinkage</td><td>Game side (spread)</td><td>4</td><td>1.38</td><td>0.0060</td><td>44</td><td>31</td><td>13</td><td>0</td><td>0.705</td><td>0.00478</td><td>+18</td><td>+40.9%</td><td>+6</td><td>+30</td><td>-7</td><td>18</td><td>5</td><td>7.67</td><td>44/89 = 0.49</td><td>4</td><td>+0</td><td>OK — staking order matches the signal order</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-4" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>T1</td><td>Model total vs league-average total</td><td>Game total</td><td>5</td><td>-0.11</td><td>0.8114</td><td>46</td><td>24</td><td>22</td><td>0</td><td>0.522</td><td>0.44150</td><td>+2</td><td>+4.3%</td><td>-12</td><td>+16</td><td>-4</td><td>4</td><td>3</td><td>-0.14</td><td>46/89 = 0.52</td><td>5</td><td>+0</td><td>OK — staking order matches the signal order</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-4" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>R1</td><td>M1 filtered to post-bye spots</td><td>Game side (spread)</td><td>6</td><td>-0.93</td><td>0.6068</td><td>10</td><td>5</td><td>5</td><td>0</td><td>0.500</td><td>0.62305</td><td>+0</td><td>+0.0%</td><td>-6</td><td>+6</td><td>-5</td><td>5</td><td>5</td><td>-0.63</td><td>10/89 = 0.11</td><td>6</td><td>+0</td><td>OK — staking order matches the signal order</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-6" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P1</td><td>Same-game side + total parlay (2 legs)</td><td>Parlay</td><td>7</td><td class="blank">—</td><td class="blank">—</td><td>24</td><td>5</td><td>19</td><td>0</td><td>0.208</td><td>0.99923</td><td>-14</td><td>-58.3%</td><td>-22</td><td>-6</td><td>-14</td><td>2</td><td>5</td><td>7.66</td><td>24/89 = 0.27</td><td>7</td><td>+0</td><td>OK — staking order matches the signal order</td><td>flat 1 unit won / 1 unit lost, graded against the project reference line (not a market price)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-4" target="_blank" rel="noopener">Source ↗</a></td></tr></tbody></table></div>
+<h2>3. The luck canary</h2>
+<p class="note">A best-of-family run this large is uncommon under no skill, but the signal gates — not the run — still decide promotion.</p>
+<p class="note">The simulation asks the honest version of "could this run be luck": each strategy keeps its own bet count
+and hit rate and the sequence is redrawn (5000 draws, seed 20261114), so it measures what <em>no skill at all</em> would produce —
+and it takes the maximum over the whole family, which is where selection bias lives. Under that model the best run among
+the 7 strategies averages 8.71 units and its 95th percentile is 16; the observed best is 24, reached or beaten by chance in
+0.0038 of draws. It assumes independence across strategies, which is conservative here because the strategies share games, so
+the true spread of lucky runs is wider and this probability is if anything understated.</p>
+<h2>4. Why the split is structural, not cosmetic</h2>
+<ul class="findings">
+<li><strong>The order does not follow the money.</strong> M2 ranks 2 on signal and 1 on units won: the staking column
+moved and the rank did not. Had the run decided the order, a two-unit difference in a coin-flip sequence would have moved
+a strategy up the board. The divergence column reports this as a watch item rather than silently absorbing it.</li>
+<li><strong>Uncertainty is shown, not hidden.</strong> Units carry a bootstrap interval over the actual sequence
+(5,000 redraws, a fixed seed, and the file is byte-identical on a re-run); the win-probability interval is the exact
+one-sided binomial rather than a normal approximation; and the number of decided bets is printed on every row, so a
+10-bet record cannot be read as a settled one — R1 (10 bets) and P1 (24) are the two that most need that warning.</li>
+<li><strong>Nothing here demotes anything.</strong> Demotion is a separate gate with its own thresholds, on
+<a href="demotion-gates.html">Demotion gates</a>.</li>
+</ul>
+
+</main>
+<footer>
+  <p>Every value on this site links to an official source or is marked blank/unverified; project implementation claims link to the repository.
+  Research only. This is not betting advice. Official Japan-specific guidance says online sports betting accessed from Japan is prohibited; this is not a legal opinion for other jurisdictions or contest/reward designs (see Flagged for review, F09).</p>
+  <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
