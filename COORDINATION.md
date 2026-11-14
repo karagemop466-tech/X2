@@ -47,6 +47,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `c125b2f7` | `arena/c125b2f7-x2` | Session c125b2f7 (2026-11-14): claimed T39 and T40 (T37 was taken by 4c5bc504 after my claim; renumbered, see log) on the brief for the price-snapshot store, fair/market/difference view, signal-vs-staking split and demotion gate. Integration of its own work is recorded in the log below. |
 | `3988bdab` | `arena/3988bdab-x2` | **Current session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
 | `4c5bc504` | `arena/4c5bc504-x2` | **Session 4c5bc504 (claimed T37, 2026-11-14).** Post-merge re-verification of `main` @ `9e90dd3` (all checks re-run, live Pages build confirmed, Week 10 calendar checked against the official schedule) and board reconciliation. Touches `COORDINATION.md` only. |
+| `ef971991` | `arena/ef971991-x2` | **Session ef971991 (claimed T41–T49, 2026-11-14).** Final integration for the remaining brief gaps: replacement-depth tracking (R43), F44 reference-total derivation, F43 tier-label mitigation, the 4c5bc504 "weeks 1-10" wording fix, results-feed framing, correlation n enforcement, decision-support suggestions/questions, a live verification pass, and the PR/merge/Pages record. Branch is the session-fixed `arena/ef971991-x2` (no `session-<id>/<task>` branch, as session 10a76288 noted). |
 
 ## Task board (combined — all sessions)
 
@@ -896,3 +897,22 @@ No new feature was requested in this session. The open decisions on the board re
   (39 rows, all blank and UNVERIFIED), the fair-line table, the signal-only ranking and the proposed demotion rules.
 - **Tasks T39 and T40:** done. Nothing from this session is left unclaimed or half-merged. The PR-number record is added here
   as its own follow-up change.
+
+## 2026-11-14 · session ef971991 · claim (T41–T49)
+
+**Branch:** `arena/ef971991-x2` · **Base:** `origin/main` @ `12162d6` (PR #30) · **Status:** in progress.
+
+Claimed 2026-11-14, immediately after PRs #27–#30 landed (sessions 4c5bc504, c125b2f7 closed). T37–T40 are already
+taken and done; these are the remaining gaps in the brief. File scopes are non-overlapping with any open claim.
+
+| ID | Task | Status | Owner | Files in scope |
+|----|------|--------|-------|----------------|
+| T41 | Replacement-depth tracking: record the depth of the replacement (2nd/3rd/4th string), not just the fact of a replacement (R43) — deliver club-chart-verified rows, blank + flag where no chart confirms | in progress | ef971991 | `data/replacement_depth.csv` (new), `data/requirements.csv` (R43), `scripts/build.py` (deficiency page section), generated `docs/` |
+| T42 | Resolve F44: document and verify the derivation of the constant Week 11 reference total (45.9) | in progress | ef971991 | `data/flags.csv` (F44), `scripts/build.py` (model-lines + markets notes), generated `docs/` |
+| T43 | Mitigate F43: display reward tiers only as "proposed — not offered (blocked by R36, under review F43)" on the leaderboard; owner decision stays open | in progress | ef971991 | `scripts/build.py` (leaderboard/strategy-lab labels), `data/flags.csv` (F43 status note) |
+| T44 | Apply 4c5bc504's integration request: fix "weeks 1-10" wording to "weeks 1–9 complete, plus the Week 10 Thursday game" | in progress | ef971991 | `README.md`, `scripts/build.py` (cross-check labels), generated `docs/` |
+| T45 | Results-feed framing (R38) + correlation provenance enforcement (official numbers only, n published per value) | in progress | ef971991 | `scripts/build.py` (results page + build checks), generated `docs/` |
+| T46 | Decision-support suggestions (site improvements, S29+) and missing-information questions (Q43+) with review-matrix rows | in progress | ef971991 | `data/suggestions.csv`, `data/suggestion_review.csv`, `data/questions.csv` |
+| T47 | Live verification pass (Week 11 slate, Week 10 finals, results-feed spot checks), recorded on the Verification page | in progress | ef971991 | `scripts/build.py` (verification section), `COORDINATION.md` |
+| T48 | Executive summary + landing refresh covering the market tables, replacement depth and the verified results feed | in progress | ef971991 | `scripts/build.py` (exec summary + index), generated `docs/` |
+| T49 | Final integration: re-verify combined data, run every build/check, PR to `main`, merge, confirm Pages, record here | in progress | ef971991 | `README.md`, `COORDINATION.md`, generated `docs/`, PRs |
