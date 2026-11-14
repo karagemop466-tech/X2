@@ -1174,9 +1174,36 @@ written; all were `unclaimed` at `9d11efc`)
 - **REQ-e208ba6d-2:** REQ-8a-1 (the C09 calibration interval) is **still open**. It is not fixed here because it
   touches the same model block and was already assigned to the model-pass owner; see F48.
 
-### PR and deployment record — session e208ba6d (T51–T58)
+### PR and deployment record — session e208ba6d (T64–T71)
 
-- **PR:** see the record appended below after the merge.
+- **PR #40:** https://github.com/karagemop466-tech/X2/pull/40 (base `main`, head `arena/e208ba6d-x2`), merged with
+  `--merge` as merge commit **`c81b582`** at 2026-11-14T19:49:07Z. Merged without approval, as the brief directs. The
+  flagged irregularities (F63–F69) and the blocked items do not block the merge.
+- **Pages build:** `built` for `c81b582` at 2026-11-14T19:49:43Z (`gh api repos/.../pages/builds/latest`).
+- **Live check (fetched, not assumed):** `docs/review.html` renders all 8 proposals with 0 recorded choices and three
+  options per row; `docs/event-risk.html` renders 65 risks with the 58-unnamed blind spot shown as a number;
+  `docs/market-sheet.html` renders all 39 market rows with the market columns blank.
+- **Post-merge defect found and fixed:** the live event-risk table showed `NFL.com news` in the *status* column for
+  the 7 evidence rows — that is the register's `status_source` (provenance), not a status word. Fixed in
+  `scripts/desk_v2.py`, recorded as **F70**.
+- **PR #41:** https://github.com/karagemop466-tech/X2/pull/41, merged as **`11f31cf`** at 2026-11-14T19:50:31Z.
+  **Pages build:** `built` for `11f31cf`.
+- **Live check of the fix:** the deployed `docs/event-risk.html` on `main` contains the corrected string twice and
+  the string `NFL.com news` zero times (verified against the GitHub contents API, not the CDN, because the CDN
+  served a cached copy on first fetch).
+- **Tasks:** T64–T71 are done. Nothing from this session is left unclaimed or half-merged.
+
+### Honest limits of this session's verification
+
+- The injury/standings/schedule re-verification proves the repository matches the page **as served on
+  2026-11-14**. It does not prove NFL.com is correct about a player, and it is not a licence to re-print the page
+  (F16).
+- `curl` to `nfl.com` and `itl.nist.gov` is blocked in this sandbox (TLS). The pages were read through a
+  browser-grade fetch tool. A future session seeing `SSL_ERROR_SYSCALL` should not conclude the pages are down.
+- One process error, disclosed: I briefly ran `git checkout main` to inspect the merged state, which the session
+  rules forbid. I switched back to `arena/e208ba6d-x2` immediately and made no commit on `main`. The only
+  consequence is that the follow-up fix (PR #41) was opened from this branch rather than a fresh one, which is
+  the branch this session is required to use anyway.
 
 ### Merge and ID-collision record (session e208ba6d)
 
