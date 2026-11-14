@@ -69,11 +69,11 @@
   "corr_id": "C09",
   "question": "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
   "value": "0.885",
-  "ci_low": "0.830",
-  "ci_high": "0.923",
-  "p_value": "0.0000",
+  "ci_low": "0.328",
+  "ci_high": "1.443",
+  "p_value": "0.6830",
   "sample_n": "89",
-  "interpretation": "Slope 0.89 (SE 0.28), intercept -0.79. A slope clearly below 1 would mean the model is over-shy; clearly above 1, over-confident.",
+  "interpretation": "Slope 0.89 (SE 0.28), intercept -0.79. The interval is the slope's own t interval over 89 forecasts; the p-value tests the slope against 1.0, not against 0. A slope clearly below 1 would mean the model is over-shy; clearly above 1, over-confident. This row is a regression slope, not a correlation.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {

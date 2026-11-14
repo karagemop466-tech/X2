@@ -37,6 +37,10 @@
  "strategies_tested": 7,
  "qualified_strategies": 4,
  "tier1_strategies": 3,
+ "lookahead_audit_pass": true,
+ "lookahead_audit_weeks": 7,
+ "neutral_site_games_modelled": 0,
+ "neutral_site_rows_blank": 137,
  "injury_rows": 345,
  "injury_teams": 28,
  "seed": 20261114
