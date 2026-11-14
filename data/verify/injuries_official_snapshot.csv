@@ -1,0 +1,346 @@
+game_no,team_abbr,player,position,injury,practice,game_status
+1,WAS,John Bates,TE,-,FP,-
+1,WAS,Treylon Burks,WR,-,DNP,-
+1,WAS,Jayden Daniels,QB,-,FP,-
+1,WAS,Matt Gulbin,C,-,FP,-
+1,WAS,Chig Okonkwo,TE,-,FP,-
+1,WAS,Lucas Patrick,C,Concussion,DNP,Out
+1,WAS,Amik Robertson,CB,-,LP,-
+1,WAS,Shy Tuttle,DT,-,FP,-
+1,WAS,Colson Yankoff,TE,Knee,DNP,Out
+1,NYG,Abdul Carter,LB,-,FP,-
+1,NYG,Jermaine Eluemunor,T,-,FP,-
+1,NYG,Malik Harrison,LB,Groin,LP,Questionable
+1,NYG,Colton Hood,CB,-,FP,-
+1,NYG,Theo Johnson,TE,-,FP,-
+1,NYG,Charlie Jones,WR,-,FP,-
+1,NYG,J.J. McCarthy,QB,-,FP,-
+1,NYG,Darnell Mooney,WR,-,FP,-
+1,NYG,Malik Nabers,WR,-,FP,-
+1,NYG,Cam Skattebo,RB,-,FP,-
+1,NYG,Andrew Thomas,T,-,FP,-
+2,NE,Ben Brown,C,Knee,DNP,Out
+2,NE,A.J. Brown,WR,"Ankle, Knee",LP,Questionable
+2,NE,Kevin Byard,S,Chest,FP,Questionable
+2,NE,Carlton Davis III,CB,Knee,DNP,Out
+2,NE,Reggie Gilliam,FB,Knee,LP,Questionable
+2,NE,TreVeyon Henderson,RB,Illness,DNP,Out
+2,NE,Hunter Henry,TE,-,LP,-
+2,NE,Cameron Latu,TE,Back,LP,Questionable
+2,NE,Drake Maye,QB,-,FP,-
+2,NE,Morgan Moses,T,-,FP,-
+2,NE,Walter Rouse,T,Concussion,LP,Questionable
+2,NE,Brenden Schooler,S,Hamstring,LP,Questionable
+2,NE,Rhamondre Stevenson,RB,Knee,LP,Questionable
+2,NE,Greg Van Roten,G,Hamstring,FP,Questionable
+2,NE,Charles Woods,CB,Hamstring,FP,Questionable
+2,DET,Brian Branch,S,-,FP,-
+2,DET,Jared Goff,QB,-,FP,-
+2,DET,Kerby Joseph,S,Knee,DNP,Out
+2,DET,Cade Mays,C,Ankle,DNP,Out
+2,DET,D.J. Reed,CB,Hip,DNP,Out
+2,DET,Jacob Saylors,RB,-,FP,-
+2,DET,Amon-Ra St. Brown,WR,Rib,LP,Questionable
+2,DET,Sione Vaki,RB,Ankle,LP,Questionable
+2,DET,DJ Wonnum,DE,-,FP,-
+3,KC,Jeffrey Bassa,LB,-,FP,-
+3,KC,Mansoor Delane,CB,Shoulder,FP,Questionable
+3,KC,Justin Fields,QB,-,FP,-
+3,KC,Jaden Hicks,S,-,FP,-
+3,KC,Travis Kelce,TE,-,FP,-
+3,KC,Patrick Mahomes,QB,-,FP,-
+3,KC,Jaylon Moore,T,Ankle,DNP,Out
+3,KC,Omarr Norman-Lott,DT,Knee,LP,Out
+3,KC,Jaydn Ott,RB,Hamstring,LP,Questionable
+3,KC,Rashee Rice,WR,-,FP,-
+3,KC,Kenneth Walker III,RB,Groin,DNP,Questionable
+3,KC,Peter Woods,DT,Neck,DNP,Out
+3,KC,Xavier Worthy,WR,-,FP,-
+3,ATL,Zachariah Branch,WR,Hamstring,DNP,Out
+3,ATL,Kendal Daniels,LB,-,FP,-
+3,ATL,Divine Deablo,LB,Forearm,DNP,Doubtful
+3,ATL,Gervon Dexter Sr.,DT,Illness,LP,Questionable
+3,ATL,Jake Matthews,T,-,LP,-
+3,ATL,Liam McCullough,LS,-,DNP,-
+3,ATL,James Pearce Jr.,DE,Back,LP,Questionable
+3,ATL,Za'Darius Smith,DE,-,FP,-
+3,ATL,Jawaan Taylor,T,-,LP,-
+3,ATL,Cameron Thomas,DE,-,FP,-
+3,ATL,Josh Woods,LB,Ankle,FP,Questionable
+4,MIN,Jordan Addison,WR,Thumb,LP,Questionable
+4,MIN,Blake Cashman,LB,Concussion,LP,Out
+4,MIN,Christian Darrisaw,T,-,DNP,-
+4,MIN,T.J. Hockenson,TE,"Wrist, Chest",DNP,Out
+4,MIN,Tyrion Ingram-Dawkins,DT,Ankle,DNP,Out
+4,MIN,Theo Jackson,S,-,FP,-
+4,MIN,Jauan Jennings,WR,Calf,DNP,Out
+4,MIN,Josh Metellus,S,Shoulder,LP,Questionable
+4,MIN,Kyler Murray,QB,Hamstring,DNP,Out
+4,MIN,Harrison Smith,S,-,LP,-
+4,MIN,Kyle Van Noy,LB,Calf,LP,Questionable
+4,MIN,Jay Ward,S,-,FP,-
+4,MIN,Carson Wentz,QB,-,FP,-
+4,GB,Aaron Banks,G,-,LP,-
+4,GB,Chris Brooks,RB,Ankle,LP,Questionable
+4,GB,Javon Bullard,S,"Ankle, Knee",LP,Questionable
+4,GB,Zaire Franklin,LB,Shin,DNP,Doubtful
+4,GB,Travis Glover,G,Knee,LP,Questionable
+4,GB,Ty'Ron Hopper,LB,-,FP,-
+4,GB,Josh Jacobs,RB,Finger,DNP,Out
+4,GB,Xavier McKinney,S,Foot,LP,Questionable
+4,GB,Bo Melton,WR,-,FP,-
+4,GB,Skyy Moore,WR,Ankle,LP,Questionable
+4,GB,Micah Parsons,LB,"Knee, Illness",LP,Out
+4,GB,Sean Rhyan,C,Ankle,DNP,Out
+4,GB,Trey Smack,K,-,FP,-
+4,GB,Lukas Van Ness,LB,Back,LP,Questionable
+4,GB,Josh Whyle,TE,Concussion,DNP,Out
+4,GB,Savion Williams,WR,-,LP,-
+4,GB,Kevin Zeitler,G,"Ankle, Triceps",DNP,Questionable
+5,JAX,Jessie Bates,S,Not injury related - resting player,LP,Out
+5,JAX,Ezra Cleveland,G,-,FP,-
+5,JAX,Branson Combs,LB,-,FP,-
+5,JAX,Jordan Davis,DT,Not injury related - resting player,LP,Out
+5,JAX,BJ Green II,DE,Forearm,FP,Out
+5,JAX,Robert Hainsey,C,Concussion,LP,Questionable
+5,JAX,Antonio Johnson,S,-,LP,-
+5,JAX,Jakobi Meyers,WR,-,LP,-
+5,JAX,Chris Rodriguez Jr.,RB,-,LP,-
+5,JAX,Bhayshul Tuten,RB,-,LP,-
+5,JAX,Travon Walker,DE,-,LP,-
+5,TEN,Cody Barton,LB,Concussion,DNP,Out
+5,TEN,John Franklin-Myers,DE,-,FP,-
+5,TEN,Marcus Harris,CB,-,FP,-
+5,TEN,Anthony Hill Jr.,LB,Neck,DNP,Out
+5,TEN,Jaylon Jones,CB,-,FP,-
+5,TEN,JC Latham,T,-,FP,-
+5,TEN,Tony Pollard,RB,-,FP,-
+5,TEN,Peter Skoronski,G,Hamstring,DNP,Out
+5,TEN,Tyjae Spears,RB,Knee,FP,Questionable
+5,TEN,Carnell Tate,WR,Shoulder,DNP,Out
+5,TEN,Tommy Townsend,P,"Knee, Achilles",DNP,Out
+5,TEN,Kevin Winston Jr.,S,-,FP,-
+6,BUF,Alec Anderson,G,-,FP,-
+6,BUF,Christian Benford,CB,Wrist,FP,Questionable
+6,BUF,Terrel Bernard,LB,-,DNP,-
+6,BUF,Spencer Brown,T,Ankle,DNP,Doubtful
+6,BUF,Dion Dawkins,T,-,FP,-
+6,BUF,Sam Franklin Jr.,S,Shoulder,LP,Questionable
+6,BUF,Greg Gaines,DT,-,FP,-
+6,BUF,Jordan Hancock,CB,Hamstring,FP,Questionable
+6,BUF,Dalton Kincaid,TE,-,FP,-
+6,BUF,Connor McGovern,C,-,FP,-
+6,BUF,Ed Oliver,DE,-,DNP,-
+6,BUF,Ar'maj Reed-Adams,G,-,FP,-
+6,BUF,T.J. Sanders,DE,-,FP,-
+6,BUF,Tyrell Shavers,WR,Knee,FP,Questionable
+6,NYJ,Jarvis Brownlee Jr.,CB,Illness,LP,Questionable
+6,NYJ,Omar Cooper Jr.,WR,Ankle,FP,Questionable
+6,NYJ,Adonai Mitchell,WR,Knee,FP,Questionable
+6,NYJ,Joseph Ossai,DE,Ankle,FP,Questionable
+6,NYJ,VJ Payne,S,Knee,FP,Questionable
+6,NYJ,Harrison Phillips,DT,Ankle,FP,Questionable
+6,NYJ,Trevin Wallace,LB,Groin,DNP,Out
+6,NYJ,Garrett Wilson,WR,Concussion,FP,Questionable
+6,NYJ,Nahshon Wright,CB,Back,FP,Questionable
+7,MIA,Tucker Addington,LS,-,LP,-
+7,MIA,Kaytron Allen,RB,-,FP,-
+7,MIA,Darrell Baker Jr.,CB,Knee,FP,Questionable
+7,MIA,Chris Bell,WR,Knee,DNP,Doubtful
+7,MIA,Aaron Brewer,C,Concussion,DNP,Out
+7,MIA,Malik Herring,DE,-,FP,-
+7,MIA,Will Kacmarek,TE,-,FP,-
+7,MIA,Michael Taaffe,S,-,FP,-
+7,MIA,Dante Trader Jr.,S,-,FP,-
+7,MIA,Jared Wayne,WR,Quadricep,DNP,Out
+7,MIA,Jaylen Wright,RB,-,FP,-
+7,IND,Mo Alie-Cox,TE,Groin,DNP,Out
+7,IND,CJ Allen,LB,-,FP,-
+7,IND,Jaylon Carlies,LB,Neck,DNP,Out
+7,IND,Akeem Davis-Gaither,LB,Knee,DNP,Out
+7,IND,A.J. Haulcy,S,-,FP,-
+7,IND,Arden Key,DE,Hamstring,FP,Questionable
+7,IND,Will Mallory,TE,Hamstring,LP,Questionable
+7,IND,Luke Rhodes,LS,Hamstring,DNP,Out
+7,IND,Grover Stewart,DT,-,FP,-
+7,IND,Jonathan Taylor,RB,-,FP,-
+7,IND,Jerry Tillery,DT,Calf,DNP,Out
+7,IND,Jalen Travis,T,Knee,DNP,Out
+7,IND,Justin Walley,CB,-,FP,-
+7,IND,Charvarius Ward,CB,-,FP,-
+8,CAR,Jonathon Brooks,RB,Groin,LP,Doubtful
+8,CAR,Brady Christensen,G,Hamstring,FP,Questionable
+8,CAR,Trevor Etienne,RB,-,FP,-
+8,CAR,Chuba Hubbard,RB,-,FP,-
+8,CAR,Lee Hunter,DT,-,FP,-
+8,CAR,Mike Jackson,CB,Groin,LP,Doubtful
+8,CAR,Will Lee III,CB,Hamstring,LP,Questionable
+8,CAR,Xavier Legette,WR,Knee,FP,Questionable
+8,CAR,Damien Lewis,G,-,FP,-
+8,CAR,Bobby Okereke,LB,Foot,DNP,Out
+8,CAR,Jaelan Phillips,LB,Hamstring,FP,Questionable
+8,CAR,Torricelli Simpkins III,G,-,FP,-
+8,NO,Kelvin Banks Jr.,T,-,FP,-
+8,NO,CJ Donaldson,RB,Shoulder,DNP,Out
+8,NO,David Edwards,G,-,FP,-
+8,NO,Martin Emerson,CB,Shin,LP,Questionable
+8,NO,Travis Etienne,RB,Hamstring,FP,Questionable
+8,NO,Noah Fant,TE,-,FP,-
+8,NO,Taliese Fuaga,T,Knee,DNP,Out
+8,NO,Alvin Kamara,RB,-,FP,-
+8,NO,Erik McCoy,C,Biceps,DNP,Out
+8,NO,Christen Miller,DT,Knee,DNP,Out
+8,NO,Asim Richards,T,-,FP,-
+8,NO,Quincy Riley,CB,-,FP,-
+9,HOU,Azeez Al-Shaair,LB,"Groin, Not injury related - personal matter",DNP,Out
+9,HOU,Will Anderson Jr.,DE,Ankle,DNP,Questionable
+9,HOU,Reed Blankenship,S,-,FP,-
+9,HOU,Trent Brown,T,"Wrist, Illness",DNP,Questionable
+9,HOU,Tank Dell,WR,-,FP,-
+9,HOU,Blake Fisher,T,-,FP,-
+9,HOU,Marvin Harrison Jr.,WR,Hamstring,DNP,Out
+9,HOU,Jacob Hummel,LB,Groin,FP,Questionable
+9,HOU,Danielle Hunter,DE,Hamstring,DNP,Out
+9,HOU,Brevin Jordan,TE,"Finger, Foot",DNP,Out
+9,HOU,Woody Marks,RB,-,FP,-
+9,HOU,David Montgomery,RB,Groin,FP,Questionable
+9,HOU,Keylan Rutledge,G,"Neck, Shoulder",DNP,Out
+9,HOU,Jaylin Smith,CB,Hamstring,FP,Questionable
+9,HOU,Wyatt Teller,G,"Illness, Back",LP,Questionable
+9,HOU,Tommy Togiai,DT,-,FP,-
+9,CLE,Austin Barber,T,-,FP,-
+9,CLE,Denzel Boston,WR,Toe,LP,Questionable
+9,CLE,Michael Burton,FB,Calf,DNP,Out
+9,CLE,Maliek Collins,DT,-,FP,-
+9,CLE,Harold Fannin Jr.,TE,-,FP,-
+9,CLE,Ronnie Hickman Jr.,S,Concussion,DNP,Out
+9,CLE,Tytus Howard,T,-,FP,-
+9,CLE,Elgton Jenkins,C,-,FP,-
+9,CLE,Donovan McMillon,S,-,LP,-
+9,CLE,Carson Schwesinger,LB,-,FP,-
+9,CLE,Denzel Ward,CB,-,LP,-
+9,CLE,Quincy Williams,LB,-,FP,-
+10,LAR,Davis Allen,TE,Oblique,LP,Questionable
+10,LAR,Steve Avila,G,Hamstring,DNP,Out
+10,LAR,Joe Cardona,LS,Ankle,LP,Questionable
+10,LAR,Kam Curl,S,Toe,LP,Questionable
+10,LAR,Aaron Donald,DT,-,DNP,-
+10,LAR,Terrance Ferguson,TE,"Ankle, Hamstring",DNP,Out
+10,LAR,Braden Fiske,DT,-,DNP,-
+10,LAR,Myles Garrett,LB,"Knee, Not injury related - resting player",DNP,Questionable
+10,LAR,Tyler Higbee,TE,-,LP,-
+10,LAR,Trent McDuffie,CB,Back,LP,Questionable
+10,LAR,Puka Nacua,WR,-,DNP,-
+10,LAR,Colby Parkinson,TE,-,FP,-
+10,LAR,Matthew Stafford,QB,-,FP,-
+10,LAR,Byron Young,LB,-,DNP,-
+10,AZ,Budda Baker,S,-,FP,-
+10,AZ,Zachary Carter,DT,Knee,LP,Out
+10,AZ,Hjalte Froholdt,C,Concussion,DNP,Out
+10,AZ,Jon Gaines II,G,Ankle,DNP,Out
+10,AZ,Bam Knight,RB,-,FP,-
+10,AZ,Hunter Long,TE,Knee,LP,Questionable
+10,AZ,Roy Lopez,DT,"Toe, Ankle",LP,Questionable
+10,AZ,Max Melton,CB,"Knee, Hand",LP,Questionable
+10,AZ,Darius Robinson,DT,Wrist,LP,Questionable
+10,AZ,Isaac Seumalo,G,-,FP,-
+10,AZ,Dante Stills,DT,-,FP,-
+10,AZ,Josh Sweat,LB,-,FP,-
+10,AZ,Jayden Williams,T,Knee,LP,Questionable
+10,AZ,Mack Wilson,LB,-,FP,-
+10,AZ,Andrew Wingard,S,Groin,DNP,Questionable
+11,SEA,AJ Barner,TE,-,FP,-
+11,SEA,Anthony Bradford,G,-,FP,-
+11,SEA,Charles Cross,T,Ankle,DNP,Out
+11,SEA,Sam Darnold,QB,"Ribs, Quadricep",DNP,Out
+11,SEA,Derick Hall,LB,-,DNP,-
+11,SEA,Drew Lock,QB,-,LP,-
+11,SEA,Quenton Nelson,G,Knee,DNP,Out
+11,SEA,Uchenna Nwosu,LB,-,FP,-
+11,SEA,Patrick O'Connell,LB,-,FP,-
+11,SEA,Connor O'Toole,LB,-,FP,-
+11,SEA,Brandon Pili,DT,-,FP,-
+11,SEA,Jarran Reed,DT,-,FP,-
+11,SEA,Rashid Shaheed,WR,-,FP,-
+11,SEA,Jaxon Smith-Njigba,WR,-,FP,-
+11,SEA,Leonard Williams,DT,Stinger,DNP,Out
+11,LV,Thomas Booker,DT,Ankle,FP,Questionable
+11,LV,Foley Fatukasi,DT,-,FP,-
+11,LV,Ian Thomas,TE,-,FP,-
+11,LV,Dont'e Thornton Jr.,WR,Back,DNP,Questionable
+11,LV,Trey Zuhn III,C,-,FP,-
+12,SF,Mike Evans,WR,Achilles,DNP,Out
+12,SF,Renardo Green,CB,Back,LP,Questionable
+12,SF,Dre Greenlaw,LB,Knee,LP,Questionable
+12,SF,Nate Hobbs,CB,Groin,FP,Questionable
+12,SF,Deommodore Lenoir,CB,Foot,LP,Questionable
+12,SF,Christian McCaffrey,RB,-,FP,-
+12,SF,Siran Neal,S,-,FP,-
+12,SF,Demarcus Robinson,WR,-,FP,-
+12,SF,Deebo Samuel Sr.,WR,-,FP,-
+12,SF,Upton Stout,CB,"Shoulder, Neck",LP,Questionable
+12,SF,C.J. West,DT,Knee,FP,Questionable
+12,SF,Trent Williams,T,Shoulder,DNP,Questionable
+12,DAL,DaRon Bland,CB,Ankle,LP,Questionable
+12,DAL,Jonathan Bullard,DT,Calf,FP,Questionable
+12,DAL,Alijah Clark,S,Illness,DNP,Questionable
+12,DAL,Donovan Ezeiruaku,LB,Ankle,DNP,Out
+12,DAL,Jake Ferguson,TE,"Knee, Ankle",DNP,Out
+12,DAL,Tyler Goodson,RB,"Ankle, Knee",DNP,Out
+12,DAL,Malik Hooker,S,-,DNP,-
+12,DAL,Marist Liufau,LB,-,FP,-
+12,DAL,P.J. Locke,S,Concussion,DNP,Out
+12,DAL,Von Miller,LB,-,DNP,-
+12,DAL,Jonathan Mingo,WR,Ankle,DNP,Out
+12,DAL,Devin Moore,CB,Hip,FP,Questionable
+12,DAL,DeMarvion Overshown,LB,-,FP,-
+12,DAL,George Pickens,WR,-,FP,-
+12,DAL,Joey Porter Jr.,CB,"Ankle, Foot",LP,Questionable
+12,DAL,Luke Schoonmaker,TE,-,FP,-
+12,DAL,Brevyn Spann-Ford,TE,-,FP,-
+12,DAL,Juanyeh Thomas,S,Hamstring,DNP,Doubtful
+12,DAL,KaVontae Turpin,WR,-,FP,-
+13,PIT,Brandin Echols,CB,-,FP,-
+13,PIT,DeShon Elliott,S,-,FP,-
+13,PIT,Derrick Harmon,DT,Foot,FP,Questionable
+13,PIT,Cameron Heyward,DT,-,FP,-
+13,PIT,Ben Skowronek,WR,-,FP,-
+13,PIT,Doneiko Slaughter,CB,-,FP,-
+13,PIT,Darnell Washington,TE,-,FP,-
+13,PIT,T.J. Watt,LB,-,FP,-
+13,CIN,Jonathan Allen,DT,-,LP,-
+13,CIN,Jalen Davis,CB,Hamstring,FP,Doubtful
+13,CIN,Kyle Dugger,S,Quadricep,DNP,Out
+13,CIN,Dylan Fairchild,G,-,FP,-
+13,CIN,B.J. Hill,DT,-,DNP,-
+13,CIN,Andrei Iosivas,WR,Thumb,FP,Doubtful
+13,CIN,Dexter Lawrence,DT,-,DNP,-
+13,CIN,Brian Parker II,G,Knee,FP,Doubtful
+13,CIN,DJ Turner II,CB,-,FP,-
+14,LAC,Kayode Awosika,G,-,LP,-
+14,LAC,Bud Dupree,DE,-,DNP,-
+14,LAC,Justin Eboigbe,DE,-,LP,-
+14,LAC,Alex Harkey,G,-,FP,-
+14,LAC,Tre Harris,WR,-,FP,-
+14,LAC,Cam Hart,CB,-,FP,-
+14,LAC,Daiyan Henley,LB,-,FP,-
+14,LAC,Deane Leonard,CB,-,FP,-
+14,LAC,Khalil Mack,LB,-,FP,-
+14,LAC,Ladd McConkey,WR,-,DNP,-
+14,LAC,Keaton Mitchell,RB,-,LP,-
+14,LAC,David Njoku,TE,-,LP,-
+14,LAC,Denzel Perryman,LB,-,FP,-
+14,LAC,Trey Pipkins,T,-,DNP,-
+14,LAC,Rodney Shelley,CB,-,LP,-
+14,LAC,Branson Taylor,G,-,DNP,-
+14,LAC,Brenen Thompson,WR,-,DNP,-
+14,LAC,Isas Waxter,CB,-,DNP,-
+14,LAC,Kendall Williamson,S,-,DNP,-
+14,BAL,Rasheen Ali,RB,-,FP,-
+14,BAL,Rashod Bateman,WR,-,FP,-
+14,BAL,Kyle Hamilton,S,-,FP,-
+14,BAL,Jaylinn Hawkins,S,-,LP,-
+14,BAL,Matthew Hibner,TE,-,FP,-
+14,BAL,Olaivavega Ioane,G,-,FP,-
+14,BAL,Adam Randall,RB,-,FP,-
+14,BAL,Nate Wiggins,CB,-,FP,-
