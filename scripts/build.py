@@ -1179,6 +1179,7 @@ if errors:
 _n_qual = sum(1 for r in corr_audit if r["officially_sourced_inputs_only"] == "yes")
 _n_diag = len(corr_audit) - _n_qual
 _depth_checked = sum(1 for r in rep_depth if not r["depth_status"].startswith("Not verified"))
+_depth_ranked = sum(1 for r in rep_depth if r["replacement_depth_rank"].startswith(("1st", "2nd", "3rd", "Named starter")))
 _d50 = [r for r in demo_window if "last 50" in r["window"]]
 _d50_trig = sum(1 for r in _d50 if r["D1_triggered"].startswith("yes"))
 _d50_pos = sum(1 for r in _d50 if r["negative_point_estimate"] == "no")
@@ -1233,7 +1234,7 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <h2>Decision desk: changes on 2026-11-14 (session 8a0bf37e)</h2>
 <ul class="findings">
 <li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
-<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows carry a depth rank from a club chart, where an official statement names the replacement. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
+<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
 <li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row is wrong in the register: its corrected interval is 0.335 to 1.435, p = 0.683 against slope 1.0. The correction is requested, not applied (Flag F48).</li>
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
 <li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
