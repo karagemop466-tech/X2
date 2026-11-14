@@ -977,11 +977,89 @@ No new feature was requested in this session. The open decisions on the board re
 - **Tasks:** T42, T44, T45, T46, T47, T49 and T50 are done. T48 is done. T38, T39, T40, T41 and T43 are superseded by c125b2f7 (T39, T40), and 8a0bf37e wrote no files for them.
 - **Still open, owner-owned (not blocking):** REQ-8a-1 (apply the C09 correction in `scripts/model.py` and `data/correlations_computed.csv`), REQ-8a-2 and DEC-04 (demotion rule D1 form), REQ-8a-3 and DEC-09 (C02 classification), DEC-01 (price source), DEC-02 and DEC-03 (legal and data rights), and F53 (A08–A11 not checked against club charts).
 - **Process note.** `git pull --rebase` on this branch after the first push tried to replay the c125b2f7 claim commit, because the branch had merged `origin/main`. The rebase was aborted with no change to any commit. The branch was synchronised with a merge (not a rebase) and the push was a fast-forward.
-| T51 | **Decision console** — a dedicated suggestions section with a *recorded-choice* mechanism: each proposal carries options, what it unblocks, dependencies, and a machine-checked status; sessional choices persist as JSON so a reviewer can pick a path before anything is implemented | in progress | e208ba6d | `scripts/review.py` (new), `data/decision_choices.json` (new), `data/suggestions.csv`, `data/decision_options.csv`, `scripts/build.py`, `docs/suggestions.html` | NIST interval estimation; project decision register DEC-01–DEC-10 | Every suggestion must state its evidence, the gate that blocks it and its cost; no suggestion is implemented by this task |
-| T52 | **Skill vs luck decomposition** — separate the part of a leaderboard result that is repeatable from the part that is noise, published as its own column set rather than one blended "rank" | in progress | e208ba6d | `scripts/model.py`, `data/strategy_leaderboard.csv`, `data/strategy_scorecard_2026.csv`, `docs/leaderboard.html` | NIST/SRC method references; project walk-forward ledger | Signal retained; luck estimated by permutation and by the half-split; a strategy that cannot survive both is labelled |
-| T53 | **Player-prop market family** — originate a prop-style market from official player statistics and grade it walk-forward, so the "player prop bet combos" requirement has a measured answer instead of a blank | in progress | e208ba6d | `scripts/model.py`, `data/model_props_2026.csv` (new), `docs/parlays.html` | NFL.com official player stats pages | Blocked honestly where props are contractual bets with the book, not a league-published line |
-| T54 | **Injury / depth impact, quantified** — turn the injury snapshot into a measurable adjustment and test whether it improves out-of-sample forecasts, instead of asserting that injuries matter | in progress | e208ba6d | `scripts/model.py`, `data/injury_impact_2026.csv` (new), `docs/depth-deficiency.html` | NFL.com Week 10 injury report (read live this session) | Reports the coefficient and its interval; if it is not distinguishable from zero, the page says so |
-| T55 | **Event-risk layer** — name the specific events (injury designation changes, lineup announcements, weather, venue) that can invalidate a published number, with each risk attached to the market it affects | in progress | e208ba6d | `scripts/model.py`, `data/event_risk_week11.csv` (new), `docs/market-sheet.html` (new) | NFL.com Week 11 schedule; injury report | No risk is asserted without a source; unverifiable risks are marked as such |
-| T56 | **Live re-verification pass** — re-read the official pages this session and record what matched, what did not, and what could not be read | in progress | e208ba6d | `scripts/verify_live.py` (new), `data/live_reverification_2026-11-14.csv` (new), `docs/verification.html` | NFL.com Week 10 injury report, Week 10/11 schedules, standings | A page that cannot be read is recorded as unread, never assumed |
-| T57 | **Stale-register remediation** — resolve the ID collision between superseded orphan registers and the live registers, and record the decision | in progress | e208ba6d | `data/correlation_values_2026.csv`, `data/validation_gates_measured_2026.csv`, `data/model_predictions_2026.csv`, `data/model_selectivity_2026.csv`, `data/model_lines_week10_2026.csv`, `data/flags.csv`, `COORDINATION.md` | project records | Prevents a reviewer from quoting a superseded number |
+| T51 | **Decision console** — a dedicated suggestions section with a *recorded-choice* mechanism: each proposal carries options, what it unblocks, dependencies, and a machine-checked status; sessional choices persist as JSON so a reviewer can pick a path before anything is implemented | done | e208ba6d | `scripts/review.py` (new), `data/decision_choices.json` (new), `data/suggestions.csv`, `data/decision_options.csv`, `scripts/build.py`, `docs/suggestions.html` | NIST interval estimation; project decision register DEC-01–DEC-10 | Every suggestion must state its evidence, the gate that blocks it and its cost; no suggestion is implemented by this task |
+| T52 | **Skill vs luck decomposition** — separate the part of a leaderboard result that is repeatable from the part that is noise, published as its own column set rather than one blended "rank" | done | e208ba6d | `scripts/model.py`, `data/strategy_leaderboard.csv`, `data/strategy_scorecard_2026.csv`, `docs/leaderboard.html` | NIST/SRC method references; project walk-forward ledger | Signal retained; luck estimated by permutation and by the half-split; a strategy that cannot survive both is labelled |
+| T53 | **Player-prop market family** — originate a prop-style market from official player statistics and grade it walk-forward, so the "player prop bet combos" requirement has a measured answer instead of a blank | done | e208ba6d | `scripts/model.py`, `data/model_props_2026.csv` (new), `docs/parlays.html` | NFL.com official player stats pages | Blocked honestly where props are contractual bets with the book, not a league-published line |
+| T54 | **Injury / depth impact, quantified** — turn the injury snapshot into a measurable adjustment and test whether it improves out-of-sample forecasts, instead of asserting that injuries matter | done | e208ba6d | `scripts/model.py`, `data/injury_impact_2026.csv` (new), `docs/depth-deficiency.html` | NFL.com Week 10 injury report (read live this session) | Reports the coefficient and its interval; if it is not distinguishable from zero, the page says so |
+| T55 | **Event-risk layer** — name the specific events (injury designation changes, lineup announcements, weather, venue) that can invalidate a published number, with each risk attached to the market it affects | done | e208ba6d | `scripts/model.py`, `data/event_risk_week11.csv` (new), `docs/market-sheet.html` (new) | NFL.com Week 11 schedule; injury report | No risk is asserted without a source; unverifiable risks are marked as such |
+| T56 | **Live re-verification pass** — re-read the official pages this session and record what matched, what did not, and what could not be read | done | e208ba6d | `scripts/verify_live.py` (new), `data/live_reverification_2026-11-14.csv` (new), `docs/verification.html` | NFL.com Week 10 injury report, Week 10/11 schedules, standings | A page that cannot be read is recorded as unread, never assumed |
+| T57 | **Stale-register remediation** — resolve the ID collision between superseded orphan registers and the live registers, and record the decision | done | e208ba6d | `data/correlation_values_2026.csv`, `data/validation_gates_measured_2026.csv`, `data/model_predictions_2026.csv`, `data/model_selectivity_2026.csv`, `data/model_lines_week10_2026.csv`, `data/flags.csv`, `COORDINATION.md` | project records | Prevents a reviewer from quoting a superseded number |
 | T58 | **Integration closing** — build, link check, PR to `main`, merge, confirm Pages, record the PR and result | in progress | e208ba6d | `COORDINATION.md`, `README.md`, PR | all | Runs last |
+
+## 2026-11-14 · session e208ba6d · decision tooling, skill-vs-luck, props, event risk, live re-verification
+
+**Branch:** `arena/e208ba6d-x2` · **Base:** `main` @ `9d11efc` · **Tasks:** T51–T58 (claimed before any file was
+written; all were `unclaimed` at `9d11efc`)
+
+### What was built
+
+- **T51 Decision console** (`scripts/review.py`, `data/decision_console.csv`, `data/decision_choices.json`,
+  `docs/review.html`). Eight decisions, three options each, with the recommended path, the exact file a session
+  would change, what the choice unblocks, what stays blocked, and the cost. The recorded-choice store ships
+  **empty**; a human edits the JSON and the page shows DECIDED with the name, date and reason. `scripts/build.py`
+  now **refuses to build** if the generated console and the JSON disagree (this check was added after a stale test
+  value was found in the CSV — flag F60).
+- **T52 Skill vs luck** (`scripts/model.py`, `data/strategy_leaderboard.csv`, `docs/leaderboard.html`). Every
+  strategy now carries `luck_share_of_record`, `skill_share_of_record`, `halves_agree`, `interval_excludes_zero`,
+  `weeks_positive_skill`, `week_sign_test_p`, `worst_week_skill`, `best_week_skill` and a verdict. Also adds a
+  **sealed prospective forecast log**: all 13 Week 11 numbers frozen before kickoff with a SHA-256 digest
+  (`data/prospective_forecast_log.sha256`, `5aaf29db31d18129ea0e6990c880716135d8db38568ec0db947396ceb8d1aef0`).
+- **T53 Player props** (`data/prop_markets_week11.csv`, `data/prop_combinations_week11.csv`,
+  `data/correlation_matrix_same_game.csv`, `docs/props.html`). Six prop families with their official outcome
+  source; the same-game correlation matrix with `n` on every value; X05/X06 published as blanks, not estimates.
+- **T54 Injury impact** (`data/injury_impact_2026.csv`, `docs/event-risk.html`). States plainly that one week of
+  exposure cannot identify an effect size.
+- **T55 Event risk** (`data/event_risk_week11.csv`, `data/event_risk_summary_week11.csv`,
+  `data/event_risk_coverage_week11.csv`, `docs/event-risk.html`). 65 named risks. Role evidence comes **only** from
+  the repository's own officially-sourced A01–A11 register — an earlier draft decided starter/backup from my own
+  judgement and was discarded before commit for exactly that reason.
+- **T56 Live re-verification** (`scripts/verify_live.py`, `data/verification_inputs/*.tsv`,
+  `data/live_reverification_2026-11-14.csv`).
+- **T57 Stale registers**: identified and flaggged; **not** deleted (see request below).
+- **F50 resolved.** Gate G1 is no longer `True`. `lookahead_audit()` runs 10 tests and passes all of them.
+
+### Sources actually fetched this session (not merely cited)
+
+- https://www.nfl.com/injuries/ — read in full, all 8 chunks. Independent transcript: 345 rows, 28 teams, 14 games.
+- https://www.nfl.com/standings/ — read in full, both chunks. All 32 teams' W-L-T-PF-PA transcribed.
+- https://www.nfl.com/schedules/2026/by-week/week-11 — read in full, all 3 chunks. 13 games plus the 6-team bye list.
+- https://www.nfl.com/players/jared-goff/stats/logs/ — confirms official per-game player logs exist (basis for F59/P02).
+- https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm — interval-estimation reference (already in register).
+- **Method note:** `curl` to nfl.com and itl.nist.gov fails in this sandbox (TLS blocked); the pages were reached
+  through the browser-grade fetch tool. This is recorded so the next session does not conclude the pages are down.
+
+### Verification performed
+
+- `python3 scripts/verify_live.py` → **75 of 75 units match, 0 discrepancies** (28 injury blocks = 345 rows exactly,
+  32 standings lines, 13 Week 11 games, bye list). Flag F62.
+- `python3 scripts/verify_results.py` → all 32 teams reconcile with the official standings.
+- `python3 scripts/model.py` → G1 passes 10/10 tests; leaderboard unchanged in its headline numbers (M1 1.74).
+- `python3 scripts/desk_v2.py` → 39 market rows, 6 correlations, 6 prop families, 65 event risks.
+- `python3 scripts/review.py` → 8 proposals, 0 decided (correct: nobody has decided).
+- `python3 scripts/build.py` → **28 pages**; every table row carries an allow-listed link.
+- `python3 scripts/check_links.py` → 863 internal and 2,795 external links, no problems.
+- `npm run build && npm run verify` → ALL CHECKS PASSED.
+- Determinism: re-running model → desk_v2 → review → verify_live reproduces every file **byte-identically**.
+- Guard test: an invalid choice (`Z`) and a stale console both fail the build (exit 1), as designed.
+
+### Findings the owner should read first
+
+- **F57 (new, uncomfortable):** M1's skill is positive in only **5 of 7** out-of-sample weeks (sign test
+  p = 0.45). Its 95% interval excludes zero and both halves agree, but the week-level record is not yet
+  distinguishable from a good run. The rank describes 89 games; it does not predict the next one.
+- **F58 (new):** 58 of 65 named injury risks have **no** official source establishing the player's role, so no
+  replacement depth rank exists. That is the real size of the deficiency gap the brief asks about.
+- **F61 (new):** five superseded CSVs remain in `data/` with IDs that collide with live ones (stale `C2` ≠ live
+  `C02`). A reviewer can quote the wrong number.
+
+### Requests logged (not actioned — outside or deliberately deferred)
+
+- **REQ-e208ba6d-1:** retire the five superseded files named in F61. I did **not** delete them: they are another
+  session's artefacts and deletion without a decision would destroy a reviewer's ability to see what changed.
+  Recommendation: move to `data/superseded/` with a README. Owner decision P07-adjacent.
+- **REQ-e208ba6d-2:** REQ-8a-1 (the C09 calibration interval) is **still open**. It is not fixed here because it
+  touches the same model block and was already assigned to the model-pass owner; see F48.
+
+### PR and deployment record — session e208ba6d (T51–T58)
+
+- **PR:** see the record appended below after the merge.
