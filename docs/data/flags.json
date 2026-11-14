@@ -444,10 +444,10 @@
   "flag_id": "F50",
   "category": "Gate integrity",
   "item": "Gate G1 (no look-ahead) is a constant True",
-  "detail": "scripts/model.py gate_eval() sets G1 to True. The no-look-ahead property holds by construction in the walk-forward loop but is not computed as a gate.",
+  "detail": "scripts/model.py gate_eval() set G1 to a constant True. The no-look-ahead property holds by construction in the walk-forward loop but was not computed as a gate. Fixed 2026-11-14 by two independent passes: sessions f25d6b55/e208ba6d added the lookahead_audit() computation (G1_PASSED) now in scripts/model.py, and session 20e6161b independently added a measured max(training week) < W check (superseded by the merged audit).",
   "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
-  "status": "Open",
-  "action_requested": "Add a computed test (for example, assert every training row precedes the prediction week) or label G1 a design property."
+  "status": "Resolved 2026-11-14 (main: lookahead_audit in scripts/model.py; session 20e6161b T52 applied the same fix independently and re-derived it)",
+  "action_requested": "G1 is a measured gate; no action remains. If the audit ever fails the build output shows it in gate_results.csv."
  },
  {
   "flag_id": "F51",
@@ -471,10 +471,10 @@
   "flag_id": "F53",
   "category": "Coverage gap",
   "item": "Four availability rows have no depth check",
-  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) are shown without a club-chart check. replacement_depth_week10_2026.csv marks them not verified.",
+  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) were shown without a club-chart check. Closed 2026-11-14 (session 20e6161b, T53): all four rows are now checked against the club charts (packers.com, therams.com, chiefs.com, colts.com) and their NFL.com source articles were re-read. A10's source was upgraded to the Saturday downgrade article, which names the replacements (Emmett Johnson, named lead, 2nd string RB2 on the chart). A08/A09 name groups only, so their rank cells stay blank with the chart order recorded; A11 is an IR activation (no replacement) and Key is absent from the Week 10 chart (released before the Saturday activation).",
   "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
-  "status": "Open",
-  "action_requested": "Fetch the four club charts in a later pass."
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53)",
+  "action_requested": "None remaining. Chart caveats (self-labelled unofficial, pre-injury order) stay under F45."
  },
  {
   "flag_id": "F54",
@@ -601,5 +601,23 @@
   "source_url": "https://karagemop466-tech.github.io/X2/docs/review-path.html",
   "status": "Resolved",
   "action_requested": "My page moved to review-path.html so both publish (30 pages). scripts/build.py now fails the build on a slug assigned twice without appending, on two NAV entries pointing at one file, and on a NAV entry with no generated page. Verified by reintroducing the bug."
+ },
+ {
+  "flag_id": "F74",
+  "category": "Register accuracy (line-by-line review)",
+  "item": "Availability register rows contradicted or superseded by their own cited sources",
+  "detail": "A session 20e6161b line-by-line pass (T53/T54) re-read the body of every source cited by confirmed_availability_week10_2026.csv rows A08-A11. A08 (GB) claimed \"no replacement is named in the official sources checked\" while the body of its own cited NFL.com article names the replacement group (Kaleb Johnson, MarShawn Lloyd, Pierre Strong, Chris Brooks); corrected with the article quote. A10 (KC) carried a Friday snapshot (Walker Questionable) that the Saturday official update supersedes (downgraded to Out, replacement group named); a dated update was added and the snapshot text preserved per the F26 convention. A09 and A11 checked and left unchanged.",
+  "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53/T54) — corrections applied and labelled",
+  "action_requested": "Reviewer to confirm the dated-update style for superseded snapshots (same mechanism as the F26 owner decision)."
+ },
+ {
+  "flag_id": "F75",
+  "category": "Register consistency",
+  "item": "Two registers share the A01-A11 ID scheme for different rows",
+  "detail": "data/confirmed_availability_week10_2026.csv (session 10a76288, T34) and data/replacement_depth_week10_2026.csv (session 8a0bf37e, T42) both number their rows A01-A11, but the rows do not correspond one to one and the columns differ. On the published pages the context is always shown, but a bare \"A08\" citation is ambiguous between the two registers.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open — needs review",
+  "action_requested": "Owner to choose one ID scheme (e.g. AV01- vs RD01-) in a later integration pass; renaming ripples through scripts/build.py and flag text, so it is not done unilaterally here."
  }
 ]

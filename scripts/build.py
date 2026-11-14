@@ -26,6 +26,7 @@ OFFICIAL_HOSTS = {
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
+    "www.packers.com", "www.therams.com", "www.chiefs.com", "www.colts.com",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -403,7 +404,7 @@ for abbr in sorted(team_rows):
             "out": "; ".join(out) or "—",
             "doubtful": "; ".join(doubt) or "—",
             "questionable": "; ".join(quest) or "—",
-            "starter_backup_status": "UNVERIFIED — no official depth chart collected",
+            "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
             "source_url": rs[0]["source_url"],
         })
 
@@ -641,9 +642,9 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Coverage.</strong> The Week 10 NFL.com report lists {tot['rows']} players across {tot['teams']} teams in {tot['games']} games. The official NFL schedule identifies {', '.join(tot['missing_teams'])} as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
-<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
+<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Official news names Drew Lock for Darnold (2nd string on the club chart) and Kyle McCord for Willis ("in line for first start"); no replacement is named for Lamar Jackson and the Ravens chart omits him entirely. Every row and chart rank is on the <a href="depth-deficiency.html">Replacement depth</a> page (Flags F06/F45).</li>
 <li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
-<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), so the lines are neither over-shy nor over-confident.</li>
+<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}; 95% interval 0.328 to 1.443, p = 0.683 against slope 1.0), so there is no evidence the lines are over-shy or over-confident (Flag F48 corrected 2026-11-14).</li>
 <li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
 <li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F51). The schema is in place for a rights-cleared odds feed to fill it.</li>
 <li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32, F51).</li>
@@ -667,7 +668,7 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 </ul>
 <h2>What is not verified (left blank)</h2>
 <ul>
-<li>Starter vs backup order at every position outside Detroit and New England (no official depth chart collected; club charts self-label "unofficial").</li>
+<li>Starter vs backup order league-wide (NFL.com depth-chart pages return 404; official club charts cover 12 teams but self-label "unofficial" and show pre-injury order — Flags F06/F45).</li>
 <li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
 <li>Opening and closing market numbers in the price-snapshot store (the store exists; the values are blank pending an authorised source; Flags F07, F43).</li>
 <li>Player statistics, player-prop outcomes and prop prices (no official source collected; Flag F31).</li>

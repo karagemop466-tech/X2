@@ -221,9 +221,11 @@ AUDIT = {
     "C08": ("Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)", "yes",
             "Official injury report and standings. Exposure is a count of listed players."),
     "C09": ("Model predicted margin (model output)", "Official final margin", "no",
-            "A regression slope, not a correlation. Predictor is a model output. The register still holds the earlier "
-            "interval (0.830-0.923), which applies a correlation formula to a slope. Recomputed with the slope's own SE: "
-            "CI 0.335-1.435, p 0.683 vs slope 1.0. Correction requested on COORDINATION.md; not yet applied (F48)."),
+            "A regression slope, not a correlation. Predictor is a model output. The earlier interval "
+            "(0.830-0.923) applied a correlation formula to a slope and is withdrawn. Corrected 2026-11-14 (F48): "
+            "the register carries the slope's own standard error with the t critical value (95% CI 0.328-1.443) "
+            "and a p-value testing calibration (H0: slope = 1.0). Applied by session f25d6b55; re-derived "
+            "independently by session 20e6161b (T80). This script's output must match data/correlations_computed.csv."),
 }
 corr = read("correlations_computed.csv")
 audit = []

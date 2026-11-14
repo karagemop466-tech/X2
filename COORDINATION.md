@@ -52,6 +52,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T64–T71** (T51–T55 were taken by `f25d6b55` in parallel; renumbered, nothing discarded) before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
 
 | `ef971991` | `arena/ef971991-x2` | **Session ef971991 (claimed T41–T49, renumbered to T51–T57 after collision with 8a0bf37e, 2026-11-14).** Final integration for the remaining brief gaps: complementary replacement-depth tracking (R43), F44 reference-total resolution, F43 tier-label mitigation, REQ-8a-1/C09 correction applied, correlation-n enforcement, decision-support suggestions/questions, a live verification pass, and the PR/merge/Pages record. Branch is the session-fixed `arena/ef971991-x2`. See the collision record in the closing section. |
+| `20e6161b` | `arena/20e6161b-x2` | **Current session.** Base `main` @ `d22bbd3` (PR #34); ca1ea224 adopted by fast-forward. Claimed T51–T55 (draft IDs) before four parallel sessions merged PRs #35–#46 with overlapping IDs; after the union merge this session owns **T79–T83**, flags **F74–F75**, verification **V28–V32** and repo-review **RV14–RV23**. Scope: C09/G1 model pass (independently derived, superseded by main's merged implementations), the A08–A11 replacement-depth gap (F53) from official club charts, availability-register corrections (F74), brief-completeness audit, fifth verification pass, and integration. See the merge/conflict log and close-out at the end of this file. |
 
 ## Task board (combined — all sessions)
 
@@ -618,7 +619,7 @@ session's tasks continue from T23.
 | T38 | Price-snapshot store (c125b2f7) + price-snapshot store, origination order, fair/market/difference, signal/staking, demotion gate (ca1ea224) — two parallel implementations of the same four requirements, reconciled by ID union in the final integration | done (both implemented; reconciled, nothing discarded) | c125b2f7 / ca1ea224 | c125b2f7: `data/price_snapshots.csv` (39 rows), `data/line_comparison_week11.csv`, `scripts/markets.py`, `docs/markets.html`, `data/demotion_gate.csv`, `data/strategy_signal_staking.csv`, G9 in `data/strategy_gates.csv`. ca1ea224: `data/price_snapshots.csv` (306 rows), `scripts/model.py` (snapshots, G9, staking), `scripts/build.py` (price-snapshots page), `data/model_lines_week11.csv` (fair/market/difference), `data/strategy_leaderboard.csv` (status, staking), `data/gate_results.csv` (G9) | NFL.com Week 11 schedule; NFL.com standings; NFL.com injury report; NFL Support odds FAQ; NIST interval/multiple-comparison methodology | c125b2f7's store covers Week 11 (39 rows); ca1ea224's extends coverage to the out-of-sample window (306 rows). Both leave every opening/closing value blank and flagged. Both define the demotion gate; ca1ea224's G9 is wired into the model gate evaluation and leaderboard status. The two are published side by side; the final integration reconciled the registers by ID union. |
 | T39 | Origination order side → total → moneyline; publish fair line, market line and difference as separate columns (ca1ea224); fair / market / difference view (c125b2f7) | done (both) | ca1ea224 / c125b2f7 | `scripts/model.py`, `data/model_lines_week11.csv`, `scripts/build.py` (model-lines page); c125b2f7: `data/line_comparison_week11.csv`, `docs/markets.html` | SRC-61; model-internal fair numbers are first-party computed | Side originated first, then total, then moneyline (fair ML from win probability); fair/market/difference columns added; market columns blank + flagged (F07) |
 | T40 | Signal/staking separation and the demotion gate (both sessions); fourth independent live verification pass (ca1ea224) | done (both) | ca1ea224 / c125b2f7 | ca1ea224: `scripts/model.py` (staking columns, G9), `data/strategy_leaderboard.csv`, `data/gate_results.csv`, `scripts/build.py`. c125b2f7: `data/demotion_gate.csv` (D1–D7), `data/strategy_signal_staking.csv`, G9 in `data/strategy_gates.csv` | NIST multiple-comparison and bootstrap methodology; NFL Terms | Signal block separated from staking block (ROI blank + flagged); G9 demotion gate defined; all strategies Paper today. ca1ea224 also ran a fourth live verification pass (V17–V20) against NFL.com schedule, standings and injury report. |
-| T41 | Final integration: rebuild both sites, PR to main, merge, confirm GitHub Pages | in progress | ca1ea224 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, `docs/**`, PR | all | Runs last; `python3 scripts/build.py`, `python3 scripts/check_links.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass before the PR |
+| T41 | Final integration: rebuild both sites, PR to main, merge, confirm GitHub Pages | done (PR #34 merged 2026-11-14T19:38:27Z, merge commit d22bbd3; Pages build 1369897289 = built. Deployment record written by session 20e6161b in T79 because ca1ea224 closed without its table) | ca1ea224 / 20e6161b (record only) | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, `docs/**`, PR | all | Runs last; `python3 scripts/build.py`, `python3 scripts/check_links.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass before the PR |
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -1608,3 +1609,92 @@ F17 (numeric cut-offs and reward tiers), F36 (re-run `scripts/model.py` after We
   (C02 classification), DEC-01 (price source), DEC-02/DEC-03 (legal, data rights: F09, F16, F19), F43 (tier-label
   decision), F53 (A08–A11 club charts), F17 (cut-offs and reward tiers), F36 (re-run `scripts/model.py` when the
   rest of Week 10 is final).
+
+## 2026-11-14 · session 20e6161b · C09/G1 model pass, A08–A11 depth gap, brief audit, fifth verification pass, integration
+
+**Branch:** `arena/20e6161b-x2` · **Base at claim:** `main` @ `d22bbd3` (PR #34 merged; ca1ea224's
+work adopted by fast-forward before any edit) · **Claimed:** 2026-11-14 · **Final numbering after
+four parallel main advances:** tasks **T79–T83** (drafted T51–T55), flags **F74–F75** (drafted
+F56–F57), verification rows **V28–V32** (drafted V21–V25); repo-review rows **RV14–RV23** kept as
+drafted (no collision).
+
+### Merge / conflict log (session 20e6161b) — required reading before touching these registers again
+
+While this session worked, sessions `cf6709c0`, `f25d6b55`, `e208ba6d` and `ef971991` merged PRs
+**#35–#46** to `main` (base `d22bbd3` → `4306ad5`). The first `git merge origin/main` conflicted in
+16 files (`COORDINATION.md`, `scripts/model.py`, `scripts/build.py`, five data registers and eight
+generated pages). **Nothing was discarded; resolution rules applied:**
+- `scripts/model.py`, `data/correlations_computed.csv`, `data/correlation_audit.csv`,
+  `data/gate_results.csv`: **main's versions win.** Main carries the same C09 correction computed
+  with the **t** critical value (register: slope 0.885, CI **0.328–1.443**, p 0.6830) instead of
+  this session's z-based 0.335–1.435, and a stronger `lookahead_audit()` G1 implementation.
+  This session's T80 is therefore recorded as **independently derived and superseded** — the slope,
+  SE and calibration p were re-derived from `data/model_backtest.csv` before editing and agree with
+  main's values (0.885 / 0.28 / 0.683).
+- `data/flags.csv`, `data/verification_report.csv`: **ID union.** Main's rows kept verbatim; this
+  session's flags renumbered F56→**F74**, F57→**F75**; verification rows renumbered V21–V25→
+  **V28–V32**. F50 and F53 status closures (evidence-based) applied on top of main's rows.
+- `scripts/build.py`: main's version taken as base; this session's four factual wording fixes
+  re-applied on top (see T82).
+- `docs/**`: regenerated by `scripts/build.py` after the merge, never hand-merged (the one
+  exception: main's side taken as the checkout base to clear conflict markers first).
+- `data/replacement_depth_week10_2026.csv`, `data/confirmed_availability_week10_2026.csv`,
+  `data/repo_review_2026-11-14.csv`: auto-merged cleanly; this session's rows verified present
+  together with main's.
+
+### Task rows (final numbering)
+
+| ID | Task | Status | Owner | Files touched | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T79 | Board reconciliation: record PR #34 merge + Pages build for ca1ea224 (T41 was stale "in progress" on the board) | done | 20e6161b | `COORDINATION.md` only | `gh pr view 34`, `gh api .../pages/builds/latest` — see the deployment table below |
+| T80 | Model pass: C09 calibration correction (REQ-8a-1/F48) + measured G1 (F50) | done (independently applied; superseded by main's merged implementations — identical values, main's t-interval and lookahead_audit kept) | 20e6161b | `scripts/model.py`, registers (superseded) | Re-derived from `data/model_backtest.csv` before editing: slope 0.887/SE 0.280 from 1-dp CSV values, 0.885/0.28 full precision; p ≈ 0.683 vs slope 1.0 — agrees with main |
+| T81 | Replacement-depth gap F53: A08–A11 checked against official club charts + article bodies; two availability-register claims corrected (F74) | done | 20e6161b | `data/replacement_depth_week10_2026.csv` (A08–A11), `data/confirmed_availability_week10_2026.csv` (A08/A10), `data/flags.csv` (F53, F74) | packers.com (chart self-dates "Unofficial, Nov. 10, 2026"), therams.com, chiefs.com, colts.com club charts; NFL.com articles: Jacobs surgery, Nacua likely-IR, Walker downgrade-to-out, Key activation — all fetched live 2026-11-14 |
+| T82 | Brief-completeness audit: eight asks traced to published pages; stale exec-summary claims fixed (QB replacements, calibration wording, starter-backup bullets) | done | 20e6161b | `scripts/build.py` (wording), `data/flags.csv` (F75) | All eight asks verified present on the 25-page site (RV22); questions Q1–Q5x, gaps G01–G13, decisions DEC-01–DEC-10, suggestions review matrix present |
+| T83 | Final integration: fifth verification pass (V28–V32), repo review RV14–RV23, merge resolution (log above), builds/checks, PR, merge, Pages record | done (PR/merge/Pages result recorded in the follow-up entry below) | 20e6161b | `data/verification_report.csv` (V28–V32), `data/repo_review_2026-11-14.csv` (RV14–RV23), `.gitattributes`, `COORDINATION.md`, generated `docs/` | NFL.com Week 11 schedule, Week 10 injuries, standings, TEN@BAL game center; four club charts |
+
+### PR and deployment record — session ca1ea224 (T37–T41), recorded by session 20e6161b (T79)
+
+| Item | Result |
+|---|---|
+| PR #34 | https://github.com/karagemop466-tech/X2/pull/34 (base `main`, head `arena/ca1ea224-x2`) — **MERGED** at 2026-11-14T19:38:27Z, merge commit `d22bbd39eb1600c0a79e4515b258c1076556c849`. |
+| GitHub Pages | Build `1369897289` for commit `d22bbd3` reported `status: built` at 2026-11-14T19:38:59Z (`gh api repos/karagemop466-tech/X2/pages/builds/latest`). |
+
+### Close-out: sources, verification, irregularities (session 20e6161b)
+
+**Sources fetched on 2026-11-14 (live):** NFL.com Week 11 schedule (3 chunks);
+NFL.com Week 10 injuries (chunk 0); NFL.com standings (via the schedule-page records);
+four club depth charts — https://www.packers.com/team/depth-chart (self-dates
+"Unofficial, Nov. 10, 2026"), https://www.therams.com/team/depth-chart,
+https://www.chiefs.com/team/depth-chart, https://www.colts.com/team/depth-chart (the club's
+Week 10 chart per its news item; predates Key's Saturday activation);
+NFL.com articles — https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week
+(body names the replacement group), https://www.nfl.com/news/rams-wr-puka-nacua-likely-to-be-placed-on-injured-reserve-with-turf-toe-sprained-mcl-and-pcl
+(hedged "likely"; names the WR group), https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13,
+https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-saturday-nov-14,
+https://www.nfl.com/news/chiefs-rb-kenneth-walker-groin-downgraded-to-out-for-sunday-s-game-vs-falcons
+(Walker Out; names Emmett Johnson as lead); game center —
+https://www.nfl.com/games/titans-at-ravens-2026-reg-4 (TEN 18, BAL 24 Final; page links the
+official Game Book PDF — noted for DEC-06).
+
+**Verification performed:** C09 re-derivation from the committed OOS rows before editing (T80);
+G1 fix independently derived (superseded by main's audit); A08–A11 cell-by-cell against charts
+and article bodies (V32); Week 11 slate 13/13 + byes (V28); standings 32×3 = 0 mismatches (V29);
+injury spot-check 27×4 = 0 mismatches (V30); result sample matched (V31); eight-ask traceability
+(RV22); builds at close-out: `scripts/build.py` (all pages; link + row-source checks),
+`scripts/check_links.py`, `scripts/verify_results.py`, `scripts/model.py` re-run (byte-reproducible),
+`scripts/desk.py`, `npm run build` + `npm run verify`, `git diff --check` — all pass.
+
+**Irregularities:** F48/F50/F53 resolved (evidence in the register rows). **F74** (resolved):
+A08/A10 availability-register claims corrected against their own cited sources — A08 "no
+replacement is named" contradicted by the article body (group named; corrected with the quote);
+A10 Friday snapshot superseded by the Saturday downgrade to Out (dated update added, snapshot
+text preserved per the F26 convention; reviewer to confirm the dated-update style). **F75**
+(open, needs review): the two A-numbered registers share the A01–A11 scheme for different rows.
+**Cross-scope note:** the A08/A10 corrections touch session 10a76288's
+`data/confirmed_availability_week10_2026.csv` (T34, closed); only claims the row's own cited
+source contradicts or supersedes were changed, each labelled with its evidence and date in the
+cell (F74). **Process note:** `.gitattributes` documents the repository's existing CRLF CSV
+convention (`data/*.csv whitespace=cr-at-eol`); `git diff --check` had misreported the CR as
+trailing whitespace on newly added rows. **Open owner items unchanged:** F16, F19, F09, F17,
+F26/F27/F28, F42, F36, F75, DEC-01–DEC-10. No price, ROI, closing line, player-prop outcome or
+legal conclusion was added anywhere.
