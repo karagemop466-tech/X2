@@ -976,3 +976,31 @@ No new feature was requested in this session. The open decisions on the board re
 - **Tasks:** T42, T44, T45, T46, T47, T49 and T50 are done. T48 is done. T38, T39, T40, T41 and T43 are superseded by c125b2f7 (T39, T40), and 8a0bf37e wrote no files for them.
 - **Still open, owner-owned (not blocking):** REQ-8a-1 (apply the C09 correction in `scripts/model.py` and `data/correlations_computed.csv`), REQ-8a-2 and DEC-04 (demotion rule D1 form), REQ-8a-3 and DEC-09 (C02 classification), DEC-01 (price source), DEC-02 and DEC-03 (legal and data rights), and F53 (A08–A11 not checked against club charts).
 - **Process note.** `git pull --rebase` on this branch after the first push tried to replay the c125b2f7 claim commit, because the branch had merged `origin/main`. The rebase was aborted with no change to any commit. The branch was synchronised with a merge (not a rebase) and the push was a fast-forward.
+
+## 2026-11-14 · session cf6709c0 · CLAIM T51–T56
+
+**Branch:** `arena/cf6709c0-x2` · **Base:** `main` @ `9d11efc9e1278be67a43fe7fdfb125e9ead3743e` · **Session ID:** `cf6709c0`
+
+I read this board first, confirmed all build systems pass on the base commit
+(`scripts/build.py` 24 pages · `scripts/check_links.py` 644 internal / 2,529 external links ·
+`scripts/verify_results.py` 32/32 teams reconcile · `npm run build` + `npm run verify` PASS),
+and checked the open PRs (#34, #31, #14 are unmerged and do not touch my scope). Then I took
+the one class of work no prior session claimed: **defects in the published model output that
+were never flagged.** The three below are not style questions — they change numbers that are
+currently on the live site.
+
+| ID | Task | Status | Owner | Files touched | Sources | Notes |
+|----|------|--------|-------|---------------|---------|-------|
+| T51 | **C09 calibration interval is computed with the wrong formula.** The register publishes CI 0.830–0.923 and p = 0.0000 for a value that is a *regression slope*, using Fisher's correlation transform. Recomputed from the slope's own standard error. Executes handoff REQ-8a-1 (open since 8a0bf37e). | in progress | cf6709c0 | `scripts/model.py` (C09 block), `data/correlations_computed.csv`, `data/correlation_audit.csv`, `data/verification_report.csv` | NIST/SEMATECH e-Handbook 4.4.3 (linear least squares), 1.3.6.6.3 (t distribution) | Independent arithmetic reproduced in this session: n=89, slope 0.8868, SE 0.2803, CI 0.3297–1.4439, t = −0.404 vs slope 1.0 |
+| T52 | **Neutral-site games are unmodelled.** The 2026 season has nine international games; the model adds a home-field term for every designated home team, and `games_2026_results.csv` has no neutral-site column. Affects the Week 11 originated line and the fitted home-field rating. | in progress | cf6709c0 | `data/games_2026_results.csv`, `scripts/model.py`, `scripts/build.py`, generated `docs/` | NFL.com by-week pages (International Game / city label), NFL.com game-center Location/Stadium fields | Verified live: wk3 Ravens–Cowboys in Rio (Location RIO DE JANEIRO, Maracanã), wk1 49ers–Rams in East Melbourne, wk11 Vikings–49ers Mexico City |
+| T53 | **Gate G1 is a hardcoded `True`.** `gate_eval()` returns `"G1": True` for every strategy, so the "No look-ahead" gate is not a test of anything; it is a constant that contributes to the qualification path. | in progress | cf6709c0 | `scripts/model.py` (gate block), `data/gate_results.csv`, generated `docs/` | NIST/SEMATECH e-Handbook 4.4.3 | Flag F50 records the observation; this task remediates it |
+| T54 | Re-verify the Week 11 slate line by line against the live official page (13 games) and publish the verification record | in progress | cf6709c0 | `data/verification_report.csv` | nfl.com/schedules/2026/by-week/week-11 | Independent of 8a0bf37e's RV01; re-checked live this session |
+| T55 | Integration: rebuild, re-run every check, flag register, README, PR, merge, confirm Pages | in progress | cf6709c0 | `docs/**` (generated), `README.md`, `COORDINATION.md` | first-party GitHub records for build facts | Runs after T51–T54 |
+| T56 | Suggestions review page for owner decision-making (a dedicated, reviewable section: ranked paths, what each changes, blocked-by gate) | in progress | cf6709c0 | `data/suggestions.csv`, `scripts/build.py`, `docs/suggestions.html` | S01–S10, NIST, NFL terms | Review-only; no feature is enabled and no user input is required |
+
+**Scope discipline.** I do not touch `src/**` (Node dashboard), the injury snapshot, the price
+store, or the demotion-gate registers. Cross-scope items are logged below rather than edited.
+**Conflict watch.** PR #34 (`arena/ca1ea224-x2`) also edits the markets/demotion area; PR #31
+(`arena/ccd9ab30-x2`) touches reward tiers. Neither overlaps `scripts/model.py`'s correlation or
+gate blocks, but they do both touch `data/flags.csv`, so I append flags by ID and will re-read the
+file immediately before writing.
