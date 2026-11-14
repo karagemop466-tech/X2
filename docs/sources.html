@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sources · NFL Research Dashboard</title>
+<meta name="description" content="NFL research dashboard: verified injury data, questions, suggestions and flagged items. Data as of 2026-11-14.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html">Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html" class=active aria-current=page>Sources</a></nav>
+</header>
+<main>
+
+<h1>Sources</h1>
+<p class="note">Official sources used. Every verified value on this site traces to one of these. Secondary articles were used only to find leads and are listed on the Flagged for review page.</p>
+<div class="tablewrap"><table class="data"><thead><tr><th>ID</th><th>Title</th><th>Publisher</th><th>Link</th><th>Type</th><th>Accessed</th><th>Used for</th><th>Verification note</th></tr></thead><tbody><tr><td>S01</td><td>NFL Injury Report - 2026 Season (Week 10)</td><td>NFL.com (National Football League)</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Link ↗</a></td><td>Official league site</td><td>2026-11-14</td><td>Injury rows; game list; team records; news headlines</td><td>Read in full (8 chunks). Transcribed to data/injuries_week10_2026.csv and data/games_week10_2026.csv. Page does not show a last-updated timestamp.</td></tr><tr><td>S02</td><td>Buffalo Bills 2026 Player Roster (sample check)</td><td>NFL.com</td><td><a href="https://www.nfl.com/teams/buffalo-bills/roster" target="_blank" rel="noopener">Link ↗</a></td><td>Official league site</td><td>2026-11-14</td><td>Checked whether roster page exposes depth-chart rank (it does not); name/URL check</td><td>Roster lists position and status only. No depth-chart ordering found on this page.</td></tr><tr><td>S03</td><td>Penal Code (Act No. 45 of 1907) - Chapter 23 Articles 185-187 (gambling)</td><td>e-Gov Law Search (Government of Japan)</td><td><a href="https://laws.e-gov.go.jp/law/140AC0000000045" target="_blank" rel="noopener">Link ↗</a></td><td>Official government legal database</td><td>2026-11-14</td><td>Legal context for wagering from Japan</td><td>Table of contents confirms Chapter 23 &#x27;Crimes concerning gambling and lotteries&#x27; (Arts. 185-187). Full article text not yet reviewed line by line; legal application needs professional review.</td></tr><tr><td>S04</td><td>Sports Promotion Lottery (toto / BIG / WINNER / DUNK) - official overview</td><td>Japan Sport Council</td><td><a href="https://www.jpnsport.go.jp/sportspromotion/index.html" target="_blank" rel="noopener">Link ↗</a></td><td>Official government-affiliated agency</td><td>2026-11-14</td><td>Confirms the only state-run sports lottery products</td><td>Page states the lottery is run under the Act on Sports Promotion Voting (Sports Promotion Vote Act). Product details and eligibility rules not yet reviewed.</td></tr></tbody></table></div>
+
+</main>
+<footer>
+  <p>Every value on this site links to an official source or is marked blank/unverified.
+  Research only. This is not betting advice. Wagering is restricted in Japan (see Flagged for review, F09).</p>
+  <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

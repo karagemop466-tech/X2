@@ -1,0 +1,42 @@
+[
+ {
+  "source_id": "S01",
+  "title": "NFL Injury Report - 2026 Season (Week 10)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/injuries/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Injury rows; game list; team records; news headlines",
+  "verification_note": "Read in full (8 chunks). Transcribed to data/injuries_week10_2026.csv and data/games_week10_2026.csv. Page does not show a last-updated timestamp."
+ },
+ {
+  "source_id": "S02",
+  "title": "Buffalo Bills 2026 Player Roster (sample check)",
+  "publisher": "NFL.com",
+  "url": "https://www.nfl.com/teams/buffalo-bills/roster",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Checked whether roster page exposes depth-chart rank (it does not); name/URL check",
+  "verification_note": "Roster lists position and status only. No depth-chart ordering found on this page."
+ },
+ {
+  "source_id": "S03",
+  "title": "Penal Code (Act No. 45 of 1907) - Chapter 23 Articles 185-187 (gambling)",
+  "publisher": "e-Gov Law Search (Government of Japan)",
+  "url": "https://laws.e-gov.go.jp/law/140AC0000000045",
+  "type": "Official government legal database",
+  "accessed_date": "2026-11-14",
+  "used_for": "Legal context for wagering from Japan",
+  "verification_note": "Table of contents confirms Chapter 23 'Crimes concerning gambling and lotteries' (Arts. 185-187). Full article text not yet reviewed line by line; legal application needs professional review."
+ },
+ {
+  "source_id": "S04",
+  "title": "Sports Promotion Lottery (toto / BIG / WINNER / DUNK) - official overview",
+  "publisher": "Japan Sport Council",
+  "url": "https://www.jpnsport.go.jp/sportspromotion/index.html",
+  "type": "Official government-affiliated agency",
+  "accessed_date": "2026-11-14",
+  "used_for": "Confirms the only state-run sports lottery products",
+  "verification_note": "Page states the lottery is run under the Act on Sports Promotion Voting (Sports Promotion Vote Act). Product details and eligibility rules not yet reviewed."
+ }
+]

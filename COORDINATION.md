@@ -2,7 +2,15 @@
 
 **Branch:** arena/6fac6aa4-x2
 **Base commit:** 259c1c2534cf7d1b4f4f6b3ba65ed1ce651dcae1 (main)
-**Session ID:** session-x2-01 (single active session; all tasks claimed here)
+**Sessions:** session-x2-01 (this branch), e98c7ba0-x2 (already merged to main via PR #1)
+**Live site:** https://karagemop466-tech.github.io/X2/ (GitHub Pages, source = branch main, path "/")
+
+## Merge resolution log (2026-11-14)
+
+- Session e98c7ba0-x2 completed T01–T10 on branch arena/e98c7ba0-x2, opened PR #1, merged to main (main now at 0563aab). Their output lives under `data/`, `docs/`, `scripts/` plus `COORDINATION.md` and a rebuilt README.md.
+- This session (arena/6fac6aa4-x2) built a root-level dashboard site (`index.html`, `pages/`, `assets/`, `data/*.json`) because GitHub Pages serves from the root "/" of main and main previously had no root `index.html`.
+- `git merge origin/main` into this branch produced one conflict: `COORDINATION.md` (add/add, both sessions added it). Resolved by writing this unified board — neither session's work was discarded. Their board content is preserved below in the task table and claims log.
+- Next: open PR #2 from this branch to main, merge, confirm GitHub Pages deploys the root site, record PR link + result here.
 
 ## Rules
 - Each task is claimed by writing the session ID and file scope; commit and push the claim immediately.
@@ -15,29 +23,33 @@
 - Shared outputs (table data, index, navigation) changed only by the final integration session once all other tasks are done.
 - If a session crashes or its claim is >60 minutes old with no commits, any session may take over and note the handoff.
 
-## Task List
+## Unified task list (both sessions)
 
-| ID | Task | Status | Owner | File Scope | Sources | Verification | Irregularities |
-|----|------|--------|-------|------------|---------|--------------|----------------|
-| T1 | Repo review — line-by-line audit of existing files | done | session-x2-01 | repo root (README.md) | n/a | verified: repo contained only README.md ("# X2"), one commit | none |
-| T2 | Research official NFL sources (injuries, standings, rosters/depth charts) | done | session-x2-01 | docs/sources.md | nfl.com/injuries, nfl.com/standings, nfl.com/teams | verified live 2026-11-14: nfl.com/injuries/league/2026/REG10 and nfl.com/standings/ return 2026 Week 10 data; all 32 team rows matched | Depth charts not published as a single official league page; team roster pages at nfl.com/teams/{team} used as official source; third-party depth charts flagged |
-| T3 | Decision framework: questions, info, answers needed before decisions | done | session-x2-01 | docs/decision-framework.md, pages/decisions.md | nfl.com | verified against official standings/injuries where cited | gaps flagged (F-001..F-006) |
-| T4 | Signal/strategy research (NFL lines, parlays, player props, correlation, validation gates) | done | session-x2-01 | docs/strategies.md, pages/strategies.html | nfl.com (inputs only) | inputs verified; lines/correlations/gates are original analysis, labeled "analysis — not official source" | correlation values placeholders (F-003) |
-| T5 | Injury & depth-chart tracking model (starters vs backups, offense/defense) | done | session-x2-01 | docs/injury-depth.md, pages/injuries.html | nfl.com/injuries/league/2026/REG10 | injury rows verified line by line; replacement strings flagged unverified | incomplete coverage sample (F-002) |
-| T6 | Executive summary | done | session-x2-01 | docs/executive-summary.md, pages/executive-summary.html | nfl.com | standings/injury figures cross-checked to official pages | none |
-| T7 | Build GitHub Pages site (landing page + category subpages, dashboard tables) | done | session-x2-01 | index.html, pages/*.html, assets/, data/ | nfl.com | all 9 pages HTTP 200; 0 broken internal links; every table row carries official source link | none |
-| T8 | Flagged-for-review page (unverified items + irregularities) | done | session-x2-01 | pages/flagged-review.html | nfl.com | F-001..F-006, IRR-001..IRR-003 listed with source links | listed by design |
-| T9 | Final integration: merge branches, re-verify line by line, confirm build/no broken links | done | session-x2-01 | all | nfl.com | re-verified: standings 32/32 rows vs nfl.com/standings; injuries vs nfl.com/injuries/league/2026/REG10; link check 0 broken; site builds (static HTML) | captured in T8 |
-| T10 | PR to main, merge, confirm GitHub Pages deploy, record PR link & result | in progress | session-x2-01 | repo | n/a | pending Pages deploy | none |
+| ID | Task | Status | Owner(s) | File Scope | Sources | Verification | Irregularities / flags |
+|----|------|--------|----------|------------|---------|--------------|------------------------|
+| T1 / T01 | Repo review — line-by-line audit | done | both | README.md, repo root | github.com/karagemop466-tech/X2 | repo was only README.md ("# X2"), one commit | none |
+| T2 / T02 | Official NFL sources: injuries, standings | done | both | data/*.json, data/*.csv, docs/sources.md | nfl.com/injuries, nfl.com/standings | verified live 2026-11-14; standings 32/32 rows matched; injury Week-10 sample matched | theirs F05: CHI/DEN/PHI/TB not on Week-10 report (bye unconfirmed) |
+| T3 / T04 | Decision framework: questions, info, answers | done | both | docs/decision-framework.md, pages/decisions.html, data/questions.csv | nfl.com | questions mapped to verified standings/injuries | gaps flagged (mine F-001..F-006) |
+| T4 / T06 | Strategy lab: gates, hypotheses, leaderboard | done (framework); validation blocked | both | docs/strategies.md, pages/strategies.html, data/strategy_gates.csv, data/strategy_hypotheses.csv | nfl.com (inputs only) | lines/correlations/gates are original analysis, labeled "not official" | theirs F07/F08: no odds or historical results from official source |
+| T5 | Injury & depth-chart model (starters vs 2nd/3rd/4th string) | done | both | docs/injury-depth.md, pages/injuries.html, data/injuries_*.* | nfl.com/injuries | injury rows verified line by line; replacement strings flagged unverified | theirs F06: starter/backup order not verifiable; mine F-002: coverage is a sample |
+| T6 / T08 | Executive summary | done | both | docs/executive-summary.md, pages/executive-summary.html | nfl.com | figures cross-checked to official pages | none |
+| T7 / T09 | Site build: landing + category subpages, dashboard tables | done | both | index.html, pages/, assets/ (this session); docs/, scripts/ (theirs) | nfl.com | all 9 root pages HTTP 200; 0 broken internal links; theirs: build.py passes, 345 rows, 14 games | none |
+| T8 / T05 | Flagged-for-review + suggestions section | done / needs review | both | pages/flagged-review.html, pages/suggestions.html, data/suggestions.csv, data/flags.csv | nfl.com | F-001..F-006, IRR-001..IRR-003 listed; theirs F01–F14 listed | theirs F09: Japan wagering law needs legal advice; F11 roster slug; F12 Lamar timeline |
+| T9 / T10-part | Integration verification: re-verify, build, no broken links | done | both | all | nfl.com | link checker 0 broken / 217 links; theirs: all row links official-domain, internal links resolve | captured above |
+| T10 | PR #2 to main, merge, confirm Pages deploy, record result | in progress | session-x2-01 | repo | n/a | pending Pages deploy | none |
 
-## Claims Log
-- session-x2-01 claims T1–T10 — started 2026-11-14; single session performing integration as well.
+## Claims log
+- e98c7ba0-x2: claimed T01–T10 on arena/e98c7ba0-x2; PR #1 merged to main; log entries 2026-11-14 (repo review, injury data, questions, strategy gates, exec summary, site build, integration check, PR #1 https://github.com/karagemop466-tech/X2/pull/1).
+- session-x2-01: claimed T1–T10 on arena/6fac6aa4-x2; built root dashboard site; merged origin/main into this branch; resolved COORDINATION.md conflict without discarding either session's work.
 
 ## Handoffs
 - none yet
 
 ## Verification record (T9, 2026-11-14)
 - Standings: all 32 team rows matched https://www.nfl.com/standings/ (division, conference, league views) fetched 2026-11-14. Source linked on every row.
-- Injuries: Week 10 sample matched https://www.nfl.com/injuries/league/2026/REG10 fetched 2026-11-14. Source linked on every row.
-- Build: static HTML/CSS/JS; all 9 pages HTTP 200 under local server; internal link checker: 0 broken of 217 links (97 external).
-- Fix applied during verification: index.html asset paths corrected from ../assets/ to assets/.
+- Injuries: Week 10 sample matched https://www.nfl.com/injuries/league/2026/REG10 fetched 2026-11-14. Source linked on every row. Their session independently transcribed 345 injury rows / 28 teams / 14 games.
+- Build: static HTML/CSS/JS. All 9 root pages HTTP 200 under local server. Internal link checker: 0 broken of 217 links (97 external). Fix applied: index.html asset paths corrected from ../assets/ to assets/.
+- Their session: `python3 scripts/build.py` passes (345 injury rows, 14 games, 11 pages, all links resolve, all row links official-domain allow-list).
+
+## Irregularities published for review (union)
+See pages/flagged-review.html (this session) and docs/flagged.html (their session) — full list with source links. Key: depth charts not an official single NFL page (use nfl.com/teams/{team}); NFL publishes no official odds (all lines/signals original analysis); Japan wagering law needs legal advice (theirs F09); correlation values are placeholders pending 4+ weeks of results.

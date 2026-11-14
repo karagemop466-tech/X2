@@ -1,0 +1,7 @@
+hypothesis_id,bet_family,hypothesis,signal_inputs,required_data_not_yet_verified,validation_status,gates_passed,row_type,evidence_url
+H01,Single bet (spread/total),A team with a starter Out at a high-usage unit is priced less than its replacement-adjusted value,Out/Doubtful lists by unit (verified); starter identity (unverified),Depth charts (S01); odds (S03); results (S02),Not tested,None,hypothesis,https://www.nfl.com/injuries/
+H02,Single bet (spread),Questionable starter who did not practice all week is priced as a full-strength starter,Practice status by day (verified for Week 10 only); odds (unverified),Daily practice reports (S04); odds (S03),Not tested,None,hypothesis,https://www.nfl.com/injuries/
+H03,Player prop,Backup RB/WR usage rises when the primary is Out,Injury status (verified); snap/target counts (unverified),Official player stats (S02); prop prices (S03),Not tested,None,hypothesis,
+H04,Parlay (correlated legs),Two legs from the same game are correlated and must be priced jointly,Game-level outcomes (unverified),Official box scores (S02); odds (S03),Not tested,None,hypothesis,
+H05,Cross-game parlay,Legs from different games are close to independent,Game-level outcomes (unverified),Official results (S02),Not tested,None,hypothesis,
+H06,Injury-timing signal,Market moves after Friday's game-status report are larger than Wednesday's practice-report moves,Report timestamps (not captured yet); line history (unverified),Snapshots (S04); odds history (S03),Not tested,None,hypothesis,

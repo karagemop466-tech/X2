@@ -1,0 +1,156 @@
+[
+ {
+  "game_no": "1",
+  "kickoff_day": "Thu Nov 12",
+  "kickoff_time_et": "8:15 PM ET",
+  "broadcast": "Prime Video",
+  "first_listed_team": "WAS Commanders",
+  "first_listed_record": "3-5-1",
+  "second_listed_team": "NYG Giants",
+  "second_listed_record": "5-3-1",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "2",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "9:30 AM ET",
+  "broadcast": "FOX / FOX Deportes",
+  "first_listed_team": "NE Patriots",
+  "first_listed_record": "5-4",
+  "second_listed_team": "DET Lions",
+  "second_listed_record": "6-2",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "3",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "CBS",
+  "first_listed_team": "KC Chiefs",
+  "first_listed_record": "6-2",
+  "second_listed_team": "ATL Falcons",
+  "second_listed_record": "3-6",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "4",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "first_listed_team": "MIN Vikings",
+  "first_listed_record": "6-2",
+  "second_listed_team": "GB Packers",
+  "second_listed_record": "6-3",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "5",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "first_listed_team": "JAX Jaguars",
+  "first_listed_record": "6-2",
+  "second_listed_team": "TEN Titans",
+  "second_listed_record": "1-7",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "6",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "CBS",
+  "first_listed_team": "BUF Bills",
+  "first_listed_record": "7-1",
+  "second_listed_team": "NYJ Jets",
+  "second_listed_record": "2-7",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "7",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "CBS",
+  "first_listed_team": "MIA Dolphins",
+  "first_listed_record": "1-7",
+  "second_listed_team": "IND Colts",
+  "second_listed_record": "2-7",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "8",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "first_listed_team": "CAR Panthers",
+  "first_listed_record": "3-5",
+  "second_listed_team": "NO Saints",
+  "second_listed_record": "3-5",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "9",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "first_listed_team": "HOU Texans",
+  "first_listed_record": "3-5",
+  "second_listed_team": "CLE Browns",
+  "second_listed_record": "5-4",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "10",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "4:05 PM ET",
+  "broadcast": "CBS",
+  "first_listed_team": "LAR Rams",
+  "first_listed_record": "5-4",
+  "second_listed_team": "AZ Cardinals",
+  "second_listed_record": "3-6",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "11",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "4:05 PM ET",
+  "broadcast": "CBS",
+  "first_listed_team": "SEA Seahawks",
+  "first_listed_record": "5-4",
+  "second_listed_team": "LV Raiders",
+  "second_listed_record": "4-5",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "12",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "4:25 PM ET",
+  "broadcast": "FOX / FOX Deportes",
+  "first_listed_team": "SF 49ers",
+  "first_listed_record": "7-1",
+  "second_listed_team": "DAL Cowboys",
+  "second_listed_record": "4-5",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "13",
+  "kickoff_day": "Sun Nov 15",
+  "kickoff_time_et": "8:20 PM ET",
+  "broadcast": "NBC / Universo",
+  "first_listed_team": "PIT Steelers",
+  "first_listed_record": "6-2",
+  "second_listed_team": "CIN Bengals",
+  "second_listed_record": "6-2",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "game_no": "14",
+  "kickoff_day": "Mon Nov 16",
+  "kickoff_time_et": "8:15 PM ET",
+  "broadcast": "ESPN / ABC / ESPN2 / ESPN Deportes",
+  "first_listed_team": "LAC Chargers",
+  "first_listed_record": "0-8",
+  "second_listed_team": "BAL Ravens",
+  "second_listed_record": "4-5",
+  "source_url": "https://www.nfl.com/injuries/"
+ }
+]
