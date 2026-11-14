@@ -1,5 +1,15 @@
 #!/usr/bin/env python3
-"""Build the replacement-depth register: how far down the chart a fix has to reach.
+"""Build the replacement-depth DETAIL register: how far down the chart a fix has to reach.
+
+Relationship to `data/replacement_depth_week10_2026.csv` (session 8a0bf37e, task T42): that
+register is the availability-led view — one row per officially reported absence whose named
+replacement could be checked, eleven rows, quarterback-heavy, each carrying the club-chart
+order as fetched. This file is the slot-led view for the two clubs whose charts this project
+has read directly (NE, DET) plus the unplaceable cases: it adds `charted_bodies_at_slot`,
+`depth_consumed_in_unit` and `shared_backup_note`, the three fields needed to say how far the
+damage reaches rather than who is out. The two files are joined by team and game_no, not merged,
+so a correction in one cannot silently rewrite the other. Row IDs (RD-nn) do not collide with
+theirs (A-nn).
 
 Brief item: "Track the depth of the replacement, not just the fact of a replacement."
 
@@ -33,7 +43,7 @@ import sys
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA = os.path.join(ROOT, "data")
-OUT = os.path.join(DATA, "replacement_depth_week10_2026.csv")
+OUT = os.path.join(DATA, "replacement_depth_detail_week10_2026.csv")
 AS_OF = "2026-11-14"
 INJ_URL = "https://www.nfl.com/injuries/"
 DET_CHART = "https://www.detroitlions.com/team/depth-chart"
