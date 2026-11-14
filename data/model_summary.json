@@ -59,5 +59,8 @@
  "price_snapshot_rows": 306,
  "injury_rows": 345,
  "injury_teams": 28,
- "seed": 20261114
+ "seed": 20261114,
+ "lookahead_gate_passed": true,
+ "lookahead_tests": 10,
+ "forecast_log_seal_sha256": "5aaf29db31d18129ea0e6990c880716135d8db38568ec0db947396ceb8d1aef0"
 }

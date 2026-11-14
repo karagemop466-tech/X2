@@ -8,6 +8,9 @@ matrix, a verification record, and flagged items.
 
 ## Read in this order
 
+0. **Review console** (`docs/review.html`) — the section where a path is actually *chosen*: eight decisions, three
+   options each, a recommendation, the file each would change, and what stays blocked until it is decided. It ships
+   with **zero decisions recorded**, because no human has recorded one.
 1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
 2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
 3. **Model & Week 11 lines** (`docs/model-lines.html`) — the originated spreads, totals and moneylines, originated side first then total then moneyline, with the fair line, market line and difference as separate columns, the team ratings, and the method.
@@ -20,6 +23,20 @@ matrix, a verification record, and flagged items.
 10. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
+
+### Also new: market sheet, props, event risk
+
+- **Market sheet** (`docs/market-sheet.html`) — every Week 11 market in origination order (side, total, moneyline)
+  with the **fair line, the market line and the difference in three separate columns**, a fair American price, and a
+  SHA-256-sealed pre-kickoff forecast log (`data/prospective_forecast_log.sha256`). The market columns are blank.
+- **Player props** (`docs/props.html`) — six prop families with their official outcome source, the same-game
+  correlation matrix carrying `n` on every value, and prop-combo dependence published as a blank rather than a guess.
+- **Event risk** (`docs/event-risk.html`) — 65 named Week 11 risks tied to a player, an official status word and the
+  specific markets each can invalidate. Of those, **58 have no official source establishing the player's role**, and
+  that number is published instead of the shortfall being hidden.
+- **Skill versus luck** (`docs/leaderboard.html`) — every strategy now carries luck share, skill share, half-split
+  agreement and a per-week sign test. The finding is negative and published anyway: M1 is positive in 5 of 7 weeks
+  (p = 0.45), so its rank describes 89 games rather than predicting the next one.
 
 ## The model, briefly
 
@@ -74,15 +91,19 @@ The source register includes official NFL, Japanese government, and NIST referen
 
 ```bash
 python3 scripts/verify_results.py   # reconcile the 137 games against the official standings
+python3 scripts/verify_live.py      # compare the registers against a fresh independent transcription
 python3 scripts/model.py            # refit ratings, Week 11 lines, backtest, gates, leaderboard,
                                     # results feed, price-snapshot store (fixed seed)
+python3 scripts/desk_v2.py          # market sheet, correlation matrix, props, event risk
 python3 scripts/markets.py          # regenerate the market tables (price store, fair/market view,
                                     # signal-vs-staking) from the model outputs
-python3 scripts/build.py            # rebuild docs/ (25 pages) and check every row has a source
+python3 scripts/review.py           # decision console (reads data/decision_choices.json)
+python3 scripts/build.py            # rebuild docs/ and check every row has a source
 npm run build && npm run verify     # the separate Node dashboard (12 pages)
 ```
 
-The Python build rejects missing or non-allow-listed source URLs, broken internal links, and any generated table row without an approved HTTPS source link. The Node verifier checks its own JSON-backed site data and internal links.
+The Python build rejects missing or non-allow-listed source URLs, broken internal links, any generated table row
+without an approved HTTPS source link, and a decision console that disagrees with `data/decision_choices.json`. The Node verifier checks its own JSON-backed site data and internal links.
 
 Now computed from official results and published with intervals: team ratings, originated spreads and totals,
 out-of-sample forecast accuracy, correlations with confidence intervals and p-values, and gate results for every
@@ -107,6 +128,18 @@ guarantee no result. Every leaderboard row publishes the sample size it would ne
 - No league-level official NFL depth chart exists: the conventional team depth-chart URLs return HTTP 404, and roster pages expose position and status only (F06). The official club depth-chart pages are the best available official-domain depth evidence and carry the self-labeled "unofficial" caveat (F-05).
 - The Thursday night result is verified on the official schedule (Commanders 24, Giants 21, final) but is not published, because the games table has no result column (F22).
 - [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) prohibit systematic retrieval to compile a collection/database absent express prior written consent. No written permission is recorded here for the published injury snapshot; see **F16** on Flagged for Review. Do not expand or automate that data use without written authorization or qualified review.
+
+## Verification, this session
+
+A second, independent transcription of the same official pages was made on 2026-11-14 and compared row by row
+(`scripts/verify_live.py`, inputs in `data/verification_inputs/`). **75 of 75 units matched with 0 discrepancies:**
+all 345 injury rows across 28 teams (injury, practice status and game status identical), all 32 standings lines on
+W-L-T-PF-PA, all 13 Week 11 games on day, kickoff time and network, and the 6-team bye list. Results in
+`data/live_reverification_2026-11-14.csv`; flag F69.
+
+Gate G1 is no longer a constant `True` (that was flag F50). It now runs ten checks in `scripts/model.py` —
+strictly-earlier training weeks, a from-scratch refit that reproduces archived predictions exactly, and an
+early-window fit that provably differs from a full-sample fit — and passes all of them (flag F63).
 
 ## Important
 

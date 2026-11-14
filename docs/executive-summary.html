@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
-  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
@@ -96,11 +96,39 @@ own origin snapshots (walk-forward pre-game predictions for weeks 4&ndash;10, or
 reproduces byte for byte from those declared sources and the derived ML prices recompute from the fair probabilities (V23). The
 fair close is not yet recorded separately; a fixed cadence is proposed (S32). Market open/close cells stay blank (F07/F31/F51),
 and the fair open/close of our own lines is the store's model-side half.</li>
-<li><strong>F44 and F48 resolved; F56 records a citation misreference.</strong> F44 (constant reference total) is resolved by
+<li><strong>F44 and F48 resolved; F63 records a citation misreference.</strong> F44 (constant reference total) is resolved by
 documenting the derivation (2 &times; league-average points per team per game, no look-ahead). F48 (C09 formula) is resolved by
-the correction above. F56 records that session ca1ea224's close-out cites F45/F46 for the blank price-store columns while the
+the correction above. F63 records that session ca1ea224's close-out cites F45/F46 for the blank price-store columns while the
 register assigns those IDs to different findings &mdash; the conditions are covered by F07/F31/F51.</li>
 </ul>
+
+<h2>Added this session: what changed in the evidence, in one place</h2>
+<div class="twocol">
+<div><h3>Things that got stronger</h3><ul>
+<li><strong>The official data was re-read from scratch and matched.</strong> 75 of
+75 units - every team's injury block, every standings line, every Week 11 game and the
+bye list - agree with an independent transcript made this session.</li>
+<li><strong>Gate G1 is now computed, not asserted.</strong> It passes 10 tests: training
+weeks strictly earlier, refit reproduces archived predictions exactly, and an early-window fit differs from a
+full-sample fit (Flag F50 resolved).</li>
+<li><strong>Forecasts are now sealed before kickoff.</strong> All 13 Week 11 numbers carry a
+SHA-256 digest, so a later edit is detectable.</li>
+</ul></div>
+<div><h3>Things that got worse - and are now visible</h3><ul>
+<li><strong>The best strategy is not yet repeatable.</strong> M1's skill is positive in 5 of 7 weeks, which
+chance produces about half the time (p = 0.4531). Its rank is a description of
+89 games, not a forecast.</li>
+<li><strong>58 of 65 named injury risks cannot have their role
+confirmed officially</strong>, so no injury adjustment can be priced (F06).</li>
+<li><strong>Player props are blocked on data the repository does not hold</strong>, though the outcomes
+themselves are obtainable from NFL.com (F31, P02).</li>
+</ul></div>
+</div>
+<h2>Decisions actually waiting on you</h2>
+<p class="note">8 decisions are recorded on the <a href="review.html">Review console</a>,
+0 of them decided. Each has three options, a recommendation, the file it would change, and what stays
+blocked until it is chosen. No option is pre-selected.</p>
+<div class="tablewrap"><table id="exec-decisions" class="data"><thead><tr><th>ID</th><th>Area</th><th>Decision</th><th>Recommended</th><th>Status</th><th>Stays blocked</th><th>source_url</th></tr></thead><tbody><tr><td>P01</td><td>Market data</td><td>Where do the market&#x27;s opening and closing numbers come from?</td><td>B now, A if a priced result is ever required</td><td><span class="badge ">awaiting owner choice</span></td><td>Every priced claim, every ROI figure, every staking leaderboard</td><td><a href="https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P02</td><td>Player props</td><td>Should player props be originated, and from what outcome data?</td><td>A, scoped to the Week 11 participants only</td><td><span class="badge ">awaiting owner choice</span></td><td>Every prop and prop-combo claim</td><td><a href="https://www.nfl.com/players/jared-goff/stats/logs/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P03</td><td>Injuries and depth</td><td>How is the size of an injury or a backup&#x27;s drop-off measured, rather than assumed?</td><td>A, after written permission (F16); B in the meantime</td><td><span class="badge ">awaiting owner choice</span></td><td>Any injury-based model adjustment and any depth claim</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P04</td><td>Statistical thresholds</td><td>Who approves the validation cut-offs, and is the demotion rule one-sided or two-sided?</td><td>B</td><td><span class="badge ">awaiting owner choice</span></td><td>Any statement that a strategy has been validated against an approved rule</td><td><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P05</td><td>Legal and rewards</td><td>Is any reward, entry fee or referral lawful for the owner&#x27;s jurisdiction?</td><td>B now, A before anything of value is offered</td><td><span class="badge ">awaiting owner choice</span></td><td>Any reward, prize, entry fee or referral</td><td><a href="https://wetten.overheid.nl/BWBR0002469/2025-02-12" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P06</td><td>Data rights</td><td>Is written permission needed to keep publishing NFL.com-derived data?</td><td>B now, A in parallel</td><td><span class="badge ">awaiting owner choice</span></td><td>New bulk collection, additional seasons, automated retrieval</td><td><a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P07</td><td>Sample size</td><td>Should the project wait for more games before publishing any leaderboard rank?</td><td>A, with the luck columns mandatory</td><td><span class="badge ">awaiting owner choice</span></td><td>Any claim that the top-ranked rule is the best rule</td><td><a href="https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P08</td><td>Site architecture</td><td>Should the two parallel site generators (Python docs/ and Node src/) be merged?</td><td>A</td><td><span class="badge ">awaiting owner choice</span></td><td>A single source of truth for the dashboard</td><td><a href="https://github.com/karagemop466-tech/X2" target="_blank" rel="noopener">Source ↗</a></td></tr></tbody></table></div>
 
 </main>
 <footer>

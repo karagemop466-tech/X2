@@ -421,5 +421,77 @@
   "blocker_or_note": "G9 demotion gate defined: a live strategy is demoted to paper when any of G1-G8 fails, the skill CI includes zero, or the mean edge turns negative. Live operation not enabled (F17/F42), so every strategy is Paper today.",
   "row_type": "status",
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "req_id": "R52",
+  "requirement (from brief)": "Track every market's opening and closing number, in origination order (side, total, moneyline)",
+  "status": "Structure complete; prices still blank",
+  "where_addressed": "Market sheet page; data/market_sheet_week11.csv",
+  "blocker_or_note": "39 rows in origination order with a fair line and a fair American price. Market columns stay blank because no licensed archive exists (F07, P01). A sealed SHA-256 log now proves each Week 11 number was frozen before kickoff.",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "req_id": "R53",
+  "requirement (from brief)": "Publish fair line, market line and difference as three separate columns",
+  "status": "Done for the fair side; market side blank by design",
+  "where_addressed": "Market sheet page",
+  "blocker_or_note": "The three columns exist and are separate. The difference column is left empty rather than filled with zero, because a missing market line is not a zero difference.",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "req_id": "R54",
+  "requirement (from brief)": "Remove luck from the equation; keep only selectively skill-based strategies",
+  "status": "Done as a published decomposition, with a negative finding",
+  "where_addressed": "Leaderboard page, skill-versus-luck section",
+  "blocker_or_note": "Each strategy now carries luck share, skill share, a half-split agreement flag and a per-week sign test. The result is uncomfortable and published anyway: the best rule is positive in 5 of 7 weeks (p = 0.45), i.e. not yet distinguishable from a good run (F57).",
+  "row_type": "fact",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm"
+ },
+ {
+  "req_id": "R55",
+  "requirement (from brief)": "Player prop bets and prop combinations",
+  "status": "Scoped honestly; outcomes obtainable, prices not, grading blocked",
+  "where_addressed": "Player props page; data/prop_markets_week11.csv",
+  "blocker_or_note": "Six prop families documented with their official outcome source. NFL.com publishes per-player game logs, so outcomes are obtainable; prices are not (F07) and no player series is held here (F31). Prop-combo correlation is unmeasured and published as a blank (X05, X06).",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/players/jared-goff/stats/logs/"
+ },
+ {
+  "req_id": "R48",
+  "requirement (from brief)": "Track injuries and know the depth of the replacement (2nd/3rd/4th string)",
+  "status": "Named, counted, and the gap made explicit",
+  "where_addressed": "Event risk page; Deficiency tracking page",
+  "blocker_or_note": "65 named Week 11 risks, each tied to a player, an official status word and the markets it can move. Only 7 have an official source naming the role; 58 cannot be ranked (F58). The number is published rather than the shortfall being hidden.",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R49",
+  "requirement (from brief)": "A dedicated section to review suggestions and choose a path before implementing changes",
+  "status": "Done, with a recorded-choice mechanism that ships empty",
+  "where_addressed": "Review console page; data/decision_console.csv; data/decision_choices.json",
+  "blocker_or_note": "Eight decisions, three options each, with recommendation, files, unblocks, stays-blocked and cost. A choice is recorded by editing the JSON; the build refuses to publish a page that disagrees with it. 0 of 8 are decided, because no human has decided them.",
+  "row_type": "decision",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/decision_choices.json"
+ },
+ {
+  "req_id": "R50",
+  "requirement (from brief)": "Verify line by line against official sources and flag irregularities",
+  "status": "Done - independent second transcription, zero discrepancies",
+  "where_addressed": "Verification page; data/live_reverification_2026-11-14.csv",
+  "blocker_or_note": "75 of 75 units matched: all 345 injury rows, all 32 standings lines, all 13 Week 11 games and the bye list (F62).",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R51",
+  "requirement (from brief)": "Each strategy must pass validation gates",
+  "status": "Done, and gate G1 is now a real test rather than a constant",
+  "where_addressed": "Validation gates page; scripts/model.py",
+  "blocker_or_note": "G1 previously returned True unconditionally (F50). It now runs 10 checks and passes them (F56). The other gates still use project-chosen cut-offs awaiting approval (F17, P04).",
+  "row_type": "fact",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
  }
 ]

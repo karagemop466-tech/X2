@@ -502,5 +502,68 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md",
   "status": "Irregularity - open (bookkeeping; no data value affected)",
   "action_requested": "Owner review: keep the register IDs stable and cite by ID only after checking the register; F44/F48 are resolved 2026-11-14 by session f25d6b55."
+ },
+ {
+  "flag_id": "F63",
+  "category": "Resolved - verified",
+  "item": "Gate G1 (no look-ahead) was a constant True",
+  "detail": "Resolved this session. G1 is now computed by scripts/model.py lookahead_audit(): 10 tests must all pass - every training set uses only strictly earlier weeks, a from-scratch refit reproduces the archived out-of-sample predictions exactly, and an early-window fit demonstrably differs from a full-sample fit (which would be the signature of a leak). All tests pass. Supersedes F50.",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
+  "status": "Resolved - verified by three independent tests",
+  "action_requested": "None. Re-run python3 scripts/model.py to re-check."
+ },
+ {
+  "flag_id": "F64",
+  "category": "New finding - statistical",
+  "item": "The best-ranked strategy is positive but not repeatable across weeks",
+  "detail": "M1 gains 1.74 points per game on average with a 95% bootstrap interval that excludes zero, but its skill is positive in only 5 of 7 out-of-sample weeks. A sign test on that 5-of-7 split gives p = 0.4531, which chance produces routinely. The leaderboard rank is therefore a description of 89 games, not evidence that M1 will beat the reference line going forward. Published on the leaderboard as the skill-versus-luck columns; not suppressed, because suppressing it would hide the uncertainty.",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm",
+  "status": "Open - owner decision P07/DEC-04",
+  "action_requested": "Decide whether to keep publishing ranks alongside the luck columns (recommended path P07 option A)."
+ },
+ {
+  "flag_id": "F65",
+  "category": "New finding - completeness",
+  "item": "Most named injury risks have no officially confirmed role",
+  "detail": "Of 65 named Week 11 event risks, only 7 have an official source that names the player's role or replacement (register A01-A11). The remainder cannot be given a replacement depth rank at all, because no league-level depth chart exists and club charts self-label \"unofficial\" (F06, F45). This is the concrete size of the deficiency-tracking gap the brief asks about: it is 91% of the risk set, not an edge case.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - blocked on an official depth source",
+  "action_requested": "Obtain written permission for a dated depth/inactive source (P03), which would move these rows from blank to graded."
+ },
+ {
+  "flag_id": "F66",
+  "category": "New finding - scope correction",
+  "item": "F31 implied player-prop outcomes were unavailable; the outcomes are obtainable officially",
+  "detail": "F31 correctly says the repository holds no player-stat outcome series. It did not distinguish that from availability: NFL.com publishes per-player, per-game logs (e.g. https://www.nfl.com/players/jared-goff/stats/logs/), which is an official source for a prop outcome. Prop PRICES remain unavailable (F07) and a prop bet is a contract with a book, not a league line. The props page now states this split. F31 stands as to what is held; this flag corrects the impression that nothing official exists.",
+  "source_url": "https://www.nfl.com/players/jared-goff/stats/logs/",
+  "status": "Open - owner decision P02",
+  "action_requested": "Decide whether to transcribe player game logs for the Week 11 participants (scoped, to respect F16)."
+ },
+ {
+  "flag_id": "F67",
+  "category": "Irregularity - corrected",
+  "item": "decision_console.csv could disagree with decision_choices.json",
+  "detail": "Found and fixed this session. The console CSV is generated from the JSON store, but nothing checked that the two agreed, so a page could publish a recorded decision that was never actually recorded. scripts/build.py now refuses to build when the generated CSV and the JSON disagree. A stale value left by a test was found and cleared by this check.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/decision_choices.json",
+  "status": "Resolved - guard added and exercised",
+  "action_requested": "None."
+ },
+ {
+  "flag_id": "F68",
+  "category": "Irregularity - open",
+  "item": "Five superseded data files still sit in data/ with colliding IDs",
+  "detail": "correlation_values_2026.csv (C1-C8), validation_gates_measured_2026.csv, model_predictions_2026.csv, model_selectivity_2026.csv and model_lines_week10_2026.csv are not read by any script and not published, but their IDs collide with the live registers: stale C2 (n=137, r=0.076) and live C02 (n=89, r=0.274) are different quantities under a visually identical name. A reviewer quoting \"C2\" from data/ can quote the wrong number. Superseded by scripts/model.py outputs; retirement is recommended.",
+  "source_url": "https://github.com/karagemop466-tech/X2/tree/main/data",
+  "status": "Open - reviewer decision",
+  "action_requested": "Confirm retirement of the five superseded files (see COORDINATION.md REQ-e208ba6d-1)."
+ },
+ {
+  "flag_id": "F69",
+  "category": "Verification - pass",
+  "item": "Independent live re-verification matched every checked unit",
+  "detail": "A fresh, independent transcription of the official pages was made on 2026-11-14 and compared row by row against the registers (scripts/verify_live.py). 75 of 75 units matched with 0 discrepancies: 28 team injury blocks summing to all 345 rows with identical injury, practice and game status, all 32 standings lines on W-L-T-PF-PA, all 13 Week 11 games on day, time and network, and the 6-team bye list.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Verified - no discrepancies",
+  "action_requested": "None."
  }
 ]
