@@ -563,3 +563,19 @@ conflicts need an owner rule), F27 (Jackson coverage gap of the Week 10 table),
 F16 (NFL data rights — critical), F19 (Netherlands legal review), F-02/F-03/F-04
 (blank pending feeds), D01–D10 decision gates. No strategy has passed validation;
 no reward is enabled.
+
+## PR and deployment record — session 3988bdab (T22, closing)
+
+| Item | Result |
+|---|---|
+| PR #20 | https://github.com/karagemop466-tech/X2/pull/20 — **MERGED** (merge commit `d0a1b74`, 2026-11-14T18:39Z). T22 honesty consistency (leaderboard unranked, G-02 "50+" cutoff removed, correlation methods de-implied, Node docs aligned with the club-chart evidence state), F26–F29 third-pass evidence, requirements refresh, and the full coordination record. |
+| GitHub Pages | Build for `d0a1b74` reported `built` (`gh api repos/karagemop466-tech/X2/pages/builds/latest`, 18:40Z). Source remains `main /` with the root forwarder to `docs/` (F15). |
+| Live site check | Cache-busted fetch of `https://karagemop466-tech.github.io/X2/docs/flagged.html?v=d0a1b74` serves the merged register: F04/F11/F12 resolved via SRC-25/26/28 (52ca9f77 wording), F26–F29 carry the third-pass live-table evidence and updated statuses, F30 resolved. |
+| Checks at merge time | `python3 scripts/build.py`: 13 pages, 345 injury rows, 28 teams, 61 depth rows, link + row-source checks passed · `npm run build` + `npm run verify`: 12 pages, 194 internal links, no unrendered tokens, ALL CHECKS PASSED · `git diff --check` clean. |
+| Branch history | The branch was force-updated once (lease-protected) to replace this session's own superseded pre-rebase claim commits, exactly as session 45a0ec8c documented earlier. No other session's commit was rewritten. |
+
+**Session close-out (3988bdab):** T22 done and merged as PR #20; this record lands
+via the follow-up PR noted in the merge log. This session changed no injury row,
+no depth value, no odds/forecast/correlation/performance value; it only removed
+or de-approved values that cannot be confirmed from an official source, appended
+verification evidence to open flags, and recorded the work.
