@@ -1,0 +1,21 @@
+[
+  { "team": "Washington Commanders", "player": "Lucas Patrick", "position": "C", "injury": "Concussion", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "Washington Commanders", "player": "Colson Yankoff", "position": "TE", "injury": "Knee", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "Washington Commanders", "player": "Treylon Burks", "position": "WR", "injury": "", "practice_status": "Did Not Participate In Practice", "game_status": "", "source": "nfl-injuries" },
+  { "team": "Washington Commanders", "player": "Amik Robertson", "position": "CB", "injury": "", "practice_status": "Limited Participation in Practice", "game_status": "", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "Ben Brown", "position": "C", "injury": "Knee", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "A.J. Brown", "position": "WR", "injury": "Ankle, Knee", "practice_status": "Limited Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "Kevin Byard", "position": "S", "injury": "Chest", "practice_status": "Full Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "Carlton Davis III", "position": "CB", "injury": "Knee", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "TreVeyon Henderson", "position": "RB", "injury": "Illness", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "Walter Rouse", "position": "T", "injury": "Concussion", "practice_status": "Limited Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "Rhamondre Stevenson", "position": "RB", "injury": "Knee", "practice_status": "Limited Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "New England Patriots", "player": "Greg Van Roten", "position": "G", "injury": "Hamstring", "practice_status": "Full Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "Detroit Lions", "player": "Kerby Joseph", "position": "S", "injury": "Knee", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "Detroit Lions", "player": "Cade Mays", "position": "C", "injury": "Ankle", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "Detroit Lions", "player": "D.J. Reed", "position": "CB", "injury": "Hip", "practice_status": "Did Not Participate In Practice", "game_status": "Out", "source": "nfl-injuries" },
+  { "team": "Detroit Lions", "player": "Amon-Ra St. Brown", "position": "WR", "injury": "Rib", "practice_status": "Limited Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "Detroit Lions", "player": "Sione Vaki", "position": "RB", "injury": "Ankle", "practice_status": "Limited Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "New York Giants", "player": "Malik Harrison", "position": "LB", "injury": "Groin", "practice_status": "Limited Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" },
+  { "team": "Kansas City Chiefs", "player": "Mansoor Delane", "position": "CB", "injury": "Shoulder", "practice_status": "Full Participation in Practice", "game_status": "Questionable", "source": "nfl-injuries" }
+]

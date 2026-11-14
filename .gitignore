@@ -1,3 +1,13 @@
+# dependencies
+node_modules/
+
+# generated Node site output (rebuilt by `npm run build`)
+site/
+
+# Python cache
 __pycache__/
 *.pyc
+
+# os / editor
 .DS_Store
+*.log

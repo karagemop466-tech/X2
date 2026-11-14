@@ -1,0 +1,11 @@
+{
+  "name": "x2-nfl-lines",
+  "version": "1.0.0",
+  "private": true,
+  "description": "X2 — NFL lines collection, strategy research, validation, and a GitHub Pages dashboard.",
+  "type": "module",
+  "scripts": {
+    "build": "node src/build.mjs",
+    "verify": "node src/verify.mjs"
+  }
+}
