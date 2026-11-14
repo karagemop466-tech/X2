@@ -96,12 +96,7 @@
   "detail": "On the Bills roster page, 'Dee Alford' (CB, #23) links to /players/deaundre-ford/. The displayed name and URL slug differ, so the link may point to a different player page. Other name/slug differences (e.g., 'Jacob Hummel' -> jake-hummel, 'Kam Curl' -> kamren-curl, 'Chris Brooks' -> christopher-brooks) appear to be nicknames or legal names and were kept as displayed.",
   "source_url": "https://www.nfl.com/teams/buffalo-bills/roster",
   "status": "Resolved - the link points to the same player (SRC-26 via F24; integration 52ca9f77)",
-  "action_requested": "Keep the NFL.com link as displayed; the /players/deaundre-ford/ page is Dee Alford (CB #23",
-  "null": [
-   " Bills",
-   " Tusculum College)",
-   " so the slug is a legacy/first-name URL rather than a different player."
-  ]
+  "action_requested": "Keep the NFL.com link as displayed; the /players/deaundre-ford/ page is Dee Alford (CB #23, Bills, Tusculum College), so the slug is a legacy/first-name URL rather than a different player."
  },
  {
   "flag_id": "F12",
@@ -110,10 +105,7 @@
   "detail": "NFL.com roundup of Nov 13 says 'expected to miss 6-10 weeks'. A separate NFL.com item cites NFL Network: 'out 6-9 weeks'. Both are official NFL.com headlines with different ranges. Not resolved here.",
   "source_url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13",
   "status": "Resolved - team statement preferred (SRC-28 via F25; integration 52ca9f77)",
-  "action_requested": "Use the Ravens statement (6-10 weeks after thumb surgery) quoted in the official NFL.com roundup as the timeline of record; the NFL Network 6-9-week item is a secondary",
-  "null": [
-   " earlier report. Jackson's absence from the injury table is F27 (owner review)."
-  ]
+  "action_requested": "Use the Ravens statement (6-10 weeks after thumb surgery) quoted in the official NFL.com roundup as the timeline of record; the NFL Network 6-9-week item is a secondary, earlier report. Jackson's absence from the injury table is F27 (owner review)."
  },
  {
   "flag_id": "F13",
@@ -166,11 +158,8 @@
   "item": "Separate Node depth-deficiency entries now cite official club depth charts (T13 + integration supplement)",
   "detail": "Resolved in the Node data by T13 (session 30beeb55, 2026-11-14), which blanked all third-party ordering values after the NFL.com team depth-chart URLs returned 404. The integration supplement (session 52ca9f77, 2026-11-14) then located the club-published depth charts on the official club websites — detroitlions.com/team/depth-chart and patriots.com/team/depth-chart, both linked from the NFL.com team roster pages — and re-verified every Node depth row against them. Club-chart-confirmed ordering values were restored with per-row citation; one former third-party value was contradicted by the club chart (Ourlads had Khalil Dorsey 2nd string behind D.J. Reed; the club chart lists Rock Ya-Sin 2nd, Khalil Dorsey 3rd — Node flag F-08). Both club pages self-label their charts 'Unofficial' (Lions: 'Compiled by Lions Football Communications'; Patriots: 'published by the writers of Patriots.com', reflecting writer opinion), recorded as Node flag F-05. Fields no club chart confirms stay blank (e.g. Walter Rouse's elevating backup: no third-string guard listed). The Python dashboard does not publish these entries.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Resolved in data — official club-chart sourcing with self-labeled-unofficial caveat (Node flags F-05",
-  "action_requested": " F-08)",
-  "null": [
-   "Review the restored club-chart values and the corrected Reed-backup value (Node flags F-05/F-08) on the Flagged for Review page."
-  ]
+  "status": "Resolved in data — official club-chart sourcing with self-labeled-unofficial caveat (Node flags F-05, F-08)",
+  "action_requested": "Review the restored club-chart values and the corrected Reed-backup value (Node flags F-05/F-08) on the Flagged for Review page."
  },
  {
   "flag_id": "F19",
