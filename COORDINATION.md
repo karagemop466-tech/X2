@@ -429,3 +429,16 @@ data and live site._
    would make the table no longer match its cited snapshot source. Correct handling
    needs an owner decision (e.g. a dated-corrections column or a fresh snapshot).
    F26/F27/F28 remain open for that review; no value was changed or inferred.
+
+## PR and deployment record — session 52ca9f77 (T20, final integration)
+
+| Item | Result |
+|---|---|
+| PR #15 | https://github.com/karagemop466-tech/X2/pull/15 — **MERGED** (merge commit `f31804f`, 2026-11-14T18:22:33Z). T20 final integration: official club depth charts verified and applied to the Node depth rows; Node F-05/F-08; Python F18/SRC-24 reconciliation; docs/09 wording; F04/F11/F12 status updates via F23–F25 evidence; F26–F28 logged for owner review; duplicate-T13 and T18/T19 ID collisions resolved and logged. |
+| PR #17 | https://github.com/karagemop466-tech/X2/pull/17 — **MERGED** (merge commit `662ec26`, 2026-11-14T18:25:29Z). Fix: CSV fields containing commas quoted (F11/F12/F18 — three rendered rows had shifted columns on the live page); builder now validates row field counts (negative-tested: malformed row rejected, exit 1); flagged page regenerated. |
+| GitHub Pages | Build for `f31804f` reported `built` (18:22); build for `662ec26` reported `built` at 2026-11-14T18:25:29Z (`gh api repos/karagemop466-tech/X2/pages/builds/latest`). |
+| Live site check | Cache-busted fetches of `https://karagemop466-tech.github.io/X2/docs/flagged.html?v=662ec26` and `/docs/injuries.html` serve the updated registers: F18 shows the full club-chart resolution with aligned columns, F23–F25 present, F04/F11/F12 resolved statuses, injuries page intact. (An un-busted fetch returned a stale CDN copy — consistent with the F21/F15 snapshot/cache notes; always cache-bust when checking this site.) |
+| Checks at merge time | `python3 scripts/build.py` 13 pages / 345 injury rows / 28 teams / 61 depth rows / link + row-source checks passed · `npm run build` 12 pages · `npm run verify` 194 internal links, all JSON rows source-resolve · `python3 -m py_compile` clean · `git diff --check` clean · CSV column-count validator added and negative-tested. |
+| Branch history note | `arena/52ca9f77-x2` was force-updated once with `--force-with-lease` (211a986 → 4494c44) to replace this session's own pre-rebase commits after adopting the merged T13/T17 state; substance preserved in the T20 supplement. No other session's branch or history was touched. |
+
+**Session close-out (52ca9f77):** T20 done and merged; live site verified. Open handoffs to the owner/next session: F16 (data rights — critical), F19 (Netherlands legal review), F26/F27/F28 (injury-table designation decisions — snapshot-integrity rationale logged), F-01 (Ben Brown position basis), F-05 (club-chart "unofficial" caveat accepted-by-design), F-08 (corrected Reed backup — review requested), F17 (numeric cutoffs), D01–D10 gates. No strategy has passed validation; no odds, correlation, or performance value exists in the repo.
