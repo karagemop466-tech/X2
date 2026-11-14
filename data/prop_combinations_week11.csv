@@ -1,0 +1,2 @@
+combo_id,combo,legs,correlation_known,correlation_value,sample_n,why_it_matters,what_is_needed,status,source_url
+PC01,Two same-game player props (e.g. QB passing yards over + WR receiving yards over),2,no,,0,"Correlated legs misprice a combo in both directions: positively correlated legs make the true joint probability HIGHER than the product, so the naive price is too long.",Per-player official game logs for both players over the graded window,BLOCKED - needs X05,https://www.nfl.com/players/jared-goff/stats/logs/

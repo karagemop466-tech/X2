@@ -49,6 +49,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `4c5bc504` | `arena/4c5bc504-x2` | **Session 4c5bc504 (claimed T37, 2026-11-14).** Post-merge re-verification of `main` @ `9e90dd3` (all checks re-run, live Pages build confirmed, Week 10 calendar checked against the official schedule) and board reconciliation. Touches `COORDINATION.md` only. |
 | `ca1ea224` | `arena/ca1ea224-x2` | **Current session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claims **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). |
 | `f25d6b55` | `arena/f25d6b55-x2` | **Current session (2026-11-14, after PR #34 merged).** Drafted claims for T37–T45 before `main` advanced; every ID was taken in parallel (T37 by 4c5bc504; T39/T40 by c125b2f7; T42/T44–T50 by 8a0bf37e; T37–T41 by ca1ea224). **Final scope T51–T55**, the gaps still open after PR #34: apply REQ-8a-1 (C09) and adopt the owner rule in the published correlation register; canonical verified results feed; verify and document the extended price-snapshot store's origin/close semantics; suggestions and verification rows; integration. Additive only; ca1ea224's and 8a0bf37e's outputs are consumed, not rewritten. |
+| `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T64–T71** (T51–T55 were taken by `f25d6b55` in parallel; renumbered, nothing discarded) before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
 
 ## Task board (combined — all sessions)
 
@@ -859,7 +860,13 @@ No new feature was requested in this session. The open decisions on the board re
 | T52 | Canonical verified results feed | done | f25d6b55 | `scripts/model.py` (feed writer), `data/results_feed_2026.csv` (new), `scripts/build.py` (results page feed section), README.md | RF01–RF07 checks (8a0bf37e); V01 standings reconciliation; official by-week pages | Advances R38: one canonical feed of the 137 official 2026 results with per-row verification status (V01 / RF07), verified date and official links; every grading path (backtest, bets, gates, correlations, snapshot store) consumes exactly this feed. ROI stays uncomputable until an authorised price source exists (F07). |
 | T53 | Extended price-snapshot store verified and documented (origin/close semantics) | done | f25d6b55 | `scripts/model.py` (store note + summary keys), `scripts/build.py` (price-snapshots page), `data/verification_report.csv` (V23) | ca1ea224's store (PR #34); walk-forward predictions; F07/F31/F51 | Adopts ca1ea224's 306-row store as the canonical model-side record instead of creating a parallel file (this session's pre-rebase draft `model_line_snapshots.csv` was dropped as redundant). Documented: fair_line is OUR origin snapshot (walk-forward pre-game for weeks 4–10, origination-run for Week 11); the fair close is not yet recorded separately (cadence proposed, S32); market open/close cells stay blank. Store reproduces byte for byte from its declared sources; ML prices recompute from the fair probabilities (V23). F44 resolved by documentation (reference total = 2 × league-average points per team per game, no look-ahead). |
 | T54 | Registers: flags, suggestions, verification | done | f25d6b55 | `data/flags.csv` (F44/F48 resolved; F56 new), `data/suggestions.csv` (S32–S34), `data/verification_report.csv` (V21–V23), docs exec summary, README.md | see rows | F56 records that ca1ea224's close-out cites F45/F46 for the blank price-store columns while the register assigns those IDs to 8a0bf37e's findings — the conditions are covered by F07/F31/F51. S32–S34: snapshot cadence, formula unit tests after F48, masking-check column. |
-| T55 | Integration: full pipeline rebuild, link/row checks, PR, merge, confirm Pages | in progress | f25d6b55 | `docs/**`, `scripts/check_links.py`, PR, Pages, COORDINATION.md | first-party records | model.py → markets.py → verify_results.py → build.py → check_links.py → npm build/verify all pass (25 pages). PR from `arena/f25d6b55-x2` to `main`; record appended below on completion. |
+| T55 | Integration: full pipeline rebuild, link/row checks, PR, merge, confirm Pages | done | f25d6b55 | `docs/**`, `scripts/check_links.py`, PR, Pages, COORDINATION.md | first-party records | model.py → markets.py → verify_results.py → build.py → check_links.py → npm build/verify all pass (25 pages). PR from `arena/f25d6b55-x2` to `main`; record appended below on completion. |
+
+| T56 | Correlations register: apply REQ-8a-1 (C09 correction) and adopt the owner rule from `correlation_audit.csv` in the published register | done | f25d6b55 | `scripts/model.py` (C09 slope interval/p + register columns), `data/correlations_computed.csv`, `scripts/build.py` (correlations page) | `data/correlation_audit.csv` (8a0bf37e); F48, F49, F55 | C09 republished using the slope's own standard error (slope 0.885, 95% CI 0.335–1.435, p 0.6820 vs slope 1.0; p differs from the audit's 0.683 only by the audit's rounded SE). Register gains input_A, input_B, officially_sourced_inputs_only and qualifies_under_owner_rule columns; model-input rows labelled model diagnostics (DEC-09); n, CI and p on every row. Flag F48 status updated to Resolved. |
+| T57 | Canonical verified results feed | done | f25d6b55 | `scripts/model.py` (feed writer), `data/results_feed_2026.csv` (new), `scripts/build.py` (results page feed section), README.md | RF01–RF07 checks (8a0bf37e); V01 standings reconciliation; official by-week pages | Advances R38: one canonical feed of the 137 official 2026 results with per-row verification status (V01 / RF07), verified date and official links; every grading path (backtest, bets, gates, correlations, snapshot store) consumes exactly this feed. ROI stays uncomputable until an authorised price source exists (F07). |
+| T58 | Extended price-snapshot store verified and documented (origin/close semantics) | done | f25d6b55 | `scripts/model.py` (store note + summary keys), `scripts/build.py` (price-snapshots page), `data/verification_report.csv` (V23) | ca1ea224's store (PR #34); walk-forward predictions; F07/F31/F51 | Adopts ca1ea224's 306-row store as the canonical model-side record instead of creating a parallel file (this session's pre-rebase draft `model_line_snapshots.csv` was dropped as redundant). Documented: fair_line is OUR origin snapshot (walk-forward pre-game for weeks 4–10, origination-run for Week 11); the fair close is not yet recorded separately (cadence proposed, S32); market open/close cells stay blank. Store reproduces byte for byte from its declared sources; ML prices recompute from the fair probabilities (V23). F44 resolved by documentation (reference total = 2 × league-average points per team per game, no look-ahead). |
+| T59 | Registers: flags, suggestions, verification | done | f25d6b55 | `data/flags.csv` (F44/F48 resolved; F63 new), `data/suggestions.csv` (S32–S34), `data/verification_report.csv` (V21–V23), docs exec summary, README.md | see rows | F63 records that ca1ea224's close-out cites F45/F46 for the blank price-store columns while the register assigns those IDs to 8a0bf37e's findings — the conditions are covered by F07/F31/F51. S32–S34: snapshot cadence, formula unit tests after F48, masking-check column. |
+| T60 | Integration: full pipeline rebuild, link/row checks, PR, merge, confirm Pages | in progress | f25d6b55 | `docs/**`, `scripts/check_links.py`, PR, Pages, COORDINATION.md | first-party records | model.py → markets.py → verify_results.py → build.py → check_links.py → npm build/verify all pass (25 pages). PR from `arena/f25d6b55-x2` to `main`; record appended below on completion. |
 
 ### Requests logged (no action taken on these files)
 
@@ -1022,8 +1029,8 @@ session had covered, then implemented them on top of the merged state:
 
 - **Flags:** F45 (price-snapshot store blank), F46 (staking return blank / signal-staking separation). Renumbered after c125b2f7 took F43/F44.
 - **Sources:** SRC-61 (NFL.com terms — basis for the blank price-snapshot columns).
-- **Requirements:** R44 (price-snapshot store), R45 (origination order + fair/market/difference),
-  R46 (signal/staking separation), R47 (demotion gate). Renumbered after c125b2f7 took R37-R43.
+- **Requirements:** R52 (price-snapshot store), R53 (origination order + fair/market/difference),
+  R54 (signal/staking separation), R55 (demotion gate). Renumbered after c125b2f7 took R37-R43.
 - **Questions:** Q43 (where opening/closing numbers come from), Q44 (when the demotion gate demotes),
   Q45 (can staking return be computed without prices).
 - **Suggestions:** S29 (connect a licensed odds feed), S30 (approve the demotion gate rule),
@@ -1067,6 +1074,133 @@ generated by `scripts/model.py`) so both coexist. The two demotion-gate definiti
 (c125b2f7's D1-D7 in `data/demotion_gate.csv` and this session's G9 in `data/gate_results.csv`)
 are both published. Nothing either session wrote was discarded; the registers were merged
 by ID union and collided IDs were renumbered.
+
+## 2026-11-14 · session f25d6b55 · PR #36 merged, Pages confirmed
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/36 (base `main`, head `arena/f25d6b55-x2`), merged with `--merge`
+  without waiting for approval, as the brief directs. Branch history: this session's earlier commits (initial claim,
+  pre-rebase T51–T53 draft including the dropped `model_line_snapshots.csv`) remain in the branch's remote history and in
+  this log; the merged PR re-applied the surviving delta cleanly on top of PR #34's state.
+- **Pages build:** `built` for the merge commit `32bc347` (checked via the Pages API on 2026-11-14).
+- **Live site verified by fetching published pages, not by assuming the build succeeded:**
+  https://karagemop466-tech.github.io/X2/docs/correlations.html renders the corrected C09 row (slope 0.885, 95% CI
+  0.335–1.435, p 0.6820 against slope 1.0) with input A, input B and the owner-rule classification on every row, and
+  https://karagemop466-tech.github.io/X2/docs/results.html renders the canonical verified results feed section ahead of the
+  full results table (25 pages live).
+- **Tasks T51–T55: done.** Open items are owner decisions, not session work: DEC-01–DEC-10 (odds feed, cut-offs,
+  jurisdiction, rewards), F42 (reward-tier dispute — no tiers until a pre-registered test), F56 (citation misreference),
+  and the blank market open/close cells (F07/F31/F51) which can only be filled from an authorised source.
+
+| T64 | **Decision console** — a dedicated suggestions section with a *recorded-choice* mechanism: each proposal carries options, what it unblocks, dependencies, and a machine-checked status; sessional choices persist as JSON so a reviewer can pick a path before anything is implemented | done | e208ba6d | `scripts/review.py` (new), `data/decision_choices.json` (new), `data/suggestions.csv`, `data/decision_options.csv`, `scripts/build.py`, `docs/suggestions.html` | NIST interval estimation; project decision register DEC-01–DEC-10 | Every suggestion must state its evidence, the gate that blocks it and its cost; no suggestion is implemented by this task |
+| T65 | **Skill vs luck decomposition** — separate the part of a leaderboard result that is repeatable from the part that is noise, published as its own column set rather than one blended "rank" | done | e208ba6d | `scripts/model.py`, `data/strategy_leaderboard.csv`, `data/strategy_scorecard_2026.csv`, `docs/leaderboard.html` | NIST/SRC method references; project walk-forward ledger | Signal retained; luck estimated by permutation and by the half-split; a strategy that cannot survive both is labelled |
+| T66 | **Player-prop market family** — originate a prop-style market from official player statistics and grade it walk-forward, so the "player prop bet combos" requirement has a measured answer instead of a blank | done | e208ba6d | `scripts/model.py`, `data/model_props_2026.csv` (new), `docs/parlays.html` | NFL.com official player stats pages | Blocked honestly where props are contractual bets with the book, not a league-published line |
+| T67 | **Injury / depth impact, quantified** — turn the injury snapshot into a measurable adjustment and test whether it improves out-of-sample forecasts, instead of asserting that injuries matter | done | e208ba6d | `scripts/model.py`, `data/injury_impact_2026.csv` (new), `docs/depth-deficiency.html` | NFL.com Week 10 injury report (read live this session) | Reports the coefficient and its interval; if it is not distinguishable from zero, the page says so |
+| T68 | **Event-risk layer** — name the specific events (injury designation changes, lineup announcements, weather, venue) that can invalidate a published number, with each risk attached to the market it affects | done | e208ba6d | `scripts/model.py`, `data/event_risk_week11.csv` (new), `docs/market-sheet.html` (new) | NFL.com Week 11 schedule; injury report | No risk is asserted without a source; unverifiable risks are marked as such |
+| T69 | **Live re-verification pass** — re-read the official pages this session and record what matched, what did not, and what could not be read | done | e208ba6d | `scripts/verify_live.py` (new), `data/live_reverification_2026-11-14.csv` (new), `docs/verification.html` | NFL.com Week 10 injury report, Week 10/11 schedules, standings | A page that cannot be read is recorded as unread, never assumed |
+| T70 | **Stale-register remediation** — resolve the ID collision between superseded orphan registers and the live registers, and record the decision | done | e208ba6d | `data/correlation_values_2026.csv`, `data/validation_gates_measured_2026.csv`, `data/model_predictions_2026.csv`, `data/model_selectivity_2026.csv`, `data/model_lines_week10_2026.csv`, `data/flags.csv`, `COORDINATION.md` | project records | Prevents a reviewer from quoting a superseded number |
+| T71 | **Integration closing** — build, link check, PR to `main`, merge, confirm Pages, record the PR and result | in progress | e208ba6d | `COORDINATION.md`, `README.md`, PR | all | Runs last |
+
+## 2026-11-14 · session e208ba6d · decision tooling, skill-vs-luck, props, event risk, live re-verification
+
+**Branch:** `arena/e208ba6d-x2` · **Base:** `main` @ `9d11efc` · **Tasks:** T64–T71 (claimed before any file was
+written; all were `unclaimed` at `9d11efc`)
+
+### What was built
+
+- **T51 Decision console** (`scripts/review.py`, `data/decision_console.csv`, `data/decision_choices.json`,
+  `docs/review.html`). Eight decisions, three options each, with the recommended path, the exact file a session
+  would change, what the choice unblocks, what stays blocked, and the cost. The recorded-choice store ships
+  **empty**; a human edits the JSON and the page shows DECIDED with the name, date and reason. `scripts/build.py`
+  now **refuses to build** if the generated console and the JSON disagree (this check was added after a stale test
+  value was found in the CSV — flag F67).
+- **T52 Skill vs luck** (`scripts/model.py`, `data/strategy_leaderboard.csv`, `docs/leaderboard.html`). Every
+  strategy now carries `luck_share_of_record`, `skill_share_of_record`, `halves_agree`, `interval_excludes_zero`,
+  `weeks_positive_skill`, `week_sign_test_p`, `worst_week_skill`, `best_week_skill` and a verdict. Also adds a
+  **sealed prospective forecast log**: all 13 Week 11 numbers frozen before kickoff with a SHA-256 digest
+  (`data/prospective_forecast_log.sha256`, `5aaf29db31d18129ea0e6990c880716135d8db38568ec0db947396ceb8d1aef0`).
+- **T53 Player props** (`data/prop_markets_week11.csv`, `data/prop_combinations_week11.csv`,
+  `data/correlation_matrix_same_game.csv`, `docs/props.html`). Six prop families with their official outcome
+  source; the same-game correlation matrix with `n` on every value; X05/X06 published as blanks, not estimates.
+- **T54 Injury impact** (`data/injury_impact_2026.csv`, `docs/event-risk.html`). States plainly that one week of
+  exposure cannot identify an effect size.
+- **T55 Event risk** (`data/event_risk_week11.csv`, `data/event_risk_summary_week11.csv`,
+  `data/event_risk_coverage_week11.csv`, `docs/event-risk.html`). 65 named risks. Role evidence comes **only** from
+  the repository's own officially-sourced A01–A11 register — an earlier draft decided starter/backup from my own
+  judgement and was discarded before commit for exactly that reason.
+- **T56 Live re-verification** (`scripts/verify_live.py`, `data/verification_inputs/*.tsv`,
+  `data/live_reverification_2026-11-14.csv`).
+- **T57 Stale registers**: identified and flagged; **not** deleted (see request below).
+- **F50 resolved.** Gate G1 is no longer `True`. `lookahead_audit()` runs 10 tests and passes all of them.
+
+### Sources actually fetched this session (not merely cited)
+
+- https://www.nfl.com/injuries/ — read in full, all 8 chunks. Independent transcript: 345 rows, 28 teams, 14 games.
+- https://www.nfl.com/standings/ — read in full, both chunks. All 32 teams' W-L-T-PF-PA transcribed.
+- https://www.nfl.com/schedules/2026/by-week/week-11 — read in full, all 3 chunks. 13 games plus the 6-team bye list.
+- https://www.nfl.com/players/jared-goff/stats/logs/ — confirms official per-game player logs exist (basis for F66/P02).
+- https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm — interval-estimation reference (already in register).
+- **Method note:** `curl` to nfl.com and itl.nist.gov fails in this sandbox (TLS blocked); the pages were reached
+  through the browser-grade fetch tool. This is recorded so the next session does not conclude the pages are down.
+
+### Verification performed
+
+- `python3 scripts/verify_live.py` → **75 of 75 units match, 0 discrepancies** (28 injury blocks = 345 rows exactly,
+  32 standings lines, 13 Week 11 games, bye list). Flag F69.
+- `python3 scripts/verify_results.py` → all 32 teams reconcile with the official standings.
+- `python3 scripts/model.py` → G1 passes 10/10 tests; leaderboard unchanged in its headline numbers (M1 1.74).
+- `python3 scripts/desk_v2.py` → 39 market rows, 6 correlations, 6 prop families, 65 event risks.
+- `python3 scripts/review.py` → 8 proposals, 0 decided (correct: nobody has decided).
+- `python3 scripts/build.py` → **28 pages**; every table row carries an allow-listed link.
+- `python3 scripts/check_links.py` → 863 internal and 2,795 external links, no problems.
+- `npm run build && npm run verify` → ALL CHECKS PASSED.
+- Determinism: re-running model → desk_v2 → review → verify_live reproduces every file **byte-identically**.
+- Guard test: an invalid choice (`Z`) and a stale console both fail the build (exit 1), as designed.
+
+### Findings the owner should read first
+
+- **F64 (new, uncomfortable):** M1's skill is positive in only **5 of 7** out-of-sample weeks (sign test
+  p = 0.45). Its 95% interval excludes zero and both halves agree, but the week-level record is not yet
+  distinguishable from a good run. The rank describes 89 games; it does not predict the next one.
+- **F65 (new):** 58 of 65 named injury risks have **no** official source establishing the player's role, so no
+  replacement depth rank exists. That is the real size of the deficiency gap the brief asks about.
+- **F68 (new):** five superseded CSVs remain in `data/` with IDs that collide with live ones (stale `C2` ≠ live
+  `C02`). A reviewer can quote the wrong number.
+
+### Requests logged (not actioned — outside or deliberately deferred)
+
+- **REQ-e208ba6d-1:** retire the five superseded files named in F68. I did **not** delete them: they are another
+  session's artefacts and deletion without a decision would destroy a reviewer's ability to see what changed.
+  Recommendation: move to `data/superseded/` with a README. Owner decision P07-adjacent.
+- **REQ-e208ba6d-2:** REQ-8a-1 (the C09 calibration interval) is **still open**. It is not fixed here because it
+  touches the same model block and was already assigned to the model-pass owner; see F48.
+
+### PR and deployment record — session e208ba6d (T51–T58)
+
+- **PR:** see the record appended below after the merge.
+
+### Merge and ID-collision record (session e208ba6d)
+
+- My claim commit `e4871b8` covered **T51–T58**. While I worked, `main` advanced twice: PR #34
+  (`ca1ea224`, T37–T41) and PR #36 (`f25d6b55`, which claimed **T51–T55**). The board therefore already
+  contained T51–T55 when my branch was ready.
+- Resolution, **nothing discarded**: their T51–T55 rows and their flags F56 stay exactly as merged. My tasks were
+  renumbered **T56–T58 → (collision) → T64–T71**; my flags **F56–F62 → F63–F69**; my requirements
+  **R44–R51 → R52–R59**. Two renumbering passes were needed because the first target (T56–T63) was itself
+  already occupied by f25d6b55's T56–T60.
+- `git pull --rebase` was attempted first and produced a conflict in `COORDINATION.md`; the rebase was **aborted**
+  and the branch synchronised with a merge instead, which is the pattern the earlier sessions also converged on.
+- Code conflicts and how each was resolved (neither side's feature dropped):
+  - `scripts/model.py` `gate_eval`: took **their** `passed = {...}` structure (they added G9) with **my**
+    `"G1": G1_PASSED`. G1 is now computed *and* G9 is demotion-aware; the gate denominator went 8 → 9.
+  - `scripts/model.py` leaderboard column list: **union** of my luck columns and their staking columns.
+  - `scripts/model.py` correlation column list: **union** of their owner-rule columns and mine, plus my sealed
+    forecast-log writer retained.
+  - `scripts/model.py` snapshot/seal block: kept **both** their price-snapshot store and my sealed log.
+  - `scripts/build.py` leaderboard page: kept **both** their signal/staking/staging views and my
+    skill-versus-luck table.
+- Post-merge verification: 29 pages, 926 internal and 3,405 external links, no problems; `verify_live.py` 75/75;
+  `verify_results.py` 32/32; `npm run build && npm run verify` ALL CHECKS PASSED; `model.py → desk_v2.py →
+  review.py` reproduces every data file byte-identically.
 
 
 ## 2026-11-14 · session cf6709c0 · CLAIM T51–T56
@@ -1228,3 +1362,25 @@ PR #36 merged to `main` while this branch was open and also corrected C09 (REQ-8
 State after both merges: **26 pages**, every row source-checked, **758 internal** and **3,184 external**
 links all resolve and are allow-listed, 137 games with 32/32 teams reconciling against the official
 standings, `npm run build` + `npm run verify` PASS, and `scripts/model.py` reproduces byte for byte.
+
+**Third collision record — session cf6709c0 vs PR #39/#40 (e208ba6d, f25d6b55), resolved.** `main` advanced
+twice more while this branch was open. Both movements are kept; only my own rows were renumbered.
+
+- **Gate G1 — `main` got there with a better implementation, so mine was withdrawn.** Session `e208ba6d`
+  replaced the hardcoded `True` with `lookahead_audit()` (`G1_PASSED`), which additionally refits each week and
+  checks the refit reproduces the archived predictions, and checks the early-window fit differs from the
+  full-sample fit. That is strictly stronger than my `audit_no_lookahead()`, which only checked for empty or
+  temporally overlapping training sets. **I deleted my duplicate rather than leave two competing audits**, and
+  repointed the `model_summary.json` keys at `G1_PASSED`. My flag for this finding was withdrawn for the same
+  reason — `main` already records the fix. Net effect: one audit, the stronger one.
+- **C09** remains as resolved in the second collision record above (exact t quantile, `0.328–1.443`, F71).
+- **My remaining flags renumbered a third time, now final:** neutral-site modelling is **F70**; the C09
+  formula error is **F71**. Every reference in `README.md`, `scripts/model.py` and `scripts/build.py` points at
+  the final IDs.
+- **Verification rows:** mine were absorbed by f25d6b55's V21–V23; the surviving four are **V24–V27**.
+- `main`'s 29 pages, its four new pages, decision console, prop family, event-risk and injury-impact registers,
+  and its F56/F63–F69 rows all stand untouched.
+
+Final state of this branch: **29 pages**, every table row source-checked, **956 internal** and **3,419
+external** links all resolve and are allow-listed, 137 games with 32/32 teams reconciling against the
+official standings, `npm run build` + `npm run verify` PASS, no conflict markers anywhere in the tree.
