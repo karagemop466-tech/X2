@@ -1,0 +1,9 @@
+# dependencies
+node_modules/
+
+# generated site output (rebuilt by `npm run build`)
+site/
+
+# os / editor
+.DS_Store
+*.log
