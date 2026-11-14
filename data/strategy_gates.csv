@@ -1,0 +1,10 @@
+gate_id,gate,what_it_tests,proposed_threshold (needs user decision),current_status,data_needed,source_needed,row_type,evidence_url
+G0,Data provenance,Every input traces to an official source or is flagged,100% of inputs sourced or flagged,Partially met (injury report only),Results; depth charts; odds,See Sources page,method,https://www.nfl.com/injuries/
+G1,Sample size,Enough graded bets to read a result,At least 300 graded bets across 3+ seasons (proposed),Not met (0 bets),Historical graded bets,Official results (S02),method,
+G2,Out-of-sample test,Rules set on one period are tested on a later period,Train on earlier seasons; test on the most recent season (proposed),Not met,Historical data,Official results (S02),method,
+G3,Statistical significance,Edge is unlikely to be chance,p < 0.05 after multiple-test correction (proposed),Not met,Graded results,Official results (S02),method,
+G4,Closing line value,Our price beats the market close,Positive average CLV over the sample (proposed),Not met (no odds source),Odds history,Licensed odds provider (S03),method,
+G5,Correlation control,Parlay legs are not treated as independent when they are correlated,Correlation estimated from verified joint outcomes; parlays priced with it (proposed),Not met,Joint outcome data,Official box scores (S02),method,
+G6,Robustness,Edge holds across teams/weeks,No single team or week drives more than 20% of the profit (proposed),Not met,Graded results,Official results (S02),method,
+G7,Paper trading,Live performance without real money,At least 4 weeks of tracked paper bets before any reward (proposed),Not started,Live odds snapshots,Licensed odds provider (S03),method,
+G8,Legal check,Activity is lawful for the user,Written legal opinion obtained (proposed),Not met,Professional opinion,Japanese law (S03; S04),method,https://laws.e-gov.go.jp/law/140AC0000000045

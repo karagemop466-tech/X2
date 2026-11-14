@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFL Research Dashboard · NFL Research Dashboard</title>
+<meta name="description" content="NFL research dashboard: verified injury data, questions, suggestions and flagged items. Data as of 2026-11-14.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
+  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+</header>
+<main>
+
+<section class="hero">
+  <h1>NFL Research Dashboard</h1>
+  <p>A verified, source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
+  Every table row links to an official NFL or government page. Anything that cannot be confirmed is left blank and flagged.</p>
+  <p class="note">Snapshot: NFL.com Week 10, 2026 season (read 2026-11-14).</p>
+</section>
+<div class="tiles"><div class="tile"><div class="num">28</div><div class="lbl">teams on the Week 10 injury report</div></div><div class="tile"><div class="num">345</div><div class="lbl">players listed</div></div><div class="tile"><div class="num">66</div><div class="lbl">marked Out</div></div><div class="tile"><div class="num">10</div><div class="lbl">marked Doubtful</div></div><div class="tile"><div class="num">84</div><div class="lbl">marked Questionable</div></div><div class="tile"><div class="num">14</div><div class="lbl">games in Week 10 list</div></div></div>
+<h2>Start here</h2>
+<div class="cards">
+<a class="card" href="executive-summary.html"><h3>Executive summary</h3><p>The key findings, what is verified, and what is not yet known.</p></a>
+<a class="card" href="injuries.html"><h3>Injuries</h3><p>All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.</p></a>
+<a class="card" href="games.html"><h3>Games</h3><p>The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.</p></a>
+<a class="card" href="depth-analysis.html"><h3>Depth exposure</h3><p>Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.</p></a>
+<a class="card" href="strategy-lab.html"><h3>Strategy lab</h3><p>Validation gates, hypotheses and the leaderboard framework. No strategy has passed yet.</p></a>
+<a class="card" href="questions.html"><h3>Questions</h3><p>What we know, what we do not, and how to find the missing information.</p></a>
+<a class="card" href="requirements.html"><h3>Requirements</h3><p>Each requirement from the brief with its current status.</p></a>
+<a class="card" href="suggestions.html"><h3>Suggestions</h3><p>Options to choose from before any change is made. Nothing is implemented without your decision.</p></a>
+<a class="card" href="flagged.html"><h3>Flagged for review</h3><p>Irregularities, unverified items and missing official data, each with a source link.</p></a>
+<a class="card" href="sources.html"><h3>Sources</h3><p>Every official source used, with what it supports.</p></a>
+</div>
+
+</main>
+<footer>
+  <p>Every value on this site links to an official source or is marked blank/unverified.
+  Research only. This is not betting advice. Wagering is restricted in Japan (see Flagged for review, F09).</p>
+  <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

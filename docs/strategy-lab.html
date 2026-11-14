@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Strategy lab · NFL Research Dashboard</title>
+<meta name="description" content="NFL research dashboard: verified injury data, questions, suggestions and flagged items. Data as of 2026-11-14.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html">Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="strategy-lab.html" class=active aria-current=page>Strategy lab</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+</header>
+<main>
+
+<h1>Strategy lab</h1>
+<p class="note">This page defines how strategies would be judged. <strong>No strategy has been tested and none has passed.</strong>
+The inputs needed (odds, historical results, depth charts, correlation data) are not yet verified from official sources. This is research framing, not betting advice.</p>
+<h2>Validation gates (proposed thresholds need your decision — Suggestion S08)</h2>
+<div class="tablewrap"><table class="data"><thead><tr><th>Gate</th><th>Name</th><th>What it tests</th><th>Proposed threshold</th><th>Status</th><th>Data needed</th><th>Evidence</th></tr></thead><tbody><tr><td>G0</td><td>Data provenance</td><td>Every input traces to an official source or is flagged</td><td>100% of inputs sourced or flagged</td><td>Partially met (injury report only)</td><td>Results; depth charts; odds</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>G1</td><td>Sample size</td><td>Enough graded bets to read a result</td><td>At least 300 graded bets across 3+ seasons (proposed)</td><td>Not met (0 bets)</td><td>Historical graded bets</td><td class="blank">—</td></tr><tr><td>G2</td><td>Out-of-sample test</td><td>Rules set on one period are tested on a later period</td><td>Train on earlier seasons; test on the most recent season (proposed)</td><td>Not met</td><td>Historical data</td><td class="blank">—</td></tr><tr><td>G3</td><td>Statistical significance</td><td>Edge is unlikely to be chance</td><td>p &lt; 0.05 after multiple-test correction (proposed)</td><td>Not met</td><td>Graded results</td><td class="blank">—</td></tr><tr><td>G4</td><td>Closing line value</td><td>Our price beats the market close</td><td>Positive average CLV over the sample (proposed)</td><td>Not met (no odds source)</td><td>Odds history</td><td class="blank">—</td></tr><tr><td>G5</td><td>Correlation control</td><td>Parlay legs are not treated as independent when they are correlated</td><td>Correlation estimated from verified joint outcomes; parlays priced with it (proposed)</td><td>Not met</td><td>Joint outcome data</td><td class="blank">—</td></tr><tr><td>G6</td><td>Robustness</td><td>Edge holds across teams/weeks</td><td>No single team or week drives more than 20% of the profit (proposed)</td><td>Not met</td><td>Graded results</td><td class="blank">—</td></tr><tr><td>G7</td><td>Paper trading</td><td>Live performance without real money</td><td>At least 4 weeks of tracked paper bets before any reward (proposed)</td><td>Not started</td><td>Live odds snapshots</td><td class="blank">—</td></tr><tr><td>G8</td><td>Legal check</td><td>Activity is lawful for the user</td><td>Written legal opinion obtained (proposed)</td><td>Not met</td><td>Professional opinion</td><td><a href="https://laws.e-gov.go.jp/law/140AC0000000045" target="_blank" rel="noopener">Evidence ↗</a></td></tr></tbody></table></div>
+<h2>Hypotheses (not tested)</h2>
+<div class="tablewrap"><table class="data"><thead><tr><th>ID</th><th>Bet family</th><th>Hypothesis</th><th>Signal inputs</th><th>Data still needed</th><th>Status</th><th>Gates passed</th><th>Evidence</th></tr></thead><tbody><tr><td>H01</td><td>Single bet (spread/total)</td><td>A team with a starter Out at a high-usage unit is priced less than its replacement-adjusted value</td><td>Out/Doubtful lists by unit (verified); starter identity (unverified)</td><td>Depth charts (S01); odds (S03); results (S02)</td><td>Not tested</td><td>None</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>H02</td><td>Single bet (spread)</td><td>Questionable starter who did not practice all week is priced as a full-strength starter</td><td>Practice status by day (verified for Week 10 only); odds (unverified)</td><td>Daily practice reports (S04); odds (S03)</td><td>Not tested</td><td>None</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>H03</td><td>Player prop</td><td>Backup RB/WR usage rises when the primary is Out</td><td>Injury status (verified); snap/target counts (unverified)</td><td>Official player stats (S02); prop prices (S03)</td><td>Not tested</td><td>None</td><td class="blank">—</td></tr><tr><td>H04</td><td>Parlay (correlated legs)</td><td>Two legs from the same game are correlated and must be priced jointly</td><td>Game-level outcomes (unverified)</td><td>Official box scores (S02); odds (S03)</td><td>Not tested</td><td>None</td><td class="blank">—</td></tr><tr><td>H05</td><td>Cross-game parlay</td><td>Legs from different games are close to independent</td><td>Game-level outcomes (unverified)</td><td>Official results (S02)</td><td>Not tested</td><td>None</td><td class="blank">—</td></tr><tr><td>H06</td><td>Injury-timing signal</td><td>Market moves after Friday&#x27;s game-status report are larger than Wednesday&#x27;s practice-report moves</td><td>Report timestamps (not captured yet); line history (unverified)</td><td>Snapshots (S04); odds history (S03)</td><td>Not tested</td><td>None</td><td class="blank">—</td></tr></tbody></table></div>
+<h2>Leaderboard</h2>
+<p class="empty">No entries. A strategy appears here only after it passes all gates G0–G8 on out-of-sample data. Reward design is open (Question Q13).</p>
+
+</main>
+<footer>
+  <p>Every value on this site links to an official source or is marked blank/unverified.
+  Research only. This is not betting advice. Wagering is restricted in Japan (see Flagged for review, F09).</p>
+  <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>

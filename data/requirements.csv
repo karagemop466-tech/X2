@@ -1,0 +1,19 @@
+req_id,requirement (from brief),status,where_addressed,blocker_or_note,row_type,evidence_url
+R01,Collect and organize NFL information,Partially done,Injuries; Games; News pages,Only Week 10 2026 injury snapshot collected,status,https://www.nfl.com/injuries/
+R02,Suggestions section to choose paths before implementing changes,Done (awaiting your choice),Suggestions page,No changes implemented,status,
+R03,Clear list of questions and information gaps,Done,Questions page,Answers depend on decisions and data,status,
+R04,Originate own NFL lines and develop strategies,Blocked (no verified data),Strategy Lab,No verified odds or results (F07; F08),status,
+R05,Treat strategies as a leaderboard with rewards,Designed only,Strategy Lab; Suggestions S09,Reward definition needs your decision (Q13),status,
+R06,Single bets / parlays / player prop combos,Designed only,Strategy Lab hypotheses H01-H06,Inputs unverified,status,
+R07,Validation gates per strategy,Done (proposed thresholds),Strategy Lab gates G0-G8,Thresholds need your decision (S08),status,
+R08,Correlation values,Blocked,Questions Q11; Gate G5,No joint outcome data,status,
+R09,Injury tracking,Partially done,Injuries page,Single snapshot; no change history (S04),status,https://www.nfl.com/injuries/
+R10,Deficiency analysis (starter vs backup replacement),Partially done,Depth Analysis page,Starter order not verified (F06),status,https://www.nfl.com/teams/buffalo-bills/roster
+R11,Executive summary,Done,Executive Summary page,Based only on verified data,status,
+R12,Repo review with links and irregularities,Done,Flagged for Review page; flags.csv,See F01-F14,status,
+R13,Site: clean landing page and category subpages,Done,docs/index.html and subpages,GitHub Pages deployment pending merge,status,
+R14,Tables with a source link on every row,Done for data tables,All tables with a source column,Rows link to official NFL.com pages,status,https://www.nfl.com/injuries/
+R15,Unverified values left blank and flagged,Done,Flagged for Review page,See F04-F09,status,
+R16,Coordination file,Done,COORDINATION.md,Single-branch session (F03),status,
+R17,Pull request and merge to main,Pending,Final step,Waiting for build and link checks,status,
+R18,No manual input from the user,Met for this turn,All steps,Decisions listed as questions and suggestions still need your choice,status,

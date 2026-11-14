@@ -1,0 +1,101 @@
+[
+ {
+  "gate_id": "G0",
+  "gate": "Data provenance",
+  "what_it_tests": "Every input traces to an official source or is flagged",
+  "proposed_threshold (needs user decision)": "100% of inputs sourced or flagged",
+  "current_status": "Partially met (injury report only)",
+  "data_needed": "Results; depth charts; odds",
+  "source_needed": "See Sources page",
+  "row_type": "method",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "gate_id": "G1",
+  "gate": "Sample size",
+  "what_it_tests": "Enough graded bets to read a result",
+  "proposed_threshold (needs user decision)": "At least 300 graded bets across 3+ seasons (proposed)",
+  "current_status": "Not met (0 bets)",
+  "data_needed": "Historical graded bets",
+  "source_needed": "Official results (S02)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G2",
+  "gate": "Out-of-sample test",
+  "what_it_tests": "Rules set on one period are tested on a later period",
+  "proposed_threshold (needs user decision)": "Train on earlier seasons; test on the most recent season (proposed)",
+  "current_status": "Not met",
+  "data_needed": "Historical data",
+  "source_needed": "Official results (S02)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G3",
+  "gate": "Statistical significance",
+  "what_it_tests": "Edge is unlikely to be chance",
+  "proposed_threshold (needs user decision)": "p < 0.05 after multiple-test correction (proposed)",
+  "current_status": "Not met",
+  "data_needed": "Graded results",
+  "source_needed": "Official results (S02)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G4",
+  "gate": "Closing line value",
+  "what_it_tests": "Our price beats the market close",
+  "proposed_threshold (needs user decision)": "Positive average CLV over the sample (proposed)",
+  "current_status": "Not met (no odds source)",
+  "data_needed": "Odds history",
+  "source_needed": "Licensed odds provider (S03)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G5",
+  "gate": "Correlation control",
+  "what_it_tests": "Parlay legs are not treated as independent when they are correlated",
+  "proposed_threshold (needs user decision)": "Correlation estimated from verified joint outcomes; parlays priced with it (proposed)",
+  "current_status": "Not met",
+  "data_needed": "Joint outcome data",
+  "source_needed": "Official box scores (S02)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G6",
+  "gate": "Robustness",
+  "what_it_tests": "Edge holds across teams/weeks",
+  "proposed_threshold (needs user decision)": "No single team or week drives more than 20% of the profit (proposed)",
+  "current_status": "Not met",
+  "data_needed": "Graded results",
+  "source_needed": "Official results (S02)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G7",
+  "gate": "Paper trading",
+  "what_it_tests": "Live performance without real money",
+  "proposed_threshold (needs user decision)": "At least 4 weeks of tracked paper bets before any reward (proposed)",
+  "current_status": "Not started",
+  "data_needed": "Live odds snapshots",
+  "source_needed": "Licensed odds provider (S03)",
+  "row_type": "method",
+  "evidence_url": ""
+ },
+ {
+  "gate_id": "G8",
+  "gate": "Legal check",
+  "what_it_tests": "Activity is lawful for the user",
+  "proposed_threshold (needs user decision)": "Written legal opinion obtained (proposed)",
+  "current_status": "Not met",
+  "data_needed": "Professional opinion",
+  "source_needed": "Japanese law (S03; S04)",
+  "row_type": "method",
+  "evidence_url": "https://laws.e-gov.go.jp/law/140AC0000000045"
+ }
+]

@@ -1,0 +1,164 @@
+[
+ {
+  "req_id": "R01",
+  "requirement (from brief)": "Collect and organize NFL information",
+  "status": "Partially done",
+  "where_addressed": "Injuries; Games; News pages",
+  "blocker_or_note": "Only Week 10 2026 injury snapshot collected",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R02",
+  "requirement (from brief)": "Suggestions section to choose paths before implementing changes",
+  "status": "Done (awaiting your choice)",
+  "where_addressed": "Suggestions page",
+  "blocker_or_note": "No changes implemented",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R03",
+  "requirement (from brief)": "Clear list of questions and information gaps",
+  "status": "Done",
+  "where_addressed": "Questions page",
+  "blocker_or_note": "Answers depend on decisions and data",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R04",
+  "requirement (from brief)": "Originate own NFL lines and develop strategies",
+  "status": "Blocked (no verified data)",
+  "where_addressed": "Strategy Lab",
+  "blocker_or_note": "No verified odds or results (F07; F08)",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R05",
+  "requirement (from brief)": "Treat strategies as a leaderboard with rewards",
+  "status": "Designed only",
+  "where_addressed": "Strategy Lab; Suggestions S09",
+  "blocker_or_note": "Reward definition needs your decision (Q13)",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R06",
+  "requirement (from brief)": "Single bets / parlays / player prop combos",
+  "status": "Designed only",
+  "where_addressed": "Strategy Lab hypotheses H01-H06",
+  "blocker_or_note": "Inputs unverified",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R07",
+  "requirement (from brief)": "Validation gates per strategy",
+  "status": "Done (proposed thresholds)",
+  "where_addressed": "Strategy Lab gates G0-G8",
+  "blocker_or_note": "Thresholds need your decision (S08)",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R08",
+  "requirement (from brief)": "Correlation values",
+  "status": "Blocked",
+  "where_addressed": "Questions Q11; Gate G5",
+  "blocker_or_note": "No joint outcome data",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R09",
+  "requirement (from brief)": "Injury tracking",
+  "status": "Partially done",
+  "where_addressed": "Injuries page",
+  "blocker_or_note": "Single snapshot; no change history (S04)",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R10",
+  "requirement (from brief)": "Deficiency analysis (starter vs backup replacement)",
+  "status": "Partially done",
+  "where_addressed": "Depth Analysis page",
+  "blocker_or_note": "Starter order not verified (F06)",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
+ },
+ {
+  "req_id": "R11",
+  "requirement (from brief)": "Executive summary",
+  "status": "Done",
+  "where_addressed": "Executive Summary page",
+  "blocker_or_note": "Based only on verified data",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R12",
+  "requirement (from brief)": "Repo review with links and irregularities",
+  "status": "Done",
+  "where_addressed": "Flagged for Review page; flags.csv",
+  "blocker_or_note": "See F01-F14",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R13",
+  "requirement (from brief)": "Site: clean landing page and category subpages",
+  "status": "Done",
+  "where_addressed": "docs/index.html and subpages",
+  "blocker_or_note": "GitHub Pages deployment pending merge",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R14",
+  "requirement (from brief)": "Tables with a source link on every row",
+  "status": "Done for data tables",
+  "where_addressed": "All tables with a source column",
+  "blocker_or_note": "Rows link to official NFL.com pages",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R15",
+  "requirement (from brief)": "Unverified values left blank and flagged",
+  "status": "Done",
+  "where_addressed": "Flagged for Review page",
+  "blocker_or_note": "See F04-F09",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R16",
+  "requirement (from brief)": "Coordination file",
+  "status": "Done",
+  "where_addressed": "COORDINATION.md",
+  "blocker_or_note": "Single-branch session (F03)",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R17",
+  "requirement (from brief)": "Pull request and merge to main",
+  "status": "Pending",
+  "where_addressed": "Final step",
+  "blocker_or_note": "Waiting for build and link checks",
+  "row_type": "status",
+  "evidence_url": ""
+ },
+ {
+  "req_id": "R18",
+  "requirement (from brief)": "No manual input from the user",
+  "status": "Met for this turn",
+  "where_addressed": "All steps",
+  "blocker_or_note": "Decisions listed as questions and suggestions still need your choice",
+  "row_type": "status",
+  "evidence_url": ""
+ }
+]

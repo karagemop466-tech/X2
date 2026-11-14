@@ -1,0 +1,18 @@
+{
+ "rows": 345,
+ "teams": 28,
+ "games": 14,
+ "out": 66,
+ "doubtful": 10,
+ "questionable": 84,
+ "no_status": 185,
+ "off_od": 42,
+ "def_od": 32,
+ "st_od": 2,
+ "missing_teams": [
+  "CHI",
+  "DEN",
+  "PHI",
+  "TB"
+ ]
+}

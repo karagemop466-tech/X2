@@ -1,0 +1,122 @@
+[
+ {
+  "suggestion_id": "S01",
+  "area": "Data",
+  "suggestion": "Add an official depth-chart source and store the starter and backup order per position",
+  "benefit_for_decisions": "Enables the starter-vs-backup deficiency analysis the brief asks for",
+  "effort": "Medium",
+  "main_risk": "Source may not be official or machine readable",
+  "options": "A) Pull NFL.com depth charts manually each week; B) Use a licensed feed; C) Defer",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
+ },
+ {
+  "suggestion_id": "S02",
+  "area": "Data",
+  "suggestion": "Collect official schedule, scores and box scores for past seasons",
+  "benefit_for_decisions": "Creates the history needed for any validation gate",
+  "effort": "Large",
+  "main_risk": "Scale of collection",
+  "options": "A) Current season only; B) Current plus prior 3 seasons; C) Full history",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S03",
+  "area": "Data",
+  "suggestion": "Choose an odds data provider and review its terms",
+  "benefit_for_decisions": "Needed to compare our lines with the market and measure closing line value",
+  "effort": "Medium",
+  "main_risk": "Licensing cost and legal use from Japan",
+  "options": "A) Licensed paid API; B) Public free source (verify terms first); C) No odds (analysis only)",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S04",
+  "area": "Injuries",
+  "suggestion": "Save a timestamped snapshot each time the injury report changes",
+  "benefit_for_decisions": "Allows tracking of status changes across the week",
+  "effort": "Medium",
+  "main_risk": "Storage and scheduling",
+  "options": "A) Manual snapshots; B) Scheduled snapshots three times per game week",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "suggestion_id": "S05",
+  "area": "Site",
+  "suggestion": "Add column filters and CSV export on table pages",
+  "benefit_for_decisions": "Easier review of rows",
+  "effort": "Small",
+  "main_risk": "None significant",
+  "options": "A) Add now; B) Later",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S06",
+  "area": "Site",
+  "suggestion": "Add a Decision Log page to record your choices on these suggestions",
+  "benefit_for_decisions": "Keeps decisions traceable",
+  "effort": "Small",
+  "main_risk": "Duplicates COORDINATION.md",
+  "options": "A) Use COORDINATION.md; B) New page",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S07",
+  "area": "Operations",
+  "suggestion": "Automate the refresh with a scheduled GitHub Action",
+  "benefit_for_decisions": "Keeps injury data current without manual work",
+  "effort": "Medium",
+  "main_risk": "Requires workflow permissions and a scraping-compliance review",
+  "options": "A) Scheduled workflow; B) Manual refresh only",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S08",
+  "area": "Strategy",
+  "suggestion": "Set validation thresholds (sample size, out-of-sample split, significance level) before any strategy is tested",
+  "benefit_for_decisions": "Prevents post-hoc selection",
+  "effort": "Small",
+  "main_risk": "Thresholds may be too strict or too loose",
+  "options": "A) Use proposed thresholds in Strategy Lab; B) Your own values",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S09",
+  "area": "Strategy",
+  "suggestion": "Run new strategies as paper trades (no money) for a fixed period before any reward",
+  "benefit_for_decisions": "Separates skill from luck over time",
+  "effort": "Small",
+  "main_risk": "Slow feedback",
+  "options": "A) 4 weeks; B) 1 full season; C) Custom",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": ""
+ },
+ {
+  "suggestion_id": "S10",
+  "area": "Legal",
+  "suggestion": "Obtain a legal opinion on Japan wagering rules before any real-money step",
+  "benefit_for_decisions": "Avoids criminal exposure under Penal Code Arts. 185-187",
+  "effort": "Small",
+  "main_risk": "Cost of advice",
+  "options": "A) Obtain advice first (recommended); B) Skip (not recommended)",
+  "status": "Awaiting your decision",
+  "row_type": "decision",
+  "evidence_url": "https://laws.e-gov.go.jp/law/140AC0000000045"
+ }
+]
