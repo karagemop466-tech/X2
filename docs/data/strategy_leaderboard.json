@@ -26,8 +26,8 @@
   "sample_shortfall": "0",
   "gates_passed": "8/8",
   "gates_failed": "none",
-  "reward_tier": "Tier 1 (gold)",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -57,8 +57,8 @@
   "sample_shortfall": "0",
   "gates_passed": "8/8",
   "gates_failed": "none",
-  "reward_tier": "Tier 1 (gold)",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -88,8 +88,8 @@
   "sample_shortfall": "6",
   "gates_passed": "7/8",
   "gates_failed": "G6",
-  "reward_tier": "Tier 3 (bronze)",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -119,8 +119,8 @@
   "sample_shortfall": "1",
   "gates_passed": "8/8",
   "gates_failed": "none",
-  "reward_tier": "Tier 1 (gold)",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -150,8 +150,8 @@
   "sample_shortfall": "not reachable at this effect size",
   "gates_passed": "2/8",
   "gates_failed": "G3, G4, G5, G6, G7, G8",
-  "reward_tier": "Not qualified",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -181,8 +181,8 @@
   "sample_shortfall": "4717",
   "gates_passed": "1/8",
   "gates_failed": "G2, G3, G4, G5, G6, G7, G8",
-  "reward_tier": "Not qualified",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
@@ -212,8 +212,8 @@
   "sample_shortfall": "24",
   "gates_passed": "1/8",
   "gates_failed": "G2, G3, G4, G5, G6, G7, G8",
-  "reward_tier": "Not qualified",
-  "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+  "reward_tier": "Not assigned — blocked by F42",
+  "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  }
 ]

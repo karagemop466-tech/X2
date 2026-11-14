@@ -539,9 +539,9 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
-<li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
+<li><strong>Strategy research.</strong> Seven pre-registered strategies have been graded walk-forward on official 2026 results. Two independent implementations disagree on qualification (F42), so <strong>no reward tier is assigned</strong>. Rankings describe forecast signal, not profit; no odds feed or staking result is available (Flags F32, F33, F43).</li>
 <li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), so the lines are neither over-shy nor over-confident.</li>
-<li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
+<li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were graded walk-forward. The base model's gate counts are shown as evidence, but independent validation disagrees on qualification (F42); no leaderboard row receives a reward tier, and no reward is enabled (F43). The totals strategy shows no measured skill and the parlay strategy fails on sample size. None has enough observations for a decisive test (F33).</li>
 <li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
 <li><strong>Results verified line by line.</strong> Every one of the {ms['games_transcribed']} transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
@@ -651,7 +651,7 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
 {table(correlation_plan, ['question','method','required_alignment','current_value','sample_n','source_url'],
        {'question':'Question','method':'Proposed measurement','required_alignment':'Data alignment','current_value':'Current value','sample_n':'Sample size','source_url':'Statistical reference'})}
 <h2>Leaderboard — now graded, on the Leaderboard page</h2>
-<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample and {ms['qualified_strategies']} qualify. Full figures, uncertainty intervals and gate results are on the <a href="leaderboard.html">Leaderboard</a> page. The intended competition still ranks performance only after preregistered, out-of-sample validation. The requested top-performer reward is not defined or enabled: eligibility, jurisdiction, data rights and legal review remain unresolved. No monetary value, score, sample size or uncertainty interval is reported.</p>
+<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample. One implementation reports {ms['measured_gate_qualified_strategies']} passing its core gates; the independent cross-check disagrees after multiple-comparison adjustment (F42). Per-gate results remain visible, but no reward tier is assigned or enabled. Full figures and uncertainty intervals are on the <a href="leaderboard.html">Leaderboard</a> page. Jurisdiction, data rights and legal review also remain unresolved.</p>
 {table(leaderboard_status, ['rank','strategy','skill_score','eligible_sample','uncertainty','validation_status','top_performance_reward','source_url'],
        {'rank':'Rank','strategy':'Strategy','skill_score':'Performance score','eligible_sample':'Eligible sample','uncertainty':'Uncertainty','validation_status':'Validation status','top_performance_reward':'Top-performance reward','source_url':'Project record'})}
 """)
@@ -799,21 +799,22 @@ closer the strategy's forecast landed to the actual result than the naive refere
 edge columns describe a paper record against the naive reference line and <strong>must not be read as a market
 result</strong> (Flag F32). Required sample size is how many bets the strategy would need, at the effect size it
 observed, for an 80%-power test; every strategy on this board is currently short.</p>
-{tiles([(ms['strategies_tested'], 'strategies tested'), (ms['qualified_strategies'], 'qualified'),
+{tiles([(ms['strategies_tested'], 'strategies tested'), (ms['active_reward_tiers'], 'active reward tiers'),
         (ms['out_of_sample_games'], 'out-of-sample games'), (ms['bet_delta_points'], 'point bet threshold')])}
 {table(leaderboard, ['rank','strategy_id','strategy','market','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','bets_vs_reference','hit_rate_vs_reference','mean_edge_points','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url'],
-       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','bets_vs_reference':'Bets','hit_rate_vs_reference':'Hit rate','mean_edge_points':'Mean edge (pts)','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier','source_url':'Source'})}
+       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','bets_vs_reference':'Bets','hit_rate_vs_reference':'Hit rate','mean_edge_points':'Mean edge (pts)','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Reward tier (inactive)','source_url':'Source'})}
 <h2>Full detail</h2>
 {search_box('lb-table')}
 {table(leaderboard, ['strategy_id','strategy','mae_model','mae_reference','oos_games','wins','losses','edge_ci_low','edge_ci_high','sd_edge_points','p_binomial','p_permutation_bets','reward_status','source_url'],
        {'strategy_id':'ID','strategy':'Strategy','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','wins':'Wins','losses':'Losses','edge_ci_low':'Edge CI low','edge_ci_high':'Edge CI high','sd_edge_points':'Edge SD','p_binomial':'Binomial p','p_permutation_bets':'Permutation p (bets)','reward_status':'Reward status','source_url':'Source'},
        table_id='lb-table', filterable=True)}
-<h2>Reward structure — proposed, not approved, nothing paid</h2>
+<h2>Reward structure — proposal only; no current tier assignments</h2>
+<p class="note"><strong>F42 blocks assigning any reward tier:</strong> the independent qualification analysis disagrees, and thresholds remain unapproved (F17). The labels below are only a historical design proposal, not current outcomes.</p>
 <ul class="findings">
-<li><strong>Tier 1 (gold)</strong> — passes all eight gates. Proposed: top leaderboard recognition.</li>
-<li><strong>Tier 2 (silver)</strong> — passes G1, G2, G3, G4, G5 and G6. Proposed: mid-tier recognition.</li>
-<li><strong>Tier 3 (bronze)</strong> — passes G1, G2, G3 and G5. Proposed: tracking only, no promotion.</li>
-<li><strong>Not qualified</strong> — fails any of G1, G2, G3 or G5. No tier, no promotion.</li>
+<li><strong>Tier 1 concept</strong> — would require all eight gates and a resolved independent qualification test.</li>
+<li><strong>Tier 2 concept</strong> — proposed gate subset only; not assigned or enabled.</li>
+<li><strong>Tier 3 concept</strong> — proposed tracking only; not assigned or enabled.</li>
+<li><strong>Current state</strong> — zero active reward tiers; no reward is offered or paid.</li>
 </ul>
 <p class="note">The competition is between strategies inside this repository, not between people, and no reward
 has monetary value. Any reward, entry fee, referral or wager mechanic stays disabled pending jurisdiction
@@ -1014,7 +1015,7 @@ xc_rows = [
      "source_url": "https://github.com/karagemop466-tech/X2"},
     {"check": "Strategies clearing every gate",
      "ours": f'{n_qualified} of {n_competing}',
-     "theirs": f'{ms.get("qualified_strategies", "")} of {ms.get("strategies_tested", "")} (with {ms.get("tier1_strategies", "")} at tier 1)',
+     "theirs": f'{ms.get("measured_gate_qualified_strategies", "")} of {ms.get("strategies_tested", "")} pass its core gate rule (with {ms.get("measured_all_gate_passes_single_implementation", "")} meeting all 8 gates)',
      "agreement": "DISAGREEMENT — see the note",
      "note": "The other implementation does not charge for testing several rules at once. Adjusting for multiple comparisons removes the apparent significance here, so no rule is qualified and the reward stays off.",
      "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"},
@@ -1038,9 +1039,9 @@ being smoothed over.</p>
 {table(xc_rows, ['check','ours','theirs','agreement','note','source_url'],
        {'check':'Check','ours':'This session implementation','theirs':'The other implementation','agreement':'Agreement','note':'Note','source_url':'Source'})}
 <h2>The one material disagreement</h2>
-<p class="note">The other implementation reports
-{ms.get('qualified_strategies', '')} of {ms.get('strategies_tested', '')} strategies as qualified and
-proposes reward tiers. This session's independent scoring of {n_competing} competing rules on
+<p class="note">The base implementation's unadjusted core-gate count is
+{ms.get('measured_gate_qualified_strategies', '')} of {ms.get('strategies_tested', '')};
+{ms.get('measured_all_gate_passes_single_implementation', '')} meet all eight of its gates. Reward-tier labels have since been disabled pending review (F43). This session's independent scoring of {n_competing} competing rules on
 {best['eligible_games']} unseen games finds <strong>{n_qualified} qualified</strong> once the multiple-comparison adjustment is
 applied: testing several rules and keeping the best one manufactures significance, and the leading rules' intervals no longer
 clear zero once that is charged for. <strong>The recommendation on this page is that no reward tier be offered or paid until

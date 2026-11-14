@@ -502,5 +502,17 @@
   "decision_owner": "Project",
   "row_type": "fact",
   "evidence_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "question_id": "Q43",
+  "area": "Model",
+  "question": "Why is the Week 11 naive reference total the same for all games?",
+  "status": "Answered — league-average total baseline",
+  "known_facts_verified": "The reference total is computed as 2 × average points per team-game across the 137 completed results strictly before Week 11: 6,291 total points / 137 games = 45.9197, rounded to 45.9. The same league-average baseline is intentionally used for every matchup. This is not a market total.",
+  "missing_information": "No gap for the current snapshot. Recompute when official results are added.",
+  "how_to_discover_official_first": "Run scripts/model.py; the official results rows link to NFL schedule/game pages. Verify the ledger against official standings after each extension. See F44/V18.",
+  "decision_owner": "Project / model maintainer",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  }
 ]

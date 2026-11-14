@@ -35,8 +35,9 @@
  "hfa_ref_constant": 2.5,
  "week11_games": 13,
  "strategies_tested": 7,
- "qualified_strategies": 4,
- "tier1_strategies": 3,
+ "measured_gate_qualified_strategies": 4,
+ "measured_all_gate_passes_single_implementation": 3,
+ "active_reward_tiers": 0,
  "injury_rows": 345,
  "injury_teams": 28,
  "seed": 20261114

@@ -803,14 +803,10 @@ parlay_rows = [{
 
 # --------------------------------------------------------- leaderboard ------
 def reward_tier(passed, s):
-    core = all(passed[g] for g in ("G1", "G2", "G3", "G5"))
-    if not core:
-        return "Not qualified", "No reward tier — gates G1/G2/G3/G5 not all passed"
-    if all(passed[g] for g in ("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8")):
-        return "Tier 1 (gold)", "Proposed: top leaderboard reward"
-    if all(passed[g] for g in ("G1", "G2", "G3", "G4", "G5", "G6")):
-        return "Tier 2 (silver)", "Proposed: mid leaderboard reward"
-    return "Tier 3 (bronze)", "Proposed: tracking-only recognition"
+    # F42 records an unresolved disagreement between two independent validation
+    # implementations. Keep per-gate evidence visible, but assign no rewards/tier
+    # labels until the preregistered follow-up resolves it (R36).
+    return "Not assigned — blocked by F42", "No tier or reward assigned pending F42; legal/data-rights gates also remain open"
 
 
 leader_rows = []
@@ -855,7 +851,7 @@ for s, label, kind in order:
         "gates_passed": f"{n_pass}/8",
         "gates_failed": ", ".join(g for g, v in passed.items() if not v) or "none",
         "reward_tier": tier,
-        "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+        "reward_status": "No tier assigned — rewards disabled pending F42 reconciliation, approved thresholds (F17), legal review (F09/F19) and data rights (F16)",
         "source_url": SRC_SCHED + "10",
     })
 
@@ -952,8 +948,12 @@ summary = {
     "hfa_ref_constant": HFA_REF,
     "week11_games": len(week11),
     "strategies_tested": len(summaries),
-    "qualified_strategies": sum(1 for r in leader_rows if r["reward_tier"] != "Not qualified"),
-    "tier1_strategies": sum(1 for r in leader_rows if r["reward_tier"].startswith("Tier 1")),
+    "measured_gate_qualified_strategies": sum(
+        1 for s, _label, _kind in summaries
+        if all(gate_eval(s)[g] for g in ("G1", "G2", "G3", "G5"))),
+    "measured_all_gate_passes_single_implementation": sum(
+        1 for s, _label, _kind in summaries if all(gate_eval(s).values())),
+    "active_reward_tiers": 0,
     "injury_rows": len(injuries),
     "injury_teams": len({r["team_abbr"] for r in injuries}),
     "seed": SEED,

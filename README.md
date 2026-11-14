@@ -101,8 +101,9 @@ and keep wagering, referrals, and rewards disabled pending qualified review. The
 Netherlands; Dutch law (Wet op de kansspelen, Kansspelautoriteit) is flagged as **F19** and has not been reviewed.
 See `research/nl-legal-review.md`.
 
-The leaderboard's three reward tiers are a proposal for review, not an implemented mechanic. Strategies compete
-inside this repository; nobody is entered, nothing is staked and nothing is paid out. Read the
+The leaderboard's three reward tiers are a proposal for review, not an implemented mechanic. No strategy row is
+assigned a tier while the independent qualification disagreement remains open (F42/F43); zero reward tiers are active.
+Strategies compete inside this repository; nobody is entered, nothing is staked and nothing is paid out. Read the
 [leaderboard](docs/leaderboard.html) on the skill column, and read the flags
 [F32](docs/flagged.html) (beating the naive reference line is not beating a sportsbook) and
 [F33](docs/flagged.html) (89 games is not yet a decisive sample) before relying on any ranking.
