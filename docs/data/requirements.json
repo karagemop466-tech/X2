@@ -380,10 +380,10 @@
  {
   "req_id": "R43",
   "requirement (from brief)": "Depth of the replacement, not just the fact of a replacement",
-  "status": "Partially done - depth of the replacement recorded where an official-domain chart confirms it; blank and flagged elsewhere",
-  "where_addressed": "Deficiency tracking page, 'Depth of the replacement' table (data/replacement_depth.csv, RD01-RD12)",
-  "blocker_or_note": "Twelve replacement events tracked with an explicit replacement_depth and next_in_line_depth column, not just the fact of a replacement. RD01-RD07 (DET, NE) carry club-chart-verified string order (2nd/3rd/4th string) with the self-labelled-'unofficial' caveat (F-05/F18). RD08-RD12 name the replacement or record that none is named, but leave depth blank - no club chart was collected for those clubs and NFL.com depth-chart URLs return 404 (F06). No string order is inferred.",
+  "status": "Done for the tracked events - depth of the replacement recorded wherever an official-domain source confirms it; blank and flagged elsewhere",
+  "where_addressed": "Deficiency tracking page: 'Depth of the replacement' table (data/replacement_depth.csv, RD01-RD07) and session 8a0bf37e's T42 table (data/replacement_depth_week10_2026.csv, A01-A11)",
+  "blocker_or_note": "Eighteen replacement/availability events carry an explicit replacement_depth and next-in-line depth where verified. RD01-RD07 (DET, NE) use the club-published charts with the self-labelled-'unofficial' caveat (F-05/F18); the T42 register adds fetched club-chart ranks for SEA, MIA, BAL, CLE, AZ and NYG (F45). Every unconfirmed depth cell stays blank - no string order is inferred (F06). A08-A11 remain unchecked (F53).",
   "row_type": "status",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://www.detroitlions.com/team/depth-chart"
  }
 ]

@@ -706,11 +706,15 @@ ratings_rows.sort(key=lambda r: -float(r["net_rating"]))
 
 # --------------------------------------------------------- correlations ----
 corr_rows = []
-def add_corr(cid, question, r, n, note, src):
-    lo, hi = fisher_ci(r, n) if r is not None else (None, None)
-    p = pearson_p(r, n) if r is not None else None
+def add_corr(cid, question, r, n, note, src, ci=None, p=None):
+    # ci/p may be supplied directly for statistics that are not correlation
+    # coefficients (e.g. C09 is a regression slope: its interval must come from the
+    # slope's own standard error, not the Fisher correlation transform — Flag F48 /
+    # REQ-8a-1, applied by session ef971991).
+    lo, hi = ci if ci is not None else (fisher_ci(r, n) if r is not None else (None, None))
+    pval = p if p is not None else (pearson_p(r, n) if r is not None else None)
     corr_rows.append({"corr_id": cid, "question": question, "value": fmt(r),
-                      "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(p, 4),
+                      "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(pval, 4),
                       "sample_n": n, "interpretation": note, "source_url": src})
 
 
@@ -754,11 +758,20 @@ slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sxx
 intercept = my - slope * mx
 resid = [y - (intercept + slope * x) for x, y in zip(xs, ys)]
 se_slope = math.sqrt(sum(e * e for e in resid) / (len(xs) - 2) / sxx)
+# C09 is a regression slope, NOT a correlation coefficient: its interval and p-value
+# come from the slope's own standard error (large-sample normal interval; two-sided
+# test against the perfectly-scaled value 1.0), not from the Fisher correlation
+# transform. Flag F48 / REQ-8a-1, applied by session ef971991.
+ci_slope = (slope - 1.959963984540054 * se_slope, slope + 1.959963984540054 * se_slope)
+z_slope = (slope - 1.0) / se_slope
+p_slope = math.erfc(abs(z_slope) / math.sqrt(2.0))
 add_corr("C09", "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
          slope, len(xs),
-         f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. A slope clearly below 1 "
-         "would mean the model is over-shy; clearly above 1, over-confident.",
-         SRC_SCHED + "10")
+         f"Slope {slope:.3f} (SE {se_slope:.3f}), intercept {intercept:.2f}. The 95% interval is the slope's own "
+         f"normal interval ({ci_slope[0]:.3f} to {ci_slope[1]:.3f}); p = {p_slope:.3f} against slope 1.0, so the "
+         "slope is not distinguishable from perfectly scaled. An interval clearly below 1 would mean the model is "
+         "over-shy; clearly above 1, over-confident.",
+         SRC_SCHED + "10", ci=ci_slope, p=p_slope)
 # parlay leg correlation (phi)
 add_corr("C07", "Are the side leg and the total leg of the same game correlated (phi)?", phi_pl, n_pl,
          "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",
