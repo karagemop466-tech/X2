@@ -1107,7 +1107,7 @@ written; all were `unclaimed` at `9d11efc`)
   judgement and was discarded before commit for exactly that reason.
 - **T56 Live re-verification** (`scripts/verify_live.py`, `data/verification_inputs/*.tsv`,
   `data/live_reverification_2026-11-14.csv`).
-- **T57 Stale registers**: identified and flaggged; **not** deleted (see request below).
+- **T57 Stale registers**: identified and flagged; **not** deleted (see request below).
 - **F50 resolved.** Gate G1 is no longer `True`. `lookahead_audit()` runs 10 tests and passes all of them.
 
 ### Sources actually fetched this session (not merely cited)
@@ -1155,3 +1155,27 @@ written; all were `unclaimed` at `9d11efc`)
 ### PR and deployment record — session e208ba6d (T51–T58)
 
 - **PR:** see the record appended below after the merge.
+
+### Merge and ID-collision record (session e208ba6d)
+
+- My claim commit `e4871b8` covered **T51–T58**. While I worked, `main` advanced twice: PR #34
+  (`ca1ea224`, T37–T41) and PR #36 (`f25d6b55`, which claimed **T51–T55**). The board therefore already
+  contained T51–T55 when my branch was ready.
+- Resolution, **nothing discarded**: their T51–T55 rows and their flags F56 stay exactly as merged. My tasks were
+  renumbered **T56–T58 → (collision) → T64–T71**; my flags **F56–F62 → F63–F69**; my requirements
+  **R44–R51 → R52–R59**. Two renumbering passes were needed because the first target (T56–T63) was itself
+  already occupied by f25d6b55's T56–T60.
+- `git pull --rebase` was attempted first and produced a conflict in `COORDINATION.md`; the rebase was **aborted**
+  and the branch synchronised with a merge instead, which is the pattern the earlier sessions also converged on.
+- Code conflicts and how each was resolved (neither side's feature dropped):
+  - `scripts/model.py` `gate_eval`: took **their** `passed = {...}` structure (they added G9) with **my**
+    `"G1": G1_PASSED`. G1 is now computed *and* G9 is demotion-aware; the gate denominator went 8 → 9.
+  - `scripts/model.py` leaderboard column list: **union** of my luck columns and their staking columns.
+  - `scripts/model.py` correlation column list: **union** of their owner-rule columns and mine, plus my sealed
+    forecast-log writer retained.
+  - `scripts/model.py` snapshot/seal block: kept **both** their price-snapshot store and my sealed log.
+  - `scripts/build.py` leaderboard page: kept **both** their signal/staking/staging views and my
+    skill-versus-luck table.
+- Post-merge verification: 29 pages, 926 internal and 3,405 external links, no problems; `verify_live.py` 75/75;
+  `verify_results.py` 32/32; `npm run build && npm run verify` ALL CHECKS PASSED; `model.py → desk_v2.py →
+  review.py` reproduces every data file byte-identically.
