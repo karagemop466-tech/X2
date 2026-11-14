@@ -1587,3 +1587,24 @@ dropped without either being completed here or found already done on `main`.
 REQ-8a-2 / DEC-04 (demotion rule D1 form), REQ-8a-3 / DEC-09 (C02 classification), DEC-01 (price source),
 DEC-02/DEC-03 (legal and data rights; F09, F16, F19), F53 (A08–A11 club charts), F43 (tier-label decision),
 F17 (numeric cut-offs and reward tiers), F36 (re-run `scripts/model.py` after Week 10 completes).
+
+### PR and deployment record — session ef971991 (T72–T78)
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/45 (base `main`, head `arena/ef971991-x2`), merged with
+  `--merge` as merge commit `f171dcff` on 2026-11-14 (20:00Z). Merged without waiting for approval, as the brief
+  directs. The flagged irregularities (F07/F16/F31/F42/F43/F45/F51/F53/F54) do not block the merge; all are
+  published on the Flagged page with source links.
+- **Pages build:** `built` for commit `f171dcff` (checked with
+  `gh api repos/karagemop466-tech/X2/pages/builds/latest`, error: null).
+- **Live check (fetched, not assumed):** https://karagemop466-tech.github.io/X2/docs/depth-deficiency.html
+  renders both depth registers — the T42 availability table (A01–A11) and this session's RD01–RD07 table with the
+  string depths (Lions 2nd/3rd, Patriots 3rd/4th) and the blank-not-inferred policy. The
+  <a href="https://karagemop466-tech.github.io/X2/docs/leaderboard.html">leaderboard</a> shows the signal/staking
+  split and every reward tier labelled "Proposed … — not offered (blocked by R36, under review F43)".
+- **Tasks T72–T78:** done. Nothing from this session is left unclaimed or half-merged; every collision with
+  sessions 8a0bf37e, ca1ea224, f25d6b55, e208ba6d and cf6709c0 is recorded above and nothing of anyone's work
+  was discarded.
+- **Still open after this session (owner-owned; nothing blocks):** REQ-8a-2 / DEC-04 (D1 form), REQ-8a-3 / DEC-09
+  (C02 classification), DEC-01 (price source), DEC-02/DEC-03 (legal, data rights: F09, F16, F19), F43 (tier-label
+  decision), F53 (A08–A11 club charts), F17 (cut-offs and reward tiers), F36 (re-run `scripts/model.py` when the
+  rest of Week 10 is final).
