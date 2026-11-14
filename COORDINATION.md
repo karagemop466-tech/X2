@@ -607,8 +607,8 @@ session's tasks continue from T23.
 | T33 | Cross-check of the two independent implementations | done | 10a76288 | `docs/cross-check.html` | SRC-44, SRC-45 | 137/137 games match with **0 score disagreements** (after LAR/LA normalisation). Disagreement on qualification recorded as **F42** |
 | T34 | Deficiency tracking: officially named starters and replacements | done | 10a76288 | `data/confirmed_availability_week10_2026.csv`, `docs/depth-deficiency.html` | SRC-48 … SRC-58 | A01–A11; IR players (Jackson, Willis) are absent from the weekly report entirely. String rank stays blank: NFL.com depth-chart pages 404, club charts self-label unofficial (F06, F18) |
 | T35 | Link and reproducibility verification | done | 10a76288 | `scripts/check_links.py`, `data/verification_report.csv` | first-party | V01–V23; 22 pages / 630 internal links / 2,445 external links checked; all 7 model outputs reproduce byte for byte |
-| T36 | Integration: rebase, merge registers with fresh IDs, PR, merge, confirm Pages | in progress | 10a76288 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, PR | all | Runs last; IDs renumbered twice because `main` advanced through PRs #8–#24 during this session |
-| T37 | Post-merge re-verification of `main` @ `9e90dd3`; Week 10 calendar check against the official schedule; board reconciliation (T36 stale status) | in progress | 4c5bc504 | `COORDINATION.md` only | nfl.com Week 10 schedule; NFL.com by-week pages (via the existing SRC register) | Claimed 2026-11-14. No data, script, or generated-page edits in this scope. |
+| T36 | Integration: rebase, merge registers with fresh IDs, PR, merge, confirm Pages | done (PR #25 and PR #26 merged; status was stale) | 10a76288 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, PR | all | Runs last; IDs renumbered twice because `main` advanced through PRs #8–#24 during this session |
+| T37 | Post-merge re-verification of `main` @ `9e90dd3`; Week 10 calendar check against the official schedule; board reconciliation (T36 stale status) | done | 4c5bc504 | `COORDINATION.md` only | nfl.com Week 10 schedule; NFL.com by-week pages (via the existing SRC register) | Claimed 2026-11-14. Verification record: see session 4c5bc504 log below. No data, script, or generated-page edits in this scope. |
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -793,3 +793,29 @@ implementation is preserved on the branch and its numbers are published on the c
   configuration, not a broken link: every link the builder emits is relative and resolves correctly from `/docs/`.
 - **Tasks T31–T36: done.** Nothing in this session is left unclaimed or half-merged. Flagged items F37–F42 are published on
   the Flagged for Review page with source links and do not block anything.
+
+## 2026-11-14 · session 4c5bc504 · post-merge re-verification (T37)
+
+**Branch:** `arena/4c5bc504-x2` · **Base:** `origin/main` @ `9e90dd3` (PR #26) · **Scope:** `COORDINATION.md` only.
+
+### Board reconciliation
+- **T36** still read "in progress" under 10a76288, but its work landed as PR #25 (merge `3bf69e6`) and PR #26 (`9e90dd3`), and the 10a76288 close-out records "Tasks T31–T36: done". Marked done here.
+- No other task was unclaimed or in progress on the board at the start of this session.
+
+### Verification performed (on `9e90dd3`, 2026-11-14)
+| Check | Result |
+|---|---|
+| `python3 scripts/verify_results.py` | 137 games, 32 teams, all W-L-T and points reconcile exactly with the official standings (0 mismatches) |
+| `python3 scripts/model.py` | Re-run leaves `git status` clean: all model outputs reproduce byte for byte |
+| `python3 scripts/build.py` | 22 pages; 345 injury rows, 28 teams, 61 depth rows; link and row-source checks pass |
+| `python3 scripts/check_links.py` | 22 pages, 544 internal links, 2,350 external links; no broken internal links; all external links HTTPS on the allow-list |
+| `npm run build` + `npm run verify` | 12 pages, 194 internal links, no unrendered tokens, ALL CHECKS PASSED |
+| Live GitHub Pages | Latest Pages build is `built` at commit `9e90dd3`. `https://karagemop466-tech.github.io/X2/docs/flagged.html` serves the current Flagged for Review register |
+| Week 10 calendar (F36 check) | Official schedule, <https://www.nfl.com/schedules/2026/by-week/week-10>, shows the Thursday game as Final (Commanders 24, Giants 21, Thursday November 12th). The remaining Week 10 games are dated Sunday November 15th and later. Today is 14 November, so the dataset's 137 games (weeks 1–9 complete plus one Week 10 game) is correct for the date. **F36 stays open** and is valid: re-run `scripts/model.py` after the Week 10 Monday game (16 November) is final. |
+
+### Irregularity logged for the integration owner (not edited here)
+- **Wording, "weeks 1-10".** `README.md` (the "Data snapshot" section) and `scripts/build.py` (lines 981–982, the cross-check labels) describe the 137-game set as "weeks 1-10". That is inaccurate: the set is weeks 1–9 complete (136 games) plus the Week 10 Thursday game (1 game). The data is right; the label is wrong. The fix belongs to the integration session because `README.md` and `scripts/build.py` are shared outputs. Suggested wording: "weeks 1-9 complete, plus the Week 10 Thursday game". **Owner action:** make this one-line change in the next integration pass.
+- **Read-only spot check.** The per-week counts, the Week 10 Thursday row, and the Week 11 slate (13 games, Thursday November 19th onward) are consistent between `data/games_2026_results.csv` and `data/season_games_2026.csv`. The official schedule page confirms the Thursday result.
+
+### Request (no action taken)
+No new feature was requested in this session. The open decisions on the board remain: F17 (validation cut-offs and reward tiers), F19 (Netherlands legal review), F09 (Japan), F16 (NFL data rights), F07/F32 (no licensed odds feed), F36 (re-run after Week 10). The board does not contain any task that is unclaimed and in scope for a new agent.
