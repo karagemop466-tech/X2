@@ -23,4 +23,7 @@ design until the required data feed is connected. Items F-01 and F-05 are
 **irregularities** — a cross-source discrepancy and a source-type caveat — that
 should be reviewed and, where possible, resolved through a documented rule. Item
 F-06 is a **missing feed** to be confirmed before player-prop signals are fully
-sourced.
+sourced. Item **F-08** is a **corrected irregularity**: a former third-party backup
+value (Khalil Dorsey, 2nd string behind D.J. Reed) was contradicted by the official
+club depth chart (Rock Ya-Sin 2nd, Khalil Dorsey 3rd) and replaced with the
+club-chart value.

@@ -3,10 +3,11 @@
     "id": "F-01",
     "area": "Injuries & Depth",
     "item": "Ben Brown position discrepancy",
-    "detail": "NFL.com official injury report lists Ben Brown as C (Week 10, Knee, Out). A third-party chart lists him as RG; that third-party value is unverified and has been removed from the table.",
-    "reason": "The official position is C. The RG value cannot be confirmed from an official source, so no reconciliation is made and no deficiency is scored.",
+    "detail": "NFL.com official injury report lists Ben Brown as C (Week 10, Knee, Out). The club-published depth chart at patriots.com/team/depth-chart (fetched 2026-11-14) lists him 1st-string LG and 2nd-string C (behind Jared Wilson). The former third-party chart's RG value is unsupported by the club chart and has been removed from the table.",
+    "reason": "The official injury report and the official-domain club chart use different position bases (C vs LG). No single official position basis is defined, so the deficiency is described but not numerically scored.",
     "source": [
-      "nfl-injuries"
+      "nfl-injuries",
+      "patriots-depth"
     ],
     "status": "open"
   },
@@ -40,13 +41,14 @@
   {
     "id": "F-05",
     "area": "Data Access",
-    "item": "Official depth chart not found; depth ordering unverified",
-    "detail": "Depth-chart ordering (starter, 2nd/3rd-string backup) is not on any official NFL source checked. https://www.nfl.com/teams/detroit-lions/depth-chart returned a 404 page on 2026-11-14. Third-party charts (ESPN, Ourlads) were checked only as leads; their names and ordering were removed from the table because they are not official.",
-    "reason": "The NFL does not publish a depth chart at the URL checked. Backup-replacement claims stay blank until an official source is found.",
+    "item": "Depth charts: club official pages located and used, with a self-labeled 'unofficial' caveat",
+    "detail": "No league-level official depth chart exists: the NFL.com team depth-chart URLs checked return 404 (session 30beeb55, session 7c9eb69a). The clubs' own official websites do publish weekly charts — detroitlions.com/team/depth-chart ('2026 Unofficial Depth Chart Compiled by Lions Football Communications') and patriots.com/team/depth-chart ('unofficial and is published by the writers of Patriots.com', reflecting writer opinion). Both pages sit on official club domains and are linked from the NFL.com team roster pages. Depth ordering in the table is now verified against these club charts (fetched 2026-11-14, session 52ca9f77). Third-party charts (ESPN, Ourlads) remain leads only and are not used as evidence.",
+    "reason": "Club charts are the best available official-domain depth evidence, but they self-describe as unofficial/editorial. Ordering values are filled only where a club chart confirms them, with this caveat attached to every such row.",
     "source": [
-      "nfl-injuries"
+      "lions-depth",
+      "patriots-depth"
     ],
-    "status": "open"
+    "status": "open (caveat documented)"
   },
   {
     "id": "F-06",
@@ -65,5 +67,17 @@
     "reason": "No automated scraping of NFL.com should be implemented until authorized access and reuse terms are documented. Mirrors suggested F16 from the d80442c2 audit.",
     "source": "nfl-terms",
     "status": "open"
+  },
+  {
+    "id": "F-08",
+    "area": "Injuries & Depth",
+    "item": "Third-party backup value contradicted by the official club chart",
+    "detail": "Before the T13 blanking pass, the table named Khalil Dorsey '2nd string' behind D.J. Reed (Out, Hip) from the Ourlads chart. The club-published depth chart at detroitlions.com/team/depth-chart (fetched 2026-11-14) lists Rock Ya-Sin 2nd and Khalil Dorsey 3rd behind D.J. Reed at CB. The table now carries the club-chart value (Rock Ya-Sin).",
+    "reason": "The third-party depth order was contradicted by the official-domain club chart fetched the same week; the superseded third-party value is logged here so the correction can be reviewed.",
+    "source": [
+      "lions-depth",
+      "ourlads-depth-det"
+    ],
+    "status": "open (value corrected in data; review requested)"
   }
 ]
