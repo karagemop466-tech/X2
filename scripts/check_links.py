@@ -13,14 +13,18 @@ from urllib.parse import urlparse
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOCS = os.path.join(ROOT, "docs")
 
-# Mirrors OFFICIAL_HOSTS in scripts/build.py. github.com is permitted only for
-# this project's own repository (first-party project record).
-ALLOWED = OFFICIAL_HOSTS = {
-    "www.nfl.com", "support.nfl.com", "operations.nfl.com",
-    "www.detroitlions.com", "www.patriots.com",
-    "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
-    "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
-}
+# Read the allowlist straight from scripts/build.py so the two can never drift.
+import ast
+_src = open(os.path.join(ROOT, "scripts", "build.py"), encoding="utf-8").read()
+_tree = ast.parse(_src)
+ALLOWED = set()
+for node in _tree.body:
+    if isinstance(node, ast.Assign) and any(
+        isinstance(t, ast.Name) and t.id == "OFFICIAL_HOSTS" for t in node.targets
+    ):
+        ALLOWED = set(ast.literal_eval(node.value))
+if not ALLOWED:
+    raise SystemExit("could not read OFFICIAL_HOSTS from scripts/build.py")
 
 LINK_RE = re.compile(r'<a\s[^>]*href="([^"#][^"]*)"', re.I)
 ID_RE = re.compile(r'id="([^"]+)"')
