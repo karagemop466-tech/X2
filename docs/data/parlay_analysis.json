@@ -1,0 +1,17 @@
+[
+ {
+  "parlay_id": "P1",
+  "definition": "Same-game 2-leg ticket: side and total, each taken only when the model and the reference line differ by >= 3",
+  "legs": "2",
+  "tickets": "24",
+  "leg1_hit_rate": "0.667",
+  "leg2_hit_rate": "0.417",
+  "observed_joint_hit_rate": "0.208",
+  "independence_expected_rate": "0.278",
+  "difference_observed_minus_independence": "-0.069",
+  "phi_correlation": "-0.299",
+  "two_by_two": "both=5, side only=11, total only=5, neither=3",
+  "note": "Small sample; the ticket count is the number of walk-forward games where both legs qualified.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ }
+]

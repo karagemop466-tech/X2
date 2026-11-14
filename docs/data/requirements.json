@@ -178,5 +178,131 @@
   "blocker_or_note": "All 345 injury rows and 14 game headers matched the official page on 2026-11-14. Three new items were flagged, including a news snapshot drift and an unpublished verified score.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R21",
+  "requirement (from brief)": "Originate own NFL lines (independent spread and total)",
+  "status": "Done — ridge attack/defence model fitted on 137 official results; Week 11 lines published with the reference line beside them",
+  "where_addressed": "No market comparison is possible without a licensed odds feed (F07)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "req_id": "R22",
+  "requirement (from brief)": "Research and develop strategies that generate useful signals",
+  "status": "Done — 7 strategies pre-registered and graded walk-forward on 89 out-of-sample games",
+  "where_addressed": "One season only; strategy selection used the same window (S14)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "req_id": "R23",
+  "requirement (from brief)": "Treat it as a leaderboard competition with rewards for top strategies",
+  "status": "Proposed — three reward tiers computed and published; no reward is paid or approved",
+  "where_addressed": "Legal, jurisdiction and rights review pending (F09, F16, F27)",
+  "blocker_or_note": "decision",
+  "row_type": "decision",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R24",
+  "requirement (from brief)": "Single bets, parlays and player-prop combos",
+  "status": "Partially done — singles and one same-game two-leg parlay graded; player props blocked",
+  "where_addressed": "No player-prop outcomes, prices or settlement rules (F31)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/stats/player-stats/"
+ },
+ {
+  "req_id": "R25",
+  "requirement (from brief)": "Each strategy must pass validation gates",
+  "status": "Done — 8 gates with explicit rules, per-strategy results and published pass/fail counts",
+  "where_addressed": "Cut-offs are proposed by this session and not yet approved (F17)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "req_id": "R26",
+  "requirement (from brief)": "Determine correlation values",
+  "status": "Done — 9 correlations computed from official results with confidence intervals and p-values",
+  "where_addressed": "Player-prop and cross-game correlations unavailable (F31)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "req_id": "R27",
+  "requirement (from brief)": "Remove luck from the equation; keep only selectively skill-based strategies",
+  "status": "Partially done — permutation tests, bootstrap intervals, FDR control and sample-size gates applied",
+  "where_addressed": "89 games; no strategy has a market ROI measurement (F32, F33)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
+ },
+ {
+  "req_id": "R28",
+  "requirement (from brief)": "Track injuries and deficiencies, including 2nd/3rd/4th-string replacements",
+  "status": "Partially done — unit exposure by side of ball from the verified Week 10 report; string rank left blank",
+  "where_addressed": "No official depth-chart source; roster pages carry no depth order (F06)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
+ },
+ {
+  "req_id": "R29",
+  "requirement (from brief)": "Executive summary outlining important details",
+  "status": "Done",
+  "where_addressed": "—",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R30",
+  "requirement (from brief)": "Review the repository line by line with source links and irregularities",
+  "status": "Done — 137 game rows reconciled against official standings (32/32 teams exact on W-L-T, PF, PA)",
+  "where_addressed": "Prior manual transcription of injury rows still awaits a full spot-check (F10)",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "req_id": "R31",
+  "requirement (from brief)": "GitHub Pages site with a landing page and subpages by category",
+  "status": "Done — 17 pages rebuilt and re-verified in this session",
+  "where_addressed": "—",
+  "blocker_or_note": "status",
+  "row_type": "status",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R32",
+  "requirement (from brief)": "Every table row carries a source link to an official site",
+  "status": "Done — build-time validator rejects any row without an allow-listed HTTPS source",
+  "where_addressed": "—",
+  "blocker_or_note": "fact",
+  "row_type": "fact",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R33",
+  "requirement (from brief)": "No manual input required from the owner",
+  "status": "Met",
+  "where_addressed": "—",
+  "blocker_or_note": "status",
+  "row_type": "status",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R34",
+  "requirement (from brief)": "Pull request, merge to main and confirm the Pages deployment",
+  "status": "In progress — opened and merged in this session",
+  "where_addressed": "—",
+  "blocker_or_note": "status",
+  "row_type": "status",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
  }
 ]

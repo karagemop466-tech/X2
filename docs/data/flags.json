@@ -268,5 +268,59 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/src/build.mjs",
   "status": "Resolved — fixed and covered by a new automated check",
   "action_requested": "Re-run npm run build && npm run verify before any future Node dashboard publication."
+ },
+ {
+  "flag_id": "F31",
+  "category": "Missing official data",
+  "item": "No player-prop outcomes, prices or settlement rules",
+  "detail": "Player-prop and player-prop-combination markets cannot be graded: this repository holds no player-stat outcome series, no prop thresholds, no prices and no settlement definitions. All prop and prop-combo cells are blank by design.",
+  "source_url": "https://www.nfl.com/stats/player-stats/",
+  "status": "Missing - blank by design",
+  "action_requested": "Approve a rights-cleared player data source before any prop work (Q25, S15)."
+ },
+ {
+  "flag_id": "F32",
+  "category": "Interpretation guard",
+  "item": "A win against the reference line is not a win against a sportsbook",
+  "detail": "The leaderboard's bet record is measured against a naive published reference line (season point differential plus a fixed 2.5-point home field), because no licensed odds feed exists in this project. Beating a noisy public benchmark is easier than beating a market price, so hit rates here must never be read as market win rates or return on investment.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Documented — read the leaderboard with this caveat",
+  "action_requested": "Keep wagering disabled and quote forecast accuracy, not hit rate, in any decision."
+ },
+ {
+  "flag_id": "F33",
+  "category": "Sample size",
+  "item": "89 out-of-sample games is too few to resolve a small edge",
+  "detail": "Every strategy is graded on 89 games (weeks 4-10 of one season). The sample-size column shows how many bets each strategy would need to reach 80% power at the effect size it observed; all of them are short. Confidence intervals remain wide even for the strategies that pass every gate.",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
+  "status": "Open — more seasons needed",
+  "action_requested": "Extend the dataset under written permission, or accept wide intervals and label results exploratory."
+ },
+ {
+  "flag_id": "F34",
+  "category": "Model scope",
+  "item": "Ratings use final scores only",
+  "detail": "The model has no play-by-play, personnel, participation, weather, travel, rest or coaching inputs, and no injury adjustment: one injury snapshot cannot be backtested. Missing inputs mean missing edges, and also mean the model cannot know about late scratches.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "Known limitation",
+  "action_requested": "Approve additional official inputs (S12) and a rights-cleared injury archive (S16)."
+ },
+ {
+  "flag_id": "F35",
+  "category": "Source irregularity",
+  "item": "NFL.com Week 1 page labels its opener inconsistently",
+  "detail": "The Week 1 schedule page shows the New England at Seattle game under a 'Sunday Night Football, September 9th' heading while the game link itself reads 'Wednesday, September 9th'. The date was transcribed exactly as displayed; the page's own heading and link disagree.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-1",
+  "status": "Irregularity - open",
+  "action_requested": "Confirm the kickoff date against a second official NFL page before relying on it."
+ },
+ {
+  "flag_id": "F36",
+  "category": "Snapshot timing",
+  "item": "Week 11 lines are fitted before Week 10 has finished",
+  "detail": "The published Week 11 lines are fitted on all completed games, which at capture time means weeks 1-9 plus the Week 10 Thursday game (Commanders 24, Giants 21). The 13 remaining Week 10 games are not included and will change the ratings.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Known limitation — re-run after Week 10",
+  "action_requested": "Re-run python3 scripts/model.py once Week 10 finishes, then rebuild the site."
  }
 ]

@@ -579,3 +579,84 @@ via the follow-up PR noted in the merge log. This session changed no injury row,
 no depth value, no odds/forecast/correlation/performance value; it only removed
 or de-approved values that cannot be confirmed from an official source, appended
 verification evidence to open flags, and recorded the work.
+
+## Session 73cbec41 — independent line model, results dataset, strategy leaderboard (2026-11-14)
+
+| Session | Branch | Scope |
+|---|---|---|
+| `73cbec41` | `arena/73cbec41-x2` (branch name is fixed by session rules; no `session-<id>/<task>` branch was created) | Built the independent line model, the 137-game official results dataset, the walk-forward backtest, validation gates, correlation and parlay studies, the strategy leaderboard and the Week 11 lines; rebuilt the Pages site to 20 pages. Merged sessions `324b0cd2` and `3988bdab`'s registers, decision-path page, verification page and honesty fixes into this branch before publishing. |
+
+**Tasks (T23-T30).** Session `3988bdab` already used the label T22 for its honesty-consistency pass, so this
+session's tasks continue from T23.
+
+| Task | Description | Status | Session | Files | Sources | Verification |
+|---|---|---|---|---|---|---|
+| T23 | Official 2026 results dataset, weeks 1-10 | done | 73cbec41 | data/games_2026_results.csv (new) | SRC-31..SRC-41 | 137 games transcribed from the by-week schedule pages |
+| T24 | Standings snapshot and line-by-line reconciliation | done | 73cbec41 | data/standings_2026_snapshot.csv, scripts/verify_results.py (both new) | SRC-42 | 32 teams, 0 mismatches |
+| T25 | Independent line model and Week 11 originated lines | done | 73cbec41 | scripts/model.py, data/model_lines_week11.csv, data/model_ratings.csv, data/model_summary.json (all new) | SRC-31..SRC-42 | MAE 9.16 vs 10.89 for the naive reference line, weeks 4-10 |
+| T26 | Walk-forward backtest and bet log | done | 73cbec41 | data/model_backtest.csv, data/model_bets.csv (new) | SRC-31..SRC-41 | 89 out-of-sample games, no look-ahead |
+| T27 | Validation gates and strategy leaderboard with proposed reward tiers | done (tiers proposed; nothing is paid or enabled) | 73cbec41 | data/gate_results.csv, data/strategy_leaderboard.csv (new) | SRC-16, SRC-19 | 8 gates, 7 strategies graded, 4 qualify. Cut-off approval still open (F17) |
+| T28 | Correlation study and parlay joint-outcome study | done | 73cbec41 | data/correlations_computed.csv, data/parlay_analysis.csv (new) | SRC-31..SRC-41, SRC-17 | 9 correlations with CIs and p-values; 1 parlay table (24 tickets) |
+| T29 | Registers extended: Q19-Q30, S11-S18, R21-R34, F31-F36, SRC-31..SRC-43 | done | 73cbec41 | data/questions.csv, data/suggestions.csv, data/requirements.csv, data/flags.csv, data/sources.csv | all | ID union with no collisions; every row from sessions 324b0cd2 and 3988bdab is retained |
+| T30 | Site rebuild to 20 pages, integration, PR to main, merge, Pages deploy | in progress | 73cbec41 | scripts/build.py, docs/**, README.md, COORDINATION.md | all | `python3 scripts/build.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass |
+
+**Verification performed (this session, full detail on `docs/verification.html`):**
+
+- All eleven 2026 by-week schedule pages were read in full and transcribed into `data/games_2026_results.csv`
+  (137 completed games). Row counts per week: 16, 16, 16, 16, 15, 14, 14, 14, 15 and 1 — Week 10 contained only
+  the Thursday game at the time of transcription. Week 11 has 13 scheduled games, with ATL, CLE, GB, LA, NE and
+  SEA on bye.
+- Line-by-line reconciliation: `scripts/verify_results.py` recomputes every team's W-L-T, points for and points
+  against from the transcribed games and compares them with the official standings snapshot. Result: 32 teams
+  checked, 0 mismatches. This check found the one transcription gap (12 missing Week 4 games), which was corrected
+  before publication.
+- `python3 scripts/model.py` regenerates every model output from the results CSV with a fixed random seed (20261114)
+  for the bootstrap and permutation tests.
+- Three model defects were found and fixed during review: (1) the naive reference line was mis-scaled — the point
+  differential gap was halved — which inflated every strategy's edge; corrected to full scale and the leaderboard
+  re-scored. (2) The two-sided p-value for a Pearson correlation was malformed and returned values greater than 1;
+  corrected to the regularised incomplete beta form and hand-checked (r = 0.321, n = 89 gives p = 0.0022).
+  (3) The leaderboard was originally ranked on hit rate; re-scored on paired absolute-error improvement with a
+  bootstrap CI, a sign-flip permutation test and Benjamini-Hochberg FDR control, because a high hit rate against a
+  noisy naive benchmark is not evidence of a market edge. The bet record is still published, labelled, and
+  accompanied by the sample size each row would need for a decisive test.
+- Merge integration: `git checkout --theirs` did not take effect during the first rebase, so the shared registers
+  were re-merged by ID union from `origin/main`, keeping every row written by sessions `7c9eb69a`, `45a0ec8c`,
+  `52ca9f77`, `324b0cd2` and `3988bdab` and appending this session's rows at the next free IDs (flags 30+6,
+  requirements 20+14, sources 30+13, questions 18+12, suggestions 10+8). Their decision-path page, verification
+  page, `decision-chain.csv`, `suggestion_review.csv`, stricter CSV field-count check and honesty-consistency
+  register edits are all preserved and rebuilt.
+- `python3 scripts/build.py` (20 pages; row-source, internal-link and plain-http checks), `python3
+  scripts/verify_results.py`, `npm run build` and `npm run verify` (12 pages, 194 internal links) all pass.
+- No market price, closing line, player-prop outcome, depth-chart order or legal conclusion is asserted anywhere.
+  Market columns are blank by design (F07, F31, F32).
+
+**Irregularities flagged by this session (F31-F36, published at `docs/flagged.html`).** The jurisdiction flag F19
+had already been raised by session `324b0cd2`, so it was not duplicated.
+
+- F31: no player-prop outcomes, prices or settlement rules exist in the repository, so prop and prop-combo
+  correlations stay blank by design.
+- F32: a win against the naive reference line is not a win against a sportsbook; leaderboard hit rates must never
+  be read as market results.
+- F33: 89 out-of-sample games is too few to resolve a small edge; every leaderboard row states the sample it needs
+  for an 80%-power test.
+- F34: the ratings use final scores only — no play-by-play, personnel, weather, travel, rest or injury inputs.
+- F35: the NFL.com Week 1 page labels its opener under a "Sunday Night Football, September 9th" heading while the
+  game link reads "Wednesday, September 9th"; the date was transcribed exactly as displayed.
+- F36: the Week 11 lines are fitted before Week 10's Sunday games were played; re-run `scripts/model.py` afterwards.
+
+**Requests (logged, not actioned):**
+
+- **73cbec41 -> project owner:** confirm the operating jurisdiction (F19) before any reward, entry fee, referral or
+  wager mechanic is considered; approve or amend the proposed gate cut-offs (F17) and the three reward tiers;
+  decide whether a licensed odds archive may be purchased, without which no market return can ever be measured
+  (F07, F32).
+- **73cbec41 -> sessions 324b0cd2 / 3988bdab:** session 3988bdab unranked the Node leaderboard because no
+  validation cut-off is approved (F17, T22). This session's Python leaderboard ranks on a *measured* quantity
+  (paired absolute-error improvement with a bootstrap CI, a permutation test and FDR control) and labels the reward
+  tiers as a proposal only, so no ordering was asserted without evidence. If a later session disagrees, the fix is
+  to blank the rank column, not the measured columns.
+- **73cbec41 -> all sessions:** `scripts/model.py`, `scripts/verify_results.py`, `data/games_2026_results.csv`,
+  `data/standings_2026_snapshot.csv`, `data/schedule_week11_2026.csv` and `data/model_*.csv` are owned by this
+  session. The registers in `data/*.csv` are append-only and ID-ordered — continue from the highest existing ID
+  and record the change here.

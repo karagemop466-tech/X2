@@ -1,0 +1,101 @@
+[
+ {
+  "corr_id": "C01",
+  "question": "Do model-predicted margins track actual margins (out of sample)?",
+  "value": "0.321",
+  "ci_low": "0.120",
+  "ci_high": "0.496",
+  "p_value": "0.0022",
+  "sample_n": "89",
+  "interpretation": "Forecast skill of the M1 line; higher means the originated number carries signal.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C02",
+  "question": "Same, for the naive reference line (season point differential + 2.5)",
+  "value": "0.274",
+  "ci_low": "0.070",
+  "ci_high": "0.456",
+  "p_value": "0.0093",
+  "sample_n": "89",
+  "interpretation": "Benchmark: the model must beat this to justify originating lines.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C03",
+  "question": "Are blowouts associated with higher game totals?",
+  "value": "0.021",
+  "ci_low": "-0.188",
+  "ci_high": "0.228",
+  "p_value": "0.8448",
+  "sample_n": "89",
+  "interpretation": "Same-game link: lopsided games and scoring volume move together.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C04",
+  "question": "Within a game, do the two teams' point totals co-move?",
+  "value": "0.042",
+  "ci_low": "-0.167",
+  "ci_high": "0.249",
+  "p_value": "0.6929",
+  "sample_n": "89",
+  "interpretation": "Direct input to totals and same-game parlays; negative means a scoring trade-off.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C05",
+  "question": "Do model-predicted totals track actual totals?",
+  "value": "0.092",
+  "ci_low": "-0.119",
+  "ci_high": "0.295",
+  "p_value": "0.3913",
+  "sample_n": "89",
+  "interpretation": "Totals-signal check.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C06",
+  "question": "Does last week's margin predict this week's margin for the same team?",
+  "value": "0.087",
+  "ci_low": "-0.043",
+  "ci_high": "0.214",
+  "p_value": "0.1907",
+  "sample_n": "228",
+  "interpretation": "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C09",
+  "question": "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
+  "value": "0.885",
+  "ci_low": "0.830",
+  "ci_high": "0.923",
+  "p_value": "0.0000",
+  "sample_n": "89",
+  "interpretation": "Slope 0.89 (SE 0.28), intercept -0.79. A slope clearly below 1 would mean the model is over-shy; clearly above 1, over-confident.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C07",
+  "question": "Are the side leg and the total leg of the same game correlated (phi)?",
+  "value": "-0.299",
+  "ci_low": "-0.627",
+  "ci_high": "0.119",
+  "p_value": "0.1561",
+  "sample_n": "24",
+  "interpretation": "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "corr_id": "C08",
+  "question": "Is Week-10 defensive injury exposure associated with season points allowed?",
+  "value": "-0.064",
+  "ci_low": "-0.404",
+  "ci_high": "0.291",
+  "p_value": "0.7264",
+  "sample_n": "32",
+  "interpretation": "Exploratory only: one snapshot, no causal claim, and starter/backup depth is unverified (F06).",
+  "source_url": "https://www.nfl.com/injuries/"
+ }
+]

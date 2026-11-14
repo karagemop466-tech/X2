@@ -51,3 +51,6 @@ td.ok{color:#1a7f4b;font-weight:600;font-size:12.5px}
 td.warn{color:var(--flag);font-weight:600;font-size:12.5px}
 ol.findings{padding-left:20px}
 @media (max-width:760px){.twocol{grid-template-columns:1fr}}
+
+td.pos { color: #0b6b3a; font-weight: 600; }
+td.neg { color: #97180f; font-weight: 600; }

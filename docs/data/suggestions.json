@@ -118,5 +118,101 @@
   "status": "For review — not implemented",
   "row_type": "decision",
   "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
+ },
+ {
+  "suggestion_id": "S11",
+  "area": "Model",
+  "suggestion": "Extend the results dataset to earlier seasons from the official by-week schedule pages, re-fit and re-gate every strategy.",
+  "benefit_for_decisions": "89 out-of-sample games is below the roughly 200+ games needed to resolve a one-point edge; more seasons shrink the confidence intervals.",
+  "effort": "Low (same pages, same script)",
+  "main_risk": "NFL.com terms restrict systematic retrieval — secure written permission first (F16).",
+  "options": "A) Request written permission for bulk historical results; B) license a provider with model-use rights; C) stay single-season and publish wide intervals.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-9"
+ },
+ {
+  "suggestion_id": "S12",
+  "area": "Model",
+  "suggestion": "Add two or three official team-stat inputs (yards per play, turnovers, third-down rate) to the totals model, with cross-validated shrinkage.",
+  "benefit_for_decisions": "Totals currently show no measurable skill (-0.11 points vs a constant baseline); this is the cheapest way to find out whether they can.",
+  "effort": "Medium",
+  "main_risk": "More parameters on 89 games raises overfit risk; every added input needs its own out-of-sample test.",
+  "options": "A) Add inputs one at a time and keep the best by out-of-sample error; B) leave totals unmodelled and say so.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/stats/team-stats/"
+ },
+ {
+  "suggestion_id": "S13",
+  "area": "Model",
+  "suggestion": "Keep the naive reference line published next to every originated line, and never describe a win against it as a win against a sportsbook.",
+  "benefit_for_decisions": "Prevents the single most likely misreading of the leaderboard: a 72% hit rate against a noisy benchmark is not a 72% win rate against a market price.",
+  "effort": "Low",
+  "main_risk": "None — it is a labelling discipline.",
+  "options": "A) Publish both numbers side by side (as now); B) hide the bet columns and show forecast accuracy only.",
+  "status": "Implemented in this build",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "suggestion_id": "S14",
+  "area": "Strategy",
+  "suggestion": "Pre-register next season's strategies, markets, bet thresholds and gates in a frozen spec file before Week 1, then grade them prospectively.",
+  "benefit_for_decisions": "Removes selection bias: today's leaderboard was graded on the same 89 games that were used to choose the model family, which inflates apparent skill.",
+  "effort": "Medium",
+  "main_risk": "Requires a frozen specification and the discipline not to change it mid-season.",
+  "options": "A) Freeze a spec file before Week 1 and grade only against it; B) keep grading retrospectively but pay the multiple-comparison penalty and label results exploratory.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "suggestion_id": "S15",
+  "area": "Strategy",
+  "suggestion": "Do not launch player-prop or parlay products until leg outcomes, prices and settlement rules exist in the repository.",
+  "benefit_for_decisions": "24 tickets and one correlation estimate cannot price a parlay; no player-prop outcome exists here at all.",
+  "effort": "Low",
+  "main_risk": "Slower roadmap.",
+  "options": "A) Wait for rights-cleared data; B) run a private, clearly-labelled paper tracker with the sample size shown on every row.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/stats/player-stats/"
+ },
+ {
+  "suggestion_id": "S16",
+  "area": "Injuries",
+  "suggestion": "Capture the same units every week (QB, OL, DL, DB) so exposure can be differenced over time instead of read from one snapshot.",
+  "benefit_for_decisions": "Turns a single Week 10 snapshot into a time series that can actually be correlated with results; the current one-week correlation (r=-0.064) means nothing.",
+  "effort": "Medium",
+  "main_risk": "Requires weekly capture plus written permission for storage and reuse (F16).",
+  "options": "A) Capture weekly under written permission; B) keep ad-hoc snapshots and report no injury signal.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "suggestion_id": "S17",
+  "area": "Legal",
+  "suggestion": "Confirm the operating jurisdiction and obtain qualified legal review before any reward, entry fee, referral or wager mechanic is enabled.",
+  "benefit_for_decisions": "Earlier sessions documented Japan-specific guidance while this session's account location is in the Netherlands (Kansspelautoriteit is the regulator there); neither jurisdiction is confirmed by the owner.",
+  "effort": "Low",
+  "main_risk": "Cost and delay.",
+  "options": "A) Confirm the jurisdiction, then obtain qualified review; B) keep the project research-only with no rewards and no wagering.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
+ },
+ {
+  "suggestion_id": "S18",
+  "area": "Site",
+  "suggestion": "Show the required sample size and the shortfall next to every leaderboard row.",
+  "benefit_for_decisions": "Makes 'not yet proven' visible: a strategy can rank first on skill and still be hundreds of games short of a decisive test.",
+  "effort": "Low",
+  "main_risk": "None.",
+  "options": "A) Show both numbers, as built; B) hide them and show a single pass/fail column.",
+  "status": "Implemented in this build",
+  "row_type": "decision",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
  }
 ]
