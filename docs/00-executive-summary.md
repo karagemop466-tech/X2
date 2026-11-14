@@ -83,3 +83,15 @@ data feeds (primary odds feed for CLV, confirmed player-stats endpoint, and a
 depth-chart update monitor) — these are captured as suggestions and open questions
 for review. No strategy is ranked on live performance until those feeds are in place
 and every strategy has passed its validation gates.
+
+## Market layer (published on the Python Pages dashboard)
+
+The GitHub Pages site (`docs/` in this repository) now carries the market layer the
+brief requires: a **price-snapshot store** with opening and closing fields for every
+originated Week 11 market (side first, then total, then moneyline), **fair line /
+market line / difference as separate columns**, a strict **signal-vs-staking split**
+in the leaderboard, a proposed **demotion gate** (D1–D7) that returns a live
+strategy to paper, and **replacement-depth tracking** to the 2nd/3rd/4th string
+where an official-domain chart verifies it. Every price cell is blank and flagged:
+no authorised, timestamped price source is connected (F07), so no ROI, CLV or
+market return is computed anywhere.
