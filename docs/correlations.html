@@ -17,7 +17,8 @@
 <h1>Correlation values</h1>
 <p class="note">Values are computed from the 137 official 2026 results in this repository, or from model
 outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Every row
-publishes its exact inputs (input A, input B), the sample size n, an interval and a p-value. <strong>Owner rule</strong> (the brief:
+publishes its exact inputs (input A, input B), the sample size n, an interval and a p-value. A build check fails the
+site if any correlation row omits n (requirement R26). <strong>Owner rule</strong> (the brief:
 compute correlations only from officially sourced numbers): only rows whose two inputs are both officially sourced qualify as
 evidence &mdash; C03, C04, C06 and C08. Rows whose predictor is a model output (C01, C02, C05, C07, C09) are labelled
 <strong>model diagnostics (DEC-09)</strong>, not evidence; the classification matches <code>data/correlation_audit.csv</code>

@@ -381,16 +381,16 @@
   "flag_id": "F43",
   "category": "Internal contradiction - reward tiers",
   "item": "Leaderboard shows Tier 1 / Tier 2 labels while requirement R36 blocks reward tiers",
-  "detail": "data/strategy_leaderboard.csv labels M1, M2, M3 and M4 as 'Tier 1 (gold)' or 'Tier 2' from gates G1-G8 with cut-offs still marked 'Proposed cut-off - awaiting project-owner approval (F17)'. The cross-check (F42) reports 0 of 8 rules qualify under the multiple-comparison adjustment, and R36 says tiers must not be offered until this is resolved. The tier labels were NOT changed in this session (scripts/model.py is owned by another session). data/strategy_signal_staking.csv shows the signal rank and gates passed as recorded and does not use the tier labels.",
+  "detail": "Leaderboard shows Tier 1 / Tier 2 labels while requirement R36 blocks reward tiers. data/strategy_leaderboard.csv labels M1, M2, M3 and M4 as 'Tier 1 (gold)' or 'Tier 2' from gates G1-G8 with cut-offs still marked 'Proposed cut-off - awaiting project-owner approval (F17)'. The cross-check (F42) reports 0 of 8 rules qualify under the multiple-comparison adjustment, and R36 says tiers must not be offered until this is resolved. DISPLAY MITIGATION (session ef971991, T43): the site now renders every tier label as 'Proposed tier - not offered (blocked by R36, under review F43)'; the underlying CSV is unchanged. The owner decision on whether tier labels may appear at all remains open.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/strategy_leaderboard.csv",
   "status": "needs review",
-  "action_requested": "Owner to decide which pass is authoritative before any tier label is shown; either remove the tier labels or record the decision in R36."
+  "action_requested": "Owner to decide which pass is authoritative and whether tier labels may appear; the display is annotated as not offered in the meantime. If the answer is no, remove the labels from the page and from scripts/model.py output."
  },
  {
   "flag_id": "F44",
   "category": "Irregularity - reference total",
   "item": "Week 11 reference total is identical for all 13 games",
-  "detail": "data/model_lines_week11.csv column reference_total equals 45.9 for every game. This is the naive reference used for the 'model minus reference' column. It may be an intended league-average constant, but no derivation is recorded in the file. Not changed in this session.",
+  "detail": "data/model_lines_week11.csv column reference_total equals 45.9 for every game. This is the naive reference used for the 'model minus reference' column. It may be an intended league-average constant, but no derivation is recorded in the file. Not changed in this session. Independently resolved and applied in parallel by session ef971991 (same REQ-8a-1 correction; identical computed values).",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_lines_week11.csv",
   "status": "Resolved 2026-11-14 (session f25d6b55): derivation documented in scripts/model.py ref_line() and model_summary.json - the reference total is 2 x league-average points per team per game over games strictly before the reference week, constant within a week by construction (45.9 for Week 11). No value changed. Note: session ca1ea224's COORDINATION entry cites F44 for the staking return, which is a different item; see F56 for the misreference record.",
   "action_requested": "Done: derivation documented where the reviewer asked for it."
@@ -426,9 +426,9 @@
   "flag_id": "F48",
   "category": "Model defect (correction requested)",
   "item": "Calibration row C09 applies a correlation interval to a regression slope",
-  "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim).",
+  "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim). Independently resolved and applied in parallel by session ef971991 (same REQ-8a-1 correction; identical computed values).",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Resolved 2026-11-14 (session f25d6b55, REQ-8a-1 applied): C09 in scripts/model.py and data/correlations_computed.csv now uses the slope's own standard error - slope 0.885, 95% CI 0.335-1.435, p 0.6820 against slope 1.0 (p differs from the audit's 0.683 only through the rounded SE the audit used). The register also gains input_A / input_B / owner-rule columns per row (verification V21).",
+  "status": "Resolved 2026-11-14 (session f25d6b55, REQ-8a-1 applied): C09 in scripts/model.py and data/correlations_computed.csv now uses the slope's own standard error - slope 0.885, 95% CI 0.335-1.435, p 0.6820 against slope 1.0 (p differs from the audit's 0.683 only through the rounded SE the audit used). The register also gains input_A / input_B / owner-rule columns per row (verification V21).; independently applied by session ef971991",
   "action_requested": "Applied and verified against data/correlation_audit.csv (V21)."
  },
  {
