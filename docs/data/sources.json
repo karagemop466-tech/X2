@@ -236,8 +236,8 @@
   "url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
   "type": "First-party project record",
   "accessed_date": "2026-11-14",
-  "used_for": "T12 review of the separate Node depth-deficiency data file only.",
-  "verification_note": "This file cites Ourlads third-party charts; the repository link verifies project contents, not official NFL depth-chart facts. Values remain flagged for official-source-only review."
+  "used_for": "T12 review and integration supplement (52ca9f77) of the separate Node depth-deficiency data file only.",
+  "verification_note": "History: T12 flagged Ourlads third-party citations; T13 (30beeb55) blanked the ordering values; the integration supplement (52ca9f77, 2026-11-14) located the official club depth charts (detroitlions.com/team/depth-chart, patriots.com/team/depth-chart), re-verified every row, and restored club-chart-confirmed values with citations (club pages self-label 'unofficial' — Node flag F-05; one contradicted third-party value corrected — Node flag F-08). The repository link verifies project contents, not official NFL depth-chart facts."
  },
  {
   "source_id": "SRC-25",

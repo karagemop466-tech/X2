@@ -155,11 +155,14 @@
  {
   "flag_id": "F18",
   "category": "Source-scope review",
-  "item": "Separate Node depth-deficiency entries cite third-party Ourlads charts, not an official NFL depth chart",
-  "detail": "Resolved in the Node data by T13 (session 30beeb55, 2026-11-14). Each row now carries only the official NFL.com injury status. Starter/backup ordering, backup names and deficiency text are blank and marked unverified, because no official NFL depth chart was found (the NFL.com Detroit Lions depth-chart URL returned a 404 page). Third-party values are not used as evidence. The Python dashboard does not publish these entries.",
+  "item": "Separate Node depth-deficiency entries now cite official club depth charts (T13 + integration supplement)",
+  "detail": "Resolved in the Node data by T13 (session 30beeb55, 2026-11-14), which blanked all third-party ordering values after the NFL.com team depth-chart URLs returned 404. The integration supplement (session 52ca9f77, 2026-11-14) then located the club-published depth charts on the official club websites — detroitlions.com/team/depth-chart and patriots.com/team/depth-chart, both linked from the NFL.com team roster pages — and re-verified every Node depth row against them. Club-chart-confirmed ordering values were restored with per-row citation; one former third-party value was contradicted by the club chart (Ourlads had Khalil Dorsey 2nd string behind D.J. Reed; the club chart lists Rock Ya-Sin 2nd, Khalil Dorsey 3rd — Node flag F-08). Both club pages self-label their charts 'Unofficial' (Lions: 'Compiled by Lions Football Communications'; Patriots: 'published by the writers of Patriots.com', reflecting writer opinion), recorded as Node flag F-05. Fields no club chart confirms stay blank (e.g. Walter Rouse's elevating backup: no third-string guard listed). The Python dashboard does not publish these entries.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Resolved by T13 - pending review",
-  "action_requested": "Reviewer: confirm the blank-field approach. Obtain an official depth-chart source before restoring any ordering or backup value."
+  "status": "Resolved in data — official club-chart sourcing with self-labeled-unofficial caveat (Node flags F-05",
+  "action_requested": " F-08)",
+  "null": [
+   "Review the restored club-chart values and the corrected Reed-backup value (Node flags F-05/F-08) on the Flagged for Review page."
+  ]
  },
  {
   "flag_id": "F19",
