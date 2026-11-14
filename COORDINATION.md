@@ -58,12 +58,12 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | T11 | Supplemental post-merge source/compliance audit and handoff | done (audit merged; follow-up recommendations remain) | d80442c2 | COORDINATION.md only; T01–T10-owned `docs/`, `data/*.csv`, and `scripts/build.py` left untouched | T11-S1–T11-S4 | PR #5 (71e65aa), PR #6 (241a142). Findings handed off to the dashboard owner. No duplicate dashboard/data changes published. |
 | T12 | Source-link completeness and research-gate remediation for the Python Pages site | in progress | 7678436e | README.md, data/questions.csv, data/requirements.csv, data/suggestions.csv, data/strategy_gates.csv, data/strategy_hypotheses.csv, data/sources.csv, data/flags.csv, scripts/build.py, generated legacy `docs/*.html` and `docs/data/*.json`, COORDINATION.md | NFL, Government of Japan/NPA, NIST; first-party GitHub records for project facts | Repaired 41 source-less table rows; universal builder checks; independent line/correlation plan and leaderboard empty state; F16 terms/data rights, F17 thresholds. F18 requests review of third-party Node depth values without editing session-09d files. PR/deploy pending. |
 | T13 | Review third-party depth values in the separate Node dashboard against official-only requirement | unclaimed | — | `data/depth-deficiencies.json`, Node dashboard source/output | Official NFL primary sources; current entries also cite Ourlads (third-party) | Python dashboard flags these as F18; no T12 edits to the completed Node task. Keep them blank/unverified or replace with official evidence before describing as official NFL facts. |
-| T14 | Independent re-verification of the committed Week 10 snapshot, line by line, against nfl.com | in progress | 25d6114f | `data/verification_week10_2026.csv` (new), `docs/verification.html`, `docs/data/verification_week10_2026.json`, `scripts/build.py` | nfl.com injury report, schedules, standings | Re-read every committed row against the live official page. No committed value is edited; mismatches are recorded as rows and flagged. |
-| T15 | Original-line signal research: strategy families, feature definitions, gate criteria, correlation model, leaderboard and anti-luck statistics | in progress | 25d6114f | `data/strategy_signals.csv` (new), `data/strategy_eval.csv` (new), `data/correlation_matrix.csv` (new), `docs/strategy-lab.html` (rebuild) | no licensed odds/results feed available — all numeric cells that require one stay blank | Signals are defined and gated only; nothing is claimed as tested or profitable. |
-| T16 | Depth-chart deficiency model for offense and defense (1st/2nd/3rd/4th string) | in progress | 25d6114f | `data/depth_deficiency.csv` (new), `docs/depth-analysis.html` (rebuild) | NFL.com injury report + rosters; no official public depth chart | String rank stays blank unless an official source states it; only verified absence and unit exposure are published. |
-| T17 | Decision-gate register: every question, information gap and answer required before a path can be chosen | in progress | 25d6114f | `data/decision_questions.csv` (new), `docs/decision-gates.html` (new) | official sources per row | Extends Q01–Q18 without editing `data/questions.csv`. |
-| T18 | Suggestion and option registry with review workflow (choose a path before implementing) | in progress | 25d6114f | `data/suggestions_register.csv` (new), `docs/suggestions.html` (rebuild) | NFL terms, NIST, GitHub Pages docs | Extends S01–S10 without editing `data/suggestions.csv`; nothing is auto-implemented. |
-| T19 | Repo review, line by line, of every owned file, with a source link and a finding per line group | in progress | 25d6114f | `data/repo_review.csv` (new), `docs/repo-review.html` (new) | first-party GitHub records + official sources | Flags every irregularity; no value is changed without a source. |
+| T14 | Independent re-verification of the committed Week 10 snapshot, line by line, against nfl.com | done | 25d6114f | `data/verification_week10_2026.csv` (new), `docs/verification.html`, `docs/data/verification_week10_2026.json`, `scripts/build.py` | nfl.com injury report, schedules, standings | Re-read every committed row against the live official page. No committed value is edited; mismatches are recorded as rows and flagged. |
+| T15 | Original-line signal research: strategy families, feature definitions, gate criteria, correlation model, leaderboard and anti-luck statistics | done (framework); no value measurable | 25d6114f | `data/strategy_signals.csv` (new), `data/strategy_eval.csv` (new), `data/correlation_matrix.csv` (new), `docs/strategy-lab.html` (rebuild) | no licensed odds/results feed available — all numeric cells that require one stay blank | Signals are defined and gated only; nothing is claimed as tested or profitable. |
+| T16 | Depth-chart deficiency model for offense and defense (1st/2nd/3rd/4th string) | done (official starter identity found; string rank stays blank) | 25d6114f | `data/depth_deficiency.csv` (new), `docs/depth-analysis.html` (rebuild) | NFL.com injury report + rosters; no official public depth chart | String rank stays blank unless an official source states it; only verified absence and unit exposure are published. |
+| T17 | Decision-gate register: every question, information gap and answer required before a path can be chosen | done | 25d6114f | `data/decision_questions.csv` (new), `docs/decision-gates.html` (new) | official sources per row | Extends Q01–Q18 without editing `data/questions.csv`. |
+| T18 | Suggestion and option registry with review workflow (choose a path before implementing) | done (review-only; nothing implemented) | 25d6114f | `data/suggestions_register.csv` (new), `docs/suggestions.html` (rebuild) | NFL terms, NIST, GitHub Pages docs | Extends S01–S10 without editing `data/suggestions.csv`; nothing is auto-implemented. |
+| T19 | Repo review, line by line, of every owned file, with a source link and a finding per line group | done | 25d6114f | `data/repo_review.csv` (new), `docs/repo-review.html` (new) | first-party GitHub records + official sources | Flags every irregularity; no value is changed without a source. |
 | T20 | Integration: validate combined data, rebuild, broken-link check, executive summary refresh, PR to `main`, merge, confirm Pages live | in progress | 25d6114f | `COORDINATION.md`, `README.md`, PR, live site | all of the above | Runs only after T14–T19 are `done`; re-verifies the combined data before merge. |
 | T1 | Scaffold repo, coordination board, static-site build system | done | session-09d7cc77 | COORDINATION.md, package.json, .gitignore, src/**, README.md | Build verified: `npm run build` emits 12 pages; `npm run verify` passes | Node generator foundation |
 | T2 | Requirements, executive summary, questions & answers, suggestions | done | session-09d7cc77 | docs/00-*.md … docs/03-*.md, data/requirements.json, data/questions.json, data/suggestions.json | Official NFL sources + methodology | 28 requirements, 14 questions, 13 suggestions |
@@ -239,3 +239,76 @@ integration session (09d7cc77) merged them into `main` and re-verified the combi
 data and live site._
 
 - **2026-11-14 · 7678436e · rebase onto latest main.** The first `git pull --rebase` against the session branch failed on the add/add coordination file, so that rebase was aborted. After `origin/main` advanced through PR #4 and the d80442c2 audit, T12 was rebased onto `origin/main` at `9608561`. Conflicts were limited to `README.md` and `COORDINATION.md`; resolution retained the complete latest main records (including the Node dashboard/audit history) and added T12 without changing Node files or discarding prior session notes. The current branch remains `arena/7678436e-x2`; its remote still has the earlier pre-rebase history, so publish with a lease-protected update only after final verification.
+
+## Session 25d6114f — verification report (T14–T19)
+
+**Branch:** `arena/25d6114f-x2`. **Scope files (all new, non-overlapping):**
+`data/verification/official_batch1.txt`, `data/verification/official_batch2.txt`,
+`data/verification_week10_2026.csv`, `data/starters_gamebook_2026_reg_10.csv`,
+`data/depth_deficiency.csv`, `data/line_signals.csv`, `data/skill_engine_gates.csv`,
+`data/luck_tests.csv`, `data/correlation_framework.csv`, `data/leaderboard_rules.csv`,
+`data/decision_questions.csv`, `data/suggestions_register.csv`, `data/repo_review.csv`,
+`scripts/verify_snapshot.py`. **Shared files edited (integration role, session is the
+final integration session for this round):** `scripts/build.py`, `docs/**`,
+`data/sources.csv`, `data/flags.csv`, `data/requirements.csv`, `README.md`,
+`COORDINATION.md`. Not edited: `src/**`, `data/*.json`, `docs/*.md` (Node session scope).
+
+### Sources used (all read 2026-11-14, all official or first-party)
+
+| ID | Source | URL |
+|---|---|---|
+| T14-S1 | NFL Week 10 2026 injury report | https://www.nfl.com/injuries/ |
+| T14-S2 | NFL Week 10 2026 schedule | https://www.nfl.com/schedules/2026/by-week/week-10 |
+| T14-S3 | NFL official gamebook, Commanders at Giants, 2026 reg. Week 10 | https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf |
+| T14-S4 | NFL player page, Ben Brown | https://www.nfl.com/players/ben-brown-2/ |
+| T14-S5 | NFL player page, Josh Jacobs | https://www.nfl.com/players/josh-jacobs-x3315/ |
+| T14-S6 | NFL player page, Matt Gulbin | https://www.nfl.com/players/matt-gulbin/ |
+| T14-S7 | NFL player page, John Bates | https://www.nfl.com/players/john-bates/ |
+| T14-S8 | Buffalo Bills 2026 roster | https://www.nfl.com/teams/buffalo-bills/roster |
+| T14-S9 | NFL.com Terms and Conditions, section 1.3 | https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions |
+| T14-S10 | Cabinet Public Relations Office, online casino article | https://www.gov-online.go.jp/article/202411/entry-6786.html |
+| T14-S11 | National Police Agency, online casino warning | https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html |
+| T14-S12 | Penal Code, e-Gov Law Search | https://laws.e-gov.go.jp/law/140AC0000000045 |
+| T14-S13 | NIST bootstrap plot | https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm |
+| T14-S14 | NIST multiple comparisons | https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm |
+| T14-S15 | NIST model validation | https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm |
+| T14-S16 | NFL news, Malik Willis to injured reserve | https://www.nfl.com/news/dolphins-place-qb-malik-willis-groin-on-injured-reserve-kyle-mccord-in-line-for-first-start |
+
+### Verification performed (reproducible)
+
+`python3 scripts/verify_snapshot.py` → **90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL.**
+
+- **Injury rows:** 345 committed rows compared with a fresh transcription of the official page. 0 players missing,
+  0 extra players, **1380 field comparisons (position, injury, practice status, game status) with 0 mismatches**.
+- **Per team:** all 28 teams, row counts and field agreement confirmed individually.
+- **Games:** all 14 games checked on teams, records, day, kickoff time and broadcast against the official schedule.
+  Away and home were resolved from the official "X at Y" order; the earlier ambiguity in the `first_listed_team`
+  field is therefore resolved as away/home and is documented on the Games page.
+- **Byes:** CHI (7-2), DEN (7-2), PHI (2-7) and TB (3-6) confirmed under "Teams on Bye" on the official schedule.
+- **Player links:** all 345 use the official `nfl.com/players/` route; the 48 slugs that are not derivable from the
+  display name were each confirmed verbatim on the official page.
+- **Player pages sampled:** John Bates (TE, WAS), Matt Gulbin (C, WAS), J.J. McCarthy (QB, NYG), Josh Jacobs (RB, GB)
+  all match the injury-report position. **Ben Brown does not** — see F19.
+- **Gamebook:** 19 starter-identity rows verified for WAS at NYG, including J.J. McCarthy listed as the starting QB and
+  Matt Gulbin (a full practice participant) listed under Did Not Play.
+- **Roster/depth claim:** the Bills roster page confirmed to have no depth-order column.
+
+### Irregularities and new flags recorded
+
+- **F19 — official source conflict.** The injury report lists Ben Brown (NE) at C; his official player page lists G.
+  The snapshot keeps the declared-source value and flags the conflict. No value was silently changed.
+- **F20 — correction to F06.** F06 claimed no official starter data existed. That is only part-correct: no pregame
+  depth chart exists, but the official gamebook publishes the starting lineup, substitutions and inactive list.
+- **F21 — gamebook use restriction.** The gamebook limits use to assisting media coverage absent written permission.
+  The starter values are published as source-linked research only and are inside the F16 permission request.
+- **F22 — verification independence.** The verification transcription and the snapshot were produced in the same
+  session, so a shared misreading would not be detected. Suggestion SR-13 records the fix.
+
+### Notes for the next session (nothing here is blocking)
+
+1. `data/depth-deficiency.json` (Node, third-party Ourlads values, F18) is still unclaimed under T13 and still
+   contradicts the official-source-only rule. The official alternative now exists: the gamebook.
+2. Only one Week 10 gamebook has been verified. Extending to all 14 games would give starter identity for the full
+   week, and would be the highest-value next data step after the rights question.
+3. The build now rejects ragged CSV rows (`read_csv` raises on an extra or missing cell) after a mis-quoted source row
+   was found during this session.

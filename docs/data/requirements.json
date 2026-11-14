@@ -11,9 +11,9 @@
  {
   "req_id": "R02",
   "requirement (from brief)": "Suggestions section to choose paths before implementing changes",
-  "status": "Done — proposal page; no choice required for this build",
-  "where_addressed": "Suggestions page",
-  "blocker_or_note": "Review-only proposals; no collection or feature change is authorized by a suggestion.",
+  "status": "Done — 18-item register with options, recommendation and a gate dependency",
+  "where_addressed": "suggestions.html",
+  "blocker_or_note": "Every recommendation is listed with the option to choose and the gate that must be answered first; nothing is implemented.",
   "row_type": "status",
   "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  },
@@ -29,27 +29,27 @@
  {
   "req_id": "R04",
   "requirement (from brief)": "Originate own NFL lines and develop strategies",
-  "status": "Blocked (no verified data)",
-  "where_addressed": "Strategy Lab",
-  "blocker_or_note": "No authorized historical odds or results feed; all forecast outputs remain blank.",
+  "status": "Framework delivered; no line produced (no licensed price data)",
+  "where_addressed": "signals.html",
+  "blocker_or_note": "Twenty signal definitions, a seventeen-gate skill engine and baseline rules are published. No line, price or forecast value is published because no licensed odds history exists (F07).",
   "row_type": "status",
   "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
  },
  {
   "req_id": "R05",
   "requirement (from brief)": "Treat strategies as a leaderboard with rewards",
-  "status": "Designed only",
-  "where_addressed": "Strategy Lab; Suggestions S09",
-  "blocker_or_note": "Leaderboard framework only. No rank or reward until data, validation and jurisdiction-specific legal gates pass.",
+  "status": "Rules written; no reward enabled",
+  "where_addressed": "leaderboard.html",
+  "blocker_or_note": "Twelve pre-declared leaderboard rules. Reward is blocked by gate EG16 and Flag F09.",
   "row_type": "status",
   "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  },
  {
   "req_id": "R06",
   "requirement (from brief)": "Single bets / parlays / player prop combos",
-  "status": "Designed only",
-  "where_addressed": "Strategy Lab hypotheses H01–H08",
-  "blocker_or_note": "Player-prop, parlay joint outcomes and licensed market prices remain unavailable.",
+  "status": "Designed for all three families; nothing measurable yet",
+  "where_addressed": "signals.html",
+  "blocker_or_note": "Single bet, same-game combo and cross-game parlay signal families are separated, with the specific failure mode of each.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/stats/player-stats/"
  },
@@ -65,9 +65,9 @@
  {
   "req_id": "R08",
   "requirement (from brief)": "Correlation values",
-  "status": "Blocked",
-  "where_addressed": "Questions Q11; Gate G5",
-  "blocker_or_note": "No aligned joint outcomes; no correlation value is computed.",
+  "status": "Plan delivered; every correlation value blank",
+  "where_addressed": "correlation.html",
+  "blocker_or_note": "Ten dependent-leg pairs with the estimator, required sample and the reason each is not independent. No coefficient is published.",
   "row_type": "status",
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
  },
@@ -83,9 +83,9 @@
  {
   "req_id": "R10",
   "requirement (from brief)": "Deficiency analysis (starter vs backup replacement)",
-  "status": "Partially done",
-  "where_addressed": "Depth Analysis page",
-  "blocker_or_note": "Availability exposure is grouped across offense and defense; official depth order, player participation and replacement impact remain unverified (F06).",
+  "status": "Partially done — official starter identity found",
+  "where_addressed": "starters.html",
+  "blocker_or_note": "Official gamebook starter identity is verified for one game and recorded. Pregame depth order is not published by the NFL (F20).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
  },
@@ -101,18 +101,18 @@
  {
   "req_id": "R12",
   "requirement (from brief)": "Repo review with links and irregularities",
-  "status": "Done",
-  "where_addressed": "Flagged for Review page; flags.csv",
-  "blocker_or_note": "See F01–F17; unresolved data rights, source-link coverage and validation cutoffs are recorded in the flagged register.",
+  "status": "Done — 27 findings with sources",
+  "where_addressed": "repo-review.html",
+  "blocker_or_note": "Every owned file reviewed against a source; irregularities recorded rather than silently fixed.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
  },
  {
   "req_id": "R13",
   "requirement (from brief)": "Site: clean landing page and category subpages",
-  "status": "Prior site integration deployed; source-audit follow-up in progress",
-  "where_addressed": "docs/index.html and subpages",
-  "blocker_or_note": "Public Pages site is live; the current follow-up adds stricter source-link validation.",
+  "status": "Done — 20 pages",
+  "where_addressed": "index.html",
+  "blocker_or_note": "Landing page plus category subpages, all generated by the build with a link check.",
   "row_type": "status",
   "evidence_url": "https://karagemop466-tech.github.io/X2/"
  },
@@ -146,9 +146,9 @@
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "Prior site integration merged; follow-up PR not yet opened",
-  "where_addressed": "Final step",
-  "blocker_or_note": "PRs #1 and #2 are merged; this branch’s source-audit follow-up is pending.",
+  "status": "See COORDINATION.md and the PR for this session",
+  "where_addressed": "https://github.com/karagemop466-tech/X2",
+  "blocker_or_note": "Pull request and merge state recorded in COORDINATION.md.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/pull/2"
  },

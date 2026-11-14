@@ -625,7 +625,8 @@ which lists the complete starting lineup by slot, the substitutions, the Did Not
 That gives post-game starter identity, not a pregame depth order.</p>
 {tiles([(len(starters), 'starter-identity rows verified'), (len(starters_good), 'confirmed starters'),
         (len(starters_bad), 'confirmed non-starters (inactive, did not play or substitution)'),
-        (len(depth_def), 'teams and units with availability exposure')])}
+        (len(depth_def), 'team-unit rows with availability exposure'),
+        (len({r['team_abbr'] for r in depth_def}), 'teams with at least one exposed unit')])}
 <h2>Why the string rank is blank</h2>
 <ul>
 <li><strong>Roster page:</strong> the official team roster lists name, number, position, status, height, weight,
@@ -833,7 +834,8 @@ list was compared against the <a href="https://www.nfl.com/schedules/2026/by-wee
 The comparison is reproducible: run <code>python3 scripts/verify_snapshot.py</code>. No committed value was edited as a
 result of this review; mismatches would be recorded and flagged, not silently corrected.</p>
 {tiles([(len(verification), 'checks run'), (result_counts.get('PASS', 0), 'passed'),
-        (sum(v for k, v in result_counts.items() if k.startswith('VERIFIED')) + result_counts.get('CONFIRMED', 0), 'confirmed'),
+        (result_counts.get('CONFIRMED', 0), 'confirmed'),
+        (sum(v for k, v in result_counts.items() if k.startswith('NEW EVIDENCE')), 'new evidence'),
         (sum(1 for r in verification if 'REVIEW' in r['result']), 'needs review'),
         (sum(1 for r in verification if r['result'].startswith('FAIL')), 'failed')])}
 <h2>What was compared</h2>
