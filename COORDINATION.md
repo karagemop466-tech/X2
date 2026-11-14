@@ -1866,3 +1866,22 @@ Re-checked after the rebase: 137/137 feed agreement with the canonical feed stil
   `python3 -m py_compile`. Rendered spot-checks repeated after the rebuild: all four club-chart links
   present on the depth-deficiency page, C06 blank on the correlations page, F50/F53/F55 Resolved on the
   Flagged page.
+
+### PR and deployment record — session d2915d86 (T84–T87), recorded 2026-11-14
+
+- **PR:** [#49](https://github.com/karagemop466-tech/X2/pull/49) — *T84–T87: C09/G1 reconciliation with main, C06 descriptive (F55), A08–A11 club charts (F53), integration*
+- **Merge:** `gh pr merge 49 --merge` succeeded; merge commit **`495c16e8b38728e66033aa3e94114698ebc29edf`** (merged 2026-11-14T20:37:21Z), no review wait per the project brief.
+- **Pages:** build for `495c16e` reported **`built`** (`gh api repos/karagemop466-tech/X2/pages/builds/latest`); site status `built` at https://karagemop466-tech.github.io/X2/.
+- **Live checks (cache-busted fetches of the deployed site):**
+  - `depth-deficiency.html?v=495c16e` serves the merged A08–A11 rows, including the verified article-body
+    replacements (A08 four-backs group with the correction note; A10's Saturday Walker downgrade-to-out update
+    and named lead Emmett Johnson) and all four club-chart links.
+  - `correlations.html?v=495c16e` shows C06 with interval and p-value `—` (n = 228, descriptive note crediting
+    F55) and C09 at 0.885 with CI 0.328–1.443 and p = 0.6830 against slope 1.0.
+- **Post-live wording fix in this follow-up:** the correlations "What the values say" bullet still quoted the
+  withdrawn C06 p-value (0.19); it now states descriptive-only with no interval or p-value, matching the table.
+  Rebuilt (35 pages), `check_links.py` (1,351 internal / 3,861 external, no problems), `verify_results.py`
+  (32 teams, 0 mismatches) and `npm run verify` (ALL CHECKS PASSED) all green on the rebuilt tree.
+- **Open requests handed to the owner/other sessions (unchanged):** DEC-01–DEC-10, F17 cut-off approval,
+  F36 re-run after the Week 10 Monday game (2026-11-16), F43/DEC-05 tier labels, duplicate source URLs for
+  T70's stale-register remediation, F16/F19 legal and rights gates.

@@ -1216,8 +1216,9 @@ so than the naive reference line (r = 0.274, p = 0.009). That gap is the skill t
 (p = 0.39) with actual totals, and the totals strategy shows no accuracy gain at all.</li>
 <li>Within a game, the two teams' scores do not co-move (r = 0.042) and blowouts are not associated with higher
 totals (r = 0.021). Both matter for parlay pricing, and both are essentially zero in this sample.</li>
-<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19, n = 228 team-game pairs that are not
-independent, Flag F55), which is why recency weighting did not help and why short hot streaks should not be trusted.</li>
+<li>Last week's margin barely predicts this week's (r = 0.087, n = 228 team-game pairs that are not independent;
+published as descriptive with no interval or p-value, Flag F55 resolved), which is why recency weighting did not
+help and why short hot streaks should not be trusted.</li>
 <li>The calibration slope is 0.885 with a 95% interval of 0.328 to 1.443 (p = 0.68 against slope 1.0, corrected
 2026-11-14): the interval is wide and includes both over-shy and over-confident readings &mdash; the model's scale is
 not yet pinned down (C09, model diagnostic).</li>
