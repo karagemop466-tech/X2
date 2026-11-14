@@ -1,9 +1,69 @@
 [
-  { "id": "F-01", "area": "Injuries & Depth", "item": "Ben Brown position discrepancy", "detail": "Ben Brown is listed as C in the NFL.com official injury report but as RG on the Ourlads depth chart.", "reason": "Positions differ across sources and no reconciliation rule is defined yet; the deficiency score is withheld until resolved.", "source": ["nfl-injuries", "ourlads-depth-ne"], "status": "open" },
-  { "id": "F-02", "area": "Correlation", "item": "Correlation values unverified", "detail": "All correlation_value cells (C-01 through C-06) are left blank.", "reason": "Correlations must be computed from official historical data; no official pre-computed correlation values exist to cite, so none are inferred.", "source": "clv-oddsindex", "status": "open" },
-  { "id": "F-03", "area": "Lines & Odds", "item": "Live line values unverified", "detail": "No live spread, total, or moneyline values are populated on the site.", "reason": "Odds are set by individual regulated sportsbooks; there is no single official odds source. A specific sportsbook/odds feed must be connected before values can be verified.", "source": "vegasinsider-odds", "status": "open" },
-  { "id": "F-04", "area": "Leaderboard", "item": "Live performance values unverified", "detail": "Leaderboard value cells are blank for all ranked strategies.", "reason": "No live performance data exists yet; rankings are pending strategy execution against a connected feed.", "source": "clv-squawka", "status": "open" },
-  { "id": "F-05", "area": "Data Access", "item": "Depth charts are third-party, not official", "detail": "Depth-chart data is sourced from ESPN and Ourlads, neither of which is an official NFL source.", "reason": "The NFL does not publish an official depth chart; third-party charts are treated as reputable but non-official and are labeled accordingly.", "source": "ourlads-depth", "status": "open" },
-  { "id": "F-06", "area": "Data Access", "item": "Player-stats feed not confirmed", "detail": "A machine-readable official player-level stats feed has not been confirmed.", "reason": "Team-level stats are confirmed official; player-level stats require a confirmed automatable endpoint before player-prop signals can be fully sourced.", "source": "nfl-stats-offense", "status": "open" },
-  { "id": "F-07", "area": "Compliance", "item": "NFL.com terms — systematic-retrieval restriction", "detail": "NFL.com Terms and Conditions Section 1.3 states that systematic retrieval to compile a collection/database is prohibited absent express prior written consent.", "reason": "No automated scraping of NFL.com should be implemented until authorized access and reuse terms are documented. Mirrors suggested F16 from the d80442c2 audit.", "source": "nfl-terms", "status": "open" }
+  {
+    "id": "F-01",
+    "area": "Injuries & Depth",
+    "item": "Ben Brown position discrepancy",
+    "detail": "NFL.com official injury report lists Ben Brown as C (Week 10, Knee, Out). A third-party chart lists him as RG; that third-party value is unverified and has been removed from the table.",
+    "reason": "The official position is C. The RG value cannot be confirmed from an official source, so no reconciliation is made and no deficiency is scored.",
+    "source": [
+      "nfl-injuries"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "F-02",
+    "area": "Correlation",
+    "item": "Correlation values unverified",
+    "detail": "All correlation_value cells (C-01 through C-06) are left blank.",
+    "reason": "Correlations must be computed from official historical data; no official pre-computed correlation values exist to cite, so none are inferred.",
+    "source": "clv-oddsindex",
+    "status": "open"
+  },
+  {
+    "id": "F-03",
+    "area": "Lines & Odds",
+    "item": "Live line values unverified",
+    "detail": "No live spread, total, or moneyline values are populated on the site.",
+    "reason": "Odds are set by individual regulated sportsbooks; there is no single official odds source. A specific sportsbook/odds feed must be connected before values can be verified.",
+    "source": "vegasinsider-odds",
+    "status": "open"
+  },
+  {
+    "id": "F-04",
+    "area": "Leaderboard",
+    "item": "Live performance values unverified",
+    "detail": "Leaderboard value cells are blank for all ranked strategies.",
+    "reason": "No live performance data exists yet; rankings are pending strategy execution against a connected feed.",
+    "source": "clv-squawka",
+    "status": "open"
+  },
+  {
+    "id": "F-05",
+    "area": "Data Access",
+    "item": "Official depth chart not found; depth ordering unverified",
+    "detail": "Depth-chart ordering (starter, 2nd/3rd-string backup) is not on any official NFL source checked. https://www.nfl.com/teams/detroit-lions/depth-chart returned a 404 page on 2026-11-14. Third-party charts (ESPN, Ourlads) were checked only as leads; their names and ordering were removed from the table because they are not official.",
+    "reason": "The NFL does not publish a depth chart at the URL checked. Backup-replacement claims stay blank until an official source is found.",
+    "source": [
+      "nfl-injuries"
+    ],
+    "status": "open"
+  },
+  {
+    "id": "F-06",
+    "area": "Data Access",
+    "item": "Player-stats feed not confirmed",
+    "detail": "A machine-readable official player-level stats feed has not been confirmed.",
+    "reason": "Team-level stats are confirmed official; player-level stats require a confirmed automatable endpoint before player-prop signals can be fully sourced.",
+    "source": "nfl-stats-offense",
+    "status": "open"
+  },
+  {
+    "id": "F-07",
+    "area": "Compliance",
+    "item": "NFL.com terms — systematic-retrieval restriction",
+    "detail": "NFL.com Terms and Conditions Section 1.3 states that systematic retrieval to compile a collection/database is prohibited absent express prior written consent.",
+    "reason": "No automated scraping of NFL.com should be implemented until authorized access and reuse terms are documented. Mirrors suggested F16 from the d80442c2 audit.",
+    "source": "nfl-terms",
+    "status": "open"
+  }
 ]
