@@ -32,8 +32,8 @@
   "item": "Official injury-designation policy text not located at an official URL",
   "detail": "Out / Doubtful / Questionable meanings are used on the site as displayed on NFL.com. Only secondary explainers (sports24.us, nationalsportsweb.com, fourthwire.com, mybookie.ag, sticktothemodel.com) were found describing the NFL policy. They were NOT used as verified sources.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Unverified - needs official policy link",
-  "action_requested": "Provide or approve an official NFL policy URL."
+  "status": "Resolved - official definitions located (SRC-25 via F23; integration 52ca9f77)",
+  "action_requested": "Use the official designation definitions in the NFL.com Competition Committee release (SRC-25). The full written policy text remains open if a verbatim policy document is needed."
  },
  {
   "flag_id": "F05",
@@ -95,8 +95,13 @@
   "item": "NFL.com roster link slug does not match displayed name",
   "detail": "On the Bills roster page, 'Dee Alford' (CB, #23) links to /players/deaundre-ford/. The displayed name and URL slug differ, so the link may point to a different player page. Other name/slug differences (e.g., 'Jacob Hummel' -> jake-hummel, 'Kam Curl' -> kamren-curl, 'Chris Brooks' -> christopher-brooks) appear to be nicknames or legal names and were kept as displayed.",
   "source_url": "https://www.nfl.com/teams/buffalo-bills/roster",
-  "status": "Irregularity - open",
-  "action_requested": "Confirm the correct NFL.com player page."
+  "status": "Resolved - the link points to the same player (SRC-26 via F24; integration 52ca9f77)",
+  "action_requested": "Keep the NFL.com link as displayed; the /players/deaundre-ford/ page is Dee Alford (CB #23",
+  "null": [
+   " Bills",
+   " Tusculum College)",
+   " so the slug is a legacy/first-name URL rather than a different player."
+  ]
  },
  {
   "flag_id": "F12",
@@ -104,8 +109,11 @@
   "item": "Conflicting official headlines on Lamar Jackson timeline",
   "detail": "NFL.com roundup of Nov 13 says 'expected to miss 6-10 weeks'. A separate NFL.com item cites NFL Network: 'out 6-9 weeks'. Both are official NFL.com headlines with different ranges. Not resolved here.",
   "source_url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13",
-  "status": "Irregularity - open",
-  "action_requested": "Use the team's official statement when available."
+  "status": "Resolved - team statement preferred (SRC-28 via F25; integration 52ca9f77)",
+  "action_requested": "Use the Ravens statement (6-10 weeks after thumb surgery) quoted in the official NFL.com roundup as the timeline of record; the NFL Network 6-9-week item is a secondary",
+  "null": [
+   " earlier report. Jackson's absence from the injury table is F27 (owner review)."
+  ]
  },
  {
   "flag_id": "F13",

@@ -25,8 +25,12 @@ All sources used on this site, with their type and how each was verified.
 
 - **Official** — NFL.com and NFL Operations. These are the primary sources for
   standings, injuries, team stats, transactions, and the rulebook.
-- **Reputable third-party** — ESPN and Ourlads. Used for depth charts because the
-  NFL does not publish an official depth chart. Labeled as non-official.
+- **Reputable third-party** — ESPN and Ourlads. Consulted only as leads; their values
+  are never published in the tables. No league-level official depth chart exists
+  (the NFL.com team depth-chart URLs return 404), and the depth ordering shown on
+  the Node pages comes from the clubs' official websites' weekly charts
+  (detroitlions.com, patriots.com), which self-label "unofficial" (Node flag F-05).
+  Labeled as non-official.
 - **Odds aggregator** — VegasInsider, Covers, FOX Sports. These aggregate odds set
   by individual regulated sportsbooks. **There is no single official odds source.**
   They are used as references only; live line values are left blank and flagged

@@ -406,3 +406,26 @@ data and live site._
     30beeb55's PR path. Future sessions should re-read `COORDINATION.md` from
     `origin/main` immediately before claiming, and push claims with
     `--force-with-lease` semantics avoided (plain push) so collisions surface.
+
+### Cross-scope requests from 45a0ec8c — applied by the T20 integration (52ca9f77, 2026-11-14)
+
+1. **`docs/09-data-sources-and-verification.md` Ourlads wording — APPLIED.** The
+   "Reputable third-party" bullet now states that ESPN/Ourlads are consulted only as
+   leads and never published as table values, that no league-level official depth
+   chart exists, and that Node depth ordering comes from the club official
+   websites' weekly charts (detroitlions.com, patriots.com) with the
+   self-labeled-"unofficial" caveat (Node flag F-05).
+2. **F04 / F11 / F12 status changes using F23–F25 evidence — APPLIED.** F04 →
+   "Resolved — official definitions located (SRC-25 via F23)" (full written policy
+   text still open if a verbatim document is needed). F11 → "Resolved — the link
+   points to the same player (SRC-26 via F24)". F12 → "Resolved — team statement
+   preferred (SRC-28 via F25)"; the Ravens 6-10-week statement is the timeline of
+   record and the NFL Network 6-9-week item is a secondary earlier report.
+3. **Injury-table designation changes (F26/F27/F28: Walker, Mallory, Freiermuth,
+   Key, Jackson) — NOT APPLIED; logged for owner review.** `data/injuries_week10_2026.csv`
+   is a point-in-time transcription of the official injury-report page as read on
+   2026-11-14. The NFL.com status article and roundups (SRC-27–SRC-29) are official
+   but dated differently; overwriting snapshot values with later roundup statuses
+   would make the table no longer match its cited snapshot source. Correct handling
+   needs an owner decision (e.g. a dated-corrections column or a fresh snapshot).
+   F26/F27/F28 remain open for that review; no value was changed or inferred.
