@@ -39,7 +39,18 @@ UNIT_ORDER = ["QB", "RB", "WR/TE", "OL", "DL", "LB", "DB", "ST"]
 
 
 def read_csv(name):
-    with open(os.path.join(DATA, name), encoding="utf-8", newline="") as f:
+    path = os.path.join(DATA, name)
+    with open(path, encoding="utf-8", newline="") as f:
+        raw = list(csv.reader(f))
+    if raw:
+        header_len = len(raw[0])
+        for i, r in enumerate(raw, start=1):
+            if len(r) != header_len:
+                errors.append(
+                    "%s line %d: %d fields, expected %d — quote any field containing a comma"
+                    % (name, i, len(r), header_len)
+                )
+    with open(path, encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
 
 
