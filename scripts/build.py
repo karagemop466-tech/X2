@@ -26,6 +26,7 @@ OFFICIAL_HOSTS = {
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
+    "www.packers.com", "www.therams.com", "www.chiefs.com", "www.colts.com",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -1287,7 +1288,7 @@ pages["verification.html"] = (pages["verification.html"][0], pages["verification
 
 pages["depth-deficiency.html"] = (pages["depth-deficiency.html"][0], pages["depth-deficiency.html"][1] + f"""
 <h2>Replacement depth: where the replacement sits, not only that one exists (T42)</h2>
-<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts are undated and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. {_depth_checked} of {len(rep_depth)} rows are checked against a club chart; A08 to A11 are open (Flag F53).</p>
+<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts self-label as unofficial and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. {_depth_checked} of {len(rep_depth)} rows are checked against a club chart, including A08-A11 (Flag F53 resolved 2026-11-14: packers.com, therams.com, chiefs.com, colts.com).</p>
 {table(rep_depth, ['item_id','team_abbr','position_group','player_affected','replacement_named_by_official_source','club_chart_order_as_fetched','replacement_depth_rank','depth_status','irregularity','source_url','depth_chart_url'],
        {'item_id':'ID','team_abbr':'Team','position_group':'Pos','player_affected':'Player affected','replacement_named_by_official_source':'Replacement named by official source','club_chart_order_as_fetched':'Club chart order (fetched)','replacement_depth_rank':'Replacement depth','depth_status':'Status','irregularity':'Irregularity','source_url':'Official source','depth_chart_url':'Club depth chart'},
        table_id='repdepth-table', filterable=True)}
@@ -1312,7 +1313,7 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <h2>Decision desk: changes on 2026-11-14 (session 8a0bf37e)</h2>
 <ul class="findings">
 <li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
-<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
+<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. The charts self-label as unofficial and are pre-injury (Flag F45). Two rows do not name the replaced player (Flag F46). All eleven rows are checked against club charts (Flag F53 resolved 2026-11-14, session 20e6161b).</li>
 <li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row was corrected on 2026-11-14 (Flag F48, session 20e6161b): interval from the slope's own standard error, p = 0.683 against slope 1.0 (calibration test).</li>
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
 <li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>

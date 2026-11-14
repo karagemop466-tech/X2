@@ -471,10 +471,10 @@
   "flag_id": "F53",
   "category": "Coverage gap",
   "item": "Four availability rows have no depth check",
-  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) are shown without a club-chart check. replacement_depth_week10_2026.csv marks them not verified.",
+  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) were shown without a club-chart check. Closed 2026-11-14 (session 20e6161b, T53): all four rows are now checked against the club charts (packers.com, therams.com, chiefs.com, colts.com) and their NFL.com source articles were re-read. A10's source was upgraded to the Saturday downgrade article, which names the replacements. Ranks are given only where an official statement names the replacement (A10: Emmett Johnson, 2nd string RB2); A08/A09 name groups only, so their rank cells stay blank with the chart order recorded; A11 is an IR activation (no replacement) and Key is absent from the Week 10 chart.",
   "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
-  "status": "Open",
-  "action_requested": "Fetch the four club charts in a later pass."
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53)",
+  "action_requested": "None remaining. Chart caveats (self-labelled unofficial, pre-injury order) stay under F45."
  },
  {
   "flag_id": "F54",
