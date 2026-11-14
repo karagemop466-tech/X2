@@ -708,5 +708,25 @@
   "accessed_date": "2026-11-14",
   "used_for": "Spot check: matches 17-19 (RV03).",
   "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-72",
+  "title": "2026 International Games slate (NFL Football Operations)",
+  "publisher": "NFL Football Operations (operations.nfl.com)",
+  "url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games",
+  "type": "Official league operations page",
+  "accessed_date": "2026-11-14",
+  "used_for": "Authoritative list of all nine 2026 neutral-site international games (week, matchup, venue, city); basis for the neutral_site column (F57)",
+  "verification_note": "Opened and read with fetch_page on 2026-11-14. Lists 9 games: wk1 Melbourne Cricket Ground, wk3 Maracana, wk4+wk5 Tottenham, wk6 Wembley, wk7 Stade de France, wk9 Bernabeu, wk10 FC Bayern Munich Arena, wk11 Estadio Banorte."
+ },
+ {
+  "source_id": "SRC-73",
+  "title": "NFL game center: Ravens at Cowboys, week 3 (Game Info: Location Rio de Janeiro, Stadium Maracana Stadium)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/ravens-at-cowboys-2026-reg-3",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Per-game confirmation that the designated home team (Dallas) was not at home; corroborates SRC-72 at game level",
+  "verification_note": "Opened and read with fetch_page on 2026-11-14. Game Info block reads Location RIO DE JANEIRO / Stadium MARACANA STADIUM."
  }
 ]

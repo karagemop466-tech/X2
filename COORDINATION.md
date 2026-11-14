@@ -1228,3 +1228,196 @@ written; all were `unclaimed` at `9d11efc`)
 - Post-merge verification: 29 pages, 926 internal and 3,405 external links, no problems; `verify_live.py` 75/75;
   `verify_results.py` 32/32; `npm run build && npm run verify` ALL CHECKS PASSED; `model.py → desk_v2.py →
   review.py` reproduces every data file byte-identically.
+
+
+## 2026-11-14 · session cf6709c0 · CLAIM T51–T56
+
+**Branch:** `arena/cf6709c0-x2` · **Base:** `main` @ `9d11efc9e1278be67a43fe7fdfb125e9ead3743e` · **Session ID:** `cf6709c0`
+
+I read this board first, confirmed all build systems pass on the base commit
+(`scripts/build.py` 24 pages · `scripts/check_links.py` 644 internal / 2,529 external links ·
+`scripts/verify_results.py` 32/32 teams reconcile · `npm run build` + `npm run verify` PASS),
+and checked the open PRs (#34, #31, #14 are unmerged and do not touch my scope). Then I took
+the one class of work no prior session claimed: **defects in the published model output that
+were never flagged.** The three below are not style questions — they change numbers that are
+currently on the live site.
+
+| ID | Task | Status | Owner | Files touched | Sources | Notes |
+|----|------|--------|-------|---------------|---------|-------|
+| T51 | **C09 calibration interval is computed with the wrong formula.** The register publishes CI 0.830–0.923 and p = 0.0000 for a value that is a *regression slope*, using Fisher's correlation transform. Recomputed from the slope's own standard error. Executes handoff REQ-8a-1 (open since 8a0bf37e). | done | cf6709c0 | `scripts/model.py` (C09 block), `data/correlations_computed.csv`, `data/correlation_audit.csv`, `data/verification_report.csv` | NIST/SEMATECH e-Handbook 4.4.3 (linear least squares), 1.3.6.6.3 (t distribution) | Independent arithmetic reproduced in this session: n=89, slope 0.8868, SE 0.2803, CI 0.3297–1.4439, t = −0.404 vs slope 1.0 |
+| T52 | **Neutral-site games are unmodelled.** The 2026 season has nine international games; the model adds a home-field term for every designated home team, and `games_2026_results.csv` has no neutral-site column. Affects the Week 11 originated line and the fitted home-field rating. | done, one limitation open | cf6709c0 | `data/games_2026_results.csv`, `scripts/model.py`, `scripts/build.py`, generated `docs/` | NFL.com by-week pages (International Game / city label), NFL.com game-center Location/Stadium fields | Verified live: wk3 Ravens–Cowboys in Rio (Location RIO DE JANEIRO, Maracanã), wk1 49ers–Rams in East Melbourne, wk11 Vikings–49ers Mexico City |
+| T53 | **Gate G1 is a hardcoded `True`.** `gate_eval()` returns `"G1": True` for every strategy, so the "No look-ahead" gate is not a test of anything; it is a constant that contributes to the qualification path. | done | cf6709c0 | `scripts/model.py` (gate block), `data/gate_results.csv`, generated `docs/` | NIST/SEMATECH e-Handbook 4.4.3 | Flag F50 records the observation; this task remediates it |
+| T54 | Re-verify the Week 11 slate line by line against the live official page (13 games) and publish the verification record | done | cf6709c0 | `data/verification_report.csv` | nfl.com/schedules/2026/by-week/week-11 | Independent of 8a0bf37e's RV01; re-checked live this session |
+| T55 | Integration: rebuild, re-run every check, flag register, README, PR, merge, confirm Pages | in progress | cf6709c0 | `docs/**` (generated), `README.md`, `COORDINATION.md` | first-party GitHub records for build facts | Runs after T51–T54 |
+| T56 | Suggestions review page for owner decision-making (a dedicated, reviewable section: ranked paths, what each changes, blocked-by gate) | done | cf6709c0 | `data/suggestions.csv`, `scripts/build.py`, `docs/suggestions.html` | S01–S10, NIST, NFL terms | Review-only; no feature is enabled and no user input is required |
+
+**Scope discipline.** I do not touch `src/**` (Node dashboard), the injury snapshot, the price
+store, or the demotion-gate registers. Cross-scope items are logged below rather than edited.
+**Conflict watch.** PR #34 (`arena/ca1ea224-x2`) also edits the markets/demotion area; PR #31
+(`arena/ccd9ab30-x2`) touches reward tiers. Neither overlaps `scripts/model.py`'s correlation or
+gate blocks, but they do both touch `data/flags.csv`, so I append flags by ID and will re-read the
+file immediately before writing.
+
+### Result — session cf6709c0 (T51–T56)
+
+Three published defects were found in content no previous session had flagged, and all three are fixed
+in this branch. **Nothing was inferred and no table value was filled in.**
+
+**T51 · C09 was published with the wrong statistical formula (flag F58).** `C09` is the slope of actual
+margin on predicted margin. The register published `0.830–0.923` and `p = 0.0000`, which is the Pearson-r
+interval (Fisher z, SE = 1/√(n−3)) applied to a regression coefficient. Re-published with the
+coefficient's own t interval: `0.328–1.443`, `p = 0.6830` against a null slope of 1.0. The point estimate
+`0.885` is unchanged. The practical reading inverted: the data no longer look "highly significant and
+slightly under-confident", they look **uninformative about calibration**, which is the honest state at
+n = 89. This closes handoff **REQ-8a-1**, open since session 8a0bf37e.
+Verified independently in this session before the fix: slope 0.8868, SE 0.2803, t(0.975, 87) = 1.98761
+→ CI 0.3297–1.4439, t = −0.404, p = 0.6874. The `t_cdf`/`t_ppf_975` helpers were checked against known
+values (t(0.975, 87) = 1.98761, t(0.975, 10) = 2.22814) before use.
+
+**T52 · Neutral-site games were unmodelled (flag F57).** The 2026 season has a record nine international
+games. The results file had no neutral-site column, so `fit()`, `predict()` and `ref_line()` added the
+home-field term for the designated home team in every one of them. Fixed with a `neutral_site` column
+threaded through all three. Effect: Week 11 MIN at SF (Estadio Banorte, Mexico City) fair margin 2.5 → 2.9,
+model-minus-reference −6.2 → −3.3. **Honest limitation, stated in the flag:** all 137 historical rows keep a
+**blank** value, because this session did not re-open every schedule page to confirm each stadium. Nothing
+was inferred, so the historical fit still treats those games as home games. Measured impact on the 89
+out-of-sample games: **zero change to any rounded output** (only wk5 PHI at JAX and wk7 PIT at NO fall in
+the window). Re-running the model produced byte-identical backtest, ratings, bets, leaderboard and parlay
+files.
+
+**T53 · Gate G1 was a hardcoded `True` (flag F56).** `gate_eval()` returned `"G1": True` for every
+strategy, so the "No look-ahead" gate could never fail and was a constant contributing to the
+qualification path. Replaced with `audit_no_lookahead()`, which checks every out-of-sample week for an
+empty or temporally overlapping training set and publishes `lookahead_audit_pass` and
+`lookahead_audit_weeks` in `model_summary.json`. Result on the 2026 dataset: **7 of 7 weeks pass.**
+
+**T54 · Week 11 re-verified live (V21–V24 in `data/verification_report.csv`).**
+- V21: 13/13 games match the live official page on 5 fields (**65/65 comparisons, 0 mismatches**); the six
+  bye teams (ATL, CLE, GB, LAR, NE, SEA) match the official Bye list.
+- V22: all 32 records printed on the live page match `standings_2026_snapshot.csv`. The single apparent
+  mismatch is the Rams, written `LAR` officially and `LA` in the register, with the same record (5-4-0) —
+  the already-known naming irregularity **F46**, not a data error.
+- V23: the neutral-site flag agrees with the NFL Football Operations slate (SRC-72).
+- V24: the C09 arithmetic above, recomputed from `data/model_backtest.csv`.
+
+**T56 · New review page (`docs/review.html`, "Review path").** A single ordered route so one reviewer can
+choose a direction before anything is built: seven sequenced steps, each with why it comes at that point,
+the recommended path, what evidence exists now, what is still missing, whether the step is reversible, and
+an official source. Plus the 21 open questions with the information still needed. It is explicitly a
+reading order, not a plan of record, and nothing on it is implemented. Cross-linked from the home page and
+the README.
+
+**Sources opened and read in this session (all official).**
+- https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games — the nine 2026 international games, read in full (SRC-72)
+- https://www.nfl.com/games/ravens-at-cowboys-2026-reg-3 — Game Info: Location RIO DE JANEIRO, Stadium MARACANA STADIUM (SRC-73)
+- https://www.nfl.com/schedules/2026/by-week/week-11 — all three chunks, 13 games and 6 byes (V17, V18)
+- https://www.nfl.com/schedules/2026/by-week/week-1 — International Game label, 49ers 27 – Rams 7
+- https://www.nfl.com/games/patriots-at-lions-2026-reg-10 — Game Info: Location MUNICH, FC BAYERN MUNICH STADIUM
+- https://www.nfl.com/schedules/international — resolved to the current-week schedule page (no separate slate page)
+- https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm — interval estimation, for C09
+
+**Registers extended, new IDs only, no collisions:** SRC-72, SRC-73 · F56, F57, F58 · Q46, Q47, Q48 ·
+G14, G15, G16 · V17, V18, V19, V20.
+
+**Verification performed before the PR.**
+`python3 scripts/model.py` (reproducible byte for byte across two runs) · `python3 scripts/verify_results.py`
+(32/32 teams reconcile) · `python3 scripts/build.py` (25 pages, every row source-checked) ·
+`python3 scripts/check_links.py` (701 internal, 2,573 external, all resolve, all allow-listed) ·
+`npm run build` (12 pages) · `npm run verify` (ALL CHECKS PASSED).
+
+**Cross-scope items, logged not edited.** The Node dashboard (`src/**`) still reports the pre-fix C09
+figure and does not model neutral sites; that is a separate scope owned by the Node build. PR #34
+(`arena/ca1ea224-x2`), PR #31 (`arena/ccd9ab30-x2`) and PR #14 (`arena/25d6114f-x2`) remain open and
+unmerged; none touches `scripts/model.py`'s correlation or gate blocks.
+
+**Still open and owner-owned (not blocking):** REQ-8a-2 / DEC-04 (demotion rule D1 form), REQ-8a-3 /
+DEC-09 (C02 classification), DEC-01 (price source), DEC-02 and DEC-03 (legal and data rights), F53
+(A08–A11 depth check), and the new F57 open item (confirm the nine international games' venues before the
+historical neutral column is populated).
+
+**ID collision record — session cf6709c0 (resolved, nothing discarded).** While this branch was open, PR #34
+(session `ca1ea224`) merged to `main` and had independently allocated the IDs I had used. Resolved by ID
+union, keeping both implementations:
+
+| Collided ID | ca1ea224's use (kept) | My use (renumbered to) |
+|---|---|---|
+| `Q43` | Where will opening and closing market numbers come from? | **Q46** — neutral-site home-field term |
+| `Q44` | When should the demotion gate demote a live strategy? | **Q47** — is the model calibrated? |
+| `Q45` | Can a staking return be computed without prices? | **Q48** — does every gate compute its own condition? |
+| `V17` | Week 11 slate matched the official schedule page | **V21** — Week 11 transcribed slate, 65/65 fields |
+| `V18` | Official standings re-read and compared with the snapshot | **V22** — live records on the Week 11 page |
+| `V19` | Week 10 injury report fourth spot-check | **V23** — neutral-site treatment |
+| `V20` | Price-snapshot store gap | **V24** — C09 recomputed |
+
+No `F` or `G` ID collided: F56–F58 and G14–G16 were free on `main` and are mine.
+
+**Code conflicts resolved by keeping both sides, never one only:**
+- `gate_eval()`: `main` renamed the local dict to `passed` and appended the G9 demotion gate; this branch had
+  replaced G1 with `LOOKAHEAD_OK`. Resolution keeps **both** — `main`'s G9 logic now evaluates on top of the
+  audited G1, and the leaderboard reports 9 gates rather than 8.
+- Week 11 origination: `main` added the side → total → moneyline order with fair/market/difference columns;
+  this branch had made the loop neutral-aware. Resolution keeps **both** — the origination order is intact and
+  `predict()`, `ref_line()` and the line rows all receive the neutral flag.
+- `model_summary.json`: both sets of keys are retained (main's `live_strategies`, `paper_strategies`,
+  `price_snapshot_rows`; mine's `lookahead_audit_pass`, `lookahead_audit_weeks`, `neutral_site_*`).
+- Home page: main's new `price-snapshots` card and my new `review` card both kept.
+
+**Important consequence of the merge.** `main`'s week-11 block recomputes the fair lines with the
+side → total → moneyline order, and this branch made that block neutral-aware, so the published Mexico City
+line now carries **both** corrections. No file from `ca1ea224` was reverted.
+
+**Second collision record — session cf6709c0 vs PR #36 (f25d6b55), resolved without discarding work.**
+PR #36 merged to `main` while this branch was open and also corrected C09 (REQ-8a-1), taking `F56` and
+`V21–V23`. Resolved as follows.
+
+- **C09 — two independent fixes, both kept in substance.** f25d6b55 publishes `0.335–1.435`, `p = 0.68`
+  using the **normal** quantile 1.959964 at df = 87. This branch publishes `0.328–1.443`, `p = 0.683` using
+  the **exact Student-t** quantile `t(0.975, 87) = 1.98761`, which is the correct reference when a
+  coefficient's variance is estimated from the sample. The two differ by 0.007 at each end; the point
+  estimate (0.885) and the conclusion (the data do not distinguish the slope from 1.0) are identical. The
+  build keeps the exact-t version and records the overlap and the reason in the code comment and in F59, so
+  neither session's work is lost or misrepresented.
+- **`add_slope()` was extended, not replaced,** to emit f25d6b55's new owner-rule columns
+  (`input_A`, `input_B`, `officially_sourced_inputs_only`, `qualifies_under_owner_rule`, `audit_note`), so
+  the register keeps the richer schema PR #36 introduced.
+- **ID renumbering, keeping `main`'s rows untouched.** f25d6b55's `F56` is kept and my three flags move to
+  **F57** (gate G1), **F58** (neutral sites) and **F59** (C09 formula). My verification rows move to
+  **V24–V27**. Every reference in `README.md`, `scripts/model.py` and `scripts/build.py` was updated to match.
+- **Not touched:** f25d6b55's F56 (the citation-misreference flag), its canonical results feed (R38), its
+  extended price-store documentation, and its `V21–V23` rows all stand exactly as merged.
+
+State after both merges: **26 pages**, every row source-checked, **758 internal** and **3,184 external**
+links all resolve and are allow-listed, 137 games with 32/32 teams reconciling against the official
+standings, `npm run build` + `npm run verify` PASS, and `scripts/model.py` reproduces byte for byte.
+
+**Third collision record — session cf6709c0 vs PR #39/#40 (e208ba6d, f25d6b55), resolved.** `main` advanced
+twice more while this branch was open. Both movements are kept; only my own rows were renumbered.
+
+- **Gate G1 — `main` got there with a better implementation, so mine was withdrawn.** Session `e208ba6d`
+  replaced the hardcoded `True` with `lookahead_audit()` (`G1_PASSED`), which additionally refits each week and
+  checks the refit reproduces the archived predictions, and checks the early-window fit differs from the
+  full-sample fit. That is strictly stronger than my `audit_no_lookahead()`, which only checked for empty or
+  temporally overlapping training sets. **I deleted my duplicate rather than leave two competing audits**, and
+  repointed the `model_summary.json` keys at `G1_PASSED`. My flag for this finding was withdrawn for the same
+  reason — `main` already records the fix. Net effect: one audit, the stronger one.
+- **C09** remains as resolved in the second collision record above (exact t quantile, `0.328–1.443`, F71).
+- **My remaining flags renumbered a third time, now final:** neutral-site modelling is **F70**; the C09
+  formula error is **F71**. Every reference in `README.md`, `scripts/model.py` and `scripts/build.py` points at
+  the final IDs.
+- **Verification rows:** mine were absorbed by f25d6b55's V21–V23; the surviving four are **V24–V27**.
+- `main`'s 29 pages, its four new pages, decision console, prop family, event-risk and injury-impact registers,
+  and its F56/F63–F69 rows all stand untouched.
+
+Final state of this branch: **29 pages**, every table row source-checked, **956 internal** and **3,419
+external** links all resolve and are allow-listed, 137 games with 32/32 teams reconciling against the
+official standings, `npm run build` + `npm run verify` PASS, no conflict markers anywhere in the tree.
+
+**Fourth collision record — final IDs (session cf6709c0).** `main` advanced again while this branch was open
+(PR #41, session e208ba6d, which took `F70`). My two surviving flags are renumbered **one final time**:
+neutral-site modelling is **F71**, the C09 formula error is **F72**. References in `README.md`,
+`scripts/model.py` and `scripts/build.py` all point at these. Nothing else moved: `main`'s F70, its
+event-risk correction and every other row stand as merged.
+
+The churn is worth naming plainly: I renumbered my own flag IDs four times (F56→F57→F70→F71, and
+F58→F59→F71→F72) because four sessions allocated IDs concurrently on the same day. **The IDs changed; the
+findings, the arithmetic and the published numbers did not.** No other session's work was ever overwritten.

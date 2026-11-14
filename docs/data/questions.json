@@ -538,5 +538,41 @@
   "decision_owner": "Project owner",
   "row_type": "fact",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "question_id": "Q46",
+  "area": "Line model (neutral sites)",
+  "question": "Should a designated home team in an international game receive a home-field term?",
+  "status": "Answered — no; and the historical column is still blank",
+  "known_facts_verified": "2026 has nine international games (NFL Football Operations, SRC-72); Week 11 MIN at SF is at Estadio Banorte, Mexico City, and its game-center Location field is not either team's stadium",
+  "missing_information": "Whether each historical 2026 game was at the home team's own stadium; this session did not confirm every stadium, so all 137 rows stay blank",
+  "how_to_discover_official_first": "Read the Game Info Location/Stadium block on each game-center page (as done for SRC-73) or the official Game Book PDF",
+  "decision_owner": "Project owner (line method)",
+  "row_type": "question",
+  "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "question_id": "Q47",
+  "area": "Statistics (calibration)",
+  "question": "Is the model calibrated, that is, is the slope of actual on predicted margin distinguishable from 1.0?",
+  "status": "Answered — no, it is not distinguishable",
+  "known_facts_verified": "Slope 0.885, SE 0.280, n 89. t interval 0.328-1.443; t = -0.404 against 1.0; p = 0.683 (verification V20)",
+  "missing_information": "A sample large enough to place the slope in a narrow band around 1.0; 89 forecasts is not enough",
+  "how_to_discover_official_first": "More out-of-sample weeks from the official schedule, or a licensed historical results archive",
+  "decision_owner": "Project owner (evaluation method)",
+  "row_type": "question",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
+ },
+ {
+  "question_id": "Q48",
+  "area": "Validation gates",
+  "question": "Does every gate in the published set compute its own condition, or is any of them a constant?",
+  "status": "Answered — G1 was a constant until this session",
+  "known_facts_verified": "gate_eval() returned G1 = True unconditionally (F56). It now calls audit_no_lookahead(); 7 of 7 evaluation weeks pass and the result is published in model_summary.json",
+  "missing_information": "None for G1. The other seven gates compute their conditions from the strategy summary",
+  "how_to_discover_official_first": "Read scripts/model.py gate_eval() and audit_no_lookahead()",
+  "decision_owner": "Project owner (gate definitions)",
+  "row_type": "question",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model.py"
  }
 ]
