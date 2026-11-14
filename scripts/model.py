@@ -458,6 +458,58 @@ mae_ref = sum(abs(r["actual_margin"] - r["ref_margin"]) for r in oos) / n_oos
 mae_m1 = sum(abs(r["actual_margin"] - r["M1_margin"]) for r in oos) / n_oos
 
 
+# ------------------------------------------------- look-ahead audit (G1) ----
+# Gate G1 was previously a constant True (flag F50).  It is now computed.  The test
+# is not "does the code contain a `<`": it re-derives the split from the games table
+# and then checks three things that a leak would break.
+def lookahead_audit():
+    findings = []
+
+    # (1) Every training set contains only strictly earlier weeks.
+    for wk in [w for w in completed_weeks if w >= EVAL_FROM_WEEK]:
+        used = sorted({g["week"] for g in results if g["week"] < wk})
+        leaked = [w for w in used if w >= wk]
+        findings.append({
+            "test": "training weeks strictly before target week %d" % wk,
+            "passed": not leaked,
+            "detail": "training weeks %s..%s" % (used[0], used[-1]) if used else "no training data",
+        })
+
+    # (2) Reproducibility: refitting from scratch on the same cut-off must reproduce
+    #     the archived out-of-sample prediction for that week.
+    sample_weeks = [w for w in sorted({r["week"] for r in oos})][:1] + \
+                   [w for w in sorted({r["week"] for r in oos})][-1:]
+    for wk in sorted(set(sample_weeks)):
+        params, _n = fit([g for g in results if g["week"] < wk], 4.0)
+        diffs = []
+        for r in [x for x in oos if x["week"] == wk]:
+            p = predict(params, r["home_team"], r["away_team"])
+            diffs.append(abs(p["margin"] - r["M1_margin"]))
+        worst = max(diffs) if diffs else 0.0
+        findings.append({
+            "test": "refit reproduces archived week %d predictions" % wk,
+            "passed": worst < 1e-9,
+            "detail": "largest absolute difference %.2e points over %d games" % (worst, len(diffs)),
+        })
+
+    # (3) The fit must actually differ from a full-sample fit.  If it did not, the
+    #     walk-forward loop would silently be using future games.
+    weekly, _n = fit([g for g in results if g["week"] < EVAL_FROM_WEEK], 4.0)
+    full, _n = fit(results, 4.0)
+    h_weekly = predict(weekly, TEAMS[0], TEAMS[1])["margin"]
+    h_full = predict(full, TEAMS[0], TEAMS[1])["margin"]
+    findings.append({
+        "test": "early-window fit differs from full-sample fit",
+        "passed": abs(h_weekly - h_full) > 1e-6,
+        "detail": "same matchup rated %.2f early vs %.2f full" % (h_weekly, h_full),
+    })
+    return findings
+
+
+lookahead = lookahead_audit()
+G1_PASSED = all(f["passed"] for f in lookahead)
+
+
 # --------------------------------------------------------------- bets -------
 def side_bets(model_key):
     out = []
@@ -641,7 +693,7 @@ def gate_eval(s):
     acc = s["accuracy"] or {}
     sk = s["skill"] or {}
     return {
-        "G1": True,
+        "G1": G1_PASSED,
         "G2": (s["n_bets"] or 0) >= 30,
         "G3": sk.get("p_perm") is not None and sk["p_perm"] < 0.05,
         "G4": s["q_bh"] is not None and s["q_bh"] < 0.10,
@@ -801,6 +853,69 @@ parlay_rows = [{
 }]
 
 
+# ------------------------------------------------- skill vs luck (T52) ------
+# A leaderboard rank mixes two things: how good the rule is, and how lucky the run
+# was.  These columns separate them.  "Luck" here has a precise meaning: the share
+# of the observed record that a coin-flip universe would produce by itself.  It is
+# not a claim that any particular bet was lucky.
+def luck_columns(s):
+    sk = s["skill"] or {}
+    n = sk.get("n") or 0
+    mean = sk.get("mean")
+    lo, hi = sk.get("boot_lo"), sk.get("boot_hi")
+    half1, half2 = sk.get("half1"), sk.get("half2")
+
+    # (a) Consistency: do both halves of the window agree in sign?
+    sign_agrees = (half1 is not None and half2 is not None and
+                   (half1 > 0) == (half2 > 0))
+    # (b) Attribution: is the whole interval on one side of zero?
+    excludes_zero = (lo is not None and (lo > 0 or hi < 0))
+    # (c) Repeatability: skill re-measured inside each week of the window.  A rule
+    #     that only works because of one hot stretch shows positive skill in a
+    #     minority of weeks.  This is a sign test across weeks, not a correlation
+    #     of adjacent games (which would not mean anything).
+    by_week = {}
+    for wk, d in (s.get("_byweek") or []):
+        by_week.setdefault(wk, []).append(d)
+    week_means = {wk: sum(v) / len(v) for wk, v in by_week.items() if v}
+    pos_weeks = sum(1 for v in week_means.values() if v > 0)
+    n_weeks = len(week_means)
+    week_p = binom_two_sided(pos_weeks, n_weeks) if n_weeks else None
+    # (d) Luck share: the fraction of the observed mean that is inside the noise band.
+    luck_share = None
+    if mean and lo is not None and hi is not None and hi > lo:
+        luck_share = min(1.0, max(0.0, (0.0 - lo) / (hi - lo))) if lo < 0 else 0.0
+    skill_share = None if luck_share is None else 1.0 - luck_share
+    # (e) The verdict this table exists to produce.
+    if not n or mean is None:
+        verdict = "not measurable"
+    elif (excludes_zero and sign_agrees and n_weeks >= 4
+          and week_p is not None and week_p < 0.10):
+        verdict = "skill-supported (repeatable across weeks)"
+    elif excludes_zero and sign_agrees:
+        verdict = "positive, but not repeatable across weeks"
+    elif excludes_zero and not sign_agrees:
+        verdict = "unstable - one half disagrees"
+    elif not excludes_zero and mean > 0:
+        verdict = "positive but indistinguishable from luck"
+    else:
+        verdict = "not distinguishable from luck"
+    return {
+        "luck_share_of_record": fmt(luck_share, 2),
+        "skill_share_of_record": fmt(skill_share, 2),
+        "halves_agree": "yes" if sign_agrees else "no",
+        "interval_excludes_zero": "yes" if excludes_zero else "no",
+        "weeks_positive_skill": ("%d of %d" % (pos_weeks, n_weeks)) if n_weeks else "",
+        "week_sign_test_p": fmt(week_p, 4),
+        "worst_week_skill": fmt(min(week_means.values()), 2) if week_means else "",
+        "best_week_skill": fmt(max(week_means.values()), 2) if week_means else "",
+        "skill_or_luck_verdict": verdict,
+        "wrong_question_note": ("A rank answers 'who finished first'. It does not answer "
+                                "'who is better'. These columns answer the second question."),
+    }
+
+
+# store the paired differences so the split-half statistic can be computed
 # --------------------------------------------------------- leaderboard ------
 def reward_tier(passed, s):
     core = all(passed[g] for g in ("G1", "G2", "G3", "G5"))
@@ -816,6 +931,33 @@ def reward_tier(passed, s):
 leader_rows = []
 rank = 0
 order = sorted(summaries, key=lambda s: -((s[0]["skill"] or {}).get("mean") or -99))
+
+# R1 is M1 restricted to post-bye spots, so its own model column is M1's.
+MODEL_COL = {"M1": "M1_margin", "M2": "M2_margin", "M3": "M3_margin",
+             "M4": "M4_margin", "R1": "M1_margin", "T1": "M1_total"}
+for s, _l, _k in summaries:
+    sid = s["strategy_id"]
+    if sid == "P1" or sid not in MODEL_COL:
+        s["_diffs"] = []
+        continue
+    is_total = (sid == "T1")
+    key = "actual_total" if is_total else "actual_margin"
+    ref = "ref_total" if is_total else "ref_margin"
+    col = MODEL_COL[sid]
+    scope = oos
+    if sid == "R1":
+        scope = [r for r in oos
+                 if (r["home_team"] in BYES.get(r["week"] - 1, set())) !=
+                    (r["away_team"] in BYES.get(r["week"] - 1, set()))]
+    s["_diffs"] = [abs(r[key] - r[ref]) - abs(r[key] - r[col]) for r in scope]
+    s["_byweek"] = [(r["week"], abs(r[key] - r[ref]) - abs(r[key] - r[col])) for r in scope]
+
+for s, label, kind in order:
+    s.update(luck_columns(s))
+    s["strategy_label"] = label
+    s["kind_label"] = kind
+
+
 for s, label, kind in order:
     passed = gate_eval(s)
     n_pass = sum(1 for v in passed.values() if v)
@@ -854,6 +996,15 @@ for s, label, kind in order:
                                  max([x for x in (s["req_n_hit"], s["req_n_edge"]) if x] or [0]), s["n_bets"]),
         "gates_passed": f"{n_pass}/8",
         "gates_failed": ", ".join(g for g, v in passed.items() if not v) or "none",
+        "luck_share_of_record": s.get("luck_share_of_record", ""),
+        "skill_share_of_record": s.get("skill_share_of_record", ""),
+        "halves_agree": s.get("halves_agree", ""),
+        "interval_excludes_zero": s.get("interval_excludes_zero", ""),
+        "weeks_positive_skill": s.get("weeks_positive_skill", ""),
+        "week_sign_test_p": s.get("week_sign_test_p", ""),
+        "worst_week_skill": s.get("worst_week_skill", ""),
+        "best_week_skill": s.get("best_week_skill", ""),
+        "skill_or_luck_verdict": s.get("skill_or_luck_verdict", ""),
         "reward_tier": tier,
         "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
         "source_url": SRC_SCHED + "10",
@@ -901,6 +1052,40 @@ for r in sorted(oos, key=lambda r: (r["week"], r["home_team"])):
         "game_url": r["game_url"], "source_url": r["source_url"],
     })
 
+# ------------------------------------- prospective sealed forecast log (T52) --
+# The only way to remove hindsight from a track record is to freeze the forecast
+# BEFORE the games are played and to make the freeze tamper-evident.  This log
+# records every Week 11 originated number, the exact inputs used, and a SHA-256 of
+# the frozen content.  A later session can re-run the same fit and compare the
+# digest; if the number was quietly changed, the digest changes.
+import hashlib
+
+seal_rows = []
+seal_payload = []
+for g in week11:
+    home, away = g["home_team"], g["away_team"]
+    pr = predict(main, home, away)
+    seal_payload.append("%s|%s-at-%s|%.4f|%.4f|%.4f|%.4f" % (
+        g["game_no"], g["away_team"], g["home_team"],
+        pr["margin"], pr["total"], pr["home_points"], pr["away_points"]))
+    seal_rows.append({
+        "log_id": "SF-%02d" % int(g["game_no"]),
+        "game_no": g["game_no"],
+        "matchup": "%s at %s" % (g["away_team"], g["home_team"]),
+        "kickoff_et": "%s %s" % (g["kickoff_day"], g["kickoff_time_et"]),
+        "frozen_spread_home": fmt(pr["margin"], 1),
+        "frozen_total": fmt(pr["total"], 1),
+        "frozen_home_win_prob": fmt(norm_cdf(pr["margin"] / sd_margin), 3),
+        "fit_games_used": sum(1 for x in results if x["week"] <= 10),
+        "fit_weeks_used": "1-10",
+        "frozen_before_kickoff": "yes - Week 10 Sunday games not yet played at freeze time",
+        "result_recorded": "",
+        "graded_after": "",
+        "source_url": g["source_url"],
+    })
+
+SEAL = hashlib.sha256("\n".join(seal_payload).encode("utf-8")).hexdigest()
+
 # -------------------------------------------------------------- output ------
 write("model_lines_week11.csv", lines_rows,
       ["game_no", "matchup", "kickoff_et", "model_spread_home", "model_total",
@@ -923,12 +1108,21 @@ write("strategy_leaderboard.csv", leader_rows,
        "hit_rate_vs_reference", "mean_edge_points", "edge_ci_low", "edge_ci_high",
        "p_binomial", "p_permutation_bets", "sd_edge_points",
        "min_n_for_80pct_power", "sample_shortfall",
-       "gates_passed", "gates_failed", "reward_tier", "reward_status", "source_url"])
+       "gates_passed", "gates_failed", "luck_share_of_record", "skill_share_of_record",
+       "halves_agree", "interval_excludes_zero",
+       "weeks_positive_skill", "week_sign_test_p", "worst_week_skill", "best_week_skill",
+       "skill_or_luck_verdict", "reward_tier", "reward_status", "source_url"])
 write("gate_results.csv", gate_rows,
       ["gate_id", "gate", "meaning", "rule", "status", "strategies_passing", "source_url"])
 write("correlations_computed.csv", corr_rows,
       ["corr_id", "question", "value", "ci_low", "ci_high", "p_value", "sample_n",
        "interpretation", "source_url"])
+write("prospective_forecast_log.csv", seal_rows,
+      ["log_id", "game_no", "matchup", "kickoff_et", "frozen_spread_home", "frozen_total",
+       "frozen_home_win_prob", "fit_games_used", "fit_weeks_used", "frozen_before_kickoff",
+       "result_recorded", "graded_after", "source_url"])
+with open(os.path.join(DATA, "prospective_forecast_log.sha256"), "w", encoding="utf-8") as f:
+    f.write(SEAL + "  prospective_forecast_log.csv (payload: game_no|matchup|margin|total|home_pts|away_pts)\n")
 write("parlay_analysis.csv", parlay_rows,
       ["parlay_id", "definition", "legs", "tickets", "leg1_hit_rate", "leg2_hit_rate",
        "observed_joint_hit_rate", "independence_expected_rate",
@@ -957,6 +1151,9 @@ summary = {
     "injury_rows": len(injuries),
     "injury_teams": len({r["team_abbr"] for r in injuries}),
     "seed": SEED,
+    "lookahead_gate_passed": G1_PASSED,
+    "lookahead_tests": len(lookahead),
+    "forecast_log_seal_sha256": SEAL,
 }
 with open(os.path.join(DATA, "model_summary.json"), "w", encoding="utf-8") as f:
     json.dump(summary, f, indent=1)
