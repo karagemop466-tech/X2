@@ -832,9 +832,16 @@ ratings_rows.sort(key=lambda r: -float(r["net_rating"]))
 # a model output are published as MODEL DIAGNOSTICS (DEC-09), not as evidence
 # correlations. Columns mirror data/correlation_audit.csv (session 8a0bf37e).
 corr_rows = []
-def add_corr(cid, question, r, n, note, src, input_a, input_b, official_only, qualifies, audit_note):
-    lo, hi = fisher_ci(r, n) if r is not None else (None, None)
-    p = pearson_p(r, n) if r is not None else None
+def add_corr(cid, question, r, n, note, src, input_a, input_b, official_only, qualifies, audit_note,
+             descriptive=False):
+    # descriptive=True publishes the coefficient with n only: no interval and
+    # no p-value, because the pairs are not independent (session d2915d86, T53,
+    # Flag F55 resolved by reporting C06 as descriptive).
+    if descriptive:
+        lo, hi, p = None, None, None
+    else:
+        lo, hi = fisher_ci(r, n) if r is not None else (None, None)
+        p = pearson_p(r, n) if r is not None else None
     corr_rows.append({"corr_id": cid, "question": question, "value": fmt(r),
                       "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(p, 4),
                       "sample_n": n,
@@ -978,10 +985,15 @@ for t, seq in team_seq.items():
             prev.append(seq[i - 1][1]); cur.append(seq[i][1])
 r6, n6 = pearson(prev, cur)
 add_corr("C06", "Does last week's margin predict this week's margin for the same team?", r6, n6,
-         "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much.",
+         "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much. "
+         "Published as descriptive: n counts team-game pairs and each game supplies both teams' margins, "
+         "so the pairs are not independent; no interval and no p-value are shown (F55).",
          SRC_SCHED + "10",
          "Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes", "yes",
-         "Official results. n = 228 counts each game once per team, so pairs are not independent (F55).")
+         "Official results, descriptive only (F55 resolved, session d2915d86): n = 228 team-game pairs, "
+         "each game supplies both teams' margins, so the pairs are not independent; interval and p-value "
+         "are blank by design.",
+         descriptive=True)
 # calibration: regress actual margin on predicted margin (out of sample)
 mx = sum(xs) / len(xs); my = sum(ys) / len(ys)
 sxx = sum((x - mx) ** 2 for x in xs)

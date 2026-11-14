@@ -1798,3 +1798,71 @@ session's work and had to be corrected rather than assumed:
 
 Re-checked after the rebase: 137/137 feed agreement with the canonical feed still holds; 22 audit checks, 0 failing;
 35 pages; `scripts/check_links.py` clean; Node verifier passes.
+
+## 2026-11-14 · session d2915d86 · claim (originally T51–T54; renumbered twice — final IDs T84–T87 after two main advances)
+
+**Branch:** `arena/d2915d86-x2` (based on `origin/main` @ `9d11efc`) · **Status:** in progress · **Owner:** `d2915d86`
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T84 | Apply the C09 calibration correction (REQ-8a-1, F48): t-based interval from the slope's own SE and p-value against slope 1.0 in `scripts/model.py`; regenerate `data/correlations_computed.csv`; refresh the C09 audit note in `scripts/desk.py` / `data/correlation_audit.csv`; update F48 and the build wording that says "requested, not applied" | done | d2915d86 | `scripts/model.py`, `scripts/desk.py`, `data/correlations_computed.csv`, `data/correlation_audit.csv`, `data/flags.csv` (F48), `scripts/build.py` (C09 wording only), generated `docs/` | REQ-8a-1 logged by 8a0bf37e; expected CI 0.335–1.435, p 0.683 vs slope 1.0 (n = 89) — recomputed, not copied; the merged register keeps the exact t quantile (F72) |
+| T85 | F53: fetch the four remaining club depth charts (GB, LAR, KC, IND) and fill/flag rows A08–A11 of `data/replacement_depth_week10_2026.csv`; add the chart sources (published as SRC-81–SRC-84); update F53 | done | d2915d86 | `data/replacement_depth_week10_2026.csv`, `data/sources.csv` (SRC-81+), `data/flags.csv` (F53), `scripts/build.py` (OFFICIAL_HOSTS + A08–A11 wording only), generated `docs/` | Club official websites, fetched live; blank where no official chart confirms |
+| T86 | F50 + F55 + F44: compute gate G1 (count training rows with week >= prediction week across every fit) instead of the constant True; publish C06 as descriptive (blank interval and p — pairs are not independent) or as a one-row-per-game recompute; record the derivation of the naive reference total (2 × league PPG before the week) | done | d2915d86 | `scripts/model.py`, `scripts/desk.py` (C06 note), `data/gate_results.csv`, `data/correlations_computed.csv`, `data/correlation_audit.csv`, `data/model_summary.json`, `data/flags.csv` (F44, F50, F55), `scripts/build.py` (wording only), generated `docs/` | NIST model-validation and interval references already in the register |
+| T87 | Integration: board reconciliation (T48 row still reads "in progress" although PR #32 merged), full re-verification, PR to `main`, merge, GitHub Pages confirmation, record | done | d2915d86 | `COORDINATION.md`, generated `docs/`, PR | Runs last |
+
+**Not claimed (owner decisions, unchanged):** DEC-01–DEC-10, F43 tier labels (DEC-05), F16/F19 legal and rights gates, F17 cut-off approval, F36 re-run after Week 10 completes. Nothing in this claim edits injury rows, results, prices, or any other session's register rows.
+
+### Session d2915d86 — collision record and reconciliation (2026-11-14)
+
+- **Claim.** This session claimed **T51–T54** at base `9d11efc` (the merge of PR #33) and pushed the claim before any
+  file edit, as the board requires. While the data work was in progress, `main` advanced through **PRs #34–#46**
+  (sessions ca1ea224, f25d6b55, cf6709c0, e208ba6d, ef971991 and others), which independently claimed **T51–T78**
+  and applied the same REQ-8a-1 C09 correction, a computed G1, the F44 derivation and replacement-depth work.
+- **Resolution (nothing discarded).** `origin/main` was merged into `arena/d2915d86-x2` with conflicts in
+  `scripts/model.py`, `scripts/build.py`, the shared registers, generated `docs/` and this board:
+  - **Adopted from `main`** (their implementations are equivalent or stronger): the C09 t-interval correction
+    (`add_slope`, exact t quantile, 0.328–1.443, p 0.6830 — identical values to this session's independent
+    computation), the computed no-look-ahead audit (`audit_no_lookahead` / `G1_PASSED`), the F44 reference-total
+    derivation, the owner-rule correlation columns, and all of main's new pages and registers.
+  - **Kept from this session** (unique on `main`): the **C06 descriptive publication** (interval and p blank by
+    design, F55 resolved), the **A08–A11 club-chart checks** with sources SRC-81–SRC-84 (F53 resolved), the
+    **F50 board resolution** with evidence of main's computed audit, and the depth-page/exec-summary wording that
+    records all eleven availability rows as checked.
+  - **Renumbered:** this session's tasks to **T79–T82**, then to **T84–T87** after 20e6161b took T79–T83 (T51–T54 were taken on `main` by f25d6b55, cf6709c0,
+    e208ba6d and ef971991); its sources to **SRC-81–SRC-84** (main had taken up to SRC-80). No flag IDs were added:
+    only F50/F53/F55 statuses were updated; F44/F48/F71/F72 keep main's records.
+- **Verification after the merge (all pass):** `python3 scripts/model.py` (byte-deterministic; C06 blank interval/p,
+  C09 0.328–1.443 p 0.6830), `python3 scripts/desk.py`, `python3 scripts/build.py` (30 pages; row-source, internal-link
+  and plain-HTTP checks), `python3 scripts/check_links.py` (1,002 internal, 3,507 external links, no problems),
+  `python3 scripts/verify_results.py` (32 teams, 0 mismatches), `npm run build` + `npm run verify` (ALL CHECKS PASSED),
+  `python3 -m py_compile` clean. Rendered spot-checks: C06 row blank interval/p on the correlations page; all four new
+  club-chart links present on the depth-deficiency page; F50/F53/F55 show Resolved on the Flagged page; the model-lines
+  page carries the F44 derivation.
+
+### Session d2915d86 — second main advance (PRs #37 and #47) and final reconciliation
+
+- While the first merge was being verified, `main` advanced again with **PR #37** (session d0d9d19f) and
+  **PR #47** (session 20e6161b, whose draft T51–T55 became **T79–T83** after the union). 20e6161b had
+  independently closed **F53** with richer evidence than this session's first pass: it re-read the NFL.com
+  *article bodies* (not just headlines) and upgraded A10's source to the Saturday Walker downgrade-to-out
+  article. This session **verified those claims against the official articles before adopting them**
+  (fetched live 2026-11-14): the Chiefs article states verbatim that "He will lead the rushing attack for
+  the first time Sunday, supplemented by fellow rookie Jaydn Ott and second-year back Nate Carter, who was
+  elevated from the practice squad"; the Packers article names "Kaleb Johnson, MarShawn Lloyd, Pierre
+  Strong and Chris Brooks" with Johnson's "68 yards on 14 carries". Both match 20e6161b's rows exactly.
+  Their A08–A11 rows are therefore kept as the published version; this session's earlier, thinner rows are
+  discarded in favour of the verified richer ones (no other session's work discarded).
+- **Sources:** 20e6161b's register re-added six chart/game sources under IDs that already existed
+  (SRC-74–SRC-79 duplicate SRC-61–SRC-66; SRC-80 duplicates SRC-67) — part of a pre-existing duplicate-URL
+  pattern on `main` (13 duplicated URLs now). This session did **not** delete main's rows (T70's
+  stale-register remediation is the right owner for that) and appended its four unique club charts as
+  **SRC-81–SRC-84** (GB, LAR, KC, IND — those URLs appear nowhere else in the register).
+- **Flags:** F50 and F53 keep 20e6161b's closure records (taken from `main`); **F55 stays this session's
+  resolution** (C06 published as descriptive — no other session touched it); F74–F76 are main's.
+- **Renumbered again:** tasks **T79–T82 → T84–T87** because 20e6161b owns T79–T83 on `main`.
+- **Second-merge verification (all pass):** `python3 scripts/model.py` (byte-deterministic; C06 interval/p
+  blank, C09 0.328–1.443 p 0.6830), `python3 scripts/desk.py`, `python3 scripts/build.py`,
+  `python3 scripts/check_links.py`, `python3 scripts/verify_results.py`, `npm run build` + `npm run verify`,
+  `python3 -m py_compile`. Rendered spot-checks repeated after the rebuild: all four club-chart links
+  present on the depth-deficiency page, C06 blank on the correlations page, F50/F53/F55 Resolved on the
+  Flagged page.

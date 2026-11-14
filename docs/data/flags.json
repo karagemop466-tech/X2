@@ -489,10 +489,10 @@
   "flag_id": "F55",
   "category": "Statistical independence",
   "item": "C06 uses n = 228 team-game rows",
-  "detail": "Each game appears once for each team, so pairs are not independent and the p-value is optimistic.",
+  "detail": "C06 uses n = 228 team-game rows: each game appears once for each team, so pairs are not independent and a p-value computed on them is optimistic. Resolution: correlations_computed.csv C06 now publishes the coefficient and n = 228 with the interval and p-value blank by design (scripts/model.py add_corr descriptive=True), and the desk.py audit note records why. The coefficient itself (0.087) is unchanged.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Open",
-  "action_requested": "Recompute on one row per game, or report as descriptive."
+  "status": "Resolved (session d2915d86, T53): C06 published as descriptive",
+  "action_requested": "None - reviewer can confirm on the correlations and verification pages (C06 interval and p blank)."
  },
  {
   "flag_id": "F56",

@@ -56,7 +56,8 @@ which is what drives the spread. Ratings are shrunk toward zero, so extreme reco
 − opponent defence rating + home-field term, fitted on every team-game to date. Spread = (attack + defence) difference
 plus home field; total = both attacks minus both defences plus home field.</li>
 <li><strong>No look-ahead.</strong> Every out-of-sample prediction was fitted only on games played strictly before
-that week. This is enforced in code, not by hand.</li>
+that week. This is enforced in code and computed as gate G1: all 10 no-look-ahead tests passed
+across 10 weeks, with the audit recorded in <code>data/gate_results.csv</code> (Flag F50 resolved).</li>
 <li><strong>Not included:</strong> play-by-play, yards per play, turnovers, personnel, participation, weather,
 travel, rest, coaching, and injuries. One injury snapshot cannot be backtested, so no injury adjustment is applied
 (Flags F06, F34).</li>
