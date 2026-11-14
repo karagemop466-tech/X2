@@ -112,8 +112,8 @@ function renderMarkdown(md) {
   while (i < lines.length) {
     const line = lines[i];
 
-    // Data-table injection token: {{TABLE: key}}
-    const token = line.trim().match(/^\{\{TABLE:([a-zA-Z0-9_]+)\}\}$/);
+    // Data-table injection token: {{TABLE: key}} (whitespace after the colon allowed)
+    const token = line.trim().match(/^\{\{TABLE:\s*([a-zA-Z0-9_]+)\}\}$/);
     if (token) {
       flushPara();
       out.push(renderDataTable(token[1]));

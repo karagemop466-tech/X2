@@ -58,7 +58,11 @@ Every table row on this site carries a link to its source. Values that cannot be
 confirmed from an official source are **left blank and flagged as unverified** —
 never inferred or filled in. Official sources used include NFL.com (standings,
 injury report, team stats, transactions) and NFL Operations (rulebook). Third-party
-depth charts (ESPN, Ourlads) and odds aggregators are labeled as such. The
+depth charts (ESPN, Ourlads) and odds aggregators are labeled as such. On
+2026-11-14 (task T13) third-party depth values were removed from the depth-table
+data: backup names, string ranks, and the third-party LG label for Walter Rouse are
+no longer published; official injury-report facts were retained and spot-checked.
+The
 current flagged items are listed on the [Flagged for Review](../flagged-for-review/)
 page.
 

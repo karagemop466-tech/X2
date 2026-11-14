@@ -43,6 +43,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `7c9eb69a` | `arena/7c9eb69a-x2` | Independent row-by-row re-verification of the Week 10 snapshot, plus the Decision path, Verification record and suggestion review matrix (T17). Resolved flag/task ID collisions with 30beeb55 without discarding work. **Merged to `main` via PRs #9–#11.** |
 | `45a0ec8c` | `arena/45a0ec8c-x2` | Session 45a0ec8c. Claimed T18/T19 on 2026-11-14 after finding T13–T15 already done on `main` (30beeb55, PR #8). Adds designation/identity cross-check evidence (SRC-25–SRC-29) and new flags F23–F29 only; does not redo T13–T15. **Merged to `main` via PRs #12–#13.** |
 | `52ca9f77` | `arena/52ca9f77-x2` | **Current session — final integration.** Claimed T13 (superseded by 30beeb55's merged PR #8; no duplication — see merge log). Located the official club depth charts both prior passes missed, and as final integration supplemented the merged T13 state with club-chart evidence (Node F-05 update, new Node F-08), reconciled Python F18/SRC-24/README, applied 45a0ec8c's cross-scope requests, and will deliver the final PR/merge/Pages confirmation. Task recorded as **T20** (the IDs T18/T19 were taken by 45a0ec8c). |
+| `324b0cd2` | `arena/324b0cd2-x2` | **Current session.** Claimed T13 before `main` advanced; T13 was completed in parallel by 30beeb55 (PR #8), so this session adopts main's remediation and instead performs the final integration as **T21** (renumbered from locally drafted T20 after 52ca9f77 claimed it): fixes the Node table-token render bug (F30), adds the Node F-09 audit trail, resolves handed-off F21 (stale news rows) and F22 (verified Thursday result), and records the integration. Identifiers renumbered across four main advances: T18 (taken by 45a0ec8c), T20 (taken by 52ca9f77), F23 to F30, SRC-25 to SRC-30, F-08 to F-09. |
 
 ## Task board (combined — all sessions)
 
@@ -81,6 +82,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | ID | Task | Status | Owner | Files touched | Sources | Notes |
 |----|------|--------|-------|---------------|---------|-------|
 | T20 | Final integration: locate an official depth-chart source, supplement the merged T13 state with verified club-chart values, reconcile cross-register records, re-verify, PR, merge, confirm Pages | done | 52ca9f77 | Node: `data/sources.json`, `data/depth-deficiencies.json`, `data/flagged.json`, `docs/08-injuries-and-depth.md`, `docs/10-flagged-for-review.md`. Integration reconciliation: `data/flags.csv` (F18), `data/sources.csv` (SRC-24), `README.md` (two bullets). Board: `COORDINATION.md`. No Python data values or strategy rows changed. | Detroit Lions official club depth chart: https://www.detroitlions.com/team/depth-chart · New England Patriots official club depth chart: https://www.patriots.com/team/depth-chart · NFL.com team roster pages (link to the club charts): https://www.nfl.com/teams/detroit-lions/roster · https://www.nfl.com/teams/new-england-patriots/roster · NFL.com injury report (statuses re-checked) | The two prior T13 passes (30beeb55, 7c9eb69a) only tested the `nfl.com/teams/{team}/depth-chart` URL pattern (404). The club official websites publish weekly depth charts and are linked from the NFL.com roster pages. All seven Node depth rows re-verified against them; club-chart-confirmed ordering restored with per-row citations; one contradicted third-party value corrected (Node F-08: Ourlads had Khalil Dorsey 2nd behind D.J. Reed; club chart: Rock Ya-Sin 2nd, Dorsey 3rd). Both club pages self-label the charts "Unofficial" (Node F-05 caveat). Fields no club chart confirms stay blank. |
+| T21 | Final integration (session 324b0cd2): Node table-token build fix (F30), Node F-09 audit trail, resolve handed-off F21/F22, third verification pass, PR/merge/Pages record | done | 324b0cd2 | `src/build.mjs`, `src/verify.mjs`, `data/flagged.json` (F-09), `data/flags.csv` (F21, F22, F30), `data/games_week10_2026.csv` (result column), `data/news_week10_2026.csv` (2 stale rows removed), `data/requirements.csv` (R17), `data/sources.csv` (SRC-24 note, SRC-30), `scripts/build.py` (games result column, verification rows), generated `docs/`, COORDINATION.md | NFL.com injury report (re-read 2026-11-14); NFL Week 10 schedule (Commanders 24, Giants 21 FINAL); NFL game center; first-party repo records for build facts | 30beeb55's T13 remediation and 52ca9f77's T20 club-chart supplement were adopted unchanged — no duplicate edits, nothing discarded. Node build bug found and fixed: no generated Node page had ever rendered a data table. F21: two stale headlines removed (confirmed absent from the live news section by this session's own page read). F22: independently re-verified on the official schedule, then published in the games table. |
 
 
 Every verified value links to one of these official pages (full lists also at
@@ -199,6 +201,21 @@ Every verified value links to one of these official pages (full lists also at
   clean), `npm run build` (12 pages) and `npm run verify` (194 internal links, all
   JSON rows source-resolve, flagged register now 8 rows) all pass;
   `git diff --check` clean.
+
+**Session 324b0cd2 (T21) — third verification pass and integration:**
+- Read the official NFL.com Week 10 injury report live on 2026-11-14 (7 of 8 chunks covering all 14 games) and spot-checked
+  stored rows field-by-field for WAS, NYG, NE, DET, KC, CAR, NO, HOU, CLE, PIT, CIN, DAL, LAC, BAL, SF: every checked player,
+  position, injury, practice status and game status matched `data/injuries_week10_2026.csv` exactly. Per-team row counts
+  matched for NE (15), DET (9), CAR (12), NO (12), HOU (16), CLE (12), PIT (8), CIN (9), DAL (19), BAL (8), LAC (19).
+  Game records match the page (WAS 3-5-1, NYG 5-3-1, PIT 6-2, CIN 6-2, LAC 0-8, BAL 4-5). The two headlines flagged by F21
+  were confirmed absent from the live news section and removed.
+- Independently confirmed the Thursday result on the official Week 10 schedule page (Commanders 24, Giants 21, FINAL) before
+  publishing it in the games table (F22). Other games had not been played at snapshot time; their result cells stay blank.
+- Builds: `python3 scripts/build.py` (13 pages, 345 injury rows, 28 teams, 61 depth rows, link + row-source checks pass,
+  including 52ca9f77's CSV field-count validator), `npm run build` (12 pages), `npm run verify` (all tables resolve + no
+  unrendered tokens — new check). `py_compile` clean, `git diff --check` clean.
+- Node table-token bug (F30): reproduced on the pre-fix build (0 rendered data tables across 12 pages), fixed in
+  `src/build.mjs`, verifier check added in `src/verify.mjs`, post-fix build renders all data tables.
 
 ## Irregularities (combined)
 
@@ -442,3 +459,28 @@ data and live site._
 | Branch history note | `arena/52ca9f77-x2` was force-updated once with `--force-with-lease` (211a986 → 4494c44) to replace this session's own pre-rebase commits after adopting the merged T13/T17 state; substance preserved in the T20 supplement. No other session's branch or history was touched. |
 
 **Session close-out (52ca9f77):** T20 done and merged; live site verified. Open handoffs to the owner/next session: F16 (data rights — critical), F19 (Netherlands legal review), F26/F27/F28 (injury-table designation decisions — snapshot-integrity rationale logged), F-01 (Ben Brown position basis), F-05 (club-chart "unofficial" caveat accepted-by-design), F-08 (corrected Reed backup — review requested), F17 (numeric cutoffs), D01–D10 gates. No strategy has passed validation; no odds, correlation, or performance value exists in the repo.
+
+## Merge / conflict log — session 324b0cd2
+
+- **2026-11-14 · session 324b0cd2 · rebase conflict after main advanced (PRs #8-#11).** This session claimed T13 on
+  `COORDINATION.md` and pushed the claim. While preparing the T13 data edits, `origin/main` advanced with session 30beeb55's
+  T13/T14/T15/T16 work (PR #8) and session 7c9eb69a's T17 work (PRs #9-#11).
+  **Resolution:** 30beeb55's completed T13 remediation (official-only depth rows, F18 resolution) and 7c9eb69a's T17 output
+  were adopted unchanged from `origin/main` — no duplicate edits, nothing discarded. The claim row on T13 was superseded by
+  30beeb55's done status; the session's remaining unique work was re-scoped.
+- **2026-11-14 · session 324b0cd2 · second rebase conflict after PRs #12-#13 (session 45a0ec8c).** 45a0ec8c claimed
+  identifiers this session had locally drafted as T18 (task), F23 (Node build-bug flag) and SRC-25 (game-center source).
+  **Resolution:** nothing discarded — 45a0ec8c's F23-F29 and SRC-25-SRC-29 were kept verbatim; this session's additions were
+  renumbered **F30 / SRC-30** and the task later renumbered T21.
+- **2026-11-14 · session 324b0cd2 · third rebase conflict after PR #15 (session 52ca9f77).** 52ca9f77's T20 claimed the task
+  ID T20 and the Node register ID F-08 this session had drafted; its club-chart supplement superseded docs sections this
+  session had edited.
+  **Resolution:** 52ca9f77's club-chart supplement was adopted unchanged; the audit-trail entry was renumbered **F-09**,
+  the task renumbered **T21**, docs sections (00/08/09/10) taken from main's wording with no re-edits.
+- **2026-11-14 · session 324b0cd2 · fourth rebase after PRs #17-#18 (session 52ca9f77 close-out).** 52ca9f77 recorded its
+  T20 merge results, added the CSV field-count validator and quoted three CSV rows; F21/F22 remained open and were handed
+  to the next session.
+  **Resolution:** the close-out record and validator were adopted; this session's T21 additions (F30, F-09, SRC-30,
+  F21/F22 resolutions, games result column, news cleanup) were re-applied on top and validated with the new field-count
+  validator. Generated `docs/` output was regenerated by `scripts/build.py` rather than hand-merged. Four collisions in one
+  session: parallel sessions should re-check `origin/main` task/flag/source IDs immediately before every append and push.

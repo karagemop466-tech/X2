@@ -146,11 +146,11 @@
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "Merged through PR #7; this session opens the follow-up integration PR",
+  "status": "PRs #1-#11 merged; final integration PR (T18: Node build fix, F21/F22 resolution) opened by session 324b0cd2",
   "where_addressed": "Final step",
-  "blocker_or_note": "PRs #1-#7 merged. This session re-verified the combined data line by line and opens the final integration PR described in COORDINATION.md.",
+  "blocker_or_note": "PRs #1-#11 merged through session 7c9eb69a. Session 324b0cd2 re-verified the combined data, fixed the Node table-token bug (F23) and resolved the handed-off F21/F22 items before opening the final integration PR described in COORDINATION.md.",
   "row_type": "status",
-  "evidence_url": "https://github.com/karagemop466-tech/X2/pull/2"
+  "evidence_url": "https://github.com/karagemop466-tech/X2/pull/11"
  },
  {
   "req_id": "R18",

@@ -79,5 +79,18 @@
       "ourlads-depth-det"
     ],
     "status": "open (value corrected in data; review requested)"
+  },
+  {
+    "id": "F-09",
+    "area": "Injuries & Depth",
+    "item": "Audit trail: values removed by the T13 blanking pass and the club-chart supplement that followed (T20, session 52ca9f77)",
+    "detail": "Complete record of depth values that have entered and left this table: (1) session 30beeb55's T13 blanking pass (2026-11-14) removed all Ourlads/ESPN values — backup names (Juice Scruggs, Khalil Dorsey, DeAndre Carter, Corey Kiner), 1st/2nd/3rd-string ranks, the third-party LG label for Walter Rouse, and the deficiency prose built on them — leaving official NFL.com facts only; (2) session 52ca9f77's T20 supplement (2026-11-14) re-populated depth ordering from the clubs' official websites (detroitlions.com, patriots.com), which self-label their charts 'unofficial', and corrected the Khalil Dorsey value (see F-08). Official injury facts throughout: Cade Mays C Out (ankle), D.J. Reed CB Out (hip), Amon-Ra St. Brown WR Questionable (rib), Rhamondre Stevenson RB Questionable (knee), TreVeyon Henderson RB Out (illness), Walter Rouse T Questionable (concussion), Ben Brown C Out (knee) — all re-verified field-by-field in three independent passes (T15, T17, T21/324b0cd2) against https://www.nfl.com/injuries/.",
+    "reason": "The official-source-only rule requires every published value to trace to an official source. The club charts are official team domains but self-label 'unofficial'; both the removed third-party values and the club-chart values are logged here so a reviewer can audit every value that ever appeared in the table and request changes.",
+    "source": [
+      "nfl-injuries",
+      "lions-depth",
+      "patriots-depth"
+    ],
+    "status": "open (audit trail published for reviewer confirmation of the club-chart supplement)"
   }
 ]
