@@ -3,7 +3,7 @@
   "gate_id": "G1",
   "gate": "No look-ahead",
   "meaning": "Every prediction for week W is fitted only on games played before week W",
-  "rule": "Measured in the walk-forward loop: every fit checks max(training week) < W (lookahead_ok flag)",
+  "rule": "Audited: for every out-of-sample week, training games are strictly earlier weeks and none are empty (scripts/model.py audit_no_lookahead)",
   "status": "Proposed cut-off — awaiting project-owner approval (F17)",
   "strategies_passing": "M1, M2, M3, M4, T1, R1, P1",
   "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"

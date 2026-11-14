@@ -39,3 +39,14 @@ captures the underlying skill of price-finding rather than the variance of game
 outcomes. Sources:
 [Squawka](https://www.squawka.com/us/nfl/strategy/) and
 [NFL Betting Math — Vig & CLV](https://nflsportsbettingstats.com/articles/nfl-betting-math-vig-clv/).
+
+## Signal vs staking (kept apart)
+
+Ranking uses **signal only** — forecast skill with its uncertainty interval and
+multiplicity-adjusted q-value. The bet record (wins, hit rate, edge, ROI when
+prices exist) is a **staking** record: it is displayed for transparency and can
+never raise or lower a rank, so a lucky staking run cannot mask a bad signal.
+Separately, the Python Pages dashboard publishes a measured signal/staking split
+for the seven graded paper strategies and the proposed demotion gate; no reward
+tier is offered anywhere until the qualification disagreement (F42) is resolved
+and the owner decides on the tier labels (R36, F43). Nothing is paid.

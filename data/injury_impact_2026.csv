@@ -1,0 +1,3 @@
+game,week,team,side,out_or_doubtful_count,positions_affected,points_scored_this_game,points_allowed_this_game,note,source_url
+WAS at NYG,10,NYG,home,0,,21,24,One game. A single observation cannot identify the size of an injury effect; a coefficient needs many games with pre-game exposure held before kickoff.,https://www.nfl.com/schedules/2026/by-week/week-10
+WAS at NYG,10,WAS,away,2,"C x1, TE x1",24,21,One game. A single observation cannot identify the size of an injury effect; a coefficient needs many games with pre-game exposure held before kickoff.,https://www.nfl.com/schedules/2026/by-week/week-10

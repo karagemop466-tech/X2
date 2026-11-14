@@ -4,22 +4,46 @@ Source-linked NFL research covering the Week 10 injury snapshot, offense/defense
 **an independent line model that originates its own spreads and totals**, a walk-forward backtest, validation
 gates with graded results, computed correlation values, a same-game parlay study, a strategy leaderboard,
 independent-line hypotheses, parlays and player props, questions, an ordered decision path, a suggestion review
-matrix, a verification record, and flagged items.
+matrix, a verification record, and flagged items. The market layer adds a **price-snapshot store** (opening and
+closing fields for every originated market, side → total → moneyline), **fair line / market line / difference as
+separate columns**, a strict **signal-vs-staking split** in the leaderboard, a proposed **demotion gate** that
+returns a live strategy to paper, and **replacement-depth tracking** (the 2nd/3rd/4th string of the replacement,
+where a source verifies it).
 
 ## Read in this order
 
+0. **Review console** (`docs/review.html`) — the section where a path is actually *chosen*: eight decisions, three
+   options each, a recommendation, the file each would change, and what stays blocked until it is decided. It ships
+   with **zero decisions recorded**, because no human has recorded one.
+
+0. **Review path** (`docs/review.html`) — one ordered route through the open decisions, so a reviewer can choose a direction before anything is built.
 1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
 2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
 3. **Model & Week 11 lines** (`docs/model-lines.html`) — the originated spreads, totals and moneylines, originated side first then total then moneyline, with the fair line, market line and difference as separate columns, the team ratings, and the method.
 4. **Price snapshots** (`docs/price-snapshots.html`) — the price-snapshot store recording opening and closing numbers for every originated market; values blank and flagged because no licensed odds feed exists.
-5. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
-6. **Leaderboard** (`docs/leaderboard.html`) — strategies ranked on forecast skill, with signal separated from staking, gates, uncertainty and required sample sizes.
-7. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
-8. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
-9. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
-10. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
+5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, the signal-only ranking, and the proposed demotion gate.
+6. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
+7. **Leaderboard** (`docs/leaderboard.html`) — strategies ranked on signal (forecast skill) only, with gates, uncertainty and required sample sizes; staking is displayed separately and never affects rank.
+8. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
+9. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
+10. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
+11. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
+
+### Also new: market sheet, props, event risk
+
+- **Market sheet** (`docs/market-sheet.html`) — every Week 11 market in origination order (side, total, moneyline)
+  with the **fair line, the market line and the difference in three separate columns**, a fair American price, and a
+  SHA-256-sealed pre-kickoff forecast log (`data/prospective_forecast_log.sha256`). The market columns are blank.
+- **Player props** (`docs/props.html`) — six prop families with their official outcome source, the same-game
+  correlation matrix carrying `n` on every value, and prop-combo dependence published as a blank rather than a guess.
+- **Event risk** (`docs/event-risk.html`) — 65 named Week 11 risks tied to a player, an official status word and the
+  specific markets each can invalidate. Of those, **58 have no official source establishing the player's role**, and
+  that number is published instead of the shortfall being hidden.
+- **Skill versus luck** (`docs/leaderboard.html`) — every strategy now carries luck share, skill share, half-split
+  agreement and a per-week sign test. The finding is negative and published anyway: M1 is positive in 5 of 7 weeks
+  (p = 0.45), so its rank describes 89 games rather than predicting the next one.
 
 ## The model, briefly
 
@@ -38,7 +62,18 @@ plus a fixed 2.5-point home field):
 |---|---|---|
 | Mean absolute error, margin | 9.16 points | 10.89 points |
 | Improvement | +1.74 points (95% bootstrap CI 0.76 to 2.74) | — |
-| Calibration slope (actual on predicted) | 0.885 (SE 0.28) | — |
+| Calibration slope (actual on predicted) | 0.885 (SE 0.28), 95% CI 0.33 to 1.44 | — |
+
+The calibration slope carries its **own t interval**, not a correlation interval: the slope is not
+distinguishable from 1.0 (p = 0.68 against a null of 1.0), so the data show neither miscalibration nor
+demonstrated calibration. An earlier build published a Pearson-r interval and p = 0.0000 here, which
+applied a correlation formula to a regression coefficient (flag F72).
+
+**Neutral sites are modelled.** Nine 2026 games are international
+([NFL Football Operations](https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games)).
+The model adds no home-field term to the designated home team in those games. The Week 11 Mexico City game
+(MIN at SF) is corrected; the 137 historical rows carry a **blank** `neutral_site` value because every stadium
+was not re-confirmed, so nothing was inferred (flag F71).
 
 **There is no market comparison anywhere in this project.** No licensed odds feed is connected, so no closing
 line, market price, closing-line value or return on investment can be computed. Leaderboard bets are graded
@@ -57,8 +92,11 @@ rewards stay disabled (F09, F16, F19).
 ## Project layout and build systems
 
 - `data/*.csv` — inputs for the Python dashboard and source/review registers.
-- `data/games_2026_results.csv`, `data/standings_2026_snapshot.csv`, `data/schedule_week11_2026.csv` — the official results dataset, the standings used to check it, and the Week 11 slate.
-- `data/model_*.csv`, `data/strategy_leaderboard.csv`, `data/gate_results.csv`, `data/correlations_computed.csv`, `data/parlay_analysis.csv`, `data/price_snapshots.csv`, `data/model_summary.json` — model outputs, all regenerated by `scripts/model.py`.
+- `data/games_2026_results.csv`, `data/standings_2026_snapshot.csv`, `data/schedule_week11_2026.csv` — the verified results feed, the standings used to check it, and the Week 11 slate.
+- `data/results_feed_2026.csv` — the canonical verified results feed (session f25d6b55): every official 2026 result with a per-row verification status; all grading consumes exactly these rows.
+- `data/model_*.csv`, `data/strategy_leaderboard.csv`, `data/gate_results.csv`, `data/correlations_computed.csv`, `data/parlay_analysis.csv`, `data/price_snapshots_extended.csv`, `data/model_summary.json` — model outputs, all regenerated by `scripts/model.py`. Origination order is fixed (side, then total, then moneyline; the moneyline derives from the originated side and total only). The correlation register publishes input A, input B and the owner-rule classification per row, and C09 uses the slope's own standard error (F48, REQ-8a-1).
+- `data/price_snapshots.csv`, `data/line_comparison_week11.csv`, `data/strategy_signal_staking.csv`, `data/demotion_gate.csv` — the market layer (Week 11 price store, fair/market/difference, signal vs staking, demotion rules), regenerated by `scripts/markets.py`; never writes a price value.
+- `data/replacement_depth.csv` — depth-of-replacement tracking (RD01–RD07), curated from verified official statements and club depth charts; blank where unverified. `data/replacement_depth_week10_2026.csv` (session 8a0bf37e) is the companion availability register.
 - `scripts/model.py` — the line model, backtest, gates, correlations, parlay study and leaderboard (standard library only, fixed random seed).
 - `scripts/verify_results.py` — reconciles the transcribed games against the official standings, team by team.
 - `scripts/build.py` — standard-library builder for the current GitHub Pages content in `docs/` and `docs/data/`.
@@ -73,12 +111,19 @@ The source register includes official NFL, Japanese government, and NIST referen
 
 ```bash
 python3 scripts/verify_results.py   # reconcile the 137 games against the official standings
-python3 scripts/model.py            # refit ratings, Week 11 lines, backtest, gates, leaderboard
-python3 scripts/build.py            # rebuild docs/ (20 pages) and check every row has a source
+python3 scripts/verify_live.py      # compare the registers against a fresh independent transcription
+python3 scripts/model.py            # refit ratings, Week 11 lines, backtest, gates, leaderboard,
+                                    # results feed, price-snapshot store (fixed seed)
+python3 scripts/desk_v2.py          # market sheet, correlation matrix, props, event risk
+python3 scripts/markets.py          # regenerate the market tables (price store, fair/market view,
+                                    # signal-vs-staking) from the model outputs
+python3 scripts/review.py           # decision console (reads data/decision_choices.json)
+python3 scripts/build.py            # rebuild docs/ and check every row has a source
 npm run build && npm run verify     # the separate Node dashboard (12 pages)
 ```
 
-The Python build rejects missing or non-allow-listed source URLs, broken internal links, and any generated table row without an approved HTTPS source link. The Node verifier checks its own JSON-backed site data and internal links.
+The Python build rejects missing or non-allow-listed source URLs, broken internal links, any generated table row
+without an approved HTTPS source link, and a decision console that disagrees with `data/decision_choices.json`. The Node verifier checks its own JSON-backed site data and internal links.
 
 Now computed from official results and published with intervals: team ratings, originated spreads and totals,
 out-of-sample forecast accuracy, correlations with confidence intervals and p-values, and gate results for every
@@ -91,7 +136,8 @@ guarantee no result. Every leaderboard row publishes the sample size it would ne
 
 ## Data snapshot and rights gate
 
-- Results: all 137 games of 2026 (weeks 1-9 complete plus the Week 10 Thursday game) transcribed from the official
+- Results: the verified results feed — all 137 games of 2026 (weeks 1–9 complete, plus the Week 10 Thursday
+  game) transcribed from the official
   [NFL by-week schedule pages](https://www.nfl.com/schedules/2026/by-week/week-10) and
   [standings](https://www.nfl.com/standings/), read 14 November 2026 (UTC). Recomputing every team's record and
   points from those games reproduces the official standings exactly for all 32 teams; the check is
@@ -101,8 +147,20 @@ guarantee no result. Every leaderboard row publishes the sample size it would ne
 - The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
 - No licensed odds archive, historical forecast/outcome ledger, league-published depth chart, player-level participation feed, computed parlay correlation, or tested strategy is available in the Python dashboard. The separate Node research data file was resolved in two steps: T13 (session 30beeb55) blanked all third-party Ourlads ordering values, then the integration supplement (session 52ca9f77, 2026-11-14) located the club-published depth charts on the official club websites ([detroitlions.com](https://www.detroitlions.com/team/depth-chart), [patriots.com](https://www.patriots.com/team/depth-chart)) and restored club-chart-confirmed values with per-row citations. One contradicted third-party value was corrected (Node flag F-08); both club charts self-label "unofficial" (Node flag F-05, Python flag F18).
 - No league-level official NFL depth chart exists: the conventional team depth-chart URLs return HTTP 404, and roster pages expose position and status only (F06). The official club depth-chart pages are the best available official-domain depth evidence and carry the self-labeled "unofficial" caveat (F-05).
-- The Thursday night result is verified on the official schedule (Commanders 24, Giants 21, final) but is not published, because the games table has no result column (F22).
+- The Thursday night result is verified on the official schedule (Commanders 24, Giants 21, final) and is published in the games table (F22, resolved by session 324b0cd2).
 - [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) prohibit systematic retrieval to compile a collection/database absent express prior written consent. No written permission is recorded here for the published injury snapshot; see **F16** on Flagged for Review. Do not expand or automate that data use without written authorization or qualified review.
+
+## Verification, this session
+
+A second, independent transcription of the same official pages was made on 2026-11-14 and compared row by row
+(`scripts/verify_live.py`, inputs in `data/verification_inputs/`). **75 of 75 units matched with 0 discrepancies:**
+all 345 injury rows across 28 teams (injury, practice status and game status identical), all 32 standings lines on
+W-L-T-PF-PA, all 13 Week 11 games on day, kickoff time and network, and the 6-team bye list. Results in
+`data/live_reverification_2026-11-14.csv`; flag F69.
+
+Gate G1 is no longer a constant `True` (that was flag F50). It now runs ten checks in `scripts/model.py` —
+strictly-earlier training weeks, a from-scratch refit that reproduces archived predictions exactly, and an
+early-window fit that provably differs from a full-sample fit — and passes all of them (flag F63).
 
 ## Important
 

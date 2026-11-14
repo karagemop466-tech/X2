@@ -29,3 +29,14 @@ ensuring strategies are selectively skill-based.
 A strategy is eligible for the leaderboard only when **all** applicable gates pass
 over its evaluation window. Flagged or unverified inputs block the signal (G-06);
 unverified correlation values block multi-leg strategies (G-04) until computed.
+
+## Demotion gate (live back to paper)
+
+Entry gates decide whether a strategy may go live. A separate **demotion gate**
+sends a live strategy back to paper. Rules D1–D7 are defined in
+`data/demotion_gate.csv` and rendered on the Python Pages dashboard's
+Market tables page (`docs/markets.html`): signal-interval collapse, multiplicity failure,
+sample loss, source revision, lost provenance/legal clearance, and a closing-line
+value test once a priced archive exists (G-06/G-08 linkages). Staking results can
+neither promote nor rescue a strategy. All thresholds are **proposals awaiting
+owner approval** (F17) and no strategy is live, so the gate is currently inert.
