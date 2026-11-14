@@ -2,9 +2,9 @@
  {
   "req_id": "R01",
   "requirement (from brief)": "Collect and organize NFL information",
-  "status": "Partially done",
+  "status": "Done for the 2026 season ledger and the Week 10 injury snapshot",
   "where_addressed": "Injuries; Games; News pages",
-  "blocker_or_note": "Only Week 10 2026 injury snapshot collected",
+  "blocker_or_note": "137 completed 2026 games and 345 Week 10 injury rows, both verified line by line against official sources. Player-level statistics are still not collected.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
@@ -29,72 +29,72 @@
  {
   "req_id": "R04",
   "requirement (from brief)": "Originate own NFL lines and develop strategies",
-  "status": "Blocked (no verified data)",
+  "status": "Done — own lines produced and measured; profitability not measurable",
   "where_addressed": "Strategy Lab",
-  "blocker_or_note": "No authorized historical odds or results feed; all forecast outputs remain blank.",
+  "blocker_or_note": "Week 10 margin, total and win-probability projections are produced from official results only and scored out of sample. No market price is available, so no profitability claim is made.",
   "row_type": "status",
-  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-1"
  },
  {
   "req_id": "R05",
   "requirement (from brief)": "Treat strategies as a leaderboard with rewards",
-  "status": "Designed only",
+  "status": "Done as a measured leaderboard; reward deliberately disabled",
   "where_addressed": "Strategy Lab; Suggestions S09",
-  "blocker_or_note": "Leaderboard framework only. No rank or reward until data, validation and jurisdiction-specific legal gates pass.",
+  "blocker_or_note": "Eight competing rules are ranked by measured out-of-sample skill. The reward stays off: 0 of 8 clear every gate and legal, jurisdictional and data-rights review is incomplete.",
   "row_type": "status",
   "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  },
  {
   "req_id": "R06",
   "requirement (from brief)": "Single bets / parlays / player prop combos",
-  "status": "Designed only",
+  "status": "Single bets measured; parlays and player props designed but not testable",
   "where_addressed": "Strategy Lab hypotheses H01–H08",
-  "blocker_or_note": "Player-prop, parlay joint outcomes and licensed market prices remain unavailable.",
+  "blocker_or_note": "Single-bet rules are measured. Parlay and player-prop work needs licensed player outcomes, prop prices and settlement definitions, none of which is available.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/stats/player-stats/"
  },
  {
   "req_id": "R07",
   "requirement (from brief)": "Validation gates per strategy",
-  "status": "Done — gate framework; numeric thresholds blank/unverified",
+  "status": "Done — numeric thresholds set and measured for every rule",
   "where_addressed": "Strategy Lab gates G0-G8",
-  "blocker_or_note": "Method framework only; numeric thresholds are intentionally blank/unverified.",
+  "blocker_or_note": "Eight gates with explicit thresholds and measured values for all eight rules. The thresholds are project-chosen conventions, not officially mandated values (F17).",
   "row_type": "status",
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
  },
  {
   "req_id": "R08",
   "requirement (from brief)": "Correlation values",
-  "status": "Blocked",
+  "status": "Partially done — game-level correlations computed; prop and parlay correlations not",
   "where_addressed": "Questions Q11; Gate G5",
-  "blocker_or_note": "No aligned joint outcomes; no correlation value is computed.",
+  "blocker_or_note": "Eight coefficients computed from official results with intervals and sample sizes. Player-prop and parlay joint outcomes remain unavailable.",
   "row_type": "status",
-  "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-1"
  },
  {
   "req_id": "R09",
   "requirement (from brief)": "Injury tracking",
-  "status": "Partially done",
+  "status": "Done for the Week 10 snapshot, plus officially named replacements",
   "where_addressed": "Injuries page",
-  "blocker_or_note": "Single Week 10 snapshot, now re-verified row by row against the live page (F19). No authorised point-in-time history (F13/F14).",
+  "blocker_or_note": "345 rows verified line by line (F10 closed). Officially named starters and replacements are tracked separately, including injured-reserve players the weekly report omits. No authorised point-in-time history (F13/F14).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
  {
   "req_id": "R10",
   "requirement (from brief)": "Deficiency analysis (starter vs backup replacement)",
-  "status": "Partially done",
+  "status": "Partially done — unit exposure measured; string rank still unverified",
   "where_addressed": "Depth Analysis page",
-  "blocker_or_note": "Availability exposure is grouped across offense and defense; official depth order, player participation and replacement impact remain unverified (F06).",
+  "blocker_or_note": "Exposure is grouped by side of ball and unit. NFL.com depth-chart pages return 404; club-published charts exist but self-label as unofficial, so starter versus backup rank stays blank (F06, F18).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
  },
  {
   "req_id": "R11",
   "requirement (from brief)": "Executive summary",
-  "status": "Done",
+  "status": "Done — rewritten around measured findings",
   "where_addressed": "Executive Summary page",
-  "blocker_or_note": "Uses the source-linked Week 10 snapshot; the row-by-row re-verification is recorded (F19/F10) and data-use permission remains open (F16).",
+  "blocker_or_note": "Uses the source-linked Week 10 snapshot and the measured 2026 results. The row-by-row re-verification is recorded (F10); data-use permission remains open (F16).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
@@ -103,7 +103,7 @@
   "requirement (from brief)": "Repo review with links and irregularities",
   "status": "Done",
   "where_addressed": "Flagged for Review page; flags.csv",
-  "blocker_or_note": "See the flagged registers (Python F01–F30 and Node F-01–F-09 are separate ID spaces); unresolved data rights, designation conflicts and validation cutoffs are recorded there.",
+  "blocker_or_note": "See the flagged registers (Python F01–F30 and Node F-01–F-09 are separate ID spaces); unresolved data rights, designation conflicts and validation cutoffs are recorded there. Session 10a76288 added F31–F35 (position mismatch, no historical injury archive, no total skill, capture-time mismatch, hidden-score pages).",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
  },
@@ -112,7 +112,7 @@
   "requirement (from brief)": "Site: clean landing page and category subpages",
   "status": "Done — live site with landing, category subpages, decision path and verification record",
   "where_addressed": "docs/index.html plus 12 subpages",
-  "blocker_or_note": "Public Pages site is live; the builder enforces a source link on every table row and rejects broken internal links.",
+  "blocker_or_note": "Public Pages site is live; the builder enforces a source link on every table row and rejects broken internal links. Session 10a76288 added seven pages (season results, independent lines, leaderboard, validation gates, correlation, deficiency tracking, verification checks) for 20 pages total.",
   "row_type": "status",
   "evidence_url": "https://karagemop466-tech.github.io/X2/"
  },
@@ -146,9 +146,9 @@
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "Merged through PRs #1-#20 (closing PR #20 merged)",
+  "status": "Merged through PRs #1–#21; one branch remains (10a76288)",
   "where_addressed": "Final step",
-  "blocker_or_note": "Integration PRs #1-#20 are merged and the live site is confirmed. Session 3988bdab delivered the closing honesty-consistency fixes (T22) and recorded its merge result in COORDINATION.md.",
+  "blocker_or_note": "Integration PRs #1–#21 are merged and the live site is confirmed. Session 10a76288's branch adds the measured research layer and is merged after verification.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/pull/11"
  },
@@ -304,5 +304,23 @@
   "blocker_or_note": "status",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R35",
+  "requirement (from brief)": "Cross-check two independent implementations of the ledger and the line model",
+  "status": "Done",
+  "where_addressed": "cross-check.html",
+  "blocker_or_note": "Both independent transcriptions cover the same 137 games with 0 score disagreements (after normalising LAR/LA) and both reconcile to the official standings. Both models find a real but modest forecast gain. They disagree on qualification: see F42.",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-1"
+ },
+ {
+  "req_id": "R36",
+  "requirement (from brief)": "Do not offer or pay leaderboard reward tiers until the qualification disagreement is resolved",
+  "status": "Needs review - blocking",
+  "where_addressed": "cross-check.html; flagged.html (F42)",
+  "blocker_or_note": "One implementation proposes reward tiers; the independent cross-check finds no strategy clears every gate once multiple comparisons are charged for. Rewards stay disabled until a pre-registered test settles it, in addition to the legal, jurisdictional and data-rights review already recorded.",
+  "row_type": "status",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
  }
 ]

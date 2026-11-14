@@ -428,5 +428,175 @@
   "accessed_date": "2026-11-14",
   "used_for": "Establishes that the Ksa is the supervisor and regulator of gambling services in the European part of the Kingdom of the Netherlands, and that legal online operators appear in a public register of licensees",
   "verification_note": "Read the English landing page. No legal conclusion is drawn from it; it is recorded because earlier sessions documented Japan-specific guidance while this session's account location is in the Netherlands. Jurisdiction is unconfirmed (flag F19)."
+ },
+ {
+  "source_id": "SRC-44",
+  "title": "NFL 2026 Schedule - by week (official game results)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-1",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Season game ledger: weeks 1 to 10 Thursday scores, home/away and official game page links (137 games)",
+  "verification_note": "Read week by week (weeks 1 to 10). Each game row links to its official NFL game page. Reconciled against the official standings with zero mismatches."
+ },
+ {
+  "source_id": "SRC-45",
+  "title": "NFL 2026 Standings",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/standings/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Official wins, losses, ties, points for and points against for all 32 teams; used to verify the game ledger",
+  "verification_note": "Read in full (2 chunks). Standings include the completed Week 10 Thursday game (Washington and New York Giants totals reconcile only with it included)."
+ },
+ {
+  "source_id": "SRC-46",
+  "title": "NFL Week 10 Schedule (bye teams and game URLs)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 10 bye teams (CHI, DEN, PHI, TB) and the official game page URL for every Week 10 game",
+  "verification_note": "Explicitly lists the four bye teams under 'Teams on Bye'. Each remaining game's official URL was read from this page, not constructed."
+ },
+ {
+  "source_id": "SRC-47",
+  "title": "Commanders at Giants - Week 10 game page",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/commanders-at-giants-2026-reg-10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Completed Week 10 Thursday result (Commanders 24, Giants 21) used as a holdout test of the model",
+  "verification_note": "Result read from the official Week 10 schedule page and this game page."
+ },
+ {
+  "source_id": "SRC-48",
+  "title": "Drew Lock has no injury designation, will start for Seahawks vs. Raiders",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/drew-lock-no-injury-designation-seahawks-raiders",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Officially named starting quarterback for Seattle in Week 10",
+  "verification_note": "Headline read on the NFL.com injury page news module. Used as the officially named replacement for Sam Darnold."
+ },
+ {
+  "source_id": "SRC-49",
+  "title": "Dolphins place QB Malik Willis on injured reserve; Kyle McCord in line for first start",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/dolphins-place-qb-malik-willis-groin-on-injured-reserve-kyle-mccord-in-line-for-first-start",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Miami quarterback availability; injured-reserve players do not appear on the weekly injury report",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-50",
+  "title": "NFL news roundup - Wednesday, Nov. 11 (Browns to start Deshaun Watson; Cardinals' Carson Beck to start)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-wednesday-nov-11",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Officially named Week 10 starting quarterbacks for Cleveland and Arizona",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-51",
+  "title": "NFL news roundup - Friday, Nov. 13 (Ravens confirm Lamar Jackson expected to miss 6-10 weeks)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Baltimore quarterback availability and the conflicting recovery timeline (Flag F12)",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-52",
+  "title": "NFL news roundup - Thursday, Nov. 5 (Ravens officially place Lamar Jackson on injured reserve)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-thursday-nov-5",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Confirms Lamar Jackson is on injured reserve, which is why he is absent from the weekly injury report",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-53",
+  "title": "Packers RB Josh Jacobs to undergo surgery on finger this week; timeline to return TBD",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Green Bay running back availability; no replacement named in official sources",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-54",
+  "title": "Rams WR Puka Nacua likely to be placed on injured reserve (turf toe, sprained MCL and PCL)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/rams-wr-puka-nacua-likely-to-be-placed-on-injured-reserve-with-turf-toe-sprained-mcl-and-pcl",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Los Angeles receiver availability; recorded as unconfirmed because the wording is hedged",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-55",
+  "title": "Sam Darnold ruled out for Seahawks' Week 10 game vs. Raiders; Drew Lock expected to start again",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/sam-darnold-ruled-out-for-seahawks-week-10-game-vs-raiders-drew-lock-expected-to-start-again",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Confirms Sam Darnold is out and names the replacement starter",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-56",
+  "title": "NFL news roundup - Saturday, Nov. 14 (Colts activate DE Arden Key from IR)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-saturday-nov-14",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Shows a positive availability change that a static injury report does not explain",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-57",
+  "title": "NFL news roundup - Monday, Nov. 9 (J.J. McCarthy expected to play Week 10)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-monday-nov-9",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "New York Giants quarterback expectation, consistent with the injury report listing",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-58",
+  "title": "Report: Ravens QB Tyler Huntley out for season with turf toe injury",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/ravens-qb-tyler-huntley-out-for-season-turf-toe-injury",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Baltimore quarterback depth; attributed to a report rather than a team statement, so recorded as reported only",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-59",
+  "title": "NFL Network: Ravens' Lamar Jackson (right thumb) out 6-9 weeks, expects to return this season",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/ravens-lamar-jackson-right-thumb-out-6-9-weeks-expects-to-return-this-season",
+  "type": "Official league news",
+  "accessed_date": "2026-11-14",
+  "used_for": "Second official recovery timeline; the difference from the 6-10 week figure is Flag F12",
+  "verification_note": "Headline read on the NFL.com injury page news module."
+ },
+ {
+  "source_id": "SRC-60",
+  "title": "Ben Brown official NFL player page (spot check)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/players/ben-brown-2/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Verification spot check of one injury row against the official player page",
+  "verification_note": "Opened and read. Confirms New England and jersey number 77, but lists position G while the injury report lists C (Flag F19)."
  }
 ]
