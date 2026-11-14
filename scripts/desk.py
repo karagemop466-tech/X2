@@ -221,9 +221,10 @@ AUDIT = {
             "Two halves of one official score line; one pair per game."),
     "C05": ("Model predicted total (model output)", "Official total points", "no",
             "Predictor is a model output. Diagnostic only."),
-    "C06": ("Official margin, week W-1 (home team)", "Official margin, week W (same game, home team)", "yes",
-            "Official results. One row per game (the home team's transition), so each game counts once; recomputed "
-            "2026-11-14 by session 34c42a11 after F55. Consecutive weeks for the same team still overlap."),
+    "C06": ("Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes",
+            "Official results, published as descriptive (F55): n = 228 team-game pairs and each game "
+            "supplies both teams' margins, so the pairs are not independent; interval and p-value are "
+            "blank by design (session d2915d86, T53)."),
     "C07": ("Model-generated side and total legs", "Model-generated side and total legs", "no",
             "Both legs are model-generated selections; n = 24 tickets. Diagnostic only."),
     "C08": ("Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)", "yes",

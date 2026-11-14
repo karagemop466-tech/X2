@@ -489,10 +489,10 @@
   "flag_id": "F55",
   "category": "Statistical independence",
   "item": "C06 uses n = 228 team-game rows",
-  "detail": "Each game appears once for each team, so pairs are not independent and the p-value is optimistic. Update 2026-11-14 (session 34c42a11): C06 was recomputed with one row per game (the home team's transition into that game; the away team's transition for the same game is dropped). New values: n = 113, r = 0.164, 95% CI -0.022 to 0.338, p = 0.084 - independently recomputed from games_2026_results.csv before the edit. Consecutive weeks for the same team still overlap, so the interval is labelled descriptive in the register. Note: correlation_values_2026.csv C4/C5 (the second implementation's register, not rendered on the site) still use the 228-pair basis.",
+  "detail": "C06 uses n = 228 team-game rows: each game appears once for each team, so pairs are not independent and a p-value computed on them is optimistic. Resolution: correlations_computed.csv C06 now publishes the coefficient and n = 228 with the interval and p-value blank by design (scripts/model.py add_corr descriptive=True), and the desk.py audit note records why. The coefficient itself (0.087) is unchanged.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Resolved 2026-11-14 (session 34c42a11): C06 recomputed one row per game (n = 113)",
-  "action_requested": "None for C06. If correlation_values_2026.csv C4/C5 are ever rendered, apply the same one-row-per-game rule or label them descriptive."
+  "status": "Resolved (session d2915d86, T53): C06 published as descriptive",
+  "action_requested": "None - reviewer can confirm on the correlations and verification pages (C06 interval and p blank)."
  },
  {
   "flag_id": "F56",
