@@ -50,6 +50,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `ca1ea224` | `arena/ca1ea224-x2` | **Current session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claims **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). |
 | `f25d6b55` | `arena/f25d6b55-x2` | **Current session (2026-11-14, after PR #34 merged).** Drafted claims for T37–T45 before `main` advanced; every ID was taken in parallel (T37 by 4c5bc504; T39/T40 by c125b2f7; T42/T44–T50 by 8a0bf37e; T37–T41 by ca1ea224). **Final scope T51–T55**, the gaps still open after PR #34: apply REQ-8a-1 (C09) and adopt the owner rule in the published correlation register; canonical verified results feed; verify and document the extended price-snapshot store's origin/close semantics; suggestions and verification rows; integration. Additive only; ca1ea224's and 8a0bf37e's outputs are consumed, not rewritten. |
 | `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T64–T71** (T51–T55 were taken by `f25d6b55` in parallel; renumbered, nothing discarded) before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
+| `d0d9d19f` | `arena/d0d9d19f-x2` | **Current session — final integration (2026-11-14).** Claimed **T41–T49** before writing any file; `main` then advanced through PRs #30–#44, and T42–T50, T51–T58 and T64–T71 were taken in parallel by `8a0bf37e`, `f25d6b55`/`cf6709c0` and `e208ba6d`. Scope actually delivered: the settled results feed, side→total→moneyline origination with our own opening/current snapshot per market, the depth of the replacement (2nd/3rd/4th string), correlation provenance with `n`, a 22-check line-by-line repository audit, and the closing PR/merge/Pages record. Rebased twice rather than dropping other sessions' work; every register addition was renumbered into the free ID space (F74, Q49–Q59, S35–S44, R56–R58, SRC-74–80). Touches `scripts/build.py`, five new `scripts/*.py`, six new `data/*.csv`, the five shared registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
 
 | `ef971991` | `arena/ef971991-x2` | **Session ef971991 (claimed T41–T49, renumbered to T51–T57 after collision with 8a0bf37e, 2026-11-14).** Final integration for the remaining brief gaps: complementary replacement-depth tracking (R43), F44 reference-total resolution, F43 tier-label mitigation, REQ-8a-1/C09 correction applied, correlation-n enforcement, decision-support suggestions/questions, a live verification pass, and the PR/merge/Pages record. Branch is the session-fixed `arena/ef971991-x2`. See the collision record in the closing section. |
 | `20e6161b` | `arena/20e6161b-x2` | **Current session.** Base `main` @ `d22bbd3` (PR #34); ca1ea224 adopted by fast-forward. Claimed T51–T55 (draft IDs) before four parallel sessions merged PRs #35–#46 with overlapping IDs; after the union merge this session owns **T79–T83**, flags **F74–F75**, verification **V28–V32** and repo-review **RV14–RV23**. Scope: C09/G1 model pass (independently derived, superseded by main's merged implementations), the A08–A11 replacement-depth gap (F53) from official club charts, availability-register corrections (F74), brief-completeness audit, fifth verification pass, and integration. See the merge/conflict log and close-out at the end of this file. |
@@ -1533,7 +1534,7 @@ sub-item (confirm the nine international venues before populating the historical
   merge was in review. f25d6b55's T51–T55 independently applied the same REQ-8a-1 C09 correction (identical
   computed values: CI 0.335–1.435, p 0.6820) and resolved F44/F48; e208ba6d added the decision-tooling layer
   (props, event risk, review console, computed G1/G9). Per the convention, their merged IDs keep the IDs:
-  my tasks are renumbered **T72–T78**; my suggestions move again to **S35–S40** (f25d6b55's S32–S34 keep theirs).
+  my tasks are renumbered **T72–T78**; my suggestions move again to **S35–S40** (f25d6b55's S32–S34 keep ).
   Where both sides fixed the same defect (C09 in `scripts/model.py`, F44/F48 rows) **their merged implementation is
   kept** — mine is redundant — and the flags record both sessions as independent resolvers. My kept unique pieces:
   RD01–RD07 depth rows + builder enforcement (no depth without a verified basis, no correlation value without n,
@@ -1698,3 +1699,102 @@ convention (`data/*.csv whitespace=cr-at-eol`); `git diff --check` had misreport
 trailing whitespace on newly added rows. **Open owner items unchanged:** F16, F19, F09, F17,
 F26/F27/F28, F42, F36, F75, DEC-01–DEC-10. No price, ROI, closing line, player-prop outcome or
 legal conclusion was added anywhere.
+
+## 2026-11-14 · session `d0d9d19f` · final integration record (T41-T49)
+
+**Branch:** `arena/d0d9d19f-x2` · **Base:** `main` @ `9e90dd3` · **Session ID:** `d0d9d19f`
+
+### What this session added
+
+| Deliverable | Output | Result |
+|---|---|---|
+| Verified results feed with settlement | `scripts/results_feed.py` → `data/results_feed.csv` | 137 games; 89 with an originated line; side 36 cover / 52 lose / 1 push, totals 46 over / 43 under, moneyline 39 home / 49 away / 1 tie |
+| Origination order + our own opening/current number | `scripts/originate.py` → `data/originated_lines_week11.csv`, `data/origin_snapshots_week11.csv` | 13 games, side → total → moneyline; 39 snapshots. The script re-fits the ratings independently and exits non-zero if any spread or total disagrees with `scripts/model.py` by more than 0.05 points (largest difference today: 0.000) |
+| Depth of the replacement | `scripts/depth_chain.py` → `data/depth_replacement.csv` | 33 rows across six clubs; 19 name an officially listed replacement, 14 are blank and flagged |
+| Correlation provenance | `scripts/correlation_provenance.py` → `data/correlation_provenance.csv` | 13 correlations, every one with its inputs, the official page and the `n`; 8 previously published values recomputed from the ledger |
+| Repository audit, line by line | `scripts/repo_audit.py` → `data/repo_line_audit.csv` | 22 checks, 0 failing |
+
+### Sources fetched on 2026-11-14
+
+- https://www.nfl.com/standings/ — standings re-read in full; all 32 teams match the stored snapshot on W, L, T, points for and points against (0 mismatches).
+- https://www.nfl.com/schedules/2026/by-week/week-10 and .../week-11 — the 13 Week 11 games and kickoffs; MIN at SF carries `neutral_site = Y` (Mexico City).
+- Club depth charts: detroitlions.com, patriots.com, dallascowboys.com, packers.com (chart dated Nov. 10, 2026), tennesseetitans.com (chart dated 11/10/26), neworleanssaints.com → SRC-74–SRC-79.
+- Four clubs could not be read: Houston publishes its chart as an image; Indianapolis and Minnesota could not be retrieved; Seattle returned a consent/advertising interstitial at the address this session used (SRC-80 records the failure). Nothing was inferred to fill any of them.
+
+### Cross-checks against the parallel sessions (recorded, not reconciled by picking a winner)
+
+- **Results feeds.** `data/results_feed.csv` (this session) against `data/results_feed_2026.csv` (`f25d6b55`): both carry 137 games; compared row by row on week, away team and home team, **137 of 137 scores agree, 0 disagreements**. This one adds the three settlement columns; that one adds the per-row verification chain. Neither carries a price.
+- **Replacement depth.** This register covers DET, NE, DAL, GB, TEN, NO; `f25d6b55`'s covers SEA, MIA, BAL, CLE, AZ, NYG. **Different clubs, twelve covered in total.** One direct disagreement: Seattle's chart was retrievable at `www.seahawks.com` for the other session but not at the address this session used. Recorded, not bridged.
+- **Correlations.** `data/correlation_audit.csv` applies the owner rule (F49) under which a correlation whose predictor is a model output is a diagnostic rather than an officially sourced correlation. This session's provenance file states, row by row, which inputs are official and which are model outputs, so the rule can be applied without re-deriving it.
+- **Neutral sites.** `cf6709c0` recorded F71 and corrected `scripts/model.py`; this session found the same defect independently and corrected `scripts/originate.py` the same way. Both agree. The open half of F71 is unchanged and is restated on the page: all 137 completed rows still carry a blank `neutral_site` value.
+
+### Irregularities
+
+- **F76 (new, open for monitoring).** The originated side carries a home-team bias against the number the model itself published: 36 cover / 52 lose / 1 push over 89 out-of-sample games, mean signed error −0.83 points (SE 1.30, t = −0.64). Not statistically distinguishable from zero, so the line is published as computed, but it is now measured rather than assumed.
+- **F71 (open sub-item, not resolved here).** Week 11 MIN at SF is published with the home-field term dropped; the 137 historical rows are not re-checked for neutral-site status, so the historical fit still treats any such game as a home game.
+- **F44 (already resolved by `f25d6b55`).** This session re-derived the constant reference total independently: it is the league mean game total, 45.9197 points over the 137-game ledger, published as 45.9. The re-derivation agrees.
+- **F59-era stale PR #14 import.** The 13 data files and `scripts/verify_snapshot.py` taken from the stale branch `arena/25d6114f-x2` remain imported and unpublished, and are recorded as unverified. PR #14 is left open deliberately.
+
+### Not done, and why
+
+- No price, closing line, closing-line value or return on investment anywhere: no licensed odds feed (F07). 919 of 919 market cells across the four market-bearing files were checked empty (audit check A13).
+- No player-prop number of any kind: no official prop outcomes or settlement rules (F31).
+- Depth ordinals for the other 26 clubs: no retrievable official-domain chart (F06).
+- No legal conclusion for any jurisdiction (F09 Japan, F19 Netherlands).
+
+### Conflict handling
+
+Rebased twice as `main` advanced through PRs #30–#44. `scripts/build.py` and every generated `docs/*.html` were taken from `main` with this session's changes re-applied on top, so no other session's page or builder change was lost. The shared registers were merged by ID union with this session's new rows renumbered into the free space: F76, Q55–Q62, S41–S44 (plus their review rows), R56–R58, SRC-74–SRC-80. Two draft requirement rows were dropped because `main` already covers fair/market/difference and signal-vs-staking.
+
+**Stale output found on `main` and refreshed:** `data/price_snapshots.csv` and `data/line_comparison_week11.csv` still
+carried the pre-correction MIN at SF values (spread 2.5, total 38.5, probability 0.579). Regenerating them from `main`'s
+own corrected `scripts/model.py` gives 2.9 / 38.9 / 0.592, which is the neutral-site correction reaching two files it
+had not reached. No other value in either file changed.
+
+**Caveat for the next session, learned the hard way:** `git checkout --ours -- <path>` reported success but did not apply for `data/flags.csv`. Restore the stage-2 blob explicitly with `git show :2:<path>` and verify by counting conflict-marker lines afterwards — do not trust the exit status.
+
+
+### Third rebase: `main` @ `4306ad5` (PRs #45 and #46 landed while this commit was being prepared)
+
+Re-applied on top of `main` @ `4306ad5` rather than resolving file-by-file, because the collisions were all in
+append-only registers. Method: save the previous commit's diff, `git reset --hard origin/main`, then
+`git apply --3way` for `scripts/build.py`, `README.md` and `COORDINATION.md`, restore the new scripts and inputs
+directly from the earlier commit, and re-run the ID-union merge for the registers.
+
+Two content collisions were found on the way in, in both cases because **another session had already published the same
+six rows under my draft IDs**, so the ID was taken but the content was not lost:
+
+- Six suggestions. My draft `S35`–`S40` were already on `main` as `S29`–`S34` (identical text, published by an earlier
+  session). They were not re-added. My four genuinely new ones are published as **S41–S44**.
+- Three questions. `Q49`–`Q51` were already on `main` with the same text; `Q52`–`Q54` were not, and are published as
+  **Q60–Q62**.
+
+Final ID space after this rebase: **F76, Q55–Q62, S41–S44, R56–R58, SRC-74–SRC-80.** Register integrity re-checked with
+audit A12: 68 flags, 62 questions, 58 requirements, 44 suggestions, 80 sources, 0 duplicate IDs and 0 blank IDs in any
+of them.
+
+One card description in `scripts/build.py` had been rewritten on `main` (the price-snapshot card now cites F51 rather
+than F45, and the season-results card carries the results-feed wording). Both `main` versions were kept and my cards
+added beside them; no card description was overwritten.
+
+
+\n
+
+### Fourth rebase: `main` @ `094282e` (PR #47, session `20e6161b`, landed)
+
+`main` advanced once more before the push. Re-applied with the same method. Three things changed underneath this
+session's work and had to be corrected rather than assumed:
+
+- **The home-bias flag is now F76, not F74.** Session `20e6161b` published its own F74 (availability-register rows
+  contradicted by their own cited sources) while this session was rebasing. Every reference in `scripts/build.py`,
+  `scripts/repo_audit.py` and this file was repointed. Lesson: a flag ID is only stable until the next session lands, so
+  re-read `data/flags.csv` for the ID *and* the text before citing one.
+- **The other replacement-depth register grew.** `data/replacement_depth_week10_2026.csv` went from 6 clubs to 10
+  (SEA, MIA, BAL, CLE, AZ, NYG, GB, IND, KC, LAR) when `20e6161b` closed F53. The depth-of-replacement page now
+  computes the union of the two registers from the files instead of naming clubs in prose: **15 of 32 clubs**, with
+  Green Bay appearing in both and transcribed independently in each.
+- **One suggestion card on `main` was rewritten** (the price-snapshot card now cites F51 rather than F45). `main`'s
+  version was kept and this session's cards added beside it.
+
+Re-checked after the rebase: 137/137 feed agreement with the canonical feed still holds; 22 audit checks, 0 failing;
+35 pages; `scripts/check_links.py` clean; Node verifier passes.

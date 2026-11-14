@@ -619,5 +619,14 @@
   "source_url": "https://github.com/karagemop466-tech/X2",
   "status": "Open — needs review",
   "action_requested": "Owner to choose one ID scheme (e.g. AV01- vs RD01-) in a later integration pass; renaming ripples through scripts/build.py and flag text, so it is not done unilaterally here."
+ },
+ {
+  "flag_id": "F76",
+  "category": "Irregularity - model behaviour",
+  "item": "Originated side carries a home-team bias against the number the model itself published",
+  "detail": "Graded every out-of-sample game against the walk-forward line scripts/model.py published for it: home side 36 cover / 52 lose / 1 push over 89 games; mean signed error (actual minus predicted) -0.83 points, SE 1.30, t = -0.64. The direction favours the away side but is not statistically distinguishable from zero, so the line is published as computed. Raised by session d0d9d19f (check A09 in data/repo_line_audit.csv). Monitor: re-check after each week is settled.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Open - monitoring",
+  "action_requested": "Re-run scripts/repo_audit.py after each week is added; escalate only if the interval excludes zero."
  }
 ]

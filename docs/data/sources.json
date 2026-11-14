@@ -728,5 +728,75 @@
   "accessed_date": "2026-11-14",
   "used_for": "Per-game confirmation that the designated home team (Dallas) was not at home; corroborates SRC-72 at game level",
   "verification_note": "Opened and read with fetch_page on 2026-11-14. Game Info block reads Location RIO DE JANEIRO / Stadium MARACANA STADIUM."
+ },
+ {
+  "source_id": "SRC-74",
+  "title": "Seattle Seahawks official depth chart",
+  "publisher": "Seattle Seahawks (club website)",
+  "url": "https://www.seahawks.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for SEA QB (A01). Undated; pre-injury order (F43).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-75",
+  "title": "Miami Dolphins official depth chart",
+  "publisher": "Miami Dolphins (club website)",
+  "url": "https://www.miamidolphins.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for MIA QB (A02). No kicker listed (F43).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-76",
+  "title": "Baltimore Ravens official depth chart",
+  "publisher": "Baltimore Ravens (club website)",
+  "url": "https://www.baltimoreravens.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for BAL QB (A03, A04). Omits Lamar Jackson (F43).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-77",
+  "title": "Cleveland Browns official depth chart",
+  "publisher": "Cleveland Browns (club website)",
+  "url": "https://www.clevelandbrowns.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for CLE QB (A05).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-78",
+  "title": "Arizona Cardinals official depth chart",
+  "publisher": "Arizona Cardinals (club website)",
+  "url": "https://www.azcardinals.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for AZ QB (A06).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-79",
+  "title": "New York Giants official depth chart",
+  "publisher": "New York Giants (club website)",
+  "url": "https://www.giants.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for NYG QB (A07).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-80",
+  "title": "NFL game center: Texans at Titans, week 5 (Game Book link; score hidden)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/texans-at-titans-2026-reg-5",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Shows the official Game Book PDF link (DEC-06); score hidden (F45).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
  }
 ]
