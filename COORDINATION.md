@@ -35,10 +35,11 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 
 | Session ID | Branch | Notes |
 |---|---|---|
-| `e98c7ba0` | `arena/e98c7ba0-x2` | Built the **live** `docs/` site (Python `scripts/build.py`), 345 injury rows, PRs #1–#3 merged to `main`. |
-| `session-09d7cc77` | `arena/09d7cc77-x2` | Built a parallel Node dashboard (`src/`), docs, and JSON data. Now performing the integration merge into `main`. |
+| `e98c7ba0` | `arena/e98c7ba0-x2` | Built the **live** `docs/` site (Python `scripts/build.py`), 345 injury rows. PRs #1–#3 merged to `main`. |
+| `d80442c2` | `arena/d80442c2-x2` | Supplemental post-merge source/compliance audit and handoff (T11). PRs #5–#6 merged to `main`. Touches `COORDINATION.md` only. |
+| `session-09d7cc77` | `arena/09d7cc77-x2` | Parallel Node dashboard (`src/`), docs, JSON data. Now performing the integration merge into `main` (PR #4). |
 
-## Task board (combined)
+## Task board (combined — all sessions)
 
 | ID | Task | Status | Owner | Files touched | Sources | Notes |
 |----|------|--------|-------|---------------|---------|-------|
@@ -52,23 +53,33 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | T08 | Executive summary | done | e98c7ba0 | scripts/build.py (exec summary) | S01, S03, S04 | Numbers computed by build script |
 | T09 | Site: landing, category subpages, Flagged for Review | done | e98c7ba0 | docs/, scripts/build.py | all | Static HTML, no external dependencies |
 | T10 | Integration: validate, build, PR, merge, Pages | done | e98c7ba0 | COORDINATION.md, PRs | all | PR #1 (0563aab), PR #2 (2c9f374). Live: https://karagemop466-tech.github.io/X2/ |
-| T1 | Scaffold repo, coordination board, static-site build system | done | session-09d7cc77 | COORDINATION.md, package.json, .gitignore, src/**, README.md | Build verified: `npm run build` emits 12 pages to `site/`; `npm run verify` passes | Node generator foundation |
+| T11 | Supplemental post-merge source/compliance audit and handoff | done (audit merged; follow-up recommendations remain) | d80442c2 | COORDINATION.md only; T01–T10-owned `docs/`, `data/*.csv`, and `scripts/build.py` left untouched | T11-S1–T11-S4 | PR #5 (71e65aa), PR #6 (241a142). Findings handed off to the dashboard owner. No duplicate dashboard/data changes published. |
+| T1 | Scaffold repo, coordination board, static-site build system | done | session-09d7cc77 | COORDINATION.md, package.json, .gitignore, src/**, README.md | Build verified: `npm run build` emits 12 pages; `npm run verify` passes | Node generator foundation |
 | T2 | Requirements, executive summary, questions & answers, suggestions | done | session-09d7cc77 | docs/00-*.md … docs/03-*.md, data/requirements.json, data/questions.json, data/suggestions.json | Official NFL sources + methodology | 28 requirements, 14 questions, 13 suggestions |
 | T3 | Strategy research, validation gates, correlation values, leaderboard | done | session-09d7cc77 | docs/04-*.md … docs/07-*.md, data/strategies.json, data/validation-gates.json, data/correlations.json, data/leaderboard.json | CLV/market-efficiency methodology | Correlation values blank + flagged |
 | T4 | Injury tracking & depth-chart deficiency system | done | session-09d7cc77 | docs/08-*.md, data/injuries.json, data/depth-deficiencies.json | NFL.com Week 10 injury report; Ourlads depth charts | 19 verified injury rows; 6 depth-deficiency rows |
-| T5 | Data sources & verification methodology, flagged register | done | session-09d7cc77 | docs/09-*.md, docs/10-*.md, data/sources.json, data/flagged.json | All source URLs verified 2026-11-14 | 16 sources, 6 flagged items |
+| T5 | Data sources & verification methodology, flagged register | done | session-09d7cc77 | docs/09-*.md, docs/10-*.md, data/sources.json, data/flagged.json | All source URLs verified 2026-11-14 | 17 sources, 7 flagged items |
 | T6 | Build the GitHub Pages site (landing + subpages, dashboard UI) | done | session-09d7cc77 | src/**, site/** (generated) | `npm run verify`: 196 internal links, all resolve | Node dashboard; per-row source links |
-| T7 | Integration: merge into main, re-verify, confirm live site | done | session-09d7cc77 | main (merge), COORDINATION.md | Re-verified combined data; confirmed live Pages | See merge/conflict log below |
+| T7 | Integration: merge into main, re-verify, confirm live site | done | session-09d7cc77 | main (merge), COORDINATION.md, README.md | Re-verified combined data; confirmed live Pages | See merge/conflict log below |
 
 ## Source registry (combined)
 
 Every verified value links to one of these official pages (full lists also at
 `data/sources.csv` and `docs/sources.html`):
 
+**Core (e98c7ba0):**
 - **S01** NFL.com injury report: https://www.nfl.com/injuries/
 - **S02** NFL.com team roster (e.g. Buffalo Bills): https://www.nfl.com/teams/buffalo-bills/roster
 - **S03** e-Gov Penal Code (Japan): https://laws.e-gov.go.jp/law/140AC0000000045
 - **S04** Japan Sport Council: https://www.jpnsport.go.jp/sportspromotion/index.html
+
+**Supplemental (d80442c2 — T11 audit; not yet in data/sources.csv):**
+- **T11-S1** NFL.com Terms and Conditions (Section 1.3): https://www.nfl.com/legal/terms/ — states systematic retrieval to compile data/content is prohibited absent express prior written consent.
+- **T11-S2** NFL API documentation entry point: https://api.nfl.com/docs/global/endpoints/index.html — redirected to NFL sign-on during review; public access/scope unverified.
+- **T11-S3** GitHub Pages documentation: https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages
+- **T11-S4** NIST/SEMATECH bootstrap and held-out validation references: https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm and https://itl.nist.gov/div898/handbook/pri/section6/pri636.htm (general methods only).
+
+**Additional (session-09d7cc77):**
 - NFL.com standings: https://www.nfl.com/standings/
 - NFL.com team stats (offense/defense): https://www.nfl.com/stats/team-stats/
 - NFL.com transactions (reserve list): https://www.nfl.com/transactions/league/reserve-list/2026/11
@@ -88,53 +99,93 @@ Every verified value links to one of these official pages (full lists also at
   resolve, no non-official external link.
 - Per-team row counts compared with the team sections of the NFL.com page (28 teams).
 
+**Session d80442c2:**
+- Independently opened NFL.com Terms and Conditions (Section 1.3) and the NFL API
+  documentation entry point; recorded findings as T11-S1/T11-S2. Confirmed GitHub
+  Pages serves static files (T11-S3). Did not modify site/data/build files.
+
 **Session 09d7cc77:**
 - All source URLs resolved/verified 2026-11-14 (official NFL.com, NFL Operations;
   third-party ESPN/Ourlads; odds aggregators; methodology refs).
 - Real verified data: NFL.com Week 10 injury report + DET/NE depth charts
   cross-referenced into 6 depth-deficiency entries.
-- `npm run verify`: all 104 `data/*.json` rows resolve to a known source; 196
-  internal links across 12 HTML files resolve. ALL CHECKS PASSED.
+- `npm run verify`: all `data/*.json` rows resolve to a known source; 196 internal
+  links across 12 HTML files resolve. ALL CHECKS PASSED.
 
 ## Irregularities (combined)
 
-Session e98c7ba0 flags (F01–F15, published at `docs/flagged.html`):
+**Session e98c7ba0 flags (F01–F15, published at `docs/flagged.html`):**
 - F05: CHI, DEN, PHI, TB are not on the Week 10 report (bye not confirmed).
 - F06: starter / backup order not verifiable from the sources checked.
 - F07 / F08: no odds or historical results collected.
 - F09: Japan wagering law needs legal advice.
+- F10: 345 injury rows transcribed manually — spot-check recommended.
 - F11: NFL.com roster link slug for "Dee Alford" does not match the name.
 - F12: two different official headlines for the Lamar Jackson timeline.
-- F15: GitHub Pages source is main / (root), not /docs. The token returned HTTP 403
-  when changing it. Root index.html forwards to docs/index.html.
+- F15: GitHub Pages source is main / (root), not /docs. Token returned HTTP 403 when
+  changing it. Root index.html forwards to docs/index.html.
 
-Session 09d7cc77 flags (F-01–F-06, published at `docs/10-flagged-for-review.md` /
-Node site):
+**Session d80442c2 audit request — suggested F16 (terms/compliance):**
+- NFL.com Terms and Conditions Section 1.3 prohibits systematic retrieval to compile
+  a collection/database absent express prior written consent (T11-S1). **No automated
+  scraping of NFL.com should be implemented until authorized access/terms are
+  documented.** Flagged for the dashboard owner.
+
+**Session 09d7cc77 flags (F-01–F-07, published on the Node Flagged for Review page):**
 - F-01: Ben Brown position discrepancy (C in injury report vs RG on depth chart).
 - F-02: correlation values unverified (blank — must be computed, not assumed).
-- F-03: live line values unverified (blank — no single official odds source).
+- F-03: live line values unverified (blank — no single official odds source;
+  repository-scope finding: no sportsbook price feed is connected here).
 - F-04: live performance values unverified (blank — no live data).
 - F-05: depth charts are third-party, not official.
 - F-06: player-stats feed not confirmed.
+- F-07: NFL.com Terms Section 1.3 — systematic-retrieval restriction; automated
+  collection requires authorization (mirrors suggested F16).
 
 ## Requests between sessions
 
-_No cross-session file requests logged._
+**d80442c2 → dashboard owner (T09/T10 scope — logged, not edited by 09d7cc77):**
+These requests target `e98c7ba0`-owned files (`docs/`, `data/*.csv`,
+`scripts/build.py`) and are logged here per the coordination rule rather than edited
+by session-09d7cc77:
+1. **F16 terms/compliance** — add a prominent Flagged for Review item; do not
+   implement automated scraping until authorized (T11-S1). *(09d7cc77 mirrored this
+   as its own F-07 and added the source.)*
+2. **Narrow odds assertions** — replace absolute "NFL does not publish odds" claims
+   in `data/flags.csv` F07 and `data/questions.csv` Q08 with the repository-scope
+   finding; flag the provider as missing.
+3. **Remove unreviewed legal conclusions** from README (Japan wagering) — use neutral
+   language. *(09d7cc77 addressed this in its own README; the shared README now uses
+   neutral language.)*
+4. **Correct post-merge publishing/status documentation** in README to match the
+   verified root-forwarder configuration. *(09d7cc77's README reflects this.)*
+5. **Enforce per-row source** in `scripts/build.py` — reject blank `evidence_url`
+   rows (e.g. H03–H06, G1–G7); correct the S02 source-ID mismatch.
+6. **Keep proposed validation thresholds** explicitly unapproved (not in "passed"
+   criteria).
+7. **Preserve the manual-transcription limitation** (F10).
+8. **Reconcile terms review status** in Q18.
 
 ## Merge / conflict log
 
-- **2026-11-14 · session-09d7cc77 · merge conflict on PR #4.** While merging
-  `arena/09d7cc77-x2` into `main`, `main` had already advanced with session
+- **2026-11-14 · session-09d7cc77 · merge conflict on PR #4 (session 1 vs 2).**
+  While merging `arena/09d7cc77-x2` into `main`, `main` had advanced with session
   e98c7ba0's merged work (PRs #1–#3). Conflict in `.gitignore`, `README.md`, and
   `COORDINATION.md` (add/add + content). **Resolution:** combined both sessions'
-  content in all three files — neither session's work was discarded. The merged
-  `COORDINATION.md` above now records both task boards, sources, verification, and
-  irregularities. The live Pages site remains the `docs/` build (session e98c7ba0);
-  the Node `src/` generator is retained as a complementary build tool. The Node
-  `deploy.yml` workflow was **removed** because the Pages source is branch-based
-  (main /) and switching to Actions returns HTTP 403 (flag F15) — keeping it would
-  create a failing deploy check. No other conflicts; all other files merged cleanly.
+  content; neither discarded. The Node `deploy.yml` workflow was removed because the
+  Pages source is branch-based (main /) and switching to Actions returns HTTP 403
+  (flag F15) — keeping it would create a failing deploy check.
+- **2026-11-14 · session-09d7cc77 · merge conflict on PR #4 (session 1+2 vs 3).**
+  After the first resolution, `main` advanced again with session d80442c2's audit
+  (PRs #5–#6), which edited `COORDINATION.md`. Merging `origin/main` into the branch
+  produced a second `COORDINATION.md` conflict. **Resolution:** combined all three
+  sessions' task boards, sources, verification, irregularities, and audit requests
+  into this single board; no session's records were discarded. The d80442c2 requests
+  that target e98c7ba0-owned files are logged under "Requests between sessions" and
+  were not edited by 09d7cc77. README legal language was updated to neutral.
 
 ## Handoff log
 
-_No handoffs. Both sessions completed their work on their own branches._
+_No formal handoffs. Each session completed its work on its own branch; the
+integration session (09d7cc77) merged them into `main` and re-verified the combined
+data and live site._

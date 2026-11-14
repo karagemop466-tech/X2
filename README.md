@@ -50,6 +50,6 @@ npm run verify
 
 ## Important
 
-This project is research. It is not betting advice. Wagering on NFL games is
-restricted in Japan under Penal Code Arts. 185–187. Get legal advice before any
-real-money activity (see the flagged list).
+This project is research. It is not betting advice. Wagering laws vary by
+jurisdiction and require legal review; **no legal conclusion about this product is
+established**. See the flagged list (F-07 / F09).

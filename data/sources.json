@@ -15,5 +15,6 @@
   "foxsports-odds": { "label": "FOX Sports — NFL Odds", "url": "https://www.foxsports.com/nfl/odds", "type": "Odds aggregator", "verified": "fetched 2026-11-14" },
   "clv-squawka": { "label": "Squawka — NFL Betting Strategy (CLV)", "url": "https://www.squawka.com/us/nfl/strategy/", "type": "Methodology reference", "verified": "search-confirmed 2026-11-14" },
   "clv-oddsindex": { "label": "OddsIndex — Closing Line Value", "url": "https://oddsindex.com/guides/closing-line-value-guide", "type": "Methodology reference", "verified": "search-confirmed 2026-11-14" },
-  "nfl-betting-math": { "label": "NFL Betting Math — Vig & CLV", "url": "https://nflsportsbettingstats.com/articles/nfl-betting-math-vig-clv/", "type": "Methodology reference", "verified": "search-confirmed 2026-11-14" }
+  "nfl-betting-math": { "label": "NFL Betting Math — Vig & CLV", "url": "https://nflsportsbettingstats.com/articles/nfl-betting-math-vig-clv/", "type": "Methodology reference", "verified": "search-confirmed 2026-11-14" },
+  "nfl-terms": { "label": "NFL.com — Terms and Conditions (Section 1.3)", "url": "https://www.nfl.com/legal/terms/", "type": "Official (legal/terms)", "verified": "opened 2026-11-14 (session d80442c2 audit, T11-S1)" }
 }
