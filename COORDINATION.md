@@ -774,3 +774,20 @@ collisions were found and fixed before merging: this session's flags became **F3
 questions **Q31–Q42**, suggestions **S19–S28**, requirements **R35–R36**, because `main` had already taken F31–F36,
 SRC-31–43, Q19–Q30, S11–S18 and R21–R34. `scripts/model.py` was left as `main`'s (73cbec41's) version; this session's
 implementation is preserved on the branch and its numbers are published on the cross-check page.
+
+## 2026-11-14 · session 10a76288 · PR #25 merged, Pages confirmed
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/25 (base `main`, head `arena/10a76288-x2`), merged with `--merge`;
+  merge commit `3bf69e6`. Merged without approval as the brief directs.
+- **Pages build:** `built` (build `1369836900`, 2026-11-14 19:07:24Z).
+- **Live site verified by fetching the published pages, not by assuming the build succeeded:**
+  https://karagemop466-tech.github.io/X2/docs/cross-check.html renders the full cross-check table (137 games matched,
+  0 score disagreements, the 0-of-8 vs 4-of-7 disagreement and the no-reward recommendation), and
+  https://karagemop466-tech.github.io/X2/docs/depth-deficiency.html renders all 11 availability rows with their official
+  NFL.com source links.
+- **Publishing note (F15):** Pages still serves the repository root, so the generated pages live under `/docs/` on the
+  published site (`/X2/docs/cross-check.html`), not `/X2/cross-check.html`. The root `index.html` forwards to
+  `docs/index.html`. A direct request for `/X2/cross-check.html` returns 404 — that is expected under the root-source
+  configuration, not a broken link: every link the builder emits is relative and resolves correctly from `/docs/`.
+- **Tasks T31–T36: done.** Nothing in this session is left unclaimed or half-merged. Flagged items F37–F42 are published on
+  the Flagged for Review page with source links and do not block anything.
