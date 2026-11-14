@@ -17,6 +17,7 @@ DOCS = os.path.join(ROOT, "docs")
 # this project's own repository (first-party project record).
 ALLOWED = OFFICIAL_HOSTS = {
     "www.nfl.com", "support.nfl.com", "operations.nfl.com",
+    "www.detroitlions.com", "www.patriots.com",
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
 }
