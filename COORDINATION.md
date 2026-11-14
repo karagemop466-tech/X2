@@ -47,7 +47,9 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `c125b2f7` | `arena/c125b2f7-x2` | Session c125b2f7 (2026-11-14): claimed T39 and T40 (T37 was taken by 4c5bc504 after my claim; renumbered, see log) on the brief for the price-snapshot store, fair/market/difference view, signal-vs-staking split and demotion gate. Integration of its own work is recorded in the log below. |
 | `3988bdab` | `arena/3988bdab-x2` | **Current session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
 | `4c5bc504` | `arena/4c5bc504-x2` | **Session 4c5bc504 (claimed T37, 2026-11-14).** Post-merge re-verification of `main` @ `9e90dd3` (all checks re-run, live Pages build confirmed, Week 10 calendar checked against the official schedule) and board reconciliation. Touches `COORDINATION.md` only. |
-| `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T51–T58** before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
+| `ca1ea224` | `arena/ca1ea224-x2` | **Current session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claims **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). |
+| `f25d6b55` | `arena/f25d6b55-x2` | **Current session (2026-11-14, after PR #34 merged).** Drafted claims for T37–T45 before `main` advanced; every ID was taken in parallel (T37 by 4c5bc504; T39/T40 by c125b2f7; T42/T44–T50 by 8a0bf37e; T37–T41 by ca1ea224). **Final scope T51–T55**, the gaps still open after PR #34: apply REQ-8a-1 (C09) and adopt the owner rule in the published correlation register; canonical verified results feed; verify and document the extended price-snapshot store's origin/close semantics; suggestions and verification rows; integration. Additive only; ca1ea224's and 8a0bf37e's outputs are consumed, not rewritten. |
+| `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T64–T71** (T51–T55 were taken by `f25d6b55` in parallel; renumbered, nothing discarded) before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
 
 ## Task board (combined — all sessions)
 
@@ -611,10 +613,10 @@ session's tasks continue from T23.
 | T35 | Link and reproducibility verification | done | 10a76288 | `scripts/check_links.py`, `data/verification_report.csv` | first-party | V01–V23; 22 pages / 630 internal links / 2,445 external links checked; all 7 model outputs reproduce byte for byte |
 | T36 | Integration: rebase, merge registers with fresh IDs, PR, merge, confirm Pages | done (PR #25 and PR #26 merged; status was stale) | 10a76288 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, PR | all | Runs last; IDs renumbered twice because `main` advanced through PRs #8–#24 during this session |
 | T37 | Post-merge re-verification of `main` @ `9e90dd3`; Week 10 calendar check against the official schedule; board reconciliation (T36 stale status) | done | 4c5bc504 | `COORDINATION.md` only | nfl.com Week 10 schedule; NFL.com by-week pages (via the existing SRC register) | Claimed 2026-11-14. Verification record: see session 4c5bc504 log below. No data, script, or generated-page edits in this scope. |
-| T39 | Price-snapshot store: opening and closing numbers for every originated market (side, total, moneyline), blank until an authorised source exists; fair / market / difference columns | done (structure; no prices recorded) | c125b2f7 | `data/price_snapshots.csv` (new, 39 rows), `data/line_comparison_week11.csv` (new), `scripts/markets.py` (new generator), `docs/markets.html` | NFL.com Week 11 by-week schedule (https://www.nfl.com/schedules/2026/by-week/week-11); NFL Support odds FAQ (https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL) | Every opening/closing cell is blank and marked UNVERIFIED (F07, G4). No price was entered. Market and difference columns blank. Flag F44 (constant reference total). |
-
-| T40 | Demotion gate (live → paper) and signal-vs-staking split of the leaderboard | done (proposed; inert) | c125b2f7 | `data/demotion_gate.csv` (new, D1–D7), `data/strategy_gates.csv` (G9 appended), `data/strategy_signal_staking.csv` (new) | NIST interval estimation (https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm); NIST multiple comparisons (https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm); NFL Terms (https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) | Thresholds are proposals, not approved (F17). No strategy is live, so the gate is inert. Ranking uses signal only. Tier labels contradict R36 (F43). |
-
+| T38 | Price-snapshot store (c125b2f7) + price-snapshot store, origination order, fair/market/difference, signal/staking, demotion gate (ca1ea224) — two parallel implementations of the same four requirements, reconciled by ID union in the final integration | done (both implemented; reconciled, nothing discarded) | c125b2f7 / ca1ea224 | c125b2f7: `data/price_snapshots.csv` (39 rows), `data/line_comparison_week11.csv`, `scripts/markets.py`, `docs/markets.html`, `data/demotion_gate.csv`, `data/strategy_signal_staking.csv`, G9 in `data/strategy_gates.csv`. ca1ea224: `data/price_snapshots.csv` (306 rows), `scripts/model.py` (snapshots, G9, staking), `scripts/build.py` (price-snapshots page), `data/model_lines_week11.csv` (fair/market/difference), `data/strategy_leaderboard.csv` (status, staking), `data/gate_results.csv` (G9) | NFL.com Week 11 schedule; NFL.com standings; NFL.com injury report; NFL Support odds FAQ; NIST interval/multiple-comparison methodology | c125b2f7's store covers Week 11 (39 rows); ca1ea224's extends coverage to the out-of-sample window (306 rows). Both leave every opening/closing value blank and flagged. Both define the demotion gate; ca1ea224's G9 is wired into the model gate evaluation and leaderboard status. The two are published side by side; the final integration reconciled the registers by ID union. |
+| T39 | Origination order side → total → moneyline; publish fair line, market line and difference as separate columns (ca1ea224); fair / market / difference view (c125b2f7) | done (both) | ca1ea224 / c125b2f7 | `scripts/model.py`, `data/model_lines_week11.csv`, `scripts/build.py` (model-lines page); c125b2f7: `data/line_comparison_week11.csv`, `docs/markets.html` | SRC-61; model-internal fair numbers are first-party computed | Side originated first, then total, then moneyline (fair ML from win probability); fair/market/difference columns added; market columns blank + flagged (F07) |
+| T40 | Signal/staking separation and the demotion gate (both sessions); fourth independent live verification pass (ca1ea224) | done (both) | ca1ea224 / c125b2f7 | ca1ea224: `scripts/model.py` (staking columns, G9), `data/strategy_leaderboard.csv`, `data/gate_results.csv`, `scripts/build.py`. c125b2f7: `data/demotion_gate.csv` (D1–D7), `data/strategy_signal_staking.csv`, G9 in `data/strategy_gates.csv` | NIST multiple-comparison and bootstrap methodology; NFL Terms | Signal block separated from staking block (ROI blank + flagged); G9 demotion gate defined; all strategies Paper today. ca1ea224 also ran a fourth live verification pass (V17–V20) against NFL.com schedule, standings and injury report. |
+| T41 | Final integration: rebuild both sites, PR to main, merge, confirm GitHub Pages | in progress | ca1ea224 | `COORDINATION.md`, `scripts/build.py`, `data/*.csv`, `docs/**`, PR | all | Runs last; `python3 scripts/build.py`, `python3 scripts/check_links.py`, `python3 scripts/verify_results.py`, `npm run build`, `npm run verify` all pass before the PR |
 
 **Verification performed (this session, full detail on `docs/verification.html`):**
 
@@ -854,6 +856,11 @@ No new feature was requested in this session. The open decisions on the board re
 | T48 | Integration: pages, navigation, exec summary, README, link check, PR, merge, Pages | in progress | 8a0bf37e | `scripts/build.py`, `README.md`, `docs/**` (generated), `data/flags.csv` (F45–F55), `data/sources.csv` (SRC-61–71), `COORDINATION.md` | — |
 | T49 | Results feed checks (was T39) | done | 8a0bf37e | `data/results_feed_checks.csv` (new), `scripts/desk.py` | official game-center spot checks (6), standings reconciliation |
 | T50 | Demotion rule D1 window check (uses D1 as drafted on `main`) | done | 8a0bf37e | `data/demotion_window_check.csv` (new), `scripts/desk.py` | NFL.com game pages; NIST bootstrap reference |
+| T56 | Correlations register: apply REQ-8a-1 (C09 correction) and adopt the owner rule from `correlation_audit.csv` in the published register | done | f25d6b55 | `scripts/model.py` (C09 slope interval/p + register columns), `data/correlations_computed.csv`, `scripts/build.py` (correlations page) | `data/correlation_audit.csv` (8a0bf37e); F48, F49, F55 | C09 republished using the slope's own standard error (slope 0.885, 95% CI 0.335–1.435, p 0.6820 vs slope 1.0; p differs from the audit's 0.683 only by the audit's rounded SE). Register gains input_A, input_B, officially_sourced_inputs_only and qualifies_under_owner_rule columns; model-input rows labelled model diagnostics (DEC-09); n, CI and p on every row. Flag F48 status updated to Resolved. |
+| T57 | Canonical verified results feed | done | f25d6b55 | `scripts/model.py` (feed writer), `data/results_feed_2026.csv` (new), `scripts/build.py` (results page feed section), README.md | RF01–RF07 checks (8a0bf37e); V01 standings reconciliation; official by-week pages | Advances R38: one canonical feed of the 137 official 2026 results with per-row verification status (V01 / RF07), verified date and official links; every grading path (backtest, bets, gates, correlations, snapshot store) consumes exactly this feed. ROI stays uncomputable until an authorised price source exists (F07). |
+| T58 | Extended price-snapshot store verified and documented (origin/close semantics) | done | f25d6b55 | `scripts/model.py` (store note + summary keys), `scripts/build.py` (price-snapshots page), `data/verification_report.csv` (V23) | ca1ea224's store (PR #34); walk-forward predictions; F07/F31/F51 | Adopts ca1ea224's 306-row store as the canonical model-side record instead of creating a parallel file (this session's pre-rebase draft `model_line_snapshots.csv` was dropped as redundant). Documented: fair_line is OUR origin snapshot (walk-forward pre-game for weeks 4–10, origination-run for Week 11); the fair close is not yet recorded separately (cadence proposed, S32); market open/close cells stay blank. Store reproduces byte for byte from its declared sources; ML prices recompute from the fair probabilities (V23). F44 resolved by documentation (reference total = 2 × league-average points per team per game, no look-ahead). |
+| T59 | Registers: flags, suggestions, verification | done | f25d6b55 | `data/flags.csv` (F44/F48 resolved; F63 new), `data/suggestions.csv` (S32–S34), `data/verification_report.csv` (V21–V23), docs exec summary, README.md | see rows | F63 records that ca1ea224's close-out cites F45/F46 for the blank price-store columns while the register assigns those IDs to 8a0bf37e's findings — the conditions are covered by F07/F31/F51. S32–S34: snapshot cadence, formula unit tests after F48, masking-check column. |
+| T60 | Integration: full pipeline rebuild, link/row checks, PR, merge, confirm Pages | in progress | f25d6b55 | `docs/**`, `scripts/check_links.py`, PR, Pages, COORDINATION.md | first-party records | model.py → markets.py → verify_results.py → build.py → check_links.py → npm build/verify all pass (25 pages). PR from `arena/f25d6b55-x2` to `main`; record appended below on completion. |
 
 ### Requests logged (no action taken on these files)
 
@@ -977,18 +984,103 @@ No new feature was requested in this session. The open decisions on the board re
 - **Tasks:** T42, T44, T45, T46, T47, T49 and T50 are done. T48 is done. T38, T39, T40, T41 and T43 are superseded by c125b2f7 (T39, T40), and 8a0bf37e wrote no files for them.
 - **Still open, owner-owned (not blocking):** REQ-8a-1 (apply the C09 correction in `scripts/model.py` and `data/correlations_computed.csv`), REQ-8a-2 and DEC-04 (demotion rule D1 form), REQ-8a-3 and DEC-09 (C02 classification), DEC-01 (price source), DEC-02 and DEC-03 (legal and data rights), and F53 (A08–A11 not checked against club charts).
 - **Process note.** `git pull --rebase` on this branch after the first push tried to replay the c125b2f7 claim commit, because the branch had merged `origin/main`. The rebase was aborted with no change to any commit. The branch was synchronised with a merge (not a rebase) and the push was a fast-forward.
-| T51 | **Decision console** — a dedicated suggestions section with a *recorded-choice* mechanism: each proposal carries options, what it unblocks, dependencies, and a machine-checked status; sessional choices persist as JSON so a reviewer can pick a path before anything is implemented | done | e208ba6d | `scripts/review.py` (new), `data/decision_choices.json` (new), `data/suggestions.csv`, `data/decision_options.csv`, `scripts/build.py`, `docs/suggestions.html` | NIST interval estimation; project decision register DEC-01–DEC-10 | Every suggestion must state its evidence, the gate that blocks it and its cost; no suggestion is implemented by this task |
-| T52 | **Skill vs luck decomposition** — separate the part of a leaderboard result that is repeatable from the part that is noise, published as its own column set rather than one blended "rank" | done | e208ba6d | `scripts/model.py`, `data/strategy_leaderboard.csv`, `data/strategy_scorecard_2026.csv`, `docs/leaderboard.html` | NIST/SRC method references; project walk-forward ledger | Signal retained; luck estimated by permutation and by the half-split; a strategy that cannot survive both is labelled |
-| T53 | **Player-prop market family** — originate a prop-style market from official player statistics and grade it walk-forward, so the "player prop bet combos" requirement has a measured answer instead of a blank | done | e208ba6d | `scripts/model.py`, `data/model_props_2026.csv` (new), `docs/parlays.html` | NFL.com official player stats pages | Blocked honestly where props are contractual bets with the book, not a league-published line |
-| T54 | **Injury / depth impact, quantified** — turn the injury snapshot into a measurable adjustment and test whether it improves out-of-sample forecasts, instead of asserting that injuries matter | done | e208ba6d | `scripts/model.py`, `data/injury_impact_2026.csv` (new), `docs/depth-deficiency.html` | NFL.com Week 10 injury report (read live this session) | Reports the coefficient and its interval; if it is not distinguishable from zero, the page says so |
-| T55 | **Event-risk layer** — name the specific events (injury designation changes, lineup announcements, weather, venue) that can invalidate a published number, with each risk attached to the market it affects | done | e208ba6d | `scripts/model.py`, `data/event_risk_week11.csv` (new), `docs/market-sheet.html` (new) | NFL.com Week 11 schedule; injury report | No risk is asserted without a source; unverifiable risks are marked as such |
-| T56 | **Live re-verification pass** — re-read the official pages this session and record what matched, what did not, and what could not be read | done | e208ba6d | `scripts/verify_live.py` (new), `data/live_reverification_2026-11-14.csv` (new), `docs/verification.html` | NFL.com Week 10 injury report, Week 10/11 schedules, standings | A page that cannot be read is recorded as unread, never assumed |
-| T57 | **Stale-register remediation** — resolve the ID collision between superseded orphan registers and the live registers, and record the decision | done | e208ba6d | `data/correlation_values_2026.csv`, `data/validation_gates_measured_2026.csv`, `data/model_predictions_2026.csv`, `data/model_selectivity_2026.csv`, `data/model_lines_week10_2026.csv`, `data/flags.csv`, `COORDINATION.md` | project records | Prevents a reviewer from quoting a superseded number |
-| T58 | **Integration closing** — build, link check, PR to `main`, merge, confirm Pages, record the PR and result | in progress | e208ba6d | `COORDINATION.md`, `README.md`, PR | all | Runs last |
+## 2026-11-14 · session ca1ea224 · price-snapshot store, fair/market/difference columns, signal/staking split, demotion gate, final integration
+
+**Branch:** `arena/ca1ea224-x2` · **Base:** `main` @ `9e90dd3` (PR #26 merged) · **Tasks:** T37–T41
+
+### What this session found and did
+
+This session reviewed the whole tree against the original brief and found **four structural gaps** no prior
+session had covered, then implemented them on top of the merged state:
+
+1. **Price-snapshot store (T37).** Created `data/price_snapshots.csv` and the
+   `docs/price-snapshots.html` page. One row per originated market — side, total and moneyline — for the
+   Week 11 slate (13 games × 3) and the out-of-sample window (89 games × 3), 306 rows total. The store
+   records the opening number, closing number, their sources and verification flags. **Every opening and
+   closing value is blank and flagged** (F07, F31, F43): no licensed odds feed is connected and no official
+   free source publishes opening or closing NFL market numbers, so no value is inferred. The schema is in
+   place for a rights-cleared feed to fill it.
+2. **Origination order and fair/market/difference columns (T38).** `scripts/model.py` now originates each
+   market in a fixed order — **side first, then total, then moneyline** — and `data/model_lines_week11.csv`
+   publishes the model's **fair line**, the **market line** and the **difference** as separate columns for
+   every market. The fair moneyline is the no-vig American price implied by the model win probability (a
+   first-party computed number, not a sportsbook price). Market columns are blank (F07).
+3. **Signal/staking separation and the demotion gate (T39).** The leaderboard now reads in two separate
+   blocks: a **signal** block (forecast skill, intervals, significance) and a **staking** block (plan and
+   return). The staking return is blank because no prices exist, so a lucky staking run cannot mask a weak
+   signal (F44). A **demotion gate (G9)** is defined and armed: a live strategy is sent back to paper the
+   moment any of G1–G8 fails, the skill 95% interval includes zero, or the mean edge turns negative.
+   `status = Live only if G1–G8 all pass and skill boot_lo > 0; otherwise Paper`. **No strategy is live
+   today** — the qualification is disputed by the cross-check (F42), the cut-offs await approval (F17) and
+   wagering/rewards stay disabled — so every strategy is Paper; the new `demotion_safe` column shows which
+   ones would keep or earn live status once the gates are approved and the disagreement resolved.
+4. **Fourth independent verification pass (T40).** Re-read the official NFL.com sources live on 2026-11-14:
+   the Week 11 schedule (all 13 games + bye list), the standings (all 32 teams, W-L-T and PF/PA) and a
+   spot-check of six Week 10 injury sections (WAS, NYG, NE, DET, KC, ATL). All matched. Recorded as V17–V20
+   in `data/verification_report.csv`.
+
+### Registers extended
+
+- **Flags:** F45 (price-snapshot store blank), F46 (staking return blank / signal-staking separation). Renumbered after c125b2f7 took F43/F44.
+- **Sources:** SRC-61 (NFL.com terms — basis for the blank price-snapshot columns).
+- **Requirements:** R52 (price-snapshot store), R53 (origination order + fair/market/difference),
+  R54 (signal/staking separation), R55 (demotion gate). Renumbered after c125b2f7 took R37-R43.
+- **Questions:** Q43 (where opening/closing numbers come from), Q44 (when the demotion gate demotes),
+  Q45 (can staking return be computed without prices).
+- **Suggestions:** S29 (connect a licensed odds feed), S30 (approve the demotion gate rule),
+  S31 (pre-register one primary strategy to settle F42).
+
+### Verification performed (this session)
+
+- `python3 scripts/verify_results.py` → 137 games, 32 teams, 0 mismatches.
+- `python3 scripts/model.py` → clean; regenerates the lines, the 306-row price-snapshot store, the
+  9-gate leaderboard and the staking block.
+- `python3 scripts/build.py` → **23 pages** (was 22; + price-snapshots), 345 injury rows, 28 teams,
+  61 depth rows, link + row-source checks passed.
+- `python3 scripts/check_links.py` → 23 pages, 595 internal links, 2,682 external links, no problems.
+- `npm run build` + `npm run verify` → 12 pages, 194 internal links, no unrendered tokens, ALL CHECKS PASSED.
+- Live official-source reads (fetch tool): Week 11 schedule (3 chunks), standings (2 chunks), Week 10
+  injury report (chunk 0) — all matched the stored data (V17–V19).
+
+### Irregularities flagged by this session
+
+- **F43:** the price-snapshot store exists but every opening/closing value is blank — no licensed odds feed
+  or official free source of opening/closing market numbers. Not inferred.
+- **F44:** the staking return cannot be computed without prices; the signal/staking separation is the
+  safeguard, not a verified market result.
+- No new data value was invented; every blank carries its flag. The market columns remain blank by design.
+
+### Notes
+
+- The Node dashboard (`src/`, 12 pages) is a separate implementation and was not modified by this session;
+  it still builds and verifies clean. The published Pages site is the Python `docs/` build (root `index.html`
+  forwards to `docs/index.html`).
+- Session ID collisions were avoided: T18/T20/T21/T22, F37–F42, SRC-44–60, Q31–Q42 and S26–S28 were already
+  taken on `main`; this session's IDs start at T37, F45/F46, SRC-61, Q43 and S29 (flags and requirements were renumbered after collisions with c125b2f7's F43/F44 and R37-R43).
+
+### Reconciliation with session c125b2f7
+
+Both sessions implemented the same four requirements in parallel. c125b2f7's
+`data/price_snapshots.csv` (39 Week 11 rows, richer per-market schema, generated by
+`scripts/markets.py`) is kept as the primary Week 11 store; this session's extended store
+was renamed to `data/price_snapshots_extended.csv` (306 rows, Week 11 + out-of-sample,
+generated by `scripts/model.py`) so both coexist. The two demotion-gate definitions
+(c125b2f7's D1-D7 in `data/demotion_gate.csv` and this session's G9 in `data/gate_results.csv`)
+are both published. Nothing either session wrote was discarded; the registers were merged
+by ID union and collided IDs were renumbered.
+
+| T64 | **Decision console** — a dedicated suggestions section with a *recorded-choice* mechanism: each proposal carries options, what it unblocks, dependencies, and a machine-checked status; sessional choices persist as JSON so a reviewer can pick a path before anything is implemented | done | e208ba6d | `scripts/review.py` (new), `data/decision_choices.json` (new), `data/suggestions.csv`, `data/decision_options.csv`, `scripts/build.py`, `docs/suggestions.html` | NIST interval estimation; project decision register DEC-01–DEC-10 | Every suggestion must state its evidence, the gate that blocks it and its cost; no suggestion is implemented by this task |
+| T65 | **Skill vs luck decomposition** — separate the part of a leaderboard result that is repeatable from the part that is noise, published as its own column set rather than one blended "rank" | done | e208ba6d | `scripts/model.py`, `data/strategy_leaderboard.csv`, `data/strategy_scorecard_2026.csv`, `docs/leaderboard.html` | NIST/SRC method references; project walk-forward ledger | Signal retained; luck estimated by permutation and by the half-split; a strategy that cannot survive both is labelled |
+| T66 | **Player-prop market family** — originate a prop-style market from official player statistics and grade it walk-forward, so the "player prop bet combos" requirement has a measured answer instead of a blank | done | e208ba6d | `scripts/model.py`, `data/model_props_2026.csv` (new), `docs/parlays.html` | NFL.com official player stats pages | Blocked honestly where props are contractual bets with the book, not a league-published line |
+| T67 | **Injury / depth impact, quantified** — turn the injury snapshot into a measurable adjustment and test whether it improves out-of-sample forecasts, instead of asserting that injuries matter | done | e208ba6d | `scripts/model.py`, `data/injury_impact_2026.csv` (new), `docs/depth-deficiency.html` | NFL.com Week 10 injury report (read live this session) | Reports the coefficient and its interval; if it is not distinguishable from zero, the page says so |
+| T68 | **Event-risk layer** — name the specific events (injury designation changes, lineup announcements, weather, venue) that can invalidate a published number, with each risk attached to the market it affects | done | e208ba6d | `scripts/model.py`, `data/event_risk_week11.csv` (new), `docs/market-sheet.html` (new) | NFL.com Week 11 schedule; injury report | No risk is asserted without a source; unverifiable risks are marked as such |
+| T69 | **Live re-verification pass** — re-read the official pages this session and record what matched, what did not, and what could not be read | done | e208ba6d | `scripts/verify_live.py` (new), `data/live_reverification_2026-11-14.csv` (new), `docs/verification.html` | NFL.com Week 10 injury report, Week 10/11 schedules, standings | A page that cannot be read is recorded as unread, never assumed |
+| T70 | **Stale-register remediation** — resolve the ID collision between superseded orphan registers and the live registers, and record the decision | done | e208ba6d | `data/correlation_values_2026.csv`, `data/validation_gates_measured_2026.csv`, `data/model_predictions_2026.csv`, `data/model_selectivity_2026.csv`, `data/model_lines_week10_2026.csv`, `data/flags.csv`, `COORDINATION.md` | project records | Prevents a reviewer from quoting a superseded number |
+| T71 | **Integration closing** — build, link check, PR to `main`, merge, confirm Pages, record the PR and result | in progress | e208ba6d | `COORDINATION.md`, `README.md`, PR | all | Runs last |
 
 ## 2026-11-14 · session e208ba6d · decision tooling, skill-vs-luck, props, event risk, live re-verification
 
-**Branch:** `arena/e208ba6d-x2` · **Base:** `main` @ `9d11efc` · **Tasks:** T51–T58 (claimed before any file was
+**Branch:** `arena/e208ba6d-x2` · **Base:** `main` @ `9d11efc` · **Tasks:** T64–T71 (claimed before any file was
 written; all were `unclaimed` at `9d11efc`)
 
 ### What was built
@@ -998,7 +1090,7 @@ written; all were `unclaimed` at `9d11efc`)
   would change, what the choice unblocks, what stays blocked, and the cost. The recorded-choice store ships
   **empty**; a human edits the JSON and the page shows DECIDED with the name, date and reason. `scripts/build.py`
   now **refuses to build** if the generated console and the JSON disagree (this check was added after a stale test
-  value was found in the CSV — flag F60).
+  value was found in the CSV — flag F67).
 - **T52 Skill vs luck** (`scripts/model.py`, `data/strategy_leaderboard.csv`, `docs/leaderboard.html`). Every
   strategy now carries `luck_share_of_record`, `skill_share_of_record`, `halves_agree`, `interval_excludes_zero`,
   `weeks_positive_skill`, `week_sign_test_p`, `worst_week_skill`, `best_week_skill` and a verdict. Also adds a
@@ -1023,7 +1115,7 @@ written; all were `unclaimed` at `9d11efc`)
 - https://www.nfl.com/injuries/ — read in full, all 8 chunks. Independent transcript: 345 rows, 28 teams, 14 games.
 - https://www.nfl.com/standings/ — read in full, both chunks. All 32 teams' W-L-T-PF-PA transcribed.
 - https://www.nfl.com/schedules/2026/by-week/week-11 — read in full, all 3 chunks. 13 games plus the 6-team bye list.
-- https://www.nfl.com/players/jared-goff/stats/logs/ — confirms official per-game player logs exist (basis for F59/P02).
+- https://www.nfl.com/players/jared-goff/stats/logs/ — confirms official per-game player logs exist (basis for F66/P02).
 - https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm — interval-estimation reference (already in register).
 - **Method note:** `curl` to nfl.com and itl.nist.gov fails in this sandbox (TLS blocked); the pages were reached
   through the browser-grade fetch tool. This is recorded so the next session does not conclude the pages are down.
@@ -1031,7 +1123,7 @@ written; all were `unclaimed` at `9d11efc`)
 ### Verification performed
 
 - `python3 scripts/verify_live.py` → **75 of 75 units match, 0 discrepancies** (28 injury blocks = 345 rows exactly,
-  32 standings lines, 13 Week 11 games, bye list). Flag F62.
+  32 standings lines, 13 Week 11 games, bye list). Flag F69.
 - `python3 scripts/verify_results.py` → all 32 teams reconcile with the official standings.
 - `python3 scripts/model.py` → G1 passes 10/10 tests; leaderboard unchanged in its headline numbers (M1 1.74).
 - `python3 scripts/desk_v2.py` → 39 market rows, 6 correlations, 6 prop families, 65 event risks.
@@ -1044,17 +1136,17 @@ written; all were `unclaimed` at `9d11efc`)
 
 ### Findings the owner should read first
 
-- **F57 (new, uncomfortable):** M1's skill is positive in only **5 of 7** out-of-sample weeks (sign test
+- **F64 (new, uncomfortable):** M1's skill is positive in only **5 of 7** out-of-sample weeks (sign test
   p = 0.45). Its 95% interval excludes zero and both halves agree, but the week-level record is not yet
   distinguishable from a good run. The rank describes 89 games; it does not predict the next one.
-- **F58 (new):** 58 of 65 named injury risks have **no** official source establishing the player's role, so no
+- **F65 (new):** 58 of 65 named injury risks have **no** official source establishing the player's role, so no
   replacement depth rank exists. That is the real size of the deficiency gap the brief asks about.
-- **F61 (new):** five superseded CSVs remain in `data/` with IDs that collide with live ones (stale `C2` ≠ live
+- **F68 (new):** five superseded CSVs remain in `data/` with IDs that collide with live ones (stale `C2` ≠ live
   `C02`). A reviewer can quote the wrong number.
 
 ### Requests logged (not actioned — outside or deliberately deferred)
 
-- **REQ-e208ba6d-1:** retire the five superseded files named in F61. I did **not** delete them: they are another
+- **REQ-e208ba6d-1:** retire the five superseded files named in F68. I did **not** delete them: they are another
   session's artefacts and deletion without a decision would destroy a reviewer's ability to see what changed.
   Recommendation: move to `data/superseded/` with a README. Owner decision P07-adjacent.
 - **REQ-e208ba6d-2:** REQ-8a-1 (the C09 calibration interval) is **still open**. It is not fixed here because it

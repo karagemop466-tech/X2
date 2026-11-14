@@ -388,6 +388,42 @@
  },
  {
   "req_id": "R44",
+  "requirement (from brief)": "Add a price-snapshot store that records opening and closing numbers for every market originated",
+  "status": "Done - store created; opening/closing values blank and flagged",
+  "where_addressed": "price-snapshots.html; data/price_snapshots_extended.csv",
+  "blocker_or_note": "No licensed odds feed or official free source of opening/closing market numbers exists; schema in place, values blank + flagged (F07/F31/F45).",
+  "row_type": "status",
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+ },
+ {
+  "req_id": "R45",
+  "requirement (from brief)": "Originate the side first, then the total, then the moneyline; publish fair line, market line and difference as separate columns",
+  "status": "Done",
+  "where_addressed": "model-lines.html; data/model_lines_week11.csv",
+  "blocker_or_note": "Origination order fixed (side, total, moneyline); fair_line/market_line/fair_minus_market columns added. Market columns blank (F07) - no official odds source.",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "req_id": "R46",
+  "requirement (from brief)": "Separate signal from staking in the leaderboard",
+  "status": "Done - two blocks; staking return blank and flagged",
+  "where_addressed": "leaderboard.html; data/strategy_leaderboard.csv",
+  "blocker_or_note": "Signal block (skill, CI, p-values) separated from staking block (plan, ROI blank). No prices, so staking ROI not computable (F07/F32/F46).",
+  "row_type": "status",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
+ },
+ {
+  "req_id": "R47",
+  "requirement (from brief)": "Define a demotion gate that sends a live strategy back to paper",
+  "status": "Done - G9 defined and armed; no strategy is live",
+  "where_addressed": "validation-gates.html; leaderboard.html; data/gate_results.csv",
+  "blocker_or_note": "G9 demotion gate defined: a live strategy is demoted to paper when any of G1-G8 fails, the skill CI includes zero, or the mean edge turns negative. Live operation not enabled (F17/F42), so every strategy is Paper today.",
+  "row_type": "status",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "req_id": "R52",
   "requirement (from brief)": "Track every market's opening and closing number, in origination order (side, total, moneyline)",
   "status": "Structure complete; prices still blank",
   "where_addressed": "Market sheet page; data/market_sheet_week11.csv",
@@ -396,7 +432,7 @@
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
  },
  {
-  "req_id": "R45",
+  "req_id": "R53",
   "requirement (from brief)": "Publish fair line, market line and difference as three separate columns",
   "status": "Done for the fair side; market side blank by design",
   "where_addressed": "Market sheet page",
@@ -405,7 +441,7 @@
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
  },
  {
-  "req_id": "R46",
+  "req_id": "R54",
   "requirement (from brief)": "Remove luck from the equation; keep only selectively skill-based strategies",
   "status": "Done as a published decomposition, with a negative finding",
   "where_addressed": "Leaderboard page, skill-versus-luck section",
@@ -414,7 +450,7 @@
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm"
  },
  {
-  "req_id": "R47",
+  "req_id": "R55",
   "requirement (from brief)": "Player prop bets and prop combinations",
   "status": "Scoped honestly; outcomes obtainable, prices not, grading blocked",
   "where_addressed": "Player props page; data/prop_markets_week11.csv",
