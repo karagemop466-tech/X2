@@ -505,6 +505,42 @@
  },
  {
   "question_id": "Q43",
+  "area": "Data",
+  "question": "Where will opening and closing market numbers come from?",
+  "status": "Open - no source identified",
+  "known_facts_verified": "No licensed odds feed is connected and no official free source publishes opening or closing NFL market numbers. The price-snapshot store is built and its values are blank and flagged.",
+  "missing_information": "A licensed, rights-cleared odds feed or written league permission.",
+  "how_to_discover_official_first": "Request written permission or license a feed; until then keep the store blank.",
+  "decision_owner": "Project owner / data provider",
+  "row_type": "decision",
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+ },
+ {
+  "question_id": "Q44",
+  "area": "Method",
+  "question": "When should the demotion gate demote a live strategy?",
+  "status": "Answered - rule defined",
+  "known_facts_verified": "The demotion gate (G9) demotes a live strategy to paper when any of G1-G8 fails on the latest window, the skill 95% interval includes zero, or the mean edge turns negative. No strategy is live today, so the gate is armed but not yet exercised.",
+  "missing_information": "Owner approval of the gate cut-offs (F17) and resolution of the qualification disagreement (F42).",
+  "how_to_discover_official_first": "Approve the gates; until then every strategy stays Paper.",
+  "decision_owner": "Project owner",
+  "row_type": "fact",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "question_id": "Q45",
+  "area": "Data",
+  "question": "Can a staking return be computed without prices?",
+  "status": "Answered - no",
+  "known_facts_verified": "A staking return requires prices. No licensed odds feed exists, so the staking block on the leaderboard is blank and the signal block is read independently of it.",
+  "missing_information": "A licensed odds feed; until then the signal/staking separation is the safeguard.",
+  "how_to_discover_official_first": "Connect a licensed odds feed before computing any staking return.",
+  "decision_owner": "Project owner",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "question_id": "Q46",
   "area": "Line model (neutral sites)",
   "question": "Should a designated home team in an international game receive a home-field term?",
   "status": "Answered — no; and the historical column is still blank",
@@ -516,7 +552,7 @@
   "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
  },
  {
-  "question_id": "Q44",
+  "question_id": "Q47",
   "area": "Statistics (calibration)",
   "question": "Is the model calibrated, that is, is the slope of actual on predicted margin distinguishable from 1.0?",
   "status": "Answered — no, it is not distinguishable",
@@ -528,7 +564,7 @@
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
  },
  {
-  "question_id": "Q45",
+  "question_id": "Q48",
   "area": "Validation gates",
   "question": "Does every gate in the published set compute its own condition, or is any of them a constant?",
   "status": "Answered — G1 was a constant until this session",
