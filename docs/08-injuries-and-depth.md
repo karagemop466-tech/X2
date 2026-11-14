@@ -10,8 +10,8 @@ signal rather than a guess.
 
 1. **Injury status** is taken from the official NFL.com injury report (questionable,
    doubtful, out, plus practice participation).
-2. **Depth ordering** is taken from depth charts, which list the starter and the
-   2nd/3rd/4th-string players at each position.
+2. **Depth ordering** would come from an official depth chart. None was found, so
+   ordering fields are blank and marked unverified.
 3. **Deficiency** is detected when a starter is out/doubtful/questionable and the
    next-string backup is named as the replacement.
 4. The deficiency is flagged for review if the position cannot be reconciled across
@@ -25,23 +25,22 @@ not list a value for that field.
 
 {{TABLE: injuries}}
 
-## Verified depth deficiencies (backups replacing starters)
+## Injury entries awaiting official depth ordering (backups replacing starters: unverified)
 
-Cross-reference of the official injury report with depth charts. Each row names the
-starter, the elevating backup, and the resulting deficiency. Both offense and
-defense are covered.
+Each row carries the official NFL.com injury status only. The starter/backup ordering,
+the elevating backup and the deficiency text are blank: no official depth chart was
+found (see F-05), and third-party charts are not used as evidence. Both offense and
+defense positions are listed.
 
 {{TABLE: depthDeficiencies}}
 
 ## Notes and caveats
 
-- **Depth charts are third-party.** The NFL does not publish an official depth
-  chart. ESPN and Ourlads are reputable third-party sources and are labeled as such
-  on the [Data Sources](../data-sources/) page. This is flagged on the
-  [Flagged for Review](../flagged-for-review/) page.
+- **No official depth chart found.** The NFL.com depth-chart URL checked for the Detroit
+  Lions returned a 404 page on 2026-11-14. ESPN and Ourlads are third-party; they were
+  consulted only as leads and are not used as evidence. This is flagged as F-05.
 - **Position discrepancy.** Ben Brown is listed as **C** in the official injury
-  report but as **RG** on the depth chart. The deficiency is withheld until the
-  position is reconciled. See [F-01](../flagged-for-review/) on the
+  report. A third-party chart lists **RG**; that value is unverified and not used. See [F-01](../flagged-for-review/) on the
   [Flagged for Review](../flagged-for-review/) page.
 - **Severity scoring.** The system defines a documented method to convert
   (position + string depth + injury status) into a line-impact score. No numeric

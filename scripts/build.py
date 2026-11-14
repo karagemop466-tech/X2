@@ -22,6 +22,7 @@ OFFICIAL_HOSTS = {
     "www.nfl.com", "support.nfl.com", "operations.nfl.com",
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
+    "wetten.overheid.nl", "www.kansspelautoriteit.nl",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -507,10 +508,10 @@ Nothing on this page is a legal or statistical conclusion; each row links to the
 <h2>What we have, and what we do not have</h2>
 <div class="twocol">
 <div><h3>Verified and usable today</h3><ul>
-<li>{tot['rows']} Week 10 injury rows across {tot['teams']} teams, re-verified row by row against the official page on {AS_OF} (Flag F19).</li>
+<li>{tot['rows']} Week 10 injury rows across {tot['teams']} teams, re-verified row by row against the official page on {AS_OF} (Flag F20).</li>
 <li>{tot['games']} Week 10 games with kickoff, broadcaster and listed records (NFL.com).</li>
 <li>The official Week 10 bye list: {', '.join(tot['missing_teams'])}.</li>
-<li>The Thursday result, Commanders 24 - Giants 21 final, is verified on the official schedule (Flag F21).</li>
+<li>The Thursday result, Commanders 24 - Giants 21 final, is verified on the official schedule (Flag F22).</li>
 <li>Injury <em>labels</em> (Out / Doubtful / Questionable) and practice participation, exactly as published.</li>
 </ul></div>
 <div><h3>Not available, so left blank</h3><ul>
@@ -543,14 +544,14 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left 
 <tr><td>Bye teams</td><td>Read the Teams on Bye section of the official Week 10 schedule.</td><td class="ok">CHI, DEN, PHI and TB confirmed, as recorded (Flag F05).</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
 <tr><td>Home / away order</td><td>Compared the schedule game titles (for example "Bills at Jets") with the order NFL.com lists teams on the injury report.</td><td class="ok">The injury report lists the away team first in every Week 10 game; the site's "first listed / second listed" labels remain neutral and are now interpretable.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
 <tr><td>Official depth chart existence</td><td>Requested the conventional team depth-chart URL on the official site.</td><td class="warn">Returns HTTP 404 "Flag on the Play". No official depth chart is reachable, so starter/backup order stays blank (F06).</td><td><a href="https://www.nfl.com/teams/buffalo-bills/roster" target="_blank" rel="noopener">Bills roster</a></td></tr>
-<tr><td>Thursday result</td><td>Read the final score on the official Week 10 schedule and the game center.</td><td class="warn">Verified as Commanders 24 - Giants 21 final, but not published: the games table has no result column (F21).</td><td><a href="https://www.nfl.com/games/commanders-at-giants-2026-reg-10" target="_blank" rel="noopener">Game center</a></td></tr>
-<tr><td>News snapshot drift</td><td>Compared the stored headline list with the news section of the live injury page.</td><td class="warn">Two stored headlines are no longer shown on the live page. The injury rows are unaffected (F20).</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Thursday result</td><td>Read the final score on the official Week 10 schedule and the game center.</td><td class="warn">Verified as Commanders 24 - Giants 21 final, but not published: the games table has no result column (F22).</td><td><a href="https://www.nfl.com/games/commanders-at-giants-2026-reg-10" target="_blank" rel="noopener">Game center</a></td></tr>
+<tr><td>News snapshot drift</td><td>Compared the stored headline list with the news section of the live injury page.</td><td class="warn">Two stored headlines are no longer shown on the live page. The injury rows are unaffected (F21).</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
 <tr><td>Standings cross-check</td><td>Compared Week 10 listed records with the official standings page.</td><td class="ok">Records match for the teams checked. The injured-reserve players named in the news (Lamar Jackson, Malik Willis) do not appear on the injury report, consistent with reserve status rather than a game designation.</td><td><a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL standings</a></td></tr>
 <tr><td>Source allow-list</td><td>Builder rejects any table row without an HTTPS link on the reviewed official-source allow-list, and any broken internal link.</td><td class="ok">Enforced in <code>scripts/build.py</code>; the build fails otherwise.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py" target="_blank" rel="noopener">build.py</a></td></tr>
 </tbody></table></div>
 <h2>Standing limitations</h2>
 <ul>
-<li><strong>Single reviewer.</strong> This pass was one reviewer against one page read. A second independent transcription check is still the strongest available control (F10, F19).</li>
+<li><strong>Single reviewer.</strong> This pass was performed independently of session 30beeb55's separate T15 check, and both found no discrepancies. Two independent passes are the strongest control the manual-transcription limitation allows, but neither is an automated diff (F10, F20).</li>
 <li><strong>Live pages move.</strong> Every "verified" statement is true of the page as read on {AS_OF}. The injury page shows no last-updated timestamp (F13).</li>
 <li><strong>Rights are not verification.</strong> Confirming a value matches NFL.com does not grant permission to republish it in bulk (F16).</li>
 <li><strong>Blank is deliberate.</strong> A dash means the official source did not supply a value, or no official source was found. It is never an inferred estimate.</li>

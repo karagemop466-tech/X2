@@ -84,10 +84,10 @@
   "flag_id": "F10",
   "category": "Transcription check",
   "item": "345 injury rows were transcribed manually",
-  "detail": "Rows were transcribed from the NFL.com page as read. Row counts per team and game were checked against the page structure. Each row links to the official page, but every row should be spot-checked against the link.",
+  "detail": "Rows were transcribed from the NFL.com page as read. Two sessions independently compared the full file against the live Week 10 report on 2026-11-14: session 30beeb55 (T15) and session 7c9eb69a (T17, recounted per-team counts from scratch). Both found no discrepancies. Both were manual reads, not an automated diff, and the snapshot is point-in-time.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Needs reviewer spot-check",
-  "action_requested": "Spot-check any rows you care about against the linked page."
+  "status": "Resolved for two independent manual passes - no discrepancies found",
+  "action_requested": "Treat row values as verified against the live page on 2026-11-14. Re-verify on any refresh; an automated diff would need authorised data access."
  },
  {
   "flag_id": "F11",
@@ -156,22 +156,31 @@
   "flag_id": "F18",
   "category": "Source-scope review",
   "item": "Separate Node depth-deficiency entries cite third-party Ourlads charts, not an official NFL depth chart",
-  "detail": "The separate Node dashboard data/depth-deficiencies.json contains six player/backup rows sourced from the official NFL injury report plus Ourlads, which the Node source register labels as reputable third-party. The official-only Python Pages dashboard does not publish these entries. Under the current official-source requirement, these third-party depth values are not verified official facts and must not be represented as such. T12 did not edit the Node data owned by session-09d7cc77.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
-  "status": "Review request — third-party values not official",
-  "action_requested": "Node-dashboard owner: replace the depth evidence with an official primary source or blank/suppress the player/backup values before promoting that output as official-source research."
+  "detail": "Resolved in the Node data by T13 (session 30beeb55, 2026-11-14). Each row now carries only the official NFL.com injury status. Starter/backup ordering, backup names and deficiency text are blank and marked unverified, because no official NFL depth chart was found (the NFL.com Detroit Lions depth-chart URL returned a 404 page). Third-party values are not used as evidence. The Python dashboard does not publish these entries.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Resolved by T13 - pending review",
+  "action_requested": "Reviewer: confirm the blank-field approach. Obtain an official depth-chart source before restoring any ordering or backup value."
  },
  {
   "flag_id": "F19",
-  "category": "Verification performed",
-  "item": "All 345 injury rows independently re-verified row by row against the live NFL.com page",
-  "detail": "Session 7c9eb69a re-read the official Week 10 injury report in full (8 chunks) on 2026-11-14 and compared every player, position, injury, practice status and game status against data/injuries_week10_2026.csv. All 28 team sections matched, and the per-team row counts independently recounted to 345, equal to the stored row count. All 14 game headers, kickoff times, broadcasters and listed records also matched. This closes the spot-check request in F10 for a single reviewer pass. It does not replace a second independent reviewer, and it does not resolve the data-rights question in F16.",
-  "source_url": "https://www.nfl.com/injuries/",
-  "status": "Verified - no discrepancies found this pass",
-  "action_requested": "Use a second reviewer if a fully independent transcription check is required; otherwise treat the row values as verified against the live page on 2026-11-14."
+  "category": "Jurisdiction gap",
+  "item": "Netherlands (NL) jurisdiction not reviewed; repo flagged only Japan (F09)",
+  "detail": "The project owner is located in the Netherlands. Wet op de kansspelen art. 1 lid 1 (current text, in force since 12-02-2025) prohibits (a) offering a prize contest decided by chance that participants cannot dominantly influence, without a licence; (b) promoting participation in an unlicensed opportunity; and (c) knowingly using one. Whether skill-based leaderboards, referral features or rewards fall inside or outside that test is a legal question that this repository does not answer. The Kansspelautoriteit Kansspelwijzer lists licensed providers. Notes: research/nl-legal-review.md. Not a legal conclusion.",
+  "source_url": "https://wetten.overheid.nl/BWBR0002469/2025-02-12",
+  "status": "Legal review needed - Netherlands",
+  "action_requested": "Keep wagering, referral and reward features disabled until Dutch-law review. Check the Kansspelwijzer status of any sportsbook or price source before use."
  },
  {
   "flag_id": "F20",
+  "category": "Verification performed",
+  "item": "All 345 injury rows independently re-verified row by row against the live NFL.com page",
+  "detail": "Session 7c9eb69a re-read the official Week 10 injury report in full (8 chunks) on 2026-11-14 and compared every player, position, injury, practice status and game status against data/injuries_week10_2026.csv. All 28 team sections matched, and the per-team row counts independently recounted to 345, equal to the stored row count. All 14 game headers, kickoff times, broadcasters and listed records also matched. This was performed independently of session 30beeb55's separate T15 check, and both reached the same result, which satisfies the F10 spot-check request with two independent passes. Neither pass was an automated diff, and this does not resolve data rights (F16).",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Verified - no discrepancies found this pass",
+  "action_requested": "Treat row values as verified against the live page on 2026-11-14; re-verify on any refresh."
+ },
+ {
+  "flag_id": "F21",
   "category": "Site irregularity",
   "item": "The dashboard table reproduced an older NFL.com news list, not the current one",
   "detail": "The stored news list in data/news_week10_2026.csv contains two headlines that no longer appear in the NFL.com injury-page news section as read on 2026-11-14: 'Deshaun Watson enters concussion protocol ahead of Browns' Week 9 game vs. Saints' and 'Report: Ravens QB Tyler Huntley out for season with turf toe injury'. The news module on the official page rotates as new items publish, so a stored snapshot can drift from the live page without the underlying injury rows changing. The injury table itself is unaffected.",
@@ -180,7 +189,7 @@
   "action_requested": "Read the news list as a dated snapshot only. Do not treat absence or presence of a headline as a fact about a player; use the linked article."
  },
  {
-  "flag_id": "F21",
+  "flag_id": "F22",
   "category": "Missing verified data",
   "item": "The Thursday night result was not added to the games table",
   "detail": "The official Week 10 schedule now shows Commanders 24, Giants 21 as FINAL for the Thursday 12 November game. data/games_week10_2026.csv has no result column, so the site cannot display any score. This session did not add scores outside the claimed file scope; the value is verified but unpublished.",
