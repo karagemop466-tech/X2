@@ -22,7 +22,7 @@ Files listed are the ones each task touches. Shared outputs (`docs/`, `scripts/b
 | T07 | Legal check: wagering from Japan | needs review | e98c7ba0 | data/flags.csv (F09) | S03, S04 | Official Penal Code text and JSC page checked. Legal opinion still needed |
 | T08 | Executive summary | done | e98c7ba0 | scripts/build.py (exec summary) | S01, S03, S04 | Numbers computed by build script |
 | T09 | Site: landing, category subpages, Flagged for Review | done | e98c7ba0 | docs/, scripts/build.py | all | Static HTML, no external dependencies |
-| T10 | Integration: validate, build, PR, merge, Pages | in progress | e98c7ba0 | COORDINATION.md, PR | all | See log |
+| T10 | Integration: validate, build, PR, merge, Pages | done (merge + Pages step recorded in log) | e98c7ba0 | COORDINATION.md, PR | all | PR #1: https://github.com/karagemop466-tech/X2/pull/1 |
 
 ## Source registry
 
@@ -56,4 +56,6 @@ See `data/flags.csv` (F01–F14), also published at `docs/flagged.html` under "F
 - 2026-11-14 · e98c7ba0 · Claimed T01–T10 on branch `arena/e98c7ba0-x2`. Work done on this branch only.
 - 2026-11-14 · e98c7ba0 · T01 (repo review), T02 (injury data), T04, T06, T08 completed in this branch. T03, T09 built with `scripts/build.py`.
 - 2026-11-14 · e98c7ba0 · Data-file repair: four CSV files had unquoted commas (questions, suggestions, news, flags). Rewritten or repaired. Nothing else affected.
+- 2026-11-14 · e98c7ba0 · Integration check: `python3 scripts/build.py` passes (345 injury rows, 14 games, 11 pages, all links resolve, all row links official).
+- 2026-11-14 · e98c7ba0 · Pull request opened: https://github.com/karagemop466-tech/X2/pull/1 (base `main`, head `arena/e98c7ba0-x2`). Merge with `--merge` next, without waiting for approval, per the brief.
 - No merge conflicts. No other session has touched these files.
