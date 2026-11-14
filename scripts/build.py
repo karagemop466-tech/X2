@@ -461,7 +461,7 @@ NAV = [
     ("questions.html", "Questions"),
     ("requirements.html", "Requirements"),
     ("suggestions.html", "Suggestions"),
-    ("review.html", "Review path"),
+    ("review-path.html", "Review path"),
     ("verification.html", "Verification"),
     ("cross-check.html", "Independent cross-check"),
     ("flagged.html", "Flagged for review"),
@@ -537,7 +537,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 <h2>Start here</h2>
 <div class="cards">
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
-{card('review.html', 'Review path', 'A single ordered route through the open decisions, so one reviewer can choose a direction before anything is built. Start here to decide; use the other pages to check the evidence.')}
+{card('review-path.html', 'Review path', 'A single ordered route through the open decisions, so one reviewer can choose a direction before anything is built. Start here to decide; use the other pages to check the evidence.')}
 {card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made.')}
 {card('model-lines.html', 'Model & Week 11 lines', 'Our own originated spreads, totals and moneylines for Week 11 — originated side first, then total, then moneyline — with the fair line, market line and difference as separate columns.')}
 {card('price-snapshots.html', 'Price snapshots', 'The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F45).')}
@@ -1513,7 +1513,7 @@ _missing_counts = defaultdict(int)
 for _r in REVIEW_PATH:
     _missing_counts["blank" if _r["still_missing"] else "known"] += 1
 
-pages["review.html"] = ("Review path", f"""
+pages["review-path.html"] = ("Review path", f"""
 <h1>Review path — pick a direction before anything is built</h1>
 <p class="note">This page exists so one reviewer can choose a route through the project's open items, in order, with the
 evidence for each step in front of them. <strong>Nothing on this page is implemented, enabled or approved.</strong>
@@ -1848,6 +1848,37 @@ _new_intro = (
 pages["index.html"] = (pages["index.html"][0],
                        pages["index.html"][1].replace('<h2>Start here</h2>', _new_intro, 1))
 
+
+# ---------- collision guards ----------
+# Two parallel sessions can register the same page slug, or add two NAV entries
+# pointing at one file. Either silently loses a page (the later dict assignment
+# wins) or renders a duplicate menu item. Both must fail the build instead.
+# Written after session e208ba6d and session cf6709c0 both registered
+# "review.html" on 2026-11-14: the console page overwrote the path page and the
+# navigation showed two "review" links to one file.
+# An intentional append reuses the existing value, e.g.
+#   pages["x.html"] = (pages["x.html"][0], pages["x.html"][1] + f"""...""")
+# An accidental overwrite assigns a fresh literal and silently discards the
+# earlier page. Only the second form is a collision.
+_src = open(__file__, encoding="utf-8").read()
+_slug_assignments = re.findall(r'^pages\["([^"]+)"\]\s*=\s*(.{0,40})', _src, re.M)
+_overwrites = sorted({
+    slug for slug, rhs in _slug_assignments
+    if sum(1 for sl, _r in _slug_assignments if sl == slug) > 1
+    and sum(1 for sl, r in _slug_assignments if sl == slug and not r.startswith('(pages[')) > 1
+})
+if _overwrites:
+    raise SystemExit(
+        "BUILD FAILED: page slug assigned more than once without appending, so an "
+        f"earlier page would be silently lost: {_overwrites}")
+_nav_hrefs = [h for h, _l in NAV]
+_dupe_nav = sorted({h for h in _nav_hrefs if _nav_hrefs.count(h) > 1})
+if _dupe_nav:
+    raise SystemExit(f"BUILD FAILED: NAV has more than one entry for: {_dupe_nav}")
+
+_missing_nav = [h for h, _l in NAV if h not in pages]
+if _missing_nav:
+    raise SystemExit(f"BUILD FAILED: NAV links to pages that are never generated: {_missing_nav}")
 
 for slug, (title, body) in pages.items():
     with open(os.path.join(DOCS, slug), "w", encoding="utf-8") as f:

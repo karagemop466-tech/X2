@@ -592,5 +592,14 @@
   "source_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm",
   "status": "Resolved",
   "action_requested": "Published interval and p-value replaced; point estimate 0.885 unchanged. The correct reading is that the data do not distinguish the slope from 1.0, which is the opposite of the previous p 0.0000."
+ },
+ {
+  "flag_id": "F73",
+  "category": "Build integrity (resolved)",
+  "item": "Two sessions registered the same page slug; one page was silently discarded",
+  "detail": "scripts/build.py assigned pages[\"review.html\"] twice: session e208ba6d wrote the \"Review console\" page and session cf6709c0 wrote the \"Review path\" page. The later assignment silently replaced the earlier page, and NAV carried two entries pointing at review.html. The live site served only the console page after PR #35 merged. Every build check passed, because a dropped page still resolves as a page.",
+  "source_url": "https://karagemop466-tech.github.io/X2/docs/review-path.html",
+  "status": "Resolved",
+  "action_requested": "My page moved to review-path.html so both publish (30 pages). scripts/build.py now fails the build on a slug assigned twice without appending, on two NAV entries pointing at one file, and on a NAV entry with no generated page. Verified by reintroducing the bug."
  }
 ]
