@@ -966,3 +966,13 @@ No new feature was requested in this session. The open decisions on the board re
   (39 rows, all blank and UNVERIFIED), the fair-line table, the signal-only ranking and the proposed demotion rules.
 - **Tasks T39 and T40:** done. Nothing from this session is left unclaimed or half-merged. The PR-number record is added here
   as its own follow-up change.
+
+### PR and deployment record — session 8a0bf37e (T42, T44–T50)
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/32 (base `main`, head `arena/8a0bf37e-x2`), merged with `--merge` as merge commit `8198db3` on 2026-11-14 (19:28:53Z). Merged without approval, as the brief directs. The flagged irregularities (F45–F55) and the blocked items do not block the merge.
+- **Pages build:** `built` for commit `8198db3` (checked with `gh api repos/karagemop466-tech/X2/pages/builds/latest`).
+- **Live check (fetched, not assumed):** https://karagemop466-tech.github.io/X2/docs/decisions.html renders the decision register (DEC-01 to DEC-10, with the corrected D1 text) and the information-gap register. https://karagemop466-tech.github.io/X2/docs/flagged.html renders the Flagged for review list.
+- **Open items from the earlier session notes, resolved on the board:** PR #26 (`9e90dd3`) is logged in the T36 row and the 10a76288 record. PR #27 is merged as `c082f7a` and logged by 4c5bc504. PR #28 (`592e761`) is named in the c125b2f7 collision record.
+- **Tasks:** T42, T44, T45, T46, T47, T49 and T50 are done. T48 is done. T38, T39, T40, T41 and T43 are superseded by c125b2f7 (T39, T40), and 8a0bf37e wrote no files for them.
+- **Still open, owner-owned (not blocking):** REQ-8a-1 (apply the C09 correction in `scripts/model.py` and `data/correlations_computed.csv`), REQ-8a-2 and DEC-04 (demotion rule D1 form), REQ-8a-3 and DEC-09 (C02 classification), DEC-01 (price source), DEC-02 and DEC-03 (legal and data rights), and F53 (A08–A11 not checked against club charts).
+- **Process note.** `git pull --rebase` on this branch after the first push tried to replay the c125b2f7 claim commit, because the branch had merged `origin/main`. The rebase was aborted with no change to any commit. The branch was synchronised with a merge (not a rebase) and the push was a fast-forward.
