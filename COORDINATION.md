@@ -40,8 +40,9 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `session-09d7cc77` | `arena/09d7cc77-x2` | Parallel Node dashboard (`src/`), docs, JSON data. PR #4 merged into `main`; Node output remains separate from the root-forwarded Python Pages site. |
 | `7678436e` | `arena/7678436e-x2` | Source-link/validation follow-up to the live Python dashboard; merged to `main` as PR #7 (cf2d454). F16 terms/data-rights, F17 numeric-cutoff, and F18 Node third-party-depth review flags remain explicit. |
 | `30beeb55` | `arena/30beeb55-x2` | Session 30beeb55: claimed T13, T14, T15 on 2026-11-14. Branch from `main` @ `cf2d454`. Merged to `main` via PR #8 (merge commit e33a7f5). |
-| `7c9eb69a` | `arena/7c9eb69a-x2` | **Current session.** Independent row-by-row re-verification of the Week 10 snapshot, plus the Decision path, Verification record and suggestion review matrix (T17). Merged `origin/main` (PR #8) and resolved flag/task ID collisions without discarding 30beeb55's work. Performs the final integration step. |
-| `45a0ec8c` | `arena/45a0ec8c-x2` | Session 45a0ec8c. Claimed T18 on 2026-11-14 after finding T13–T15 already done on `main` (30beeb55, PR #8). Adds evidence and new flags F23–F29 only; does not redo T13–T15. |
+| `7c9eb69a` | `arena/7c9eb69a-x2` | Independent row-by-row re-verification of the Week 10 snapshot, plus the Decision path, Verification record and suggestion review matrix (T17). Resolved flag/task ID collisions with 30beeb55 without discarding work. **Merged to `main` via PRs #9–#11.** |
+| `45a0ec8c` | `arena/45a0ec8c-x2` | Session 45a0ec8c. Claimed T18/T19 on 2026-11-14 after finding T13–T15 already done on `main` (30beeb55, PR #8). Adds designation/identity cross-check evidence (SRC-25–SRC-29) and new flags F23–F29 only; does not redo T13–T15. **Merged to `main` via PRs #12–#13.** |
+| `52ca9f77` | `arena/52ca9f77-x2` | **Current session — final integration.** Claimed T13 (superseded by 30beeb55's merged PR #8; no duplication — see merge log). Located the official club depth charts both prior passes missed, and as final integration supplemented the merged T13 state with club-chart evidence (Node F-05 update, new Node F-08), reconciled Python F18/SRC-24/README, applied 45a0ec8c's cross-scope requests, and will deliver the final PR/merge/Pages confirmation. Task recorded as **T20** (the IDs T18/T19 were taken by 45a0ec8c). |
 
 ## Task board (combined — all sessions)
 
@@ -75,7 +76,12 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | T6 | Build the GitHub Pages site (landing + subpages, dashboard UI) | done | session-09d7cc77 | src/**, site/** (generated) | `npm run verify`: 196 internal links, all resolve | Node dashboard; per-row source links |
 | T7 | Integration: merge into main, re-verify, confirm live site | done | session-09d7cc77 | main (merge), COORDINATION.md, README.md | Re-verified combined data; confirmed live Pages | See merge/conflict log below |
 
-## Source registry (combined)
+**T20 (52ca9f77 — final integration supplement; added after all other tasks were done):**
+
+| ID | Task | Status | Owner | Files touched | Sources | Notes |
+|----|------|--------|-------|---------------|---------|-------|
+| T20 | Final integration: locate an official depth-chart source, supplement the merged T13 state with verified club-chart values, reconcile cross-register records, re-verify, PR, merge, confirm Pages | done | 52ca9f77 | Node: `data/sources.json`, `data/depth-deficiencies.json`, `data/flagged.json`, `docs/08-injuries-and-depth.md`, `docs/10-flagged-for-review.md`. Integration reconciliation: `data/flags.csv` (F18), `data/sources.csv` (SRC-24), `README.md` (two bullets). Board: `COORDINATION.md`. No Python data values or strategy rows changed. | Detroit Lions official club depth chart: https://www.detroitlions.com/team/depth-chart · New England Patriots official club depth chart: https://www.patriots.com/team/depth-chart · NFL.com team roster pages (link to the club charts): https://www.nfl.com/teams/detroit-lions/roster · https://www.nfl.com/teams/new-england-patriots/roster · NFL.com injury report (statuses re-checked) | The two prior T13 passes (30beeb55, 7c9eb69a) only tested the `nfl.com/teams/{team}/depth-chart` URL pattern (404). The club official websites publish weekly depth charts and are linked from the NFL.com roster pages. All seven Node depth rows re-verified against them; club-chart-confirmed ordering restored with per-row citations; one contradicted third-party value corrected (Node F-08: Ourlads had Khalil Dorsey 2nd behind D.J. Reed; club chart: Rock Ya-Sin 2nd, Dorsey 3rd). Both club pages self-label the charts "Unofficial" (Node F-05 caveat). Fields no club chart confirms stay blank. |
+
 
 Every verified value links to one of these official pages (full lists also at
 `data/sources.csv` and `docs/sources.html`):
@@ -108,6 +114,11 @@ Every verified value links to one of these official pages (full lists also at
 - NFL Support odds FAQ and NFL data-partner announcement: https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL · https://www.nfl.com/news/nfl-draftkings-fanduel-fanatics-sports-betting-partners
 - Government of Japan and National Police Agency online-gambling guidance: https://www.gov-online.go.jp/article/202411/entry-6786.html · https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html
 - NIST/SEMATECH model validation, multiple comparisons, correlation, confidence intervals and bootstrap: https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm · https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm · https://www.itl.nist.gov/div898/handbook/glossary.htm · https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm · https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm
+
+**T20 supplement (52ca9f77; official club depth-chart sources, also in `data/sources.json` as `lions-depth` / `patriots-depth`):**
+- Detroit Lions — official club-site depth chart: https://www.detroitlions.com/team/depth-chart — page self-labels the chart "2026 Unofficial Depth Chart Compiled by Lions Football Communications".
+- New England Patriots — official club-site depth chart: https://www.patriots.com/team/depth-chart — page self-labels the chart "unofficial and is published by the writers of Patriots.com", reflecting writer opinion.
+- NFL.com team roster pages (each roster page links to the club depth chart; roster membership/positions cross-checked): https://www.nfl.com/teams/detroit-lions/roster · https://www.nfl.com/teams/new-england-patriots/roster
 
 ## Verification performed
 
@@ -158,6 +169,37 @@ Every verified value links to one of these official pages (full lists also at
 - Added `data/decision-chain.csv` (D01-D10 ordered gates with owner and required answer), `data/suggestion_review.csv` (per-suggestion recommended path, trade-off and blocking gate), and new site pages `decision-path.html` and `verification.html`.
 - `python3 scripts/build.py` passes: 13 pages, 345 injury rows, 28 teams, 61 depth rows, link and row-source checks passed. `npm run build` and `npm run verify` pass.
 
+**Session 52ca9f77 (T20 — final integration supplement, 2026-11-14):**
+- Found the official depth-chart source both prior T13 passes missed: the NFL.com
+  team roster pages link to the clubs' own weekly depth charts
+  (detroitlions.com/team/depth-chart, patriots.com/team/depth-chart). Both pages
+  were fetched on 2026-11-14 (same week as the Week 10 snapshot).
+- Verified each of the seven merged Node depth rows line by line against the club
+  charts plus the NFL.com injury report, and restored club-chart-confirmed ordering
+  in the merged T13 row schema (blank fields only where no club chart confirms:
+  e.g. Walter Rouse's elevating backup — no third-string guard is listed).
+- Corrections and confirmations: DET C — Scruggs 2nd behind Mays (confirmed); DET
+  CB — club chart lists Rock Ya-Sin 2nd, Khalil Dorsey 3rd, Nick Whiteside 4th
+  behind Reed (contradicts the former Ourlads "Dorsey 2nd" — new Node flag F-08);
+  DET WR — Carter 2nd behind St. Brown (confirmed; third-party "SWR" label not
+  used); NE RB — Stevenson 1st / Henderson 2nd / Kiner 3rd / Larison 4th
+  (confirmed); NE interior line — club chart lists Ben Brown 1st-string LG and
+  2nd-string C, Walter Rouse 2nd-string LG and 2nd-string RG, Jared Wilson 1st C,
+  Matt Pryor 1st RG (the former third-party RG value for Ben Brown is unsupported).
+- Node flags: F-05 rewritten (club charts located and used, self-labeled
+  "unofficial" caveat), F-01 updated (club-chart LG/C detail), F-08 added.
+- Python-side reconciliation: `data/flags.csv` F18 and `data/sources.csv` SRC-24
+  updated to record the full resolution history; README depth-chart bullets
+  corrected. No Python data values were changed.
+- Partial F10 check (independent of the two full passes): the live injury page was
+  re-fetched and 16+ rows across the WAS, NYG, NE, DET and KC sections matched the
+  stored transcription.
+- Builds after all edits: `python3 scripts/build.py` (13 pages, 345 injury rows,
+  28 teams, 61 depth rows, link + row-source checks pass; `python3 -m py_compile`
+  clean), `npm run build` (12 pages) and `npm run verify` (194 internal links, all
+  JSON rows source-resolve, flagged register now 8 rows) all pass;
+  `git diff --check` clean.
+
 ## Irregularities (combined)
 
 **Session e98c7ba0 flags (F01–F15, published at `docs/flagged.html`):**
@@ -185,6 +227,7 @@ Every verified value links to one of these official pages (full lists also at
 - Node F-01 / F-05 updated: F-01 now cites only the official C position; F-05 records the NFL.com depth-chart 404.
 - Official depth chart still not found (the NFL.com depth-chart URL is a 404). Starter/backup ordering stays blank across all sessions until an official source is identified.
 - The live Pages site is built from `docs/` by the Python builder. The Node output in `site/` is gitignored and is not published.
+- **Superseded in part by the T20 integration supplement (52ca9f77):** an official-domain depth source was found after this note was written — the club official websites' weekly charts (detroitlions.com, patriots.com). Club-chart-confirmed ordering was restored with citations; the caveat and the F-05/F-08 flags below carry the details.
 
 **Session 09d7cc77 flags (F-01–F-07, published on the Node Flagged for Review page):**
 - F-01: Ben Brown position discrepancy (C in injury report vs RG on depth chart).
@@ -201,8 +244,8 @@ Every verified value links to one of these official pages (full lists also at
 - F05: Week 10 bye status is now confirmed from the official schedule, not inferred from injury-report absence.
 - F16: written permission for the existing NFL injury snapshot is not recorded; data rights remain unresolved.
 - F17: numerical validation cutoffs are blank/unverified; no strategy has passed.
-- F18: separate Node depth-deficiency rows cite Ourlads third-party charts; those player/backup values are not official NFL facts. T12 logged a request and did not edit the Node-owned file.
-- The Node `data/flagged.json` IDs `F-01`–`F-07` and Python `data/flags.csv` IDs `F01`–`F18` are separate registers; do not conflate their identifiers.
+- F18: separate Node depth-deficiency rows cited Ourlads third-party charts. T12 logged the request; T13 (30beeb55) blanked the third-party values; the T18 integration supplement (52ca9f77) located the official club depth charts and restored club-chart-confirmed values with citations. Resolved in data — see the F18 row in `data/flags.csv`.
+- The Node `data/flagged.json` IDs `F-01`–`F-08` and Python `data/flags.csv` IDs `F01`–`F22` are separate registers; do not conflate their identifiers.
 
 ## Requests between sessions
 
@@ -233,6 +276,13 @@ by session-09d7cc77:
 **T13 request (unclaimed):** The separate Node `data/depth-deficiencies.json` contains player/backup values sourced partly from Ourlads, a third-party chart provider. The Node docs disclose that limitation, but the user's official-source-only rule means these cannot be described as official NFL facts. T12 added Python Flag F18 with a link to that project file; it did not edit the completed Node task's owned data. A Node dashboard owner should blank/suppress these values or locate an official primary depth-chart source before promoting that output.
 
 **T13 request — resolved (30beeb55).** Node depth rows now carry only official NFL.com injury status. F18 was updated by the integration step to say so.
+
+**T13 request — final resolution (T20 supplement, 52ca9f77).** The official club
+depth charts were located and verified; club-chart-confirmed ordering was restored
+in the Node data with per-row citations, one contradicted third-party value was
+corrected (Node F-08), and the self-labeled "unofficial" caveat on both club charts
+is recorded (Node F-05). Python F18/SRC-24 record the full history. Reviewer can
+confirm on the Flagged for Review page.
 
 **T14 request (30beeb55 → integration):** added F19 (Netherlands) to `data/flags.csv`; added `wetten.overheid.nl` and `www.kansspelautoriteit.nl` to the builder's official-host allow-list; added a README note.
 
@@ -320,3 +370,39 @@ data and live site._
 | Branch history | The branch was force-updated once, from `dd0bc4f` to `a005ef7`, then to `25ddc28`, to replace this session's own superseded T13–T15 commits (already on main). Tip: `25ddc28`. |
 
 **Open items handed to the next session:** F04, F11 and F12 status changes requested (see F23–F25). Designation conflicts F26 and absence F27 need owner review. Blank Injury fields F28 and label mismatches F29 remain open. Cross-scope request for `docs/09` (Ourlads wording) is still unapplied. F16 (data rights) remains critical.
+
+## Merge / conflict log — session 52ca9f77 (final integration)
+
+- **2026-11-14 · session 52ca9f77 · duplicate concurrent claim of T13 + rebase conflict.**
+  This session claimed T13 and pushed the claim (commit `211a986`) while session
+  30beeb55 was independently completing it; 30beeb55's PR #8 (T13/T14/T15/T16)
+  merged to `main` before this session's data work was pushed, and 7c9eb69a's
+  PRs #9–#11 merged on top. The first `git pull --rebase` therefore conflicted on
+  `COORDINATION.md` (`cf2d454..5f01974`).
+  **Root cause:** both sessions claimed the same unclaimed task (T13) at roughly
+  the same time from the same base commit; neither claim was stale (both active
+  within the 60-minute window), so the takeover rule did not apply.
+  **Resolution (nothing of the other sessions' work discarded):**
+  - The rebase was aborted and this session's branch was reset to
+    `origin/main` @ `5f01974`, adopting the merged T13/T17 state as-is.
+  - This session's own pre-rebase commits (claim, its first T13 data edit, its
+    first reconciliation) were replaced by new supplement commits that build on
+    the merged state instead of overwriting it. Their substance is preserved in
+    the T20 supplement: this session verified the club official depth charts
+    (detroitlions.com, patriots.com) that both prior passes had not found, and
+    restored club-chart-confirmed ordering with citations, rather than leaving
+    the fields blank.
+  - Node data: `data/depth-deficiencies.json` keeps 30beeb55's row schema and
+    row order; only blank depth fields were filled where a club chart confirms
+    the value, with `verification` text and `source` arrays updated.
+  - Node flags: F-05 rewritten, F-01 updated, F-08 added (supersedes the "no
+    official depth chart found" wording while retaining the 404 fact).
+  - Python side: F18 and SRC-24 rewritten to record the full three-step history
+    (T12 request → T13 blanking → T20 club-chart supplement); README bullets
+    corrected. No Python data values, strategy rows, gates, or requirements were
+    touched.
+  - **Process irregularity logged:** duplicate claims of one task can recur while
+    sessions work concurrently; the claim commit landed on the remote first for
+    30beeb55's PR path. Future sessions should re-read `COORDINATION.md` from
+    `origin/main` immediately before claiming, and push claims with
+    `--force-with-lease` semantics avoided (plain push) so collisions surface.
