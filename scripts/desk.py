@@ -65,7 +65,7 @@ def add(cid, check, method, result, status, src):
 
 
 expected_cols = ["season", "week", "date_as_shown", "away_team", "away_points", "home_team", "home_points",
-                 "game_url", "source_url"]
+                 "game_url", "source_url", "neutral_site"]
 cols_ok = list(results[0].keys()) == expected_cols
 add("RF01", "Schema", "Header and field count on games_2026_results.csv",
     f"{len(results)} rows; columns as expected: {cols_ok}",

@@ -1,5 +1,5 @@
 check_id,check,method,result,status,source_url
-RF01,Schema,Header and field count on games_2026_results.csv,137 rows; columns as expected: False,FAIL,https://www.nfl.com/schedules/2026/by-week/week-11
+RF01,Schema,Header and field count on games_2026_results.csv,137 rows; columns as expected: True,pass,https://www.nfl.com/schedules/2026/by-week/week-11
 RF02,No duplicate games,"Unique (week, away, home)",137 unique of 137,pass,https://www.nfl.com/schedules/2026/by-week/week-11
 RF03,Team set,Distinct team abbreviations. The register writes the Rams as LA; the official Week 11 page and the second transcription write LAR (flag F46).,32 teams,pass,https://www.nfl.com/standings/
 RF04,Games per week,Count by week (consistent with weeks 1-9 complete plus the Week 10 Thursday game),"wk1:16, wk2:16, wk3:16, wk4:16, wk5:15, wk6:14, wk7:14, wk8:14, wk9:15, wk10:1",pass (count only; not re-fetched this session),https://www.nfl.com/schedules/2026/by-week/week-10
