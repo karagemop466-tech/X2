@@ -228,36 +228,36 @@
   "flag_id": "F26",
   "category": "Injury designation conflict",
   "item": "Four Week 10 designations differ between the injury table and NFL.com status article and roundups",
-  "detail": "Table (injuries_week10_2026.csv) vs NFL.com \"Week 10 injury report: player statuses\" article (SRC-27) and NFL.com Saturday roundup (SRC-29). Walker (KC RB, Groin): table Questionable; article Out. Mallory (IND TE, Hamstring): table Questionable; article Out; roundup says downgraded to Out. Freiermuth (PIT TE, Illness): not in table; article and roundup Questionable. Key (IND DE, Hamstring): table Questionable; not in article; roundup says activated from IR with no game designation. The table and the article are both official NFL.com pages, so the table entries are unverified against the article. Table values have not been changed. Article comparison: 157 of 160 designations match.",
+  "detail": "Table (injuries_week10_2026.csv) vs NFL.com \"Week 10 injury report: player statuses\" article (SRC-27) and NFL.com Saturday roundup (SRC-29). Walker (KC RB, Groin): table Questionable; article Out. Mallory (IND TE, Hamstring): table Questionable; article Out; roundup says downgraded to Out. Freiermuth (PIT TE, Illness): not in table; article and roundup Questionable. Key (IND DE, Hamstring): table Questionable; not in article; roundup says activated from IR with no game designation. The table and the article are both official NFL.com pages, so the table entries are unverified against the article. Table values have not been changed. Article comparison: 157 of 160 designations match. Third targeted pass (session 3988bdab, 2026-11-14): each case was re-checked against the live NFL.com Week 10 injury table — Walker (KC RB) Questionable, Mallory (IND TE) Questionable, Key (IND DE) Questionable, and Freiermuth (PIT TE) absent from the table. The CSV matches the live table exactly; table values unchanged. The article/roundup disagreements are official-source-vs-official-source conflicts and remain for owner review.",
   "source_url": "https://www.nfl.com/news/nfl-week-10-injury-report-2026-season",
-  "status": "Open - conflict",
+  "status": "Open - conflict; table values verified against the live injury table (2026-11-14)",
   "action_requested": "Owner review: confirm the current designation on the live injury page, then correct or flag the rows. Do not guess."
  },
  {
   "flag_id": "F27",
   "category": "Missing row",
   "item": "Lamar Jackson (BAL QB) is absent from the Week 10 injury table",
-  "detail": "The official NFL.com Week 10 injury table does not list Lamar Jackson, although the official roundup reports a thumb injury and surgery. The table was checked row by row (F20). This is a coverage gap, or the injury is not on the report. The row is not added because no official table entry was found. See F25 for the official timeline.",
+  "detail": "The official NFL.com Week 10 injury table does not list Lamar Jackson, although the official roundup reports a thumb injury and surgery. The table was checked row by row (F20). This is a coverage gap, or the injury is not on the report. The row is not added because no official table entry was found. See F25 for the official timeline. Third targeted pass (session 3988bdab, 2026-11-14): the live Ravens section of the Week 10 injury table lists eight players (Ali, Bateman, Hamilton, Hawkins, Hibner, Ioane, Randall, Wiggins) and does not list Lamar Jackson. Absence confirmed; the row is not added because no official table entry exists.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Open - unverified",
+  "status": "Open - absence verified on the live injury table (2026-11-14); row not added",
   "action_requested": "Owner review: confirm whether the NFL injury report lists Jackson. If it does not, record that absence explicitly."
  },
  {
   "flag_id": "F28",
   "category": "Blank fields",
   "item": "Four table rows have blank Injury fields although the official roundup gives descriptions",
-  "detail": "Blank Injury field in the table for Damien Lewis (CAR G), George Pickens (DAL WR), Dion Dawkins (BUF T) and Dylan Fairchild (CIN G). The official NFL.com Week 10 roundup and status article name injuries for some of them. The blanks are kept because no table-source value has been confirmed. Values are not entered from the roundup in this pass.",
+  "detail": "Blank Injury field in the table for Damien Lewis (CAR G), George Pickens (DAL WR), Dion Dawkins (BUF T) and Dylan Fairchild (CIN G). The official NFL.com Week 10 roundup and status article name injuries for some of them. The blanks are kept because no table-source value has been confirmed. Values are not entered from the roundup in this pass. Third targeted pass (session 3988bdab, 2026-11-14): the live NFL.com injury table itself shows a blank Injury field for Damien Lewis, George Pickens, Dion Dawkins and Dylan Fairchild (all Full Participation). Blanks are the official table values and are kept; roundup injury descriptions are not table values.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Open - blank, unverified",
+  "status": "Blank fields verified against the live injury table (2026-11-14); blanks kept",
   "action_requested": "Owner or integration: confirm each injury on the live injury page; enter only if confirmed"
  },
  {
   "flag_id": "F29",
   "category": "Position label mismatch",
   "item": "Position labels differ between the injury table and the NFL.com status article",
-  "detail": "Table vs article: Rouse T vs OL; Brown C vs OL; Van Roten G vs OL; Christensen G vs OL. The NFL.com report uses specific positions in the table and a generic OL group in the article. Table labels are kept as displayed in the table. Not an injury-status disagreement, so the table row is left as is.",
+  "detail": "Table vs article: Rouse T vs OL; Brown C vs OL; Van Roten G vs OL; Christensen G vs OL. The NFL.com report uses specific positions in the table and a generic OL group in the article. Table labels are kept as displayed in the table. Not an injury-status disagreement, so the table row is left as is. Third targeted pass (session 3988bdab, 2026-11-14): the live injury table shows the specific labels (T, C, G) exactly as in the CSV; the status article uses a generic OL grouping. The site uses the injury-table labels.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Open - label only",
+  "status": "Resolved - table labels match the live NFL.com table (2026-11-14)",
   "action_requested": "Owner review: note which label the site uses for OL players"
  },
  {

@@ -44,6 +44,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `45a0ec8c` | `arena/45a0ec8c-x2` | Session 45a0ec8c. Claimed T18/T19 on 2026-11-14 after finding T13–T15 already done on `main` (30beeb55, PR #8). Adds designation/identity cross-check evidence (SRC-25–SRC-29) and new flags F23–F29 only; does not redo T13–T15. **Merged to `main` via PRs #12–#13.** |
 | `52ca9f77` | `arena/52ca9f77-x2` | **Current session — final integration.** Claimed T13 (superseded by 30beeb55's merged PR #8; no duplication — see merge log). Located the official club depth charts both prior passes missed, and as final integration supplemented the merged T13 state with club-chart evidence (Node F-05 update, new Node F-08), reconciled Python F18/SRC-24/README, applied 45a0ec8c's cross-scope requests, and will deliver the final PR/merge/Pages confirmation. Task recorded as **T20** (the IDs T18/T19 were taken by 45a0ec8c). |
 | `324b0cd2` | `arena/324b0cd2-x2` | **Current session.** Claimed T13 before `main` advanced; T13 was completed in parallel by 30beeb55 (PR #8), so this session adopts main's remediation and instead performs the final integration as **T21** (renumbered from locally drafted T20 after 52ca9f77 claimed it): fixes the Node table-token render bug (F30), adds the Node F-09 audit trail, resolves handed-off F21 (stale news rows) and F22 (verified Thursday result), and records the integration. Identifiers renumbered across four main advances: T18 (taken by 45a0ec8c), T20 (taken by 52ca9f77), F23 to F30, SRC-25 to SRC-30, F-08 to F-09. |
+| `3988bdab` | `arena/3988bdab-x2` | **Current session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
 
 ## Task board (combined — all sessions)
 
@@ -83,6 +84,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 |----|------|--------|-------|---------------|---------|-------|
 | T20 | Final integration: locate an official depth-chart source, supplement the merged T13 state with verified club-chart values, reconcile cross-register records, re-verify, PR, merge, confirm Pages | done | 52ca9f77 | Node: `data/sources.json`, `data/depth-deficiencies.json`, `data/flagged.json`, `docs/08-injuries-and-depth.md`, `docs/10-flagged-for-review.md`. Integration reconciliation: `data/flags.csv` (F18), `data/sources.csv` (SRC-24), `README.md` (two bullets). Board: `COORDINATION.md`. No Python data values or strategy rows changed. | Detroit Lions official club depth chart: https://www.detroitlions.com/team/depth-chart · New England Patriots official club depth chart: https://www.patriots.com/team/depth-chart · NFL.com team roster pages (link to the club charts): https://www.nfl.com/teams/detroit-lions/roster · https://www.nfl.com/teams/new-england-patriots/roster · NFL.com injury report (statuses re-checked) | The two prior T13 passes (30beeb55, 7c9eb69a) only tested the `nfl.com/teams/{team}/depth-chart` URL pattern (404). The club official websites publish weekly depth charts and are linked from the NFL.com roster pages. All seven Node depth rows re-verified against them; club-chart-confirmed ordering restored with per-row citations; one contradicted third-party value corrected (Node F-08: Ourlads had Khalil Dorsey 2nd behind D.J. Reed; club chart: Rock Ya-Sin 2nd, Dorsey 3rd). Both club pages self-label the charts "Unofficial" (Node F-05 caveat). Fields no club chart confirms stay blank. |
 | T21 | Final integration (session 324b0cd2): Node table-token build fix (F30), Node F-09 audit trail, resolve handed-off F21/F22, third verification pass, PR/merge/Pages record | done | 324b0cd2 | `src/build.mjs`, `src/verify.mjs`, `data/flagged.json` (F-09), `data/flags.csv` (F21, F22, F30), `data/games_week10_2026.csv` (result column), `data/news_week10_2026.csv` (2 stale rows removed), `data/requirements.csv` (R17), `data/sources.csv` (SRC-24 note, SRC-30), `scripts/build.py` (games result column, verification rows), generated `docs/`, COORDINATION.md | NFL.com injury report (re-read 2026-11-14); NFL Week 10 schedule (Commanders 24, Giants 21 FINAL); NFL game center; first-party repo records for build facts | 30beeb55's T13 remediation and 52ca9f77's T20 club-chart supplement were adopted unchanged — no duplicate edits, nothing discarded. Node build bug found and fixed: no generated Node page had ever rendered a data table. F21: two stale headlines removed (confirmed absent from the live news section by this session's own page read). F22: independently re-verified on the official schedule, then published in the games table. |
+| T22 | Honesty consistency across the Node dashboard: unrank the leaderboard (pre-filled ranks 1–5 with no data), remove the unapproved "50+" sample-size cutoff, make correlation methods read as not-yet-computed, align the Node exec summary / leaderboard docs with the current evidence state (club-chart supplement + caveats), refresh stale requirement wording, third targeted live verification pass, closing PR/merge/Pages record | done (record appended post-merge below) | 3988bdab | `data/leaderboard.json`, `data/validation-gates.json`, `data/correlations.json`, `docs/00-executive-summary.md`, `docs/06-correlation.md`, `docs/07-leaderboard.md`, `data/requirements.csv` (R12/R17), `data/flags.csv` (F26–F29 verification notes only), `COORDINATION.md`, generated `docs/` | NFL.com Week 10 schedule + injury report (live re-check 2026-11-14), SRC-25/SRC-26/SRC-28 (independently re-opened), NIST/gov references unchanged | Renumbered after collisions (locally drafted T18/T20/T21 all taken). Every removed value is one that cannot be confirmed from an official source; nothing was filled in and no table value changed. Full record below. |
 
 
 Every verified value links to one of these official pages (full lists also at
@@ -496,3 +498,68 @@ data and live site._
 | Open handoffs (unchanged from 52ca9f77's close-out, plus one) | F16 (data rights — critical), F19 (Netherlands legal review), F26/F27/F28 (designation decisions), F-01 (Ben Brown position basis), F-05 (club-chart self-label caveat, accepted-by-design), F-08 (corrected Reed backup — review requested), **F-09 (audit trail — reviewer confirmation requested)**, F17 (numeric cutoffs), D01–D10 gates. No strategy has passed validation; no odds, correlation, or performance value exists in the repo. |
 
 **Session close-out (324b0cd2):** T21 done and merged; live site verified. This session made no edits to injury rows, depth values, odds, forecasts, correlation values, or strategy results. All published NFL values remain sourced and spot-checked; unverified values remain blank and flagged.
+
+## Session 3988bdab — T22 record, third targeted verification pass, collision log (2026-11-14)
+
+**T22 — honesty consistency (the one gap no other session covered).** No table
+value was changed and nothing was filled in; only values that cannot be confirmed
+from an official source were removed or explicitly de-approved:
+
+- `data/leaderboard.json`: pre-filled ranks 1–5 (with no performance data) are
+  removed — every entry is now "registered, unranked", rank cells blank, and
+  reward cells read "Not defined — disabled pending legal, rights and validation
+  review (D10)".
+- `data/validation-gates.json` G-02: the unapproved "methodology suggests 50+"
+  sample-size figure is removed; the pass condition now requires a minimum
+  pre-declared in an approved statistical plan and states that no numeric cutoff
+  is approved (F17 policy).
+- `data/correlations.json` and `docs/06-correlation.md`: method strings no longer
+  read as if correlations were already computed; all are "to be computed … (not
+  yet computed)" and all values remain blank.
+- `docs/00-executive-summary.md`: findings rewritten to the current evidence
+  state — CLV is attributed to methodology references (not "the cleanest" NFL
+  fact), the depth finding now matches the club-chart supplement with its
+  "unofficial" self-label caveat (F-05/F-08) and treats game effects as
+  conditional scenarios, and the odds claim is repository-scoped.
+- `docs/07-leaderboard.md`: rules now state that no strategy is currently ranked
+  or rewarded and that rewards are design intent, not approved facts.
+- `data/requirements.csv` R12/R17: stale flag-range and PR-status wording
+  refreshed to the merged state (PRs #1–#18) and the full flag ID spaces.
+- `data/flags.csv` F26–F29: third-pass live-table evidence appended (below);
+  status strings updated. F04/F11/F12 and `docs/09` wording were already
+  applied by session 52ca9f77 and are adopted unchanged.
+
+**Third targeted verification pass (live, 2026-11-14, session 3988bdab).**
+Independent of the T15/T17 full passes and the 324b0cd2 pass; focused on the
+combined tree after T22 and on the remaining open evidence questions:
+
+| Check | Source (live) | Result |
+|---|---|---|
+| Week 10 schedule: 14 game headers, days, times, broadcasts | https://www.nfl.com/schedules/2026/by-week/week-10 | All 14 match `data/games_week10_2026.csv` |
+| Week 10 bye list | same schedule page ("Teams on Bye") | CHI, DEN, PHI, TB confirmed |
+| Thursday result | same schedule page | "Commanders 24, Giants 21, FINAL" — consistent with the games-table result cell |
+| Injury sections read live (WAS, NYG, NE, DET, KC, ATL, MIN, GB, JAX, TEN, BUF, NYJ, MIA, IND, CAR, NO, HOU, CLE, DAL, PIT, CIN, LAC, BAL) | https://www.nfl.com/injuries/ | Every checked row matches the CSV exactly |
+| F26 designations (Walker, Mallory, Key, Freiermuth) | live injury table | Walker/Mallory/Key = Questionable as in CSV; Freiermuth absent from table as in CSV; article/roundup conflicts remain flagged; no value changed |
+| F27 Lamar Jackson | live Ravens section (8 players) | Not listed; absence confirmed; row not added |
+| F28 blank Injury fields (Lewis, Pickens, Dawkins, Fairchild) | live injury table | Blank on the official table itself; blanks kept |
+| F29 position labels (Rouse T, Brown C, Van Roten G, Christensen G) | live injury table | Table labels match the CSV; the article's generic OL grouping is label-only |
+| SRC-25 designation definitions | https://www.nfl.com/news/competition-committee-approves-revisions-to-injury-report-0ap3000000688693 | Independently confirmed: "Questionable: uncertain… Doubtful: unlikely… Out: will not play" (supports 52ca9f77's F04 resolution) |
+| SRC-26 Dee Alford identity | https://www.nfl.com/players/deaundre-ford/ | Independently confirmed "Dee Alford, CB #23, Buffalo Bills" (supports the F11 resolution) |
+| SRC-28 Jackson timeline | Friday Nov 13 roundup headline | "Ravens confirm Lamar Jackson expected to miss 6-10 weeks" (supports the F12 resolution) |
+| Builders | `python3 scripts/build.py`; `npm run build`; `npm run verify` | 13 pages, 345 injury rows, 28 teams, 61 depth rows, link + row-source checks passed; Node 12 pages, 194 internal links, no unrendered table tokens, ALL CHECKS PASSED |
+
+**Collision log (this session's full history).** The session's first two claim
+commits were dropped/rebased against four `main` advances (PRs #8–#18) rather
+than overwriting anyone's records: sessions `30beeb55`, `7c9eb69a`, `45a0ec8c`,
+`52ca9f77` and `324b0cd2` completed the T13–T15, T17–T21 tasks and the
+cross-scope requests while this session was reviewing. Nothing any session wrote
+was discarded at any point; this session's remaining unique work is T22 above.
+The sandbox `curl` to `karagemop466-tech.github.io` fails (host not on the
+outbound allow-list), so live checks use the fetch tool and the GitHub Pages API,
+as prior sessions did.
+
+**Open items after T22:** F26 (official-source-vs-official-source designation
+conflicts need an owner rule), F27 (Jackson coverage gap of the Week 10 table),
+F16 (NFL data rights — critical), F19 (Netherlands legal review), F-02/F-03/F-04
+(blank pending feeds), D01–D10 decision gates. No strategy has passed validation;
+no reward is enabled.
