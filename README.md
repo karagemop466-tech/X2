@@ -45,6 +45,21 @@ where a source verifies it).
   agreement and a per-week sign test. The finding is negative and published anyway: M1 is positive in 5 of 7 weeks
   (p = 0.45), so its rank describes 89 games rather than predicting the next one.
 
+### Also new: settlement, replacement depth, correlation provenance, audit
+
+Five pages added by session `d0d9d19f`, each covering a requirement the earlier passes left open:
+
+- **Originated lines** (`docs/originated-lines.html`) — side → total → moneyline with our own opening and current
+  number per market held in the snapshot store. `scripts/originate.py` re-fits the ratings independently and refuses
+  to publish if any spread or total disagrees with `scripts/model.py` by more than 0.05 points.
+- **Results feed** (`docs/results-feed.html`) — the settlement view: the official final score for all 137 games plus
+  how the side, the total and the moneyline we originated actually settled.
+- **Depth of replacement** (`docs/depth-replacement.html`) — 2nd/3rd/4th-string ordinals read from official club depth
+  charts for DET, NE, DAL, GB, TEN and NO; 33 rows, 19 with a named replacement, 14 blank and flagged.
+- **Correlation provenance** (`docs/correlation-provenance.html`) — inputs, official source and `n` for every
+  published correlation, with each previously published value recomputed from the ledger.
+- **Repository audit** (`docs/repo-audit.html`) — 22 checks against live official pages and recomputations, 0 failing.
+
 ## The model, briefly
 
 `scripts/model.py` fits one ridge-regularised least-squares system on points scored:
@@ -118,6 +133,11 @@ python3 scripts/desk_v2.py          # market sheet, correlation matrix, props, e
 python3 scripts/markets.py          # regenerate the market tables (price store, fair/market view,
                                     # signal-vs-staking) from the model outputs
 python3 scripts/review.py           # decision console (reads data/decision_choices.json)
+python3 scripts/results_feed.py     # settled results feed (137 games, all three markets)
+python3 scripts/originate.py        # side -> total -> moneyline, our opening/current number per market
+python3 scripts/depth_chain.py      # depth of the replacement from official club depth charts
+python3 scripts/correlation_provenance.py   # recompute every correlation, publish inputs and n
+python3 scripts/repo_audit.py       # line-by-line audit against live official pages
 python3 scripts/build.py            # rebuild docs/ and check every row has a source
 npm run build && npm run verify     # the separate Node dashboard (12 pages)
 ```
@@ -133,6 +153,18 @@ closing line, player-prop outcome, player-depth string order, replacement impact
 Football variance cannot be removed. Out-of-sample testing, permutation tests, bootstrap intervals and
 multiple-comparison control stop variance from being mistaken for skill; they do not eliminate it and they
 guarantee no result. Every leaderboard row publishes the sample size it would need for a decisive test.
+
+## Two independent implementations, compared
+
+Two sessions built overlapping artefacts in parallel. Both are kept, and the comparisons are recorded rather than
+reconciled by picking a winner.
+
+| Artefact | This session (`d0d9d19f`) | Parallel session | Comparison |
+|---|---|---|---|
+| Results feed | `data/results_feed.csv` — 137 games plus the settlement of all three originated markets | `data/results_feed_2026.csv` — 137 games with a per-row verification chain | **137 of 137 scores agree, 0 disagreements.** Different columns; neither carries a price. |
+| Replacement depth | `data/depth_replacement.csv` — DET, NE, DAL, GB, TEN, NO; every Out/Doubtful player on those charts | `data/replacement_depth_week10_2026.csv` — SEA, MIA, BAL, CLE, AZ, NYG; quarterback-centred | Different clubs, so **twelve clubs covered in total**. One disagreement: Seattle's chart was retrievable at `www.seahawks.com` but not at the address this session used. |
+| Correlation register | `data/correlation_provenance.csv` — inputs, official source, `n`, recomputation | `data/correlation_audit.csv` — same rows plus the owner-rule classification (F49) | The owner rule treats a correlation whose predictor is a model output as a diagnostic, not an officially sourced correlation. The provenance page states which inputs are official, so the rule can be applied row by row. |
+| Neutral-site handling | `scripts/originate.py` drops the home-field term where the schedule says `neutral_site = Y` | `scripts/model.py` does the same, and F71 records the defect | Both agree. The open half is unchanged: all 137 completed rows still carry a blank `neutral_site` value. |
 
 ## Data snapshot and rights gate
 
