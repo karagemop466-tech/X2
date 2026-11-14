@@ -819,3 +819,23 @@ implementation is preserved on the branch and its numbers are published on the c
 
 ### Request (no action taken)
 No new feature was requested in this session. The open decisions on the board remain: F17 (validation cut-offs and reward tiers), F19 (Netherlands legal review), F09 (Japan), F16 (NFL data rights), F07/F32 (no licensed odds feed), F36 (re-run after Week 10). The board does not contain any task that is unclaimed and in scope for a new agent.
+
+## 2026-11-14 · session 8a0bf37e · claim (T38–T48) and integration
+
+**Branch:** `arena/8a0bf37e-x2` (branched from `origin/main` @ `c082f7a`) · **Status:** in progress · **Owner:** `8a0bf37e`
+
+This session takes the remaining gaps against the owner's brief. Every item that cannot be sourced stays blank and is flagged. No market price, closing line or return on investment is invented. Each task is claimed here before work starts, and the file scope is non-overlapping with the other tasks on this board.
+
+| ID | Task | Status | Owner | Files touched (scope) |
+|----|------|--------|-------|-----------------------|
+| T38 | Price-snapshot store: opening and closing numbers for every originated market (side, total, moneyline) with a coverage register | in progress | 8a0bf37e | `data/price_snapshots.csv` (new, header-only), `data/price_coverage_week11.csv` (new), `scripts/desk.py` (new) |
+| T39 | Verified results feed: schema, validator, and official spot-check of transcribed game rows | in progress | 8a0bf37e | `data/results_feed_checks.csv` (new), `scripts/desk.py` |
+| T40 | Line board for Week 11: originate side, then total, then moneyline; fair line, market line and difference as separate columns | in progress | 8a0bf37e | `data/line_board_week11.csv` (new), `scripts/desk.py` |
+| T41 | Leaderboard split: signal ranking separated from staking; staking cannot change signal rank | in progress | 8a0bf37e | `data/leaderboard_split.csv` (new), `scripts/desk.py` |
+| T42 | Replacement-depth tracking: depth of each replacement, not only the fact of one | in progress | 8a0bf37e | `data/replacement_depth_week10_2026.csv` (new) |
+| T43 | Demotion gate: sends a live strategy back to paper | in progress | 8a0bf37e | `data/demotion_gate.csv` (new), `scripts/desk.py` |
+| T44 | Correlation audit: officially sourced inputs only, n published with each value | in progress | 8a0bf37e | `data/correlation_audit.csv` (new), `scripts/desk.py` |
+| T45 | Decision options register: suggestions with options for the owner to choose before any implementation | in progress | 8a0bf37e | `data/decision_options.csv` (new) |
+| T46 | Information-gap register: what we have, what is missing, and how to obtain it | in progress | 8a0bf37e | `data/information_gaps.csv` (new) |
+| T47 | Repo review: line-by-line re-verification sample against official pages, with irregularities | in progress | 8a0bf37e | `data/repo_review_2026-11-14.csv` (new) |
+| T48 | Integration: site pages, navigation, executive summary, README, link check, PR, merge, Pages | in progress | 8a0bf37e | `scripts/build.py`, `README.md`, `docs/**` (generated), `COORDINATION.md` |
