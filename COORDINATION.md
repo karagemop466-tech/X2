@@ -50,6 +50,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `ca1ea224` | `arena/ca1ea224-x2` | **Current session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claims **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). |
 | `f25d6b55` | `arena/f25d6b55-x2` | **Current session (2026-11-14, after PR #34 merged).** Drafted claims for T37–T45 before `main` advanced; every ID was taken in parallel (T37 by 4c5bc504; T39/T40 by c125b2f7; T42/T44–T50 by 8a0bf37e; T37–T41 by ca1ea224). **Final scope T51–T55**, the gaps still open after PR #34: apply REQ-8a-1 (C09) and adopt the owner rule in the published correlation register; canonical verified results feed; verify and document the extended price-snapshot store's origin/close semantics; suggestions and verification rows; integration. Additive only; ca1ea224's and 8a0bf37e's outputs are consumed, not rewritten. |
 | `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T64–T71** (T51–T55 were taken by `f25d6b55` in parallel; renumbered, nothing discarded) before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
+| `34c42a11` | `arena/34c42a11-x2` | **Current session.** Claimed on 2026-11-14 from `main` @ `d22bbd3` (PR #34 merged) as **T52–T57**; renumbered four times as `main` advanced — T72–T75 (PRs #36, #39–#41), T84–T87 (PRs #35–#47), T88–T91 (PRs #49–#50, d2915d86 held T84–T87), then **T92–T95** because PR #38s takeover took T88. Drafted items completed by parallel sessions are adopted, not duplicated: C09 (f25d6b55/ef971991, t interval), computed G1 (e208ba6d/20e6161b), A08–A11 club charts (20e6161b, richer), C06 (d2915d86, descriptive publish — my parallel recompute verified then withdrawn). Delivered here: the three Hidden-Score by-week verifications (F47), stale F48/RV/build-prose bookkeeping fixes, and the closing integration. |
 | `d0d9d19f` | `arena/d0d9d19f-x2` | **Current session — final integration (2026-11-14).** Claimed **T41–T49** before writing any file; `main` then advanced through PRs #30–#44, and T42–T50, T51–T58 and T64–T71 were taken in parallel by `8a0bf37e`, `f25d6b55`/`cf6709c0` and `e208ba6d`. Scope actually delivered: the settled results feed, side→total→moneyline origination with our own opening/current snapshot per market, the depth of the replacement (2nd/3rd/4th string), correlation provenance with `n`, a 22-check line-by-line repository audit, and the closing PR/merge/Pages record. Rebased twice rather than dropping other sessions' work; every register addition was renumbered into the free ID space (F74, Q49–Q59, S35–S44, R56–R58, SRC-74–80). Touches `scripts/build.py`, five new `scripts/*.py`, six new `data/*.csv`, the five shared registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
 
 | `ef971991` | `arena/ef971991-x2` | **Session ef971991 (claimed T41–T49, renumbered to T51–T57 after collision with 8a0bf37e, 2026-11-14).** Final integration for the remaining brief gaps: complementary replacement-depth tracking (R43), F44 reference-total resolution, F43 tier-label mitigation, REQ-8a-1/C09 correction applied, correlation-n enforcement, decision-support suggestions/questions, a live verification pass, and the PR/merge/Pages record. Branch is the session-fixed `arena/ef971991-x2`. See the collision record in the closing section. |
@@ -2086,3 +2087,59 @@ and reward tiers) · F36 (re-run the model when Week 10 is final) · F81/F82 (re
 | Board | T48 reconciled (table said in progress, close-out said done); T41 recorded from GitHub's own API (20e6161b recorded the same independently as their T79 — both records kept) |
 | IDs used | Task **T88** (four renumberings: T52→T79→T84→T88, each collision with an earlier claim); flags **F77–F82** (three renumberings: F30–F33→F56–F59→F74–F77→F77–F82); new SRC rows: none (all five of PR #14's were URL-duplicates) |
 
+
+## 2026-11-14 · session 34c42a11 · claim (T92–T95; drafted as T52–T57, renumbered four times)
+
+**Branch:** `arena/34c42a11-x2` · **Base:** `main` @ `d22bbd3` when claimed (PR #34 merged); rebased through
+`main` @ `11f31cf` (PRs #36, #39–#41) and merged four times from `main` — @ `fb9078e` (PRs #35–#47),
+@d4af927 (PRs #49–#50) and @ `61f3419` (PR #38) · **Owner:** `34c42a11`
+
+### Collision record (required; read before merging)
+
+- Claim commit `7a6e21c` was written as **T52–T57** against `main` @ `d22bbd3`; the claim was renumbered four
+  times as `main` advanced mid-claim:
+  - **PRs #36/#39–#41 (f25d6b55 T51–T60, e208ba6d T64–T71)**: took my drafted T52 (C09 correction) and T53
+    (computed G1) — adopted, not duplicated; renumbered to T72–T75.
+  - **PRs #35–#47 (cf6709c0 T72–T78, 20e6161b T79–T83)**: took T72–T78; 20e6161b also delivered my drafted
+    A08–A11 club-chart check richer than my parallel fetch — adopted; renumbered to T84–T87.
+  - **PRs #49–#50 (d2915d86)**: that session independently held T84–T87 on `main` and delivered the
+    *descriptive* F55/C06 publish; my parallel one-row-per-game recompute was verified then withdrawn in the
+    merge; renumbered to T88–T91.
+  - **PR #38 (cbb6c2f3, takeover of stale PR #14)**: its takeover task renumbered to **T88** as it merged, so
+    this claim moves to **T92–T95** — the first free IDs after T88 (T89–T91 were never claimed elsewhere).
+    Nothing discarded: this merge keeps both sides of every conflict, including session 25d6114f's verification
+    report that the takeover reconciled.
+- **Adopted, not duplicated (fourth round):**
+  - **T92 (draft) — C06 / F55**: descriptive option adopted from d2915d86 — coefficient 0.087, n = 228 kept,
+    interval and p-value blank by design — merged and Pages-verified; my verified recompute (n = 113, r = 0.164,
+    CI −0.022 to 0.338, p = 0.084) withdrawn so one published row has one basis. Q22/RV10 aligned to the
+    descriptive policy and record both attempts.
+  - **C09 / F50 / F53 / `.gitattributes`**: unchanged from previous merges — t interval 0.328–1.443 (F72),
+    e208ba6d/20e6161b resolutions, main's `data/*.csv` whitespace rule.
+  - **PR #14's content**: reconciled by cbb6c2f3's takeover (T88); this session does not touch it.
+- **Delivered on this branch (T94 and the T95 integration):**
+  - **T94 — Hidden-Score verification (F47 resolved)**: RF11–RF13 re-verified line by line against the official
+    by-week pages (week 5 "Texans 26, Titans 3", week 6 "Steelers 26, Buccaneers 19", week 9
+    "Bengals 34, Falcons 17" — all equal to the ledger); `desk.py` records the by-week page as the verifying
+    surface, status pass; F41 carries the evidence append (the week 9 by-week score boxes also render
+    "Hidden Score" while the headline link carries the score); RV03 updated.
+  - **Bookkeeping fixes**: F48 residual (RV06 said "not applied" while the numbers were corrected — now reads as
+    applied), F41/F45 evidence appends, G04 wording, stale build-page sentences (C09 "not applied", F53 "not yet
+    checked", F47 "not verified") rewritten, and the exec-summary C09 citation corrected from F71 to F72
+    (F71 is the neutral-site methodology flag).
+- **Open PRs checked during integration:** #14 absorbed by the merged #38; #31 closed unmerged; #48
+  (`a47ccbb1`) still open and not claiming F47 or T94/T91.
+
+### Task claim (renumbered four times; final IDs)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| ~~T52~~ | Apply the C09 calibration correction (F48, REQ-8a-1) | **superseded — done by f25d6b55, re-derived as the t interval 0.328–1.443 (F72)**; adopted, no files written for it by this session | f25d6b55 | `data/correlations_computed.csv` C09 row | Verified on `main` @ `61f3419` |
+| ~~T53~~ | Compute gate G1 instead of asserting a constant True (F50) | **superseded — done by e208ba6d, status confirmed by 20e6161b**; adopted, no files written for it by this session | e208ba6d | `scripts/model.py` `lookahead_audit()` / `G1_PASSED` | F50/F63 resolved on `main` |
+| ~~T92~~ | Restate C06 on a basis that does not double-count each game (F55) | **superseded — descriptive option adopted from d2915d86**; my parallel recompute (n = 113) verified then withdrawn in the merge; Q22/RV10 aligned to the descriptive policy | d2915d86 | `data/correlations_computed.csv` C06 row, `scripts/model.py`, `scripts/desk.py`, `data/flags.csv` (F55), `data/questions.csv` (Q22), `data/repo_review_2026-11-14.csv` (RV10) | Descriptive publish: r = 0.087, n = 228, interval and p blank by design |
+| ~~T93~~ | Complete the A08–A11 replacement-depth club-chart check (F53) | **superseded — done richer by 20e6161b (T79–T83), adopted verbatim**; my parallel fetch of the same four charts discarded in an earlier merge | 20e6161b | `data/replacement_depth_week10_2026.csv` (main's A08–A11), `data/flags.csv` (F53) | Article-body replacement groups plus club-chart ranks |
+| T94 | Verify the three Hidden-Score games against the official by-week schedule pages (F47, RF11–RF13) | **done — F47 resolved 2026-11-14** | 34c42a11 | `scripts/desk.py` (RF11–RF13), `data/results_feed_checks.csv`, `data/flags.csv` (F47, F41 evidence), `data/repo_review_2026-11-14.csv` (RV03), regenerated `docs/` | by-week pages weeks 5/6/9 fetched live; all three scores equal the ledger |
+| T95 | Final integration: merge `main` (union, four times), rebuild both sites, full verification, PR to main, merge, confirm GitHub Pages | in progress | 34c42a11 | `COORDINATION.md`, merged `scripts/**` + `data/**`, generated `docs/**`, PR | Union merges of `fb9078e`, `d4af927` and `61f3419`; `.gitattributes` kept from main; nothing discarded |
+
+**Not claimed (owner-owned, unchanged by this session):** DEC-01…DEC-10, F17, F16, F19, F09, F42/F43/F44
+(ccd9ab30 T51, closed), F49/DEC-09, F51, F54/DEC-04, F36 (re-run after Week 10 completes), F64–F82.

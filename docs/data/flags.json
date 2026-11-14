@@ -363,7 +363,7 @@
   "flag_id": "F41",
   "category": "Source irregularity",
   "item": "Some official game-center pages display 'Hidden Score' instead of the final score",
-  "detail": "The official game page for Falcons at Buccaneers, Week 8 2026, renders 'Hidden Score' for both teams and every quarter, though the game is marked Final. The same score is published normally on the official Week 8 by-week schedule page (Falcons 0, Buccaneers 16), which is the source used for the ledger row. The reason for the hidden rendering is not stated on the page.",
+  "detail": "The official game page for Falcons at Buccaneers, Week 8 2026, renders 'Hidden Score' for both teams and every quarter, though the game is marked Final. The same score is published normally on the official Week 8 by-week schedule page (Falcons 0, Buccaneers 16), which is the source used for the ledger row. The reason for the hidden rendering is not stated on the page. Update 2026-11-14 (session 34c42a11): RF11-RF13 were verified against the by-week pages (F47 resolved). New observation: the week 9 by-week page score boxes also render \"Hidden Score\" while the headline link carries the score; the week 5 and week 6 by-week boxes display scores normally. The hidden rendering itself persists on the game-center pages, so the standing instruction below still applies.",
   "source_url": "https://www.nfl.com/games/falcons-at-buccaneers-2026-reg-8",
   "status": "Irregularity - open",
   "action_requested": "When a game-center page hides a score, verify the row against the official by-week schedule page and record which surface was used."
@@ -399,7 +399,7 @@
   "flag_id": "F45",
   "category": "Source limitation",
   "item": "Club depth charts are the only depth-order source found",
-  "detail": "The six club charts checked are undated and show pre-injury order (SEA lists the Out starter first). The BAL chart omits Lamar Jackson; the MIA chart lists no kicker. None is labelled 'unofficial' in the fetched text, but none is a league depth chart.",
+  "detail": "The six club charts checked are undated and show pre-injury order (SEA lists the Out starter first). The BAL chart omits Lamar Jackson; the MIA chart lists no kicker. None is labelled 'unofficial' in the fetched text, but none is a league depth chart. Update 2026-11-14 (session 34c42a11): four more club charts fetched for A08-A11 (packers.com, therams.com, chiefs.com, colts.com). All four self-label \"unofficial\"; the Packers chart carries the date \"Unofficial, Nov. 10, 2026\", the other three are undated (the Colts page links its Week 10 chart release). Ten club charts have now been checked; nine are undated.",
   "source_url": "https://www.miamidolphins.com/team/depth-chart",
   "status": "Open",
   "action_requested": "Owner decision DEC-06: parse official Game Book PDFs; keep club charts as a labelled secondary source."
@@ -417,16 +417,16 @@
   "flag_id": "F47",
   "category": "Results verification gap",
   "item": "Three sampled games show Hidden Score on the official game center",
-  "detail": "Week 5 Houston at Tennessee, week 6 Pittsburgh at Tampa Bay and week 9 Cincinnati at Atlanta show Hidden Score. These rows were checked by standings reconciliation only (results_feed_checks.csv RF11-RF13).",
+  "detail": "Week 5 Houston at Tennessee, week 6 Pittsburgh at Tampa Bay and week 9 Cincinnati at Atlanta show Hidden Score. These rows were checked by standings reconciliation only (results_feed_checks.csv RF11-RF13). Update 2026-11-14 (session 34c42a11): all three ledger scores were read line by line from the official by-week schedule pages and match exactly - week 5 \"Texans 26, Titans 3, FINAL\" (ledger HOU 26, TEN 3); week 6 \"Steelers 26, Buccaneers 19, FINAL\" (ledger PIT 26, TB 19); week 9 \"Bengals 34, Falcons 17, FINAL\" (ledger CIN 34, ATL 17). results_feed_checks.csv RF11-RF13 now record the by-week page as the verifying surface (pass).",
   "source_url": "https://www.nfl.com/games/steelers-at-buccaneers-2026-reg-6",
-  "status": "Open",
-  "action_requested": "Read the by-week page or the Game Book PDF for these three games (DEC-06)."
+  "status": "Resolved 2026-11-14 (session 34c42a11): all three scores verified against the official by-week schedule pages",
+  "action_requested": "None for these three rows. The game-center hidden rendering itself persists (F41): keep verifying hidden scores against the by-week page and record which surface was used."
  },
  {
   "flag_id": "F48",
   "category": "Model defect (correction requested)",
   "item": "Calibration row C09 applies a correlation interval to a regression slope",
-  "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim). Independently resolved and applied in parallel by session ef971991 (same REQ-8a-1 correction; identical computed values).",
+  "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim). Independently resolved and applied in parallel by session ef971991 (same REQ-8a-1 correction; identical computed values). Residual bookkeeping fixed 2026-11-14 (session 34c42a11): repo_review RV06 still said the correction was \"not yet applied\" while the numbers were already corrected; RV06 now reads as applied and matches data/correlations_computed.csv (the correlation-audit note text was corrected in parallel on main). No number changed in this fix.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
   "status": "Resolved 2026-11-14 (session f25d6b55, REQ-8a-1 applied): C09 in scripts/model.py and data/correlations_computed.csv now uses the slope's own standard error - slope 0.885, 95% CI 0.335-1.435, p 0.6820 against slope 1.0 (p differs from the audit's 0.683 only through the rounded SE the audit used). The register also gains input_A / input_B / owner-rule columns per row (verification V21).; independently applied by session ef971991",
   "action_requested": "Applied and verified against data/correlation_audit.csv (V21)."
