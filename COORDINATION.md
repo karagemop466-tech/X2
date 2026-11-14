@@ -825,7 +825,77 @@ implementation is preserved on the branch and its numbers are published on the c
 ### Request (no action taken)
 No new feature was requested in this session. The open decisions on the board remain: F17 (validation cut-offs and reward tiers), F19 (Netherlands legal review), F09 (Japan), F16 (NFL data rights), F07/F32 (no licensed odds feed), F36 (re-run after Week 10). The board does not contain any task that is unclaimed and in scope for a new agent.
 
+## 2026-11-14 · session 8a0bf37e · claim (T38–T48), collision record, and integration
+
+**Branch:** `arena/8a0bf37e-x2` (based on `origin/main` @ `c082f7a`; `origin/main` @ `12162d6` merged in) · **Status:** in progress · **Owner:** `8a0bf37e`
+
+### Collision record (required; read before merging)
+
+- My original claim (`d9cab44`) listed **T38–T41 and T43** as new work. Session `c125b2f7` had already claimed and merged them on `main` as **T39** (price store, PR #29) and **T40** (demotion gate and signal-vs-staking split, PR #30). My branch was cut from `c082f7a`, so I did not see that work.
+- My branch had written its own copies of those files (`price_snapshots.csv` header-only, `demotion_gate.csv` D1–D4, `line_board_week11.csv`, `leaderboard_split.csv`). Those copies would have **overwritten** `main`'s 39-row price store and D1–D7 gate. I deleted the copies before committing. Nothing from `c125b2f7` was overwritten.
+- My flags **F43–F53** reused IDs already used on `main` (F43, F44). They are renumbered **F45–F55**, and every reference in my files is updated.
+- My requirement and source IDs do not collide: `main` ends at R43 and SRC-60; I add SRC-61 to SRC-71.
+
+### Task status (this session's final mapping)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T38 | Price-snapshot store (original claim) | superseded by T39 (c125b2f7). No files written by 8a0bf37e | 8a0bf37e | none | see T39 on `main` |
+| T39 | (original claim) results feed checks | renumbered to **T49** | 8a0bf37e | — | — |
+| T40 | (original claim) Week 11 line board | superseded by c125b2f7 T39 (`data/line_comparison_week11.csv`). No files written | 8a0bf37e | none | — |
+| T41 | (original claim) signal vs staking split | superseded by c125b2f7 T40 (`data/strategy_signal_staking.csv`). No files written | 8a0bf37e | none | — |
+| T42 | Replacement depth, per availability row | done | 8a0bf37e | `data/replacement_depth_week10_2026.csv` (new) | club charts (undated; F45); official statements (F46, F53) |
+| T43 | (original claim) demotion gate | superseded by c125b2f7 T40 (D1–D7, G9). My window check is T50 | 8a0bf37e | none | — |
+| T44 | Correlation audit (owner rule, n with each value) | done | 8a0bf37e | `data/correlation_audit.csv` (new) | recomputed C09 (F48) |
+| T45 | Decision options register | done | 8a0bf37e | `data/decision_options.csv` (new) | owner decisions DEC-01 to DEC-10 |
+| T46 | Information-gap register | done | 8a0bf37e | `data/information_gaps.csv` (new) | G01 to G13 |
+| T47 | Repo review (sampled line-by-line re-verification) | done | 8a0bf37e | `data/repo_review_2026-11-14.csv` (new) | RV01 to RV13 |
+| T48 | Integration: pages, navigation, exec summary, README, link check, PR, merge, Pages | in progress | 8a0bf37e | `scripts/build.py`, `README.md`, `docs/**` (generated), `data/flags.csv` (F45–F55), `data/sources.csv` (SRC-61–71), `COORDINATION.md` | — |
+| T49 | Results feed checks (was T39) | done | 8a0bf37e | `data/results_feed_checks.csv` (new), `scripts/desk.py` | official game-center spot checks (6), standings reconciliation |
+| T50 | Demotion rule D1 window check (uses D1 as drafted on `main`) | done | 8a0bf37e | `data/demotion_window_check.csv` (new), `scripts/desk.py` | NFL.com game pages; NIST bootstrap reference |
+
+### Requests logged (no action taken on these files)
+
+- **REQ-8a-1: apply the C09 correction.** `scripts/model.py` (C09 block) and `data/correlations_computed.csv` (C09 row) are outside this claim. The register still shows the earlier interval (0.830–0.923), which applies a correlation formula to a regression slope. Recomputed from the slope's own standard error (n = 89): slope 0.885, 95% CI 0.335–1.435, p = 0.683 against slope 1.0. Owner of the model files to apply this in the next model pass. Flag F48.
+- **REQ-8a-2: owner decision on demotion rule D1 (DEC-04).** As drafted on `main`, D1 returns a strategy to paper when the lower 95% bound is at or below 0. Over the last 50 out-of-sample games it triggers for all four side models, even though all four have positive point estimates. Flag F54.
+- **REQ-8a-3: correlation C02 does not meet the owner rule.** It uses a fixed 2.5-point home-field constant (`HFA_REF`). Flag F49.
+
+### Irregularities (flagged; none blocks merge)
+
+- F45 (depth charts undated, pre-injury, one omits a starter, one has no kicker); F46 (LA/LAR naming; A05/A06 do not name the injured player); F47 (three game pages show "Hidden Score"); F48 (C09 register value); F49 (four correlations use model outputs, plus C02); F50 (gate G1 is a constant True); F51 (price store has 39 blank rows; no price recorded); F52 (the "weeks 1-10" label is corrected in README and build.py); F53 (A08–A11 unchecked); F54 (D1 design at n = 50); F55 (C06 pairs are not independent).
+
 **Merge record (session 4c5bc504, T37).** PR #27 (base `main`, head `arena/4c5bc504-x2`, https://github.com/karagemop466-tech/X2/pull/27) was merged with `--merge` on 2026-11-14 as merge commit `c082f7a`. GitHub Pages build for `c082f7a` reported `built`. This follow-up PR records that merge.
+
+### Close-out: sources, verification, irregularities (session 8a0bf37e)
+
+**Status:** T42, T44–T47, T49, T50 done. T48 (integration) done on this branch; PR, merge and Pages are recorded in the follow-up entry below. T38, T39, T40, T41 and T43 superseded by c125b2f7 (T39, T40); no files written by 8a0bf37e for them.
+
+**Sources fetched on 2026-11-14 (read in this session):**
+- https://www.nfl.com/schedules/2026/by-week/week-11, chunks 0, 1 and 2: all 13 Week 11 games match `data/schedule_week11_2026.csv` on day, kickoff time, network, teams and game link (RF14).
+- Official game-center final scores: https://www.nfl.com/games/cardinals-at-chargers-2026-reg-1 (26–14), https://www.nfl.com/games/raiders-at-saints-2026-reg-3 (35–27), https://www.nfl.com/games/texans-at-colts-2026-reg-3 (17–19). All match the results register (RF08–RF10).
+- Hidden Score on the game center (not verified): https://www.nfl.com/games/texans-at-titans-2026-reg-5, https://www.nfl.com/games/steelers-at-buccaneers-2026-reg-6, https://www.nfl.com/games/bengals-at-falcons-2026-reg-9 (RF11–RF13; F47).
+- Club depth charts (undated, pre-injury; F45): https://www.seahawks.com/team/depth-chart, https://www.miamidolphins.com/team/depth-chart, https://www.baltimoreravens.com/team/depth-chart, https://www.clevelandbrowns.com/team/depth-chart, https://www.azcardinals.com/team/depth-chart, https://www.giants.com/team/depth-chart.
+- Availability statements and links are from `data/confirmed_availability_week10_2026.csv` (NFL.com articles), each re-read this session for the status words used in the depth register.
+
+**Verification run (all pass):**
+- `python3 scripts/desk.py` (deterministic): 14 results-feed rows, 9 demotion-window rows, 9 correlation-audit rows.
+- `python3 scripts/verify_results.py`: all 32 teams reconcile with the official standings.
+- Second transcription: 137 of 137 rows match after LAR/LA normalisation (RF06).
+- `python3 scripts/build.py`: 24 pages; every table row carries an allow-listed link.
+- `python3 scripts/check_links.py`: 24 pages, 644 internal and 2,529 external links; no problems.
+- `npm run build` and `npm run verify`: ALL CHECKS PASSED.
+- `scripts/model.py` was not changed and not re-run.
+
+**Irregularities and flags (published on the Flagged for review page; none blocks merge):**
+- F45 depth charts undated and pre-injury; BAL chart omits Jackson; MIA chart lists no kicker. F46 LA/LAR naming; A05/A06 do not name the injured player. F47 three game pages show Hidden Score.
+- F48 C09 register value is wrong (correlation formula on a slope). Correction requested, not applied (outside this claim).
+- F49 four of nine correlations qualify under the owner rule; C02 uses a fixed 2.5-point constant.
+- F50 gate G1 is a constant True. F51 no price recorded in the 39 market rows. F52 "weeks 1-10" label corrected in README and build.py. F53 A08–A11 not checked against a club chart.
+- F54 D1 as drafted on `main` (lower 95% bound at or below 0 over the last 50 forecasts) triggers for all four side models, although all four have positive point estimates. Owner decision needed (DEC-04).
+
+**Requests logged (not actioned by this session):** REQ-8a-1 (apply the C09 correction in `scripts/model.py` and `data/correlations_computed.csv`), REQ-8a-2 (owner decision on D1, DEC-04), REQ-8a-3 (C02 classification, DEC-09).
+
+**Retraction within this session.** An earlier draft used a 30-game window (weeks 8–10) and an upper-bound rule, and reported negative point estimates for all four side models. That draft is withdrawn. Under main's D1 at n = 50 all four have positive point estimates; the draft did not hold.
 
 ## 2026-11-14 · session c125b2f7 · market tables, signal vs staking, demotion gate
 

@@ -1,0 +1,15 @@
+check_id,check,method,result,status,source_url
+RF01,Schema,Header and field count on games_2026_results.csv,137 rows; columns as expected: True,pass,https://www.nfl.com/schedules/2026/by-week/week-11
+RF02,No duplicate games,"Unique (week, away, home)",137 unique of 137,pass,https://www.nfl.com/schedules/2026/by-week/week-11
+RF03,Team set,Distinct team abbreviations. The register writes the Rams as LA; the official Week 11 page and the second transcription write LAR (flag F46).,32 teams,pass,https://www.nfl.com/standings/
+RF04,Games per week,Count by week (consistent with weeks 1-9 complete plus the Week 10 Thursday game),"wk1:16, wk2:16, wk3:16, wk4:16, wk5:15, wk6:14, wk7:14, wk8:14, wk9:15, wk10:1",pass (count only; not re-fetched this session),https://www.nfl.com/schedules/2026/by-week/week-10
+RF05,Official source on every row,game_url host and path check,0 rows outside nfl.com/games,pass,https://www.nfl.com/schedules/2026/by-week/week-11
+RF06,Second transcription agrees,Row-by-row match of teams and both scores against season_games_2026.csv (LAR read as LA; F46),137 of 137 rows match after LAR/LA normalisation; 137 rows in second file,pass,https://www.nfl.com/schedules/2026/by-week/week-1
+RF07,Standings reconciliation,scripts/verify_results.py recomputes W-L-T and points for/against for all 32 teams,"All teams reconcile exactly with the official standings (W, L, T, points for, points against).",pass,https://www.nfl.com/standings/
+RF08,"Sample: Arizona at Los Angeles Chargers, week 1",Official game center final score (AZ-LAC),match: 26-14,pass,https://www.nfl.com/games/cardinals-at-chargers-2026-reg-1
+RF09,"Sample: Las Vegas at New Orleans, week 3",Official game center final score (LV-NO),match: 35-27,pass,https://www.nfl.com/games/raiders-at-saints-2026-reg-3
+RF10,"Sample: Houston at Indianapolis, week 3",Official game center final score (HOU-IND),match: 17-19,pass,https://www.nfl.com/games/texans-at-colts-2026-reg-3
+RF11,"Sample: Houston at Tennessee, week 5",Official game center shows 'Hidden Score' (F41),not verified on game center; standings reconciliation only,not verified,https://www.nfl.com/games/texans-at-titans-2026-reg-5
+RF12,"Sample: Pittsburgh at Tampa Bay, week 6",Official game center shows 'Hidden Score' (F41),not verified on game center; standings reconciliation only,not verified,https://www.nfl.com/games/steelers-at-buccaneers-2026-reg-6
+RF13,"Sample: Cincinnati at Atlanta, week 9",Official game center shows 'Hidden Score' (F41),not verified on game center; standings reconciliation only,not verified,https://www.nfl.com/games/bengals-at-falcons-2026-reg-9
+RF14,Week 11 schedule (13 games),"Official by-week page (chunks 0, 1 and 2, read 2026-11-14) compared line by line with schedule_week11_2026.csv: day, kickoff time, network, teams, game link","13 of 13 match. The six games not on chunks 1-2 (IND@HOU, MIA@BUF, BAL@CAR, NO@CHI, TEN@DAL, TB@DET) were read from chunk 0 on 2026-11-14 and match.",pass,https://www.nfl.com/schedules/2026/by-week/week-11

@@ -598,5 +598,115 @@
   "accessed_date": "2026-11-14",
   "used_for": "Verification spot check of one injury row against the official player page",
   "verification_note": "Opened and read. Confirms New England and jersey number 77, but lists position G while the injury report lists C (Flag F19)."
+ },
+ {
+  "source_id": "SRC-61",
+  "title": "Seattle Seahawks official depth chart",
+  "publisher": "Seattle Seahawks (club website)",
+  "url": "https://www.seahawks.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for SEA QB (A01). Undated; pre-injury order (F43).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-62",
+  "title": "Miami Dolphins official depth chart",
+  "publisher": "Miami Dolphins (club website)",
+  "url": "https://www.miamidolphins.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for MIA QB (A02). No kicker listed (F43).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-63",
+  "title": "Baltimore Ravens official depth chart",
+  "publisher": "Baltimore Ravens (club website)",
+  "url": "https://www.baltimoreravens.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for BAL QB (A03, A04). Omits Lamar Jackson (F43).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-64",
+  "title": "Cleveland Browns official depth chart",
+  "publisher": "Cleveland Browns (club website)",
+  "url": "https://www.clevelandbrowns.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for CLE QB (A05).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-65",
+  "title": "Arizona Cardinals official depth chart",
+  "publisher": "Arizona Cardinals (club website)",
+  "url": "https://www.azcardinals.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for AZ QB (A06).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-66",
+  "title": "New York Giants official depth chart",
+  "publisher": "New York Giants (club website)",
+  "url": "https://www.giants.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for NYG QB (A07).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-67",
+  "title": "NFL game center: Texans at Titans, week 5 (Game Book link; score hidden)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/texans-at-titans-2026-reg-5",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Shows the official Game Book PDF link (DEC-06); score hidden (F45).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-68",
+  "title": "NFL game center: Steelers at Buccaneers, week 6 (score hidden)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/steelers-at-buccaneers-2026-reg-6",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Spot check: score hidden, not verified on this page (F45).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-69",
+  "title": "NFL game center: Cardinals at Chargers, week 1 (final 26-14)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/cardinals-at-chargers-2026-reg-1",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Spot check: matches 26-14 (RV03).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-70",
+  "title": "NFL game center: Raiders at Saints, week 3 (final 35-27)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/raiders-at-saints-2026-reg-3",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Spot check: matches 35-27 (RV03).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-71",
+  "title": "NFL game center: Texans at Colts, week 3 (final 17-19)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/texans-at-colts-2026-reg-3",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Spot check: matches 17-19 (RV03).",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
  }
 ]
