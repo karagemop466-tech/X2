@@ -1454,3 +1454,42 @@ guard against the actual file, not assumed.
 **Lesson recorded for later sessions:** a green build does not prove every page reached the site. A page
 can be registered, overwritten and still pass every link and source check. Fetch the deployed URL for any
 page you claim to have added.
+
+## PR, merge and deployment record — session cf6709c0
+
+| PR | Base | Head | Merged as | Merged at | Result |
+|---|---|---|---|---|---|
+| [#35](https://github.com/karagemop466-tech/X2/pull/35) | `main` | `arena/cf6709c0-x2` | `ad660fa` | 2026-11-14 19:53:02Z | merged, no approval sought (per the brief) |
+| [#43](https://github.com/karagemop466-tech/X2/pull/43) | `main` | `arena/cf6709c0-x2` | `86ca907` | 2026-11-14 | merged — the page-collision fix (T57) |
+
+**Pages build:** `built` for `ad660fa`, then `built` again for `86ca907`
+(`gh api repos/karagemop466-tech/X2/pages/builds/latest`).
+
+**Live checks — fetched, not assumed.**
+- `docs/review-path.html` → serves **"Review path — pick a direction before anything is built"**, 7 ordered
+  steps and the 22-row open-question table. This is the page that was previously being silently discarded.
+- `docs/review.html` → still serves session e208ba6d's **"Review console"**, 8 proposals, unchanged. Both
+  sections coexist, which was the point of the fix.
+- `docs/model-lines.html` → the Mexico City row reads **fair spread 2.9, reference 6.1, fair − reference −3.3**
+  (the neutral-site correction), and the calibration sentence reads **"95% CI 0.328 to 1.443, p 0.683 against
+  slope 1.0"** (the C09 correction). Both corrections are visible on the live page, together.
+- `docs/flagged.html` → carries F71 (neutral sites), F72 (C09) and F73 (page collision).
+
+**Tasks:** T51, T52, T54, T56 and T57 are **done**. T53 was **withdrawn as complete-by-another-session**: my
+`audit_no_lookahead()` was deleted in favour of `e208ba6d`'s stronger `lookahead_audit()`, and my flag for it
+was dropped rather than duplicate the record. T55 (integration) is done.
+
+**What this session actually changed in published numbers,** stated precisely, because that is the only thing
+that matters to a reader of the site:
+1. **C09's interval and p-value** — 0.830–0.923 / p 0.0000 → **0.328–1.443 / p 0.683**. The point estimate
+   0.885 did not move. The old interval applied a Pearson-r formula to a regression coefficient.
+2. **The Week 11 Mexico City line** — fair margin **2.5 → 2.9**, model-minus-reference **−6.2 → −3.3**.
+3. **Gate G1** — from a constant `True` to an audited check (now `main`'s stronger audit, 10 tests, all pass).
+
+**What did not change, and was checked rather than assumed:** the 137-game results ledger (0 value changes
+in any pre-existing column), the out-of-sample record (MAE 9.16 vs 10.89 over 89 games), the leaderboard, the
+parlay study, and every injury row.
+
+**Open, owner-owned, not blocking:** DEC-01 (price source), DEC-02/DEC-03 (legal and data rights), DEC-04 /
+REQ-8a-2 (demotion rule), DEC-09 / REQ-8a-3 (C02 classification), F53 (A08–A11 depth check), and F71's open
+sub-item (confirm the nine international venues before populating the historical neutral column).
