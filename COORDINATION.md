@@ -50,6 +50,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `ca1ea224` | `arena/ca1ea224-x2` | **Current session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claims **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). |
 | `f25d6b55` | `arena/f25d6b55-x2` | **Current session (2026-11-14, after PR #34 merged).** Drafted claims for T37–T45 before `main` advanced; every ID was taken in parallel (T37 by 4c5bc504; T39/T40 by c125b2f7; T42/T44–T50 by 8a0bf37e; T37–T41 by ca1ea224). **Final scope T51–T55**, the gaps still open after PR #34: apply REQ-8a-1 (C09) and adopt the owner rule in the published correlation register; canonical verified results feed; verify and document the extended price-snapshot store's origin/close semantics; suggestions and verification rows; integration. Additive only; ca1ea224's and 8a0bf37e's outputs are consumed, not rewritten. |
 | `e208ba6d` | `arena/e208ba6d-x2` | **Current session — final integration (2026-11-14).** Claimed **T64–T71** (T51–T55 were taken by `f25d6b55` in parallel; renumbered, nothing discarded) before writing any file (all were `unclaimed` on `main` @ `9d11efc`). Scope is the decision-tooling and integrity layer: review console with recorded choices, skill-vs-luck separation, prop market family, quantified injury/depth impact, named event risk, live re-verification, and the closing integration (fix stale-register collisions, PR, merge, Pages). Touches `scripts/build.py`, `scripts/review.py` (new), `scripts/model.py`, `scripts/verify_live.py` (new), `data/*` registers, `docs/**` (generated), `README.md`, `COORDINATION.md`. |
+| `34c42a11` | `arena/34c42a11-x2` | **Current session.** Claimed on 2026-11-14 from `main` @ `d22bbd3` (PR #34 merged) as **T52–T57**; renumbered to **T72–T75** during the claim rebase after `main` advanced through PRs #36 and #39–#41 (f25d6b55 took T51–T60, e208ba6d took T64–T71). Two of the six claimed items were completed by those sessions in parallel — the C09 calibration correction (F48/REQ-8a-1, f25d6b55) and computed gate G1 (F50, e208ba6d) — and are adopted, not duplicated. Remaining scope: C06 independence restatement (F55), the A08–A11 club-chart depth check (F53), the three Hidden-Score game verifications (F47), and the closing integration. |
 
 ## Task board (combined — all sessions)
 
@@ -1201,3 +1202,41 @@ written; all were `unclaimed` at `9d11efc`)
 - Post-merge verification: 29 pages, 926 internal and 3,405 external links, no problems; `verify_live.py` 75/75;
   `verify_results.py` 32/32; `npm run build && npm run verify` ALL CHECKS PASSED; `model.py → desk_v2.py →
   review.py` reproduces every data file byte-identically.
+
+## 2026-11-14 · session 34c42a11 · claim (T72–T75; originally drafted as T52–T57)
+
+**Branch:** `arena/34c42a11-x2` · **Base:** `main` @ `d22bbd3` when claimed (PR #34 merged); rebase adopted
+`main` @ `11f31cf` (PRs #36, #39–#41) · **Status:** in progress · **Owner:** `34c42a11`
+
+### Collision record (required; read before merging)
+
+- Claim commit `7a6e21c` was written as **T52–T57** against `main` @ `d22bbd3`. `git pull --rebase` before the
+  first push then hit a `COORDINATION.md` conflict because `main` advanced twice in the meantime:
+  - **PR #36 (f25d6b55, T51–T55)**: applied the **C09 calibration correction** (REQ-8a-1 / F48) — the register now
+    carries slope 0.885, 95% CI 0.335–1.435, p 0.6820 against slope 1.0 — plus the canonical results feed,
+    price-snapshot origin/close documentation and flags F56–F62.
+  - **PRs #39–#41 (e208ba6d, T64–T71)**: decision console, skill-vs-luck columns, prop family, injury impact,
+    event risk, live re-verification — and **F50 resolved**: `lookahead_audit()` computes gate G1 (10/10 tests).
+- **Resolution, nothing discarded:** both sessions' rows and logs are kept verbatim (HEAD side of the conflict);
+  this claim is renumbered **T72–T75** because T51–T60 and T64–T71 are taken (T61–T63 also appear in the
+  e208ba6d collision note, so numbering starts at T72).
+- **Adopted, not duplicated:** my drafted T52 (C09) and T53 (G1) are marked *superseded — done by another session*
+  below. No file is edited for them by this session.
+- **Open PRs checked at claim time:** #31 (`ccd9ab30`, T51 — F43/F44), #14 (`25d6114f`, stale orphan, no merge
+  base with `origin/main`). Neither claims F47, F53 or F55, and neither touches `scripts/desk.py`,
+  `data/replacement_depth_week10_2026.csv`, `data/correlation_audit.csv`,
+  `data/repo_review_2026-11-14.csv` or `data/results_feed_checks.csv`.
+
+### Task claim (renumbered)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| ~~T52~~ | Apply the C09 calibration correction (F48, REQ-8a-1) | **superseded — done by f25d6b55 (PR #36)**; adopted unchanged, no files written by this session | f25d6b55 | `data/correlations_computed.csv` C09 row now CI 0.335–1.435, p 0.6820 | Verified on `main` @ `11f31cf` before renumbering |
+| ~~T53~~ | Compute gate G1 instead of asserting a constant True (F50) | **superseded — done by e208ba6d (PRs #39–#41)**; adopted unchanged, no files written by this session | e208ba6d | `scripts/model.py` `lookahead_audit()` / `G1_PASSED` | Verified on `main` @ `11f31cf` before renumbering |
+| T72 | Restate C06 on a basis that does not double-count each game (F55) | in progress | 34c42a11 | `scripts/model.py` (C06 block only), `scripts/desk.py` or `scripts/desk_v2.py` (C06 audit note), `data/correlations_computed.csv` (C06 row), `data/correlation_audit.csv` (C06 row), `data/flags.csv` (F55 row only), regenerated `docs/` | F55 action: recompute on one row per game, or report as descriptive |
+| T73 | Complete the A08–A11 replacement-depth club-chart check (F53) | in progress | 34c42a11 | `data/replacement_depth_week10_2026.csv` (A08–A11 rows), `data/flags.csv` (F53 row only), regenerated `docs/` | Official club sites: packers.com, rams.com, chiefs.com, colts.com depth charts (fetched live this session) |
+| T74 | Verify the three Hidden-Score games against the official by-week schedule pages (F47, RF11–RF13) | in progress | 34c42a11 | `data/results_feed_checks.csv` (RF11–RF13 via `scripts/desk.py`), `data/flags.csv` (F47 row only), regenerated `docs/` | Official by-week pages for weeks 5, 6 and 9 (fetched live this session) |
+| T75 | Final integration: rebuild both sites, full verification, PR to main, merge, confirm GitHub Pages | in progress | 34c42a11 | `COORDINATION.md`, generated `docs/**`, PR | Runs last; coordinate with e208ba6d's in-progress T71 and open PR #31 — merge, never discard |
+
+**Not claimed (owner-owned, unchanged by this session):** DEC-01…DEC-10, F17, F16, F19, F09, F42/F43/F44
+(ccd9ab30 T51), F45/F46, F49/DEC-09, F51, F54/DEC-04, F36 (re-run after Week 10 completes), F64–F70.
