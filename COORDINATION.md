@@ -37,7 +37,8 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 |---|---|---|
 | `e98c7ba0` | `arena/e98c7ba0-x2` | Built the **live** `docs/` site (Python `scripts/build.py`), 345 injury rows. PRs #1–#3 merged to `main`. |
 | `d80442c2` | `arena/d80442c2-x2` | Supplemental post-merge source/compliance audit and handoff (T11). PRs #5–#6 merged to `main`. Touches `COORDINATION.md` only. |
-| `session-09d7cc77` | `arena/09d7cc77-x2` | Parallel Node dashboard (`src/`), docs, JSON data. Now performing the integration merge into `main` (PR #4). |
+| `session-09d7cc77` | `arena/09d7cc77-x2` | Parallel Node dashboard (`src/`), docs, JSON data. PR #4 merged into `main`; Node output remains separate from the root-forwarded Python Pages site. |
+| `7678436e` | `arena/7678436e-x2` | Source-link/validation follow-up to the live Python dashboard; rebased onto the latest `main`, PR pending. F16 terms/data-rights and F17 numeric-cutoff flags remain explicit. |
 
 ## Task board (combined — all sessions)
 
@@ -54,6 +55,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | T09 | Site: landing, category subpages, Flagged for Review | done | e98c7ba0 | docs/, scripts/build.py | all | Static HTML, no external dependencies |
 | T10 | Integration: validate, build, PR, merge, Pages | done | e98c7ba0 | COORDINATION.md, PRs | all | PR #1 (0563aab), PR #2 (2c9f374). Live: https://karagemop466-tech.github.io/X2/ |
 | T11 | Supplemental post-merge source/compliance audit and handoff | done (audit merged; follow-up recommendations remain) | d80442c2 | COORDINATION.md only; T01–T10-owned `docs/`, `data/*.csv`, and `scripts/build.py` left untouched | T11-S1–T11-S4 | PR #5 (71e65aa), PR #6 (241a142). Findings handed off to the dashboard owner. No duplicate dashboard/data changes published. |
+| T12 | Source-link completeness and research-gate remediation for the Python Pages site | in progress | 7678436e | README.md, data/questions.csv, data/requirements.csv, data/suggestions.csv, data/strategy_gates.csv, data/strategy_hypotheses.csv, data/sources.csv, data/flags.csv, scripts/build.py, generated legacy `docs/*.html` and `docs/data/*.json`, COORDINATION.md | NFL, Government of Japan/NPA, NIST; first-party GitHub records for project facts | Repaired 41 source-less table rows; universal builder checks; independent line/correlation plan and leaderboard empty state; F16 terms/data rights, F17 thresholds. F16/F17 are distinct from Node-dashboard F-01–F-07. PR/deploy pending. |
 | T1 | Scaffold repo, coordination board, static-site build system | done | session-09d7cc77 | COORDINATION.md, package.json, .gitignore, src/**, README.md | Build verified: `npm run build` emits 12 pages; `npm run verify` passes | Node generator foundation |
 | T2 | Requirements, executive summary, questions & answers, suggestions | done | session-09d7cc77 | docs/00-*.md … docs/03-*.md, data/requirements.json, data/questions.json, data/suggestions.json | Official NFL sources + methodology | 28 requirements, 14 questions, 13 suggestions |
 | T3 | Strategy research, validation gates, correlation values, leaderboard | done | session-09d7cc77 | docs/04-*.md … docs/07-*.md, data/strategies.json, data/validation-gates.json, data/correlations.json, data/leaderboard.json | CLV/market-efficiency methodology | Correlation values blank + flagged |
@@ -89,6 +91,13 @@ Every verified value links to one of these official pages (full lists also at
 - Odds aggregators (references, not official): VegasInsider, Covers, FOX Sports
 - CLV / market-efficiency methodology: Squawka, OddsIndex, NFL Betting Math
 
+**T12 supplement (7678436e; official references and first-party project records are catalogued in `data/sources.csv` as SRC-01–SRC-23):**
+- NFL Week 10 schedule/bye list: https://www.nfl.com/schedules/2026/by-week/week-10
+- NFL.com Terms and Conditions: https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions
+- NFL Support odds FAQ and NFL data-partner announcement: https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL · https://www.nfl.com/news/nfl-draftkings-fanduel-fanatics-sports-betting-partners
+- Government of Japan and National Police Agency online-gambling guidance: https://www.gov-online.go.jp/article/202411/entry-6786.html · https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html
+- NIST/SEMATECH model validation, multiple comparisons, correlation, confidence intervals and bootstrap: https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm · https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm · https://www.itl.nist.gov/div898/handbook/glossary.htm · https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm · https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm
+
 ## Verification performed
 
 **Session e98c7ba0:**
@@ -112,6 +121,14 @@ Every verified value links to one of these official pages (full lists also at
 - `npm run verify`: all `data/*.json` rows resolve to a known source; 196 internal
   links across 12 HTML files resolve. ALL CHECKS PASSED.
 
+**Session 7678436e (T12, Python dashboard follow-up):**
+- The original `origin/main` Python build was unpacked to a temporary directory and independently audited. It built successfully but had 41 source-less question, requirement, suggestion, gate and hypothesis rows.
+- T12 added evidence URLs and made the Python builder require evidence URLs for every one of those CSV rows; the generated-HTML check now rejects any table row without an allow-listed HTTPS source.
+- `python3 -m py_compile scripts/build.py`, `python3 scripts/build.py` and `git diff --check` pass. Python output: 11 pages, 345 injury rows, 28 teams, 14 games and 61 unit exposure rows.
+- Independent audit: 63 evidence-bearing CSV rows and 571 generated table rows; zero missing or non-allowlisted source URLs, zero source-less rows. Temporary negative tests confirmed that a blank Q09 link and an `example.com` link are rejected.
+- The NFL Week 10 schedule explicitly confirms CHI, DEN, PHI and TB were on bye (F05). Injury values were not changed. Numeric strategy cutoffs remain blank (F17); no odds, forecast, replacement-impact, correlation or performance value was invented.
+- F16 records that written permission for systematic NFL injury-data collection/publication is not found in this repo; F17 records unapproved numeric cutoffs. These flags do not establish a legal conclusion.
+
 ## Irregularities (combined)
 
 **Session e98c7ba0 flags (F01–F15, published at `docs/flagged.html`):**
@@ -125,11 +142,12 @@ Every verified value links to one of these official pages (full lists also at
 - F15: GitHub Pages source is main / (root), not /docs. Token returned HTTP 403 when
   changing it. Root index.html forwards to docs/index.html.
 
-**Session d80442c2 audit request — suggested F16 (terms/compliance):**
+**Session d80442c2 audit request — F16 terms/compliance (implemented by T12):**
 - NFL.com Terms and Conditions Section 1.3 prohibits systematic retrieval to compile
-  a collection/database absent express prior written consent (T11-S1). **No automated
-  scraping of NFL.com should be implemented until authorized access/terms are
-  documented.** Flagged for the dashboard owner.
+  a collection/database absent express prior written consent (T11-S1). T12 added
+  `data/flags.csv` F16 and a prominent homepage warning. No automated NFL.com data
+  collection is implemented; permission for the existing published snapshot is not
+  recorded, so this remains a critical open rights gate.
 
 **Session 09d7cc77 flags (F-01–F-07, published on the Node Flagged for Review page):**
 - F-01: Ben Brown position discrepancy (C in injury report vs RG on depth chart).
@@ -140,7 +158,13 @@ Every verified value links to one of these official pages (full lists also at
 - F-05: depth charts are third-party, not official.
 - F-06: player-stats feed not confirmed.
 - F-07: NFL.com Terms Section 1.3 — systematic-retrieval restriction; automated
-  collection requires authorization (mirrors suggested F16).
+  collection requires authorization (mirrors F16 in the Python register).
+
+**Python dashboard T12 status:**
+- F05: Week 10 bye status is now confirmed from the official schedule, not inferred from injury-report absence.
+- F16: written permission for the existing NFL injury snapshot is not recorded; data rights remain unresolved.
+- F17: numerical validation cutoffs are blank/unverified; no strategy has passed.
+- The Node `data/flagged.json` IDs `F-01`–`F-07` and Python `data/flags.csv` IDs `F01`–`F17` are separate registers; do not conflate their identifiers.
 
 ## Requests between sessions
 
@@ -165,6 +189,8 @@ by session-09d7cc77:
    criteria).
 7. **Preserve the manual-transcription limitation** (F10).
 8. **Reconcile terms review status** in Q18.
+
+**T12 follow-up (7678436e, current branch):** addressed requests 2–8 for the Python dashboard with source-backed wording, a universal CSV/HTML source-link validator, explicit F16/F17 flags, blank unapproved numeric cutoffs, and clearer line/correlation/leaderboard scaffolding. No injury-row values were edited; the source/license question remains open and is not treated as cleared.
 
 ## Merge / conflict log
 

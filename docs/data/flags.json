@@ -37,12 +37,12 @@
  },
  {
   "flag_id": "F05",
-  "category": "Unverified coverage",
-  "item": "Four teams are absent from the Week 10 injury report",
-  "detail": "CHI, DEN, PHI and TB do not appear in the Week 10 report. The NFL.com page did not state a reason. Likely bye weeks, but this is NOT confirmed from an official source.",
-  "source_url": "https://www.nfl.com/injuries/",
-  "status": "Unverified",
-  "action_requested": "Confirm bye weeks from the official NFL schedule."
+  "category": "Coverage confirmation",
+  "item": "Week 10 bye teams confirmed by NFL schedule",
+  "detail": "CHI, DEN, PHI and TB are absent from the Week 10 injury report. The official NFL Week 10 schedule separately lists all four under Teams on Bye, so the bye status is now confirmed from the schedule rather than inferred from injury-report absence.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Resolved — confirmed on official NFL schedule",
+  "action_requested": "Use the schedule as the source for bye status; do not infer byes from injury-report absence."
  },
  {
   "flag_id": "F06",
@@ -56,9 +56,9 @@
  {
   "flag_id": "F07",
   "category": "Missing official data",
-  "item": "No official betting lines or odds source found",
-  "detail": "The NFL does not publish betting lines. No official odds source was identified. Opening/closing lines, spreads, totals, prop prices and parlay prices are therefore blank.",
-  "source_url": "https://www.nfl.com/injuries/",
+  "item": "No authorized historical odds feed for this project",
+  "detail": "NFL Support says its NFL.com widgets display odds, spreads and totals provided by bookmaker partners. The FAQ does not establish a public historical odds feed or this project’s rights. Opening/closing lines, spreads, totals, prop prices and parlay prices remain blank.",
+  "source_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL",
   "status": "Missing - blank by design",
   "action_requested": "Decide whether a licensed odds data provider may be used (Questions Q08)."
  },
@@ -66,19 +66,19 @@
   "flag_id": "F08",
   "category": "Missing official data",
   "item": "No verified historical results or player stats collected",
-  "detail": "Game results, scoring, player stats and historical injury reports were not collected in this session. Every strategy validation metric is blank.",
-  "source_url": "https://www.nfl.com/stats/",
+  "detail": "No historical results or player-stat values were imported into this project. Official NFL player-stat pages exist, but page availability does not establish bulk-retrieval, archive, or model-training rights. Strategy validation metrics remain blank.",
+  "source_url": "https://www.nfl.com/stats/player-stats/",
   "status": "Missing - blank by design",
   "action_requested": "Approve collection of official results and stats (Suggestions S02)."
  },
  {
   "flag_id": "F09",
   "category": "Legal question",
-  "item": "Wagering from Japan requires professional review",
-  "detail": "Official text confirms Penal Code Articles 185-187 criminalize gambling outside specified exceptions (e-Gov). Japan Sport Council confirms the state-run toto/BIG/WINNER/DUNK products. This project does not place or recommend bets. Whether any specific NFL wager is lawful for a resident of Japan has NOT been verified.",
-  "source_url": "https://laws.e-gov.go.jp/law/140AC0000000045",
-  "status": "Legal review needed",
-  "action_requested": "Obtain legal advice in Japan before any real-money activity."
+  "item": "Japan-specific online sports-betting guidance; contest/reward legality unresolved",
+  "detail": "Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; the National Police Agency gives related official guidance. This is jurisdiction-specific and does not decide an unspecified contest or reward design. No legal opinion is provided.",
+  "source_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html",
+  "status": "Japan-specific legal review needed; contest/reward design unresolved",
+  "action_requested": "Keep wagering/referrals/rewards disabled until qualified counsel reviews exact mechanics and all target jurisdictions."
  },
  {
   "flag_id": "F10",
@@ -123,15 +123,33 @@
   "detail": "The site contains the Week 10 snapshot only. No automatic refresh has been set up. Data will not update without a new manual refresh by a session.",
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Known limitation",
-  "action_requested": "Approve an automated refresh job (Suggestion S07)."
+  "action_requested": "Do not automate refresh until rights are cleared by written permission or an authorized feed (see F16 and Suggestion S07)."
  },
  {
   "flag_id": "F15",
   "category": "Publishing",
   "item": "GitHub Pages serves the repo root, not docs/",
   "detail": "Pages was already enabled on main with source / (root). This session could not change the source to /docs (the API returned HTTP 403 for that change). The site is therefore published from the root: index.html forwards to docs/index.html, and docs/ holds the site. Relative links inside docs/ keep working.",
-  "source_url": "https://github.com/karagemop466-tech/X2/settings/pages",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/index.html",
   "status": "Irregularity - open",
-  "action_requested": "Switch the Pages source to main /docs, or approve the root-forwarder approach."
+  "action_requested": "Public root index forwards to docs; current deployment is verified on the project Pages site."
+ },
+ {
+  "flag_id": "F16",
+  "category": "Data rights",
+  "item": "Written permission for systematic NFL injury-data collection and publication is not recorded",
+  "detail": "This repository stores and publishes a manually transcribed Week 10 NFL injury-report dataset (345 rows). NFL.com terms state systematic retrieval to compile a collection or database is prohibited absent express prior written consent. No written permission or license is recorded in this repository. Whether this snapshot, its publication, storage, or derived aggregates are covered by a permission is unverified; this is not a legal conclusion.",
+  "source_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions",
+  "status": "Critical — written permission not found in repo",
+  "action_requested": "Do not expand or automate this use; obtain written permission/license or suppress the bulk dataset and derived values pending review."
+ },
+ {
+  "flag_id": "F17",
+  "category": "Unverified strategy thresholds",
+  "item": "Validation cutoffs are intentionally blank",
+  "detail": "Earlier draft thresholds had no official NFL basis and were not project-approved or empirically validated. They have been cleared from the strategy table. NIST describes statistical methods and multiple-comparison risks but does not prescribe NFL-specific sample-size, return, significance, or paper-trading cutoffs.",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
+  "status": "Open — no project-specific cutoff approved",
+  "action_requested": "Keep numeric cutoffs blank until a rights-cleared dataset and pre-registered statistical plan are reviewed."
  }
 ]

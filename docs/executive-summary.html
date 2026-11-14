@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Executive summary · NFL Research Dashboard</title>
-<meta name="description" content="NFL research dashboard: verified injury data, questions, suggestions and flagged items. Data as of 2026-11-14.">
+<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Data as of 2026-11-14.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -15,16 +15,17 @@
 <main>
 
 <h1>Executive summary</h1>
-<p class="note">Based only on verified data. Snapshot read 2026-11-14. Numbers below are counted from the CSV files by the build script.</p>
+<p class="note">Snapshot read 2026-11-14. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. Manual transcription spot-check remains open (F10), and permission for systematic collection/publication is not recorded (F16).</p>
 <div class="tiles"><div class="tile"><div class="num">76</div><div class="lbl">Out or Doubtful players</div></div><div class="tile"><div class="num">42</div><div class="lbl">Offense Out or Doubtful</div></div><div class="tile"><div class="num">32</div><div class="lbl">Defense Out or Doubtful</div></div><div class="tile"><div class="num">2</div><div class="lbl">Special teams Out or Doubtful</div></div></div>
 <h2>Key findings</h2>
 <ul class="findings">
-<li><strong>Coverage.</strong> The Week 10 NFL.com report lists 345 players across 28 teams in 14 games. Teams not on the report: CHI, DEN, PHI, TB. Their absence is not confirmed as a bye (Flag F05).</li>
+<li><strong>Coverage.</strong> The Week 10 NFL.com report lists 345 players across 28 teams in 14 games. The official NFL schedule identifies CHI, DEN, PHI, TB as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
 <li><strong>Game status.</strong> 66 players are Out, 10 Doubtful and 84 Questionable. 185 listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense 42, defense 32, special teams 2. Most-exposed teams by Out plus Doubtful count: DAL Cowboys (5 Out, 1 Doubtful), IND Colts (6 Out, 0 Doubtful), GB Packers (4 Out, 1 Doubtful), HOU Texans (5 Out, 0 Doubtful), MIN Vikings (5 Out, 0 Doubtful).</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
-<li><strong>Strategy research.</strong> No strategy has been tested. Odds, historical results and correlation data have not been obtained from an official source, so every validation gate is open (Strategy lab).</li>
-<li><strong>Legal.</strong> Official Japanese text confirms that gambling is criminal outside listed exceptions (Penal Code Arts. 185–187). Whether any NFL wager is lawful for a resident of Japan needs professional legal advice (Flag F09).</li>
+<li><strong>Strategy research.</strong> No strategy has been tested. Odds, historical results and correlation data have not been obtained through a verified, authorized source, so every performance gate is open (Strategy lab).</li>
+<li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
+<li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
 </ul>
 <h2>What is verified</h2>
 <ul>
@@ -45,8 +46,8 @@
 
 </main>
 <footer>
-  <p>Every value on this site links to an official source or is marked blank/unverified.
-  Research only. This is not betting advice. Wagering is restricted in Japan (see Flagged for review, F09).</p>
+  <p>Every value on this site links to an official source or is marked blank/unverified; project implementation claims link to the repository.
+  Research only. This is not betting advice. Official Japan-specific guidance says online sports betting accessed from Japan is prohibited; this is not a legal opinion for other jurisdictions or contest/reward designs (see Flagged for review, F09).</p>
   <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
 </footer>
 <script src="assets/app.js"></script>

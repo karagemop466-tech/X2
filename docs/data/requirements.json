@@ -11,11 +11,11 @@
  {
   "req_id": "R02",
   "requirement (from brief)": "Suggestions section to choose paths before implementing changes",
-  "status": "Done (awaiting your choice)",
+  "status": "Done — proposal page; no choice required for this build",
   "where_addressed": "Suggestions page",
-  "blocker_or_note": "No changes implemented",
+  "blocker_or_note": "Review-only proposals; no collection or feature change is authorized by a suggestion.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  },
  {
   "req_id": "R03",
@@ -24,59 +24,59 @@
   "where_addressed": "Questions page",
   "blocker_or_note": "Answers depend on decisions and data",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd41.htm"
  },
  {
   "req_id": "R04",
   "requirement (from brief)": "Originate own NFL lines and develop strategies",
   "status": "Blocked (no verified data)",
   "where_addressed": "Strategy Lab",
-  "blocker_or_note": "No verified odds or results (F07; F08)",
+  "blocker_or_note": "No authorized historical odds or results feed; all forecast outputs remain blank.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
  },
  {
   "req_id": "R05",
   "requirement (from brief)": "Treat strategies as a leaderboard with rewards",
   "status": "Designed only",
   "where_addressed": "Strategy Lab; Suggestions S09",
-  "blocker_or_note": "Reward definition needs your decision (Q13)",
+  "blocker_or_note": "Leaderboard framework only. No rank or reward until data, validation and jurisdiction-specific legal gates pass.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  },
  {
   "req_id": "R06",
   "requirement (from brief)": "Single bets / parlays / player prop combos",
   "status": "Designed only",
-  "where_addressed": "Strategy Lab hypotheses H01-H06",
-  "blocker_or_note": "Inputs unverified",
+  "where_addressed": "Strategy Lab hypotheses H01–H08",
+  "blocker_or_note": "Player-prop, parlay joint outcomes and licensed market prices remain unavailable.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://www.nfl.com/stats/player-stats/"
  },
  {
   "req_id": "R07",
   "requirement (from brief)": "Validation gates per strategy",
-  "status": "Done (proposed thresholds)",
+  "status": "Done — gate framework; numeric thresholds blank/unverified",
   "where_addressed": "Strategy Lab gates G0-G8",
-  "blocker_or_note": "Thresholds need your decision (S08)",
+  "blocker_or_note": "Method framework only; numeric thresholds are intentionally blank/unverified.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
  },
  {
   "req_id": "R08",
   "requirement (from brief)": "Correlation values",
   "status": "Blocked",
   "where_addressed": "Questions Q11; Gate G5",
-  "blocker_or_note": "No joint outcome data",
+  "blocker_or_note": "No aligned joint outcomes; no correlation value is computed.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
  },
  {
   "req_id": "R09",
   "requirement (from brief)": "Injury tracking",
   "status": "Partially done",
   "where_addressed": "Injuries page",
-  "blocker_or_note": "Single snapshot; no change history (S04)",
+  "blocker_or_note": "Single Week 10 snapshot; no authorized point-in-time history (F13/F14).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
@@ -85,7 +85,7 @@
   "requirement (from brief)": "Deficiency analysis (starter vs backup replacement)",
   "status": "Partially done",
   "where_addressed": "Depth Analysis page",
-  "blocker_or_note": "Starter order not verified (F06)",
+  "blocker_or_note": "Availability exposure is grouped across offense and defense; official depth order, player participation and replacement impact remain unverified (F06).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
  },
@@ -94,45 +94,45 @@
   "requirement (from brief)": "Executive summary",
   "status": "Done",
   "where_addressed": "Executive Summary page",
-  "blocker_or_note": "Based only on verified data",
+  "blocker_or_note": "Uses the source-linked Week 10 snapshot; manual spot-check and data-use permission remain open (F10/F17).",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://www.nfl.com/injuries/"
  },
  {
   "req_id": "R12",
   "requirement (from brief)": "Repo review with links and irregularities",
   "status": "Done",
   "where_addressed": "Flagged for Review page; flags.csv",
-  "blocker_or_note": "See F01-F14",
+  "blocker_or_note": "See F01–F17; unresolved data rights, source-link coverage and validation cutoffs are recorded in the flagged register.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
  },
  {
   "req_id": "R13",
   "requirement (from brief)": "Site: clean landing page and category subpages",
-  "status": "Done",
+  "status": "Prior site integration deployed; source-audit follow-up in progress",
   "where_addressed": "docs/index.html and subpages",
-  "blocker_or_note": "GitHub Pages deployment pending merge",
+  "blocker_or_note": "Public Pages site is live; the current follow-up adds stricter source-link validation.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://karagemop466-tech.github.io/X2/"
  },
  {
   "req_id": "R14",
   "requirement (from brief)": "Tables with a source link on every row",
-  "status": "Done for data tables",
-  "where_addressed": "All tables with a source column",
-  "blocker_or_note": "Rows link to official NFL.com pages",
+  "status": "Done — every generated table row has an official or first-party project source link",
+  "where_addressed": "All generated HTML tables; enforced in scripts/build.py",
+  "blocker_or_note": "The builder now fails if any published table row lacks an HTTPS link on the reviewed official-source allow-list.",
   "row_type": "status",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py"
  },
  {
   "req_id": "R15",
   "requirement (from brief)": "Unverified values left blank and flagged",
   "status": "Done",
   "where_addressed": "Flagged for Review page",
-  "blocker_or_note": "See F04-F09",
+  "blocker_or_note": "Unverified NFL values, data-use permission and legal/design thresholds remain blank and are listed in Flagged for Review.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  },
  {
   "req_id": "R16",
@@ -141,24 +141,24 @@
   "where_addressed": "COORDINATION.md",
   "blocker_or_note": "Single-branch session (F03)",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md"
  },
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "Pending",
+  "status": "Prior site integration merged; follow-up PR not yet opened",
   "where_addressed": "Final step",
-  "blocker_or_note": "Waiting for build and link checks",
+  "blocker_or_note": "PRs #1 and #2 are merged; this branch’s source-audit follow-up is pending.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2/pull/2"
  },
  {
   "req_id": "R18",
   "requirement (from brief)": "No manual input from the user",
   "status": "Met for this turn",
   "where_addressed": "All steps",
-  "blocker_or_note": "Decisions listed as questions and suggestions still need your choice",
+  "blocker_or_note": "No user input is required to publish this research brief; open choices are listed as future review items.",
   "row_type": "status",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
  }
 ]

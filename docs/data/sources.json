@@ -1,6 +1,6 @@
 [
  {
-  "source_id": "S01",
+  "source_id": "SRC-01",
   "title": "NFL Injury Report - 2026 Season (Week 10)",
   "publisher": "NFL.com (National Football League)",
   "url": "https://www.nfl.com/injuries/",
@@ -10,7 +10,7 @@
   "verification_note": "Read in full (8 chunks). Transcribed to data/injuries_week10_2026.csv and data/games_week10_2026.csv. Page does not show a last-updated timestamp."
  },
  {
-  "source_id": "S02",
+  "source_id": "SRC-02",
   "title": "Buffalo Bills 2026 Player Roster (sample check)",
   "publisher": "NFL.com",
   "url": "https://www.nfl.com/teams/buffalo-bills/roster",
@@ -20,7 +20,7 @@
   "verification_note": "Roster lists position and status only. No depth-chart ordering found on this page."
  },
  {
-  "source_id": "S03",
+  "source_id": "SRC-03",
   "title": "Penal Code (Act No. 45 of 1907) - Chapter 23 Articles 185-187 (gambling)",
   "publisher": "e-Gov Law Search (Government of Japan)",
   "url": "https://laws.e-gov.go.jp/law/140AC0000000045",
@@ -30,7 +30,7 @@
   "verification_note": "Table of contents confirms Chapter 23 'Crimes concerning gambling and lotteries' (Arts. 185-187). Full article text not yet reviewed line by line; legal application needs professional review."
  },
  {
-  "source_id": "S04",
+  "source_id": "SRC-04",
   "title": "Sports Promotion Lottery (toto / BIG / WINNER / DUNK) - official overview",
   "publisher": "Japan Sport Council",
   "url": "https://www.jpnsport.go.jp/sportspromotion/index.html",
@@ -38,5 +38,195 @@
   "accessed_date": "2026-11-14",
   "used_for": "Confirms the only state-run sports lottery products",
   "verification_note": "Page states the lottery is run under the Act on Sports Promotion Voting (Sports Promotion Vote Act). Product details and eligibility rules not yet reviewed."
+ },
+ {
+  "source_id": "SRC-05",
+  "title": "NFL Week 10, 2026 schedule",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "type": "Official league schedule",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 10 games, confirmed bye teams and game results",
+  "verification_note": "The official Week 10 page lists CHI, DEN, PHI and TB under Teams on Bye. Schedule is a live page; no results were copied into this dashboard."
+ },
+ {
+  "source_id": "SRC-06",
+  "title": "NFL player statistics",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/stats/player-stats/",
+  "type": "Official league statistics",
+  "accessed_date": "2026-11-14",
+  "used_for": "Official player-stat categories; no player-stat values are imported here.",
+  "verification_note": "Public page access does not establish bulk-retrieval or model-training rights."
+ },
+ {
+  "source_id": "SRC-07",
+  "title": "2026 NFL Rulebook",
+  "publisher": "NFL Football Operations",
+  "url": "https://operations.nfl.com/rules-officiating/2026-nfl-rulebook",
+  "type": "Official league rules",
+  "accessed_date": "2026-11-14",
+  "used_for": "Rule-era and rule-reference leads for market label design.",
+  "verification_note": "Does not establish sportsbook-specific settlement terms."
+ },
+ {
+  "source_id": "SRC-08",
+  "title": "Performance Tracking Data (Next Gen Stats)",
+  "publisher": "NFL Football Operations",
+  "url": "https://operations.nfl.com/game-operations-logistics/technology/performance-tracking-data-next-gen-stats",
+  "type": "Official league technology overview",
+  "accessed_date": "2026-11-14",
+  "used_for": "Tracking-system descriptions and examples of derived performance metrics.",
+  "verification_note": "Overview does not establish this project’s public feed access, historical completeness or reuse rights."
+ },
+ {
+  "source_id": "SRC-09",
+  "title": "NFL.com Terms and Conditions",
+  "publisher": "NFL Support",
+  "url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions",
+  "type": "Official service terms",
+  "accessed_date": "2026-11-14",
+  "used_for": "Systematic retrieval and content-use constraints.",
+  "verification_note": "The page says systematic retrieval/database compilation is prohibited absent express prior written consent; re-check current terms before use."
+ },
+ {
+  "source_id": "SRC-10",
+  "title": "If I place a bet on NFL.com or the NFL app, am I betting with the NFL?",
+  "publisher": "NFL Support",
+  "url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL",
+  "type": "Official support FAQ",
+  "accessed_date": "2026-11-14",
+  "used_for": "NFL.com odds widgets use bookmaker-partner odds; no historical feed/license is established.",
+  "verification_note": "FAQ is not an odds API or permission to archive prices."
+ },
+ {
+  "source_id": "SRC-11",
+  "title": "NFL announces official partnerships with sports betting operators",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/news/nfl-draftkings-fanduel-fanatics-sports-betting-partners",
+  "type": "Official league announcement",
+  "accessed_date": "2026-11-14",
+  "used_for": "Official data-distribution context and provider lead.",
+  "verification_note": "Does not establish this project’s access, cost, historical coverage or model-use rights."
+ },
+ {
+  "source_id": "SRC-12",
+  "title": "Online sports betting / online gambling guidance",
+  "publisher": "Government of Japan — Government Online",
+  "url": "https://www.gov-online.go.jp/article/202411/entry-6786.html",
+  "type": "Official government guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Japan-specific sports-betting warning and jurisdiction scope.",
+  "verification_note": "Does not decide the legality of an unspecified skill contest, prize, or other jurisdiction; not legal advice."
+ },
+ {
+  "source_id": "SRC-13",
+  "title": "Online gambling is a crime",
+  "publisher": "National Police Agency of Japan",
+  "url": "https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html",
+  "type": "Official government guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Japan-specific official online gambling and sports-betting guidance.",
+  "verification_note": "Does not provide a project-specific legal opinion."
+ },
+ {
+  "source_id": "SRC-14",
+  "title": "Basic Steps for Developing an Effective Process Model",
+  "publisher": "NIST/SEMATECH e-Handbook",
+  "url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd41.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Separates model selection, fitting and validation.",
+  "verification_note": "General engineering/statistics guidance, not an NFL performance result."
+ },
+ {
+  "source_id": "SRC-15",
+  "title": "How Can I Tell if a Model Fits My Data?",
+  "publisher": "NIST/SEMATECH e-Handbook",
+  "url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Model-validation checks; fit statistics alone do not establish model adequacy.",
+  "verification_note": "General guidance; no universal NFL-specific pass threshold."
+ },
+ {
+  "source_id": "SRC-16",
+  "title": "How Can We Make Multiple Comparisons?",
+  "publisher": "NIST/SEMATECH e-Handbook",
+  "url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Why repeated comparisons need pre-planned or multiple-comparison procedures.",
+  "verification_note": "Does not prescribe NFL strategy thresholds."
+ },
+ {
+  "source_id": "SRC-17",
+  "title": "NIST Statistical Glossary",
+  "publisher": "NIST/SEMATECH e-Handbook",
+  "url": "https://www.itl.nist.gov/div898/handbook/glossary.htm",
+  "type": "Official statistical glossary",
+  "accessed_date": "2026-11-14",
+  "used_for": "Definitions of cross-validation and correlation.",
+  "verification_note": "A general glossary, not NFL coefficients or a parlay model."
+ },
+ {
+  "source_id": "SRC-18",
+  "title": "Confidence Limits for the Mean",
+  "publisher": "NIST/SEMATECH e-Handbook",
+  "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "General interval-estimation and uncertainty concepts.",
+  "verification_note": "This page concerns intervals for a mean; the method for any binary/joint NFL metric must be separately justified."
+ },
+ {
+  "source_id": "SRC-19",
+  "title": "Bootstrap Plot",
+  "publisher": "NIST/SEMATECH e-Handbook",
+  "url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Bootstrap as one uncertainty-estimation method and its suitability cautions.",
+  "verification_note": "Does not prescribe a resampling scheme for dependent NFL games."
+ },
+ {
+  "source_id": "SRC-20",
+  "title": "Commanders at 49ers Game Center / official gamebook example",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/games/commanders-at-49ers-2026-reg-6",
+  "type": "Official game page / gamebook",
+  "accessed_date": "2026-11-14",
+  "used_for": "Game-specific lineups, active/inactive and statistical record source lead.",
+  "verification_note": "The reviewed gamebook restricts uses beyond media coverage absent written permission; not a depth chart or unrestricted dataset."
+ },
+ {
+  "source_id": "SRC-21",
+  "title": "NFL Research Dashboard repository",
+  "publisher": "GitHub project repository",
+  "url": "https://github.com/karagemop466-tech/X2",
+  "type": "First-party project record",
+  "accessed_date": "2026-11-14",
+  "used_for": "Repository contents, build scripts, flags and coordination state only.",
+  "verification_note": "Not an official NFL or government data source; not used to substantiate league facts."
+ },
+ {
+  "source_id": "SRC-22",
+  "title": "NFL Research Dashboard — published GitHub Pages site",
+  "publisher": "GitHub Pages project deployment",
+  "url": "https://karagemop466-tech.github.io/X2/",
+  "type": "First-party publication record",
+  "accessed_date": "2026-11-14",
+  "used_for": "Publicly deployed site state and navigation.",
+  "verification_note": "Not an official NFL endorsement or source of NFL facts."
+ },
+ {
+  "source_id": "SRC-23",
+  "title": "NFL team defense statistics (2025 regular season)",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/stats/team-stats/defense/total-defense/2025/reg/all",
+  "type": "Official league statistics",
+  "accessed_date": "2026-11-14",
+  "used_for": "Official defensive-stat categories; context for a proposed unit-level analysis only.",
+  "verification_note": "Team totals do not establish a player-specific backup effect or a validated defensive deficiency signal; public access does not establish bulk-retrieval/model-use rights."
  }
 ]

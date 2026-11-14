@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NFL Research Dashboard · NFL Research Dashboard</title>
-<meta name="description" content="NFL research dashboard: verified injury data, questions, suggestions and flagged items. Data as of 2026-11-14.">
+<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Data as of 2026-11-14.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
@@ -16,9 +16,10 @@
 
 <section class="hero">
   <h1>NFL Research Dashboard</h1>
-  <p>A verified, source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
-  Every table row links to an official NFL or government page. Anything that cannot be confirmed is left blank and flagged.</p>
-  <p class="note">Snapshot: NFL.com Week 10, 2026 season (read 2026-11-14).</p>
+  <p>A source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
+  Every table row links to an official NFL, government or statistical source; repository and deployment claims link to first-party project records. Unconfirmed NFL/model values remain blank and flagged.</p>
+  <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (read 2026-11-14).</p>
+  <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
 <div class="tiles"><div class="tile"><div class="num">28</div><div class="lbl">teams on the Week 10 injury report</div></div><div class="tile"><div class="num">345</div><div class="lbl">players listed</div></div><div class="tile"><div class="num">66</div><div class="lbl">marked Out</div></div><div class="tile"><div class="num">10</div><div class="lbl">marked Doubtful</div></div><div class="tile"><div class="num">84</div><div class="lbl">marked Questionable</div></div><div class="tile"><div class="num">14</div><div class="lbl">games in Week 10 list</div></div></div>
 <h2>Start here</h2>
@@ -30,15 +31,15 @@
 <a class="card" href="strategy-lab.html"><h3>Strategy lab</h3><p>Validation gates, hypotheses and the leaderboard framework. No strategy has passed yet.</p></a>
 <a class="card" href="questions.html"><h3>Questions</h3><p>What we know, what we do not, and how to find the missing information.</p></a>
 <a class="card" href="requirements.html"><h3>Requirements</h3><p>Each requirement from the brief with its current status.</p></a>
-<a class="card" href="suggestions.html"><h3>Suggestions</h3><p>Options to choose from before any change is made. Nothing is implemented without your decision.</p></a>
+<a class="card" href="suggestions.html"><h3>Suggestions</h3><p>Review proposals before future implementation; no choice is required to finish this research brief.</p></a>
 <a class="card" href="flagged.html"><h3>Flagged for review</h3><p>Irregularities, unverified items and missing official data, each with a source link.</p></a>
 <a class="card" href="sources.html"><h3>Sources</h3><p>Every official source used, with what it supports.</p></a>
 </div>
 
 </main>
 <footer>
-  <p>Every value on this site links to an official source or is marked blank/unverified.
-  Research only. This is not betting advice. Wagering is restricted in Japan (see Flagged for review, F09).</p>
+  <p>Every value on this site links to an official source or is marked blank/unverified; project implementation claims link to the repository.
+  Research only. This is not betting advice. Official Japan-specific guidance says online sports betting accessed from Japan is prohibited; this is not a legal opinion for other jurisdictions or contest/reward designs (see Flagged for review, F09).</p>
   <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
 </footer>
 <script src="assets/app.js"></script>
