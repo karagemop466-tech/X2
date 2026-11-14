@@ -885,3 +885,14 @@ No new feature was requested in this session. The open decisions on the board re
 - Legal review for any jurisdiction, including the Netherlands (F19) and Japan (F09): still needed before any reward or wagering.
 
 
+
+### PR and deployment record — session c125b2f7 (T39, T40)
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/29 (base `main`, head `arena/c125b2f7-x2`), merged with `--merge`
+  as merge commit `8036ea6` on 2026-11-14. Merged without approval, as the brief directs. Flagged irregularities (F43, F44)
+  and the blocked items do not block the merge.
+- **Pages build:** `built` for commit `8036ea6` (2026-11-14 19:16:21Z).
+- **Live check (fetched, not assumed):** https://karagemop466-tech.github.io/X2/docs/markets.html renders the price store
+  (39 rows, all blank and UNVERIFIED), the fair-line table, the signal-only ranking and the proposed demotion rules.
+- **Tasks T39 and T40:** done. Nothing from this session is left unclaimed or half-merged. The PR-number record is added here
+  as its own follow-up change.
