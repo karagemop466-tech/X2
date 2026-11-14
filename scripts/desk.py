@@ -65,7 +65,7 @@ def add(cid, check, method, result, status, src):
 
 
 expected_cols = ["season", "week", "date_as_shown", "away_team", "away_points", "home_team", "home_points",
-                 "game_url", "source_url"]
+                 "game_url", "source_url", "neutral_site"]
 cols_ok = list(results[0].keys()) == expected_cols
 add("RF01", "Schema", "Header and field count on games_2026_results.csv",
     f"{len(results)} rows; columns as expected: {cols_ok}",
@@ -221,9 +221,9 @@ AUDIT = {
     "C08": ("Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)", "yes",
             "Official injury report and standings. Exposure is a count of listed players."),
     "C09": ("Model predicted margin (model output)", "Official final margin", "no",
-            "A regression slope, not a correlation. Predictor is a model output. The register still holds the earlier "
-            "interval (0.830-0.923), which applies a correlation formula to a slope. Recomputed with the slope's own SE: "
-            "CI 0.335-1.435, p 0.683 vs slope 1.0. Correction requested on COORDINATION.md; not yet applied (F48)."),
+            "A regression slope, not a correlation. Predictor is a model output. Correction applied (F48 resolved): "
+            "the interval now uses the slope's own standard error — slope 0.885, 95% CI 0.328-1.443, p 0.6830 against "
+            "slope 1.0 (t-interval), matching data/correlations_computed.csv after the REQ-8a-1 correction landed."),
 }
 corr = read("correlations_computed.csv")
 audit = []

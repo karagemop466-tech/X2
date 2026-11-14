@@ -1,0 +1,10 @@
+{
+  "as_of": "2026-11-14",
+  "how_to_use": [
+    "Every proposal is undecided until a human edits",
+    "data/decision_choices.json and sets choice to A, B or C with",
+    "decided_by and decided_on. Re-run python3 scripts/review.py and",
+    "python3 scripts/build.py. Nothing else changes automatically."
+  ],
+  "choices": {}
+}
