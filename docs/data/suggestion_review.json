@@ -198,7 +198,7 @@
   "suggestion_id": "S38",
   "area": "Site",
   "topic": "Scheduled verification job",
-  "depends_on_decision": "Q46 (data rights, F16)",
+  "depends_on_decision": "Q51 (data rights, F16)",
   "recommended_path": "A) Hold until F16 clears, then build against a licensed source",
   "recommendation_strength": "Recommended",
   "paths_available": "A) Hold for rights; B) manual cadence; C) licensed-feed automation",
