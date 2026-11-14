@@ -318,7 +318,10 @@ for a in avail:
     player = (a.get("player_affected") or "").strip()
     if not player:
         continue
-    status = (a.get("status_source") or "").strip()
+    # status_source names WHERE the status came from (e.g. "NFL.com news").  It is
+    # not the status word, so it must not be published in the status column.  The
+    # official statement is quoted instead, and the source column carries the link.
+    status = "named in an official statement (status word not stated in the register)"
     repl = (a.get("officially_named_replacement") or "").strip()
     risk_id += 1
     risk_rows.append({
