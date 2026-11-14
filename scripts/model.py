@@ -423,12 +423,17 @@ for g in results:
 completed_weeks = sorted(w for w in by_week if w <= 10)
 
 oos = []            # one dict per (week, game) with all predictions
+# G1 "no look-ahead" is MEASURED here, not asserted: every fit for week W must
+# see only games strictly before W. The flag feeds gate_eval (F50 fix, T52).
+LOOKAHEAD_OK = True
 for wk in completed_weeks:
     if wk < EVAL_FROM_WEEK:
         continue
     train = [g for g in results if g["week"] < wk]
     if len(train) < 20:
         continue
+    if not train or max(g["week"] for g in train) >= wk:
+        LOOKAHEAD_OK = False
     preds = {}
     for sid, _label, lam, hl in STRATEGIES:
         params, _n = fit(train, lam, half_life=hl, ref_week=wk)
@@ -619,7 +624,8 @@ for (s, _l, _k), q in zip(summaries, qvals):
 # yet approved by the project owner.
 GATE_DEFS = [
     ("G1", "No look-ahead", "Every prediction for week W is fitted only on games played before week W",
-     "Verified in code: the training set is filtered to week < W", "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"),
+     "Measured in the walk-forward loop: every fit checks max(training week) < W (lookahead_ok flag)",
+     "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"),
     ("G2", "Minimum sample", "At least 30 decided bets and at least 30 out-of-sample games",
      "n_bets >= 30", "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm"),
     ("G3", "Skill is significant", "Sign-flip permutation test on the paired accuracy improvement, p < 0.05",
@@ -646,7 +652,7 @@ def gate_eval(s):
     acc = s["accuracy"] or {}
     sk = s["skill"] or {}
     passed = {
-        "G1": True,
+        "G1": LOOKAHEAD_OK,   # measured in the walk-forward loop, not asserted (F50)
         "G2": (s["n_bets"] or 0) >= 30,
         "G3": sk.get("p_perm") is not None and sk["p_perm"] < 0.05,
         "G4": s["q_bh"] is not None and s["q_bh"] < 0.10,
@@ -803,11 +809,34 @@ slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sxx
 intercept = my - slope * mx
 resid = [y - (intercept + slope * x) for x, y in zip(xs, ys)]
 se_slope = math.sqrt(sum(e * e for e in resid) / (len(xs) - 2) / sxx)
-add_corr("C09", "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
-         slope, len(xs),
-         f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. A slope clearly below 1 "
-         "would mean the model is over-shy; clearly above 1, over-confident.",
-         SRC_SCHED + "10")
+# C09 is a REGRESSION SLOPE, not a correlation: its interval and p-value come
+# from the slope's own standard error (df = n - 2), and the p-value tests
+# calibration (H0: slope = 1.0), not association (H0: slope = 0). The earlier
+# row passed the slope through the Fisher/pearson formulas, which produced an
+# interval of 0.830-0.923 that wrongly excluded 1.0 (F48, REQ-8a-1; corrected
+# by session 20e6161b, T52, after re-deriving the numbers from the committed
+# out-of-sample rows).
+_ci_z = 1.959963985
+ci_lo_s = slope - _ci_z * se_slope
+ci_hi_s = slope + _ci_z * se_slope
+df_cal = len(xs) - 2
+t_cal = (slope - 1.0) / se_slope
+x_cal = df_cal / (df_cal + t_cal * t_cal)
+p_cal = min(1.0, max(0.0, betainc(df_cal / 2.0, 0.5, x_cal)))
+corr_rows.append({
+    "corr_id": "C09",
+    "question": "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
+    "value": fmt(slope),
+    "ci_low": fmt(ci_lo_s),
+    "ci_high": fmt(ci_hi_s),
+    "p_value": fmt(p_cal, 4),
+    "sample_n": len(xs),
+    "interpretation": (f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. The 95% interval "
+                       f"{ci_lo_s:.2f} to {ci_hi_s:.2f} is built from the slope's own standard error, and the "
+                       f"p-value tests calibration (H0: slope = 1.0). A slope clearly below 1 would mean the "
+                       "model is over-shy; clearly above 1, over-confident (F48 corrected)."),
+    "source_url": SRC_SCHED + "10",
+})
 # parlay leg correlation (phi)
 add_corr("C07", "Are the side leg and the total leg of the same game correlated (phi)?", phi_pl, n_pl,
          "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",

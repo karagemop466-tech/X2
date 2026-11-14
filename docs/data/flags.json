@@ -426,10 +426,10 @@
   "flag_id": "F48",
   "category": "Model defect (correction requested)",
   "item": "Calibration row C09 applies a correlation interval to a regression slope",
-  "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) uses the Fisher correlation formula on a slope. Recomputed from the slope's own standard error (n = 89): CI 0.335-1.435; p = 0.683 against slope 1.0. The earlier 'clearly below 1' reading is withdrawn. The shared register is not changed by this session (outside claim).",
+  "detail": "The register value (slope 0.885, CI 0.830-0.923, p 0.0000) used the Fisher correlation formula on a regression slope. Recomputed independently by session 8a0bf37e and re-derived from the committed out-of-sample rows by session 20e6161b before editing: slope 0.885 (SE 0.28), 95% CI 0.335-1.435 from the slope's own standard error, p = 0.683 against slope 1.0 (calibration test). The earlier 'clearly below 1' reading is withdrawn.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Open - correction requested (COORDINATION.md, REQ-8a-1)",
-  "action_requested": "Owner of scripts/model.py and data/correlations_computed.csv applies the C09 correction in the next model pass."
+  "status": "Resolved 2026-11-14 (session 20e6161b, T52)",
+  "action_requested": "Correction applied in scripts/model.py and regenerated into data/correlations_computed.csv and data/correlation_audit.csv; model outputs reproduce byte for byte on re-run. REQ-8a-1 closed."
  },
  {
   "flag_id": "F49",
@@ -444,10 +444,10 @@
   "flag_id": "F50",
   "category": "Gate integrity",
   "item": "Gate G1 (no look-ahead) is a constant True",
-  "detail": "scripts/model.py gate_eval() sets G1 to True. The no-look-ahead property holds by construction in the walk-forward loop but is not computed as a gate.",
+  "detail": "scripts/model.py gate_eval() set G1 to a constant True. The no-look-ahead property holds by construction in the walk-forward loop but was not computed as a gate. Fixed 2026-11-14 (session 20e6161b, T52): the walk-forward loop now measures max(training week) < W at every fit and G1 reads that measured flag (lookahead_ok).",
   "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
-  "status": "Open",
-  "action_requested": "Add a computed test (for example, assert every training row precedes the prediction week) or label G1 a design property."
+  "status": "Resolved 2026-11-14 (session 20e6161b, T52)",
+  "action_requested": "G1 is now a measured gate; no action remains. If the flag ever turns false the build output shows it in gate_results.csv."
  },
  {
   "flag_id": "F51",

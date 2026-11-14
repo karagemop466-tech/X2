@@ -933,8 +933,9 @@ pages["correlations.html"] = ("Correlations", f"""
 <p class="note">Values are computed from the {ms['games_transcribed']} official 2026 results in this repository, or from model
 outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Under the owner
 rule only correlations with official inputs qualify: C03, C04, C06 and C08 (see the correlation audit on the <a href="verification.html">Verification</a> page).
-C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49). The C09 row still shows the earlier interval; the corrected interval
-(0.335 to 1.435) is requested and not yet applied (Flag F48). No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49). The C09 calibration row was corrected on 2026-11-14
+(Flag F48, session 20e6161b): its interval now comes from the slope's own standard error and its p-value tests calibration
+(H0: slope = 1.0), not association. No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
 {table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','interpretation','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','interpretation':'What it means','source_url':'Source'})}
 <h2>What the values say</h2>
@@ -1268,7 +1269,7 @@ pages["verification.html"] = (pages["verification.html"][0], pages["verification
        {'check_id':'ID','check':'Check','method':'Method','result':'Result','status':'Status','source_url':'Source'},
        table_id='rf-table', filterable=True)}
 <h2>Correlation audit: owner rule and sample size (T44)</h2>
-<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row shows the register's earlier interval; the corrected interval is requested, not applied (Flag F48).</p>
+<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row was corrected on 2026-11-14 (Flag F48, session 20e6161b): the register now carries the slope-based interval and the calibration p-value (H0: slope = 1.0).</p>
 {table(corr_audit, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','audit_note','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only?','qualifies_under_owner_rule':'Qualifies?','audit_note':'Audit note','source_url':'Source'},
        table_id='corr-audit-table', filterable=True)}
@@ -1312,7 +1313,7 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <ul class="findings">
 <li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
 <li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
-<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row is wrong in the register: its corrected interval is 0.335 to 1.435, p = 0.683 against slope 1.0. The correction is requested, not applied (Flag F48).</li>
+<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row was corrected on 2026-11-14 (Flag F48, session 20e6161b): interval from the slope's own standard error, p = 0.683 against slope 1.0 (calibration test).</li>
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
 <li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
