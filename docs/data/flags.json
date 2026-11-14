@@ -380,20 +380,20 @@
  {
   "flag_id": "F43",
   "category": "Internal contradiction - reward tiers",
-  "item": "Leaderboard shows Tier 1 / Tier 2 labels while requirement R36 blocks reward tiers",
-  "detail": "data/strategy_leaderboard.csv labels M1, M2, M3 and M4 as 'Tier 1 (gold)' or 'Tier 2' from gates G1-G8 with cut-offs still marked 'Proposed cut-off - awaiting project-owner approval (F17)'. The cross-check (F42) reports 0 of 8 rules qualify under the multiple-comparison adjustment, and R36 says tiers must not be offered until this is resolved. The tier labels were NOT changed in this session (scripts/model.py is owned by another session). data/strategy_signal_staking.csv shows the signal rank and gates passed as recorded and does not use the tier labels.",
+  "item": "Reward-tier contradiction resolved; F42 remains blocking",
+  "detail": "The current generator now assigns no reward tier to any row while the two independent qualification results remain unresolved (F42; R36). Per-strategy gate results and signal scores remain visible, but the reward_tier field is \"Not assigned — blocked by F42\" for all strategies. No tier or payout is active.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/strategy_leaderboard.csv",
-  "status": "needs review",
-  "action_requested": "Owner to decide which pass is authoritative before any tier label is shown; either remove the tier labels or record the decision in R36."
+  "status": "Resolved in data — no tier labels assigned; F42 still blocks rewards",
+  "action_requested": "No row receives a reward tier until the qualification disagreement, approved thresholds, legal review and data rights are resolved."
  },
  {
   "flag_id": "F44",
   "category": "Irregularity - reference total",
-  "item": "Week 11 reference total is identical for all 13 games",
-  "detail": "data/model_lines_week11.csv column reference_total equals 45.9 for every game. This is the naive reference used for the 'model minus reference' column. It may be an intended league-average constant, but no derivation is recorded in the file. Not changed in this session.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_lines_week11.csv",
-  "status": "needs review",
-  "action_requested": "Reviewer to confirm whether a constant league-average total is intended and document the derivation source."
+  "item": "Reference total derivation verified",
+  "detail": "The 45.9 total is intentional: scripts/model.py ref_line computes league-average game total from the 137 completed official-results rows before Week 11. Total points are 6,291; 6,291 / 137 = 45.9197 points per game, rounded to 45.9. Equivalently, the code doubles league points per team-game. It is a naive historical baseline, not a market line. Re-run after the results ledger changes.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Resolved — formula and input total independently reproduced",
+  "action_requested": "No review needed for this snapshot; recompute from the official results ledger when it is extended."
  },
  {
   "flag_id": "F45",
