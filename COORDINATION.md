@@ -977,3 +977,87 @@ No new feature was requested in this session. The open decisions on the board re
 - **Tasks:** T42, T44, T45, T46, T47, T49 and T50 are done. T48 is done. T38, T39, T40, T41 and T43 are superseded by c125b2f7 (T39, T40), and 8a0bf37e wrote no files for them.
 - **Still open, owner-owned (not blocking):** REQ-8a-1 (apply the C09 correction in `scripts/model.py` and `data/correlations_computed.csv`), REQ-8a-2 and DEC-04 (demotion rule D1 form), REQ-8a-3 and DEC-09 (C02 classification), DEC-01 (price source), DEC-02 and DEC-03 (legal and data rights), and F53 (A08–A11 not checked against club charts).
 - **Process note.** `git pull --rebase` on this branch after the first push tried to replay the c125b2f7 claim commit, because the branch had merged `origin/main`. The rebase was aborted with no change to any commit. The branch was synchronised with a merge (not a rebase) and the push was a fast-forward.
+## 2026-11-14 · session ca1ea224 · price-snapshot store, fair/market/difference columns, signal/staking split, demotion gate, final integration
+
+**Branch:** `arena/ca1ea224-x2` · **Base:** `main` @ `9e90dd3` (PR #26 merged) · **Tasks:** T37–T41
+
+### What this session found and did
+
+This session reviewed the whole tree against the original brief and found **four structural gaps** no prior
+session had covered, then implemented them on top of the merged state:
+
+1. **Price-snapshot store (T37).** Created `data/price_snapshots.csv` and the
+   `docs/price-snapshots.html` page. One row per originated market — side, total and moneyline — for the
+   Week 11 slate (13 games × 3) and the out-of-sample window (89 games × 3), 306 rows total. The store
+   records the opening number, closing number, their sources and verification flags. **Every opening and
+   closing value is blank and flagged** (F07, F31, F43): no licensed odds feed is connected and no official
+   free source publishes opening or closing NFL market numbers, so no value is inferred. The schema is in
+   place for a rights-cleared feed to fill it.
+2. **Origination order and fair/market/difference columns (T38).** `scripts/model.py` now originates each
+   market in a fixed order — **side first, then total, then moneyline** — and `data/model_lines_week11.csv`
+   publishes the model's **fair line**, the **market line** and the **difference** as separate columns for
+   every market. The fair moneyline is the no-vig American price implied by the model win probability (a
+   first-party computed number, not a sportsbook price). Market columns are blank (F07).
+3. **Signal/staking separation and the demotion gate (T39).** The leaderboard now reads in two separate
+   blocks: a **signal** block (forecast skill, intervals, significance) and a **staking** block (plan and
+   return). The staking return is blank because no prices exist, so a lucky staking run cannot mask a weak
+   signal (F44). A **demotion gate (G9)** is defined and armed: a live strategy is sent back to paper the
+   moment any of G1–G8 fails, the skill 95% interval includes zero, or the mean edge turns negative.
+   `status = Live only if G1–G8 all pass and skill boot_lo > 0; otherwise Paper`. **No strategy is live
+   today** — the qualification is disputed by the cross-check (F42), the cut-offs await approval (F17) and
+   wagering/rewards stay disabled — so every strategy is Paper; the new `demotion_safe` column shows which
+   ones would keep or earn live status once the gates are approved and the disagreement resolved.
+4. **Fourth independent verification pass (T40).** Re-read the official NFL.com sources live on 2026-11-14:
+   the Week 11 schedule (all 13 games + bye list), the standings (all 32 teams, W-L-T and PF/PA) and a
+   spot-check of six Week 10 injury sections (WAS, NYG, NE, DET, KC, ATL). All matched. Recorded as V17–V20
+   in `data/verification_report.csv`.
+
+### Registers extended
+
+- **Flags:** F45 (price-snapshot store blank), F46 (staking return blank / signal-staking separation). Renumbered after c125b2f7 took F43/F44.
+- **Sources:** SRC-61 (NFL.com terms — basis for the blank price-snapshot columns).
+- **Requirements:** R44 (price-snapshot store), R45 (origination order + fair/market/difference),
+  R46 (signal/staking separation), R47 (demotion gate). Renumbered after c125b2f7 took R37-R43.
+- **Questions:** Q43 (where opening/closing numbers come from), Q44 (when the demotion gate demotes),
+  Q45 (can staking return be computed without prices).
+- **Suggestions:** S29 (connect a licensed odds feed), S30 (approve the demotion gate rule),
+  S31 (pre-register one primary strategy to settle F42).
+
+### Verification performed (this session)
+
+- `python3 scripts/verify_results.py` → 137 games, 32 teams, 0 mismatches.
+- `python3 scripts/model.py` → clean; regenerates the lines, the 306-row price-snapshot store, the
+  9-gate leaderboard and the staking block.
+- `python3 scripts/build.py` → **23 pages** (was 22; + price-snapshots), 345 injury rows, 28 teams,
+  61 depth rows, link + row-source checks passed.
+- `python3 scripts/check_links.py` → 23 pages, 595 internal links, 2,682 external links, no problems.
+- `npm run build` + `npm run verify` → 12 pages, 194 internal links, no unrendered tokens, ALL CHECKS PASSED.
+- Live official-source reads (fetch tool): Week 11 schedule (3 chunks), standings (2 chunks), Week 10
+  injury report (chunk 0) — all matched the stored data (V17–V19).
+
+### Irregularities flagged by this session
+
+- **F43:** the price-snapshot store exists but every opening/closing value is blank — no licensed odds feed
+  or official free source of opening/closing market numbers. Not inferred.
+- **F44:** the staking return cannot be computed without prices; the signal/staking separation is the
+  safeguard, not a verified market result.
+- No new data value was invented; every blank carries its flag. The market columns remain blank by design.
+
+### Notes
+
+- The Node dashboard (`src/`, 12 pages) is a separate implementation and was not modified by this session;
+  it still builds and verifies clean. The published Pages site is the Python `docs/` build (root `index.html`
+  forwards to `docs/index.html`).
+- Session ID collisions were avoided: T18/T20/T21/T22, F37–F42, SRC-44–60, Q31–Q42 and S26–S28 were already
+  taken on `main`; this session's IDs start at T37, F45/F46, SRC-61, Q43 and S29 (flags and requirements were renumbered after collisions with c125b2f7's F43/F44 and R37-R43).
+
+### Reconciliation with session c125b2f7
+
+Both sessions implemented the same four requirements in parallel. c125b2f7's
+`data/price_snapshots.csv` (39 Week 11 rows, richer per-market schema, generated by
+`scripts/markets.py`) is kept as the primary Week 11 store; this session's extended store
+was renamed to `data/price_snapshots_extended.csv` (306 rows, Week 11 + out-of-sample,
+generated by `scripts/model.py`) so both coexist. The two demotion-gate definitions
+(c125b2f7's D1-D7 in `data/demotion_gate.csv` and this session's G9 in `data/gate_results.csv`)
+are both published. Nothing either session wrote was discarded; the registers were merged
+by ID union and collided IDs were renumbered.
