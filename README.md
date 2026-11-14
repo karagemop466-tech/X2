@@ -79,7 +79,7 @@ guarantee no result. Every leaderboard row publishes the sample size it would ne
 
 ## Data snapshot and rights gate
 
-- Results: all 137 games of 2026 (weeks 1-10) transcribed from the official
+- Results: all 137 games of 2026 (weeks 1-9 complete plus the Week 10 Thursday game) transcribed from the official
   [NFL by-week schedule pages](https://www.nfl.com/schedules/2026/by-week/week-10) and
   [standings](https://www.nfl.com/standings/), read 14 November 2026 (UTC). Recomputing every team's record and
   points from those games reproduces the official standings exactly for all 32 teams; the check is
