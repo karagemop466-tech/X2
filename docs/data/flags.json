@@ -1,0 +1,137 @@
+[
+ {
+  "flag_id": "F01",
+  "category": "Repo irregularity",
+  "item": "README is a one-line placeholder",
+  "detail": "README.md contained only '# X2' at commit 259c1c2 (the only commit). No description, license, data notes, or setup steps.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Irregularity - open",
+  "action_requested": "Confirm project purpose and whether a LICENSE is wanted."
+ },
+ {
+  "flag_id": "F02",
+  "category": "Repo irregularity",
+  "item": "No coordination file or .gitignore existed",
+  "detail": "COORDINATION.md was absent and the repo had no .gitignore. COORDINATION.md was created by this session. A minimal .gitignore (Python cache and OS files only) was added.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Irregularity - resolved in this branch",
+  "action_requested": "Review COORDINATION.md."
+ },
+ {
+  "flag_id": "F03",
+  "category": "Process conflict",
+  "item": "Task brief asks for session-<id>/<task> branches; session rules fix one branch",
+  "detail": "The brief asks parallel sessions to use session-<id>/<task> branches. This session is restricted to arena/e98c7ba0-x2, so all work stays on that branch. No other branches were created.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Irregularity - logged",
+  "action_requested": "Confirm branch model for future sessions."
+ },
+ {
+  "flag_id": "F04",
+  "category": "Unverified definitions",
+  "item": "Official injury-designation policy text not located at an official URL",
+  "detail": "Out / Doubtful / Questionable meanings are used on the site as displayed on NFL.com. Only secondary explainers (sports24.us, nationalsportsweb.com, fourthwire.com, mybookie.ag, sticktothemodel.com) were found describing the NFL policy. They were NOT used as verified sources.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Unverified - needs official policy link",
+  "action_requested": "Provide or approve an official NFL policy URL."
+ },
+ {
+  "flag_id": "F05",
+  "category": "Unverified coverage",
+  "item": "Four teams are absent from the Week 10 injury report",
+  "detail": "CHI, DEN, PHI and TB do not appear in the Week 10 report. The NFL.com page did not state a reason. Likely bye weeks, but this is NOT confirmed from an official source.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Unverified",
+  "action_requested": "Confirm bye weeks from the official NFL schedule."
+ },
+ {
+  "flag_id": "F06",
+  "category": "Missing official data",
+  "item": "Starter / backup depth-chart data not found",
+  "detail": "The NFL.com Bills roster page lists players with position and status but no depth-chart order. Starter vs backup ranking, and therefore replacement-level analysis, cannot be verified. Replacement fields are blank.",
+  "source_url": "https://www.nfl.com/teams/buffalo-bills/roster",
+  "status": "Missing - blank by design",
+  "action_requested": "Approve a verified depth-chart source (see Suggestions S01)."
+ },
+ {
+  "flag_id": "F07",
+  "category": "Missing official data",
+  "item": "No official betting lines or odds source found",
+  "detail": "The NFL does not publish betting lines. No official odds source was identified. Opening/closing lines, spreads, totals, prop prices and parlay prices are therefore blank.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Missing - blank by design",
+  "action_requested": "Decide whether a licensed odds data provider may be used (Questions Q08)."
+ },
+ {
+  "flag_id": "F08",
+  "category": "Missing official data",
+  "item": "No verified historical results or player stats collected",
+  "detail": "Game results, scoring, player stats and historical injury reports were not collected in this session. Every strategy validation metric is blank.",
+  "source_url": "https://www.nfl.com/stats/",
+  "status": "Missing - blank by design",
+  "action_requested": "Approve collection of official results and stats (Suggestions S02)."
+ },
+ {
+  "flag_id": "F09",
+  "category": "Legal question",
+  "item": "Wagering from Japan requires professional review",
+  "detail": "Official text confirms Penal Code Articles 185-187 criminalize gambling outside specified exceptions (e-Gov). Japan Sport Council confirms the state-run toto/BIG/WINNER/DUNK products. This project does not place or recommend bets. Whether any specific NFL wager is lawful for a resident of Japan has NOT been verified.",
+  "source_url": "https://laws.e-gov.go.jp/law/140AC0000000045",
+  "status": "Legal review needed",
+  "action_requested": "Obtain legal advice in Japan before any real-money activity."
+ },
+ {
+  "flag_id": "F10",
+  "category": "Transcription check",
+  "item": "345 injury rows were transcribed manually",
+  "detail": "Rows were transcribed from the NFL.com page as read. Row counts per team and game were checked against the page structure. Each row links to the official page, but every row should be spot-checked against the link.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Needs reviewer spot-check",
+  "action_requested": "Spot-check any rows you care about against the linked page."
+ },
+ {
+  "flag_id": "F11",
+  "category": "Source irregularity",
+  "item": "NFL.com roster link slug does not match displayed name",
+  "detail": "On the Bills roster page, 'Dee Alford' (CB, #23) links to /players/deaundre-ford/. The displayed name and URL slug differ, so the link may point to a different player page. Other name/slug differences (e.g., 'Jacob Hummel' -> jake-hummel, 'Kam Curl' -> kamren-curl, 'Chris Brooks' -> christopher-brooks) appear to be nicknames or legal names and were kept as displayed.",
+  "source_url": "https://www.nfl.com/teams/buffalo-bills/roster",
+  "status": "Irregularity - open",
+  "action_requested": "Confirm the correct NFL.com player page."
+ },
+ {
+  "flag_id": "F12",
+  "category": "Source irregularity",
+  "item": "Conflicting official headlines on Lamar Jackson timeline",
+  "detail": "NFL.com roundup of Nov 13 says 'expected to miss 6-10 weeks'. A separate NFL.com item cites NFL Network: 'out 6-9 weeks'. Both are official NFL.com headlines with different ranges. Not resolved here.",
+  "source_url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13",
+  "status": "Irregularity - open",
+  "action_requested": "Use the team's official statement when available."
+ },
+ {
+  "flag_id": "F13",
+  "category": "Snapshot timing",
+  "item": "Injury report has no visible timestamp",
+  "detail": "NFL.com shows Week 10 without a last-updated time. The snapshot reflects the page as read on 2026-11-14 (UTC). Thursday's game (Nov 12) is listed without results.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Irregularity - open",
+  "action_requested": "Record the exact capture time for future snapshots (Suggestions S04)."
+ },
+ {
+  "flag_id": "F14",
+  "category": "Scope limit",
+  "item": "Site is a research snapshot, not a live feed",
+  "detail": "The site contains the Week 10 snapshot only. No automatic refresh has been set up. Data will not update without a new manual refresh by a session.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Known limitation",
+  "action_requested": "Approve an automated refresh job (Suggestion S07)."
+ },
+ {
+  "flag_id": "F15",
+  "category": "Publishing",
+  "item": "GitHub Pages serves the repo root, not docs/",
+  "detail": "Pages was already enabled on main with source / (root). This session could not change the source to /docs (the API returned HTTP 403 for that change). The site is therefore published from the root: index.html forwards to docs/index.html, and docs/ holds the site. Relative links inside docs/ keep working.",
+  "source_url": "https://github.com/karagemop466-tech/X2/settings/pages",
+  "status": "Irregularity - open",
+  "action_requested": "Switch the Pages source to main /docs, or approve the root-forwarder approach."
+ }
+]

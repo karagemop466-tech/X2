@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Requirements · NFL Research Dashboard</title>
+<meta name="description" content="NFL research dashboard: verified injury data, questions, suggestions and flagged items. Data as of 2026-11-14.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html">Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="questions.html">Questions</a><a href="requirements.html" class=active aria-current=page>Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+</header>
+<main>
+
+<h1>Requirements from the brief — status</h1>
+<p class="note">Each line from the brief, with its current status and where it is addressed.</p>
+<div class="tablewrap"><table class="data"><thead><tr><th>ID</th><th>Requirement</th><th>Status</th><th>Where addressed</th><th>Blocker or note</th><th>Evidence</th></tr></thead><tbody><tr><td>R01</td><td>Collect and organize NFL information</td><td><span class="badge ">Partially done</span></td><td>Injuries; Games; News pages</td><td>Only Week 10 2026 injury snapshot collected</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>R02</td><td>Suggestions section to choose paths before implementing changes</td><td><span class="badge ">Done (awaiting your choice)</span></td><td>Suggestions page</td><td>No changes implemented</td><td class="blank">—</td></tr><tr><td>R03</td><td>Clear list of questions and information gaps</td><td><span class="badge ">Done</span></td><td>Questions page</td><td>Answers depend on decisions and data</td><td class="blank">—</td></tr><tr><td>R04</td><td>Originate own NFL lines and develop strategies</td><td><span class="badge ">Blocked (no verified data)</span></td><td>Strategy Lab</td><td>No verified odds or results (F07; F08)</td><td class="blank">—</td></tr><tr><td>R05</td><td>Treat strategies as a leaderboard with rewards</td><td><span class="badge ">Designed only</span></td><td>Strategy Lab; Suggestions S09</td><td>Reward definition needs your decision (Q13)</td><td class="blank">—</td></tr><tr><td>R06</td><td>Single bets / parlays / player prop combos</td><td><span class="badge ">Designed only</span></td><td>Strategy Lab hypotheses H01-H06</td><td>Inputs unverified</td><td class="blank">—</td></tr><tr><td>R07</td><td>Validation gates per strategy</td><td><span class="badge ">Done (proposed thresholds)</span></td><td>Strategy Lab gates G0-G8</td><td>Thresholds need your decision (S08)</td><td class="blank">—</td></tr><tr><td>R08</td><td>Correlation values</td><td><span class="badge ">Blocked</span></td><td>Questions Q11; Gate G5</td><td>No joint outcome data</td><td class="blank">—</td></tr><tr><td>R09</td><td>Injury tracking</td><td><span class="badge ">Partially done</span></td><td>Injuries page</td><td>Single snapshot; no change history (S04)</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>R10</td><td>Deficiency analysis (starter vs backup replacement)</td><td><span class="badge ">Partially done</span></td><td>Depth Analysis page</td><td>Starter order not verified (F06)</td><td><a href="https://www.nfl.com/teams/buffalo-bills/roster" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>R11</td><td>Executive summary</td><td><span class="badge ">Done</span></td><td>Executive Summary page</td><td>Based only on verified data</td><td class="blank">—</td></tr><tr><td>R12</td><td>Repo review with links and irregularities</td><td><span class="badge ">Done</span></td><td>Flagged for Review page; flags.csv</td><td>See F01-F14</td><td class="blank">—</td></tr><tr><td>R13</td><td>Site: clean landing page and category subpages</td><td><span class="badge ">Done</span></td><td>docs/index.html and subpages</td><td>GitHub Pages deployment pending merge</td><td class="blank">—</td></tr><tr><td>R14</td><td>Tables with a source link on every row</td><td><span class="badge ">Done for data tables</span></td><td>All tables with a source column</td><td>Rows link to official NFL.com pages</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Evidence ↗</a></td></tr><tr><td>R15</td><td>Unverified values left blank and flagged</td><td><span class="badge ">Done</span></td><td>Flagged for Review page</td><td>See F04-F09</td><td class="blank">—</td></tr><tr><td>R16</td><td>Coordination file</td><td><span class="badge ">Done</span></td><td>COORDINATION.md</td><td>Single-branch session (F03)</td><td class="blank">—</td></tr><tr><td>R17</td><td>Pull request and merge to main</td><td><span class="badge ">Pending</span></td><td>Final step</td><td>Waiting for build and link checks</td><td class="blank">—</td></tr><tr><td>R18</td><td>No manual input from the user</td><td><span class="badge ">Met for this turn</span></td><td>All steps</td><td>Decisions listed as questions and suggestions still need your choice</td><td class="blank">—</td></tr></tbody></table></div>
+
+</main>
+<footer>
+  <p>Every value on this site links to an official source or is marked blank/unverified.
+  Research only. This is not betting advice. Wagering is restricted in Japan (see Flagged for review, F09).</p>
+  <p>Built from <code>data/*.csv</code> by <code>scripts/build.py</code>. Repository: <a href="https://github.com/karagemop466-tech/X2">karagemop466-tech/X2</a>.</p>
+</footer>
+<script src="assets/app.js"></script>
+</body>
+</html>
