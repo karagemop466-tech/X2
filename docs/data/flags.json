@@ -160,5 +160,41 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
   "status": "Review request — third-party values not official",
   "action_requested": "Node-dashboard owner: replace the depth evidence with an official primary source or blank/suppress the player/backup values before promoting that output as official-source research."
+ },
+ {
+  "flag_id": "F19",
+  "category": "Official source conflict",
+  "item": "Injury report and player page disagree on one player's position (Ben Brown, NE)",
+  "detail": "The Week 10 injury report lists Ben Brown as C. His official NFL player page lists G (No. 77, New England Patriots). Both are nfl.com pages, so the snapshot cannot be treated as internally consistent for this row. The snapshot keeps the value from the declared source for the row (the injury report).",
+  "source_url": "https://www.nfl.com/players/ben-brown-2/",
+  "status": "Irregularity - open",
+  "action_requested": "Decide the source-precedence rule for conflicting official pages (decision gate DQ-18)."
+ },
+ {
+  "flag_id": "F20",
+  "category": "Flag correction",
+  "item": "Flag F06 was only part-correct about official starter data",
+  "detail": "F06 said no official depth-chart data was found. The official team roster page does lack a depth column, but the official NFL gamebook publishes the complete starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen starter-identity rows from the Week 10 Commanders at Giants gamebook are recorded on the Starters page. A pregame depth chart is still not published by the NFL.",
+  "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
+  "status": "Irregularity - partially resolved",
+  "action_requested": "Review the Starters page and decide whether the gamebook is the accepted starter-identity source (decision gate DQ-05)."
+ },
+ {
+  "flag_id": "F21",
+  "category": "Rights limitation",
+  "item": "Official gamebook use is restricted by its own notice",
+  "detail": "The gamebook states that the summary and play-by-play are provided for the express purpose of assisting media in their coverage of the game and that any other use is prohibited without the written permission of the National Football League. Starter-identity values are published here as source-linked research only.",
+  "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
+  "status": "Irregularity - open",
+  "action_requested": "Include the gamebook in the permission request described in Flag F16 (decision gate DQ-01)."
+ },
+ {
+  "flag_id": "F22",
+  "category": "Verification limitation",
+  "item": "The verification ledger is not independent of the transcription",
+  "detail": "The line-by-line comparison in data/verification_week10_2026.csv was produced in the same session that transcribed the snapshot, so a repeated misreading of the official page would not be detected. The comparison does confirm internal consistency and field-level agreement with the transcription as read.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Known limitation",
+  "action_requested": "Commission an independent second transcription and publish the disagreement rate (suggestion SR-13, decision gate DQ-19)."
  }
 ]

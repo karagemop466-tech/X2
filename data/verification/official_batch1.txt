@@ -1,0 +1,121 @@
+WAS|John Bates|TE||F|
+WAS|Treylon Burks|WR||D|
+WAS|Jayden Daniels|QB||F|
+WAS|Matt Gulbin|C||F|
+WAS|Chig Okonkwo|TE||F|
+WAS|Lucas Patrick|C|Concussion|D|Out
+WAS|Amik Robertson|CB||L|
+WAS|Shy Tuttle|DT||F|
+WAS|Colson Yankoff|TE|Knee|D|Out
+NYG|Abdul Carter|LB||F|
+NYG|Jermaine Eluemunor|T||F|
+NYG|Malik Harrison|LB|Groin|L|Questionable
+NYG|Colton Hood|CB||F|
+NYG|Theo Johnson|TE||F|
+NYG|Charlie Jones|WR||F|
+NYG|J.J. McCarthy|QB||F|
+NYG|Darnell Mooney|WR||F|
+NYG|Malik Nabers|WR||F|
+NYG|Cam Skattebo|RB||F|
+NYG|Andrew Thomas|T||F|
+NE|Ben Brown|C|Knee|D|Out
+NE|A.J. Brown|WR|Ankle, Knee|L|Questionable
+NE|Kevin Byard|S|Chest|F|Questionable
+NE|Carlton Davis III|CB|Knee|D|Out
+NE|Reggie Gilliam|FB|Knee|L|Questionable
+NE|TreVeyon Henderson|RB|Illness|D|Out
+NE|Hunter Henry|TE||L|
+NE|Cameron Latu|TE|Back|L|Questionable
+NE|Drake Maye|QB||F|
+NE|Morgan Moses|T||F|
+NE|Walter Rouse|T|Concussion|L|Questionable
+NE|Brenden Schooler|S|Hamstring|L|Questionable
+NE|Rhamondre Stevenson|RB|Knee|L|Questionable
+NE|Greg Van Roten|G|Hamstring|F|Questionable
+NE|Charles Woods|CB|Hamstring|F|Questionable
+DET|Brian Branch|S||F|
+DET|Jared Goff|QB||F|
+DET|Kerby Joseph|S|Knee|D|Out
+DET|Cade Mays|C|Ankle|D|Out
+DET|D.J. Reed|CB|Hip|D|Out
+DET|Jacob Saylors|RB||F|
+DET|Amon-Ra St. Brown|WR|Rib|L|Questionable
+DET|Sione Vaki|RB|Ankle|L|Questionable
+DET|DJ Wonnum|DE||F|
+KC|Jeffrey Bassa|LB||F|
+KC|Mansoor Delane|CB|Shoulder|F|Questionable
+KC|Justin Fields|QB||F|
+KC|Jaden Hicks|S||F|
+KC|Travis Kelce|TE||F|
+KC|Patrick Mahomes|QB||F|
+KC|Jaylon Moore|T|Ankle|D|Out
+KC|Omarr Norman-Lott|DT|Knee|L|Out
+KC|Jaydn Ott|RB|Hamstring|L|Questionable
+KC|Rashee Rice|WR||F|
+KC|Kenneth Walker III|RB|Groin|D|Questionable
+KC|Peter Woods|DT|Neck|D|Out
+KC|Xavier Worthy|WR||F|
+ATL|Zachariah Branch|WR|Hamstring|D|Out
+ATL|Kendal Daniels|LB||F|
+ATL|Divine Deablo|LB|Forearm|D|Doubtful
+ATL|Gervon Dexter Sr.|DT|Illness|L|Questionable
+ATL|Jake Matthews|T||L|
+ATL|Liam McCullough|LS||D|
+ATL|James Pearce Jr.|DE|Back|L|Questionable
+ATL|Za'Darius Smith|DE||F|
+ATL|Jawaan Taylor|T||L|
+ATL|Cameron Thomas|DE||F|
+ATL|Josh Woods|LB|Ankle|F|Questionable
+MIN|Jordan Addison|WR|Thumb|L|Questionable
+MIN|Blake Cashman|LB|Concussion|L|Out
+MIN|Christian Darrisaw|T||D|
+MIN|T.J. Hockenson|TE|Wrist, Chest|D|Out
+MIN|Tyrion Ingram-Dawkins|DT|Ankle|D|Out
+MIN|Theo Jackson|S||F|
+MIN|Jauan Jennings|WR|Calf|D|Out
+MIN|Josh Metellus|S|Shoulder|L|Questionable
+MIN|Kyler Murray|QB|Hamstring|D|Out
+MIN|Harrison Smith|S||L|
+MIN|Kyle Van Noy|LB|Calf|L|Questionable
+MIN|Jay Ward|S||F|
+MIN|Carson Wentz|QB||F|
+GB|Aaron Banks|G||L|
+GB|Chris Brooks|RB|Ankle|L|Questionable
+GB|Javon Bullard|S|Ankle, Knee|L|Questionable
+GB|Zaire Franklin|LB|Shin|D|Doubtful
+GB|Travis Glover|G|Knee|L|Questionable
+GB|Ty'Ron Hopper|LB||F|
+GB|Josh Jacobs|RB|Finger|D|Out
+GB|Xavier McKinney|S|Foot|L|Questionable
+GB|Bo Melton|WR||F|
+GB|Skyy Moore|WR|Ankle|L|Questionable
+GB|Micah Parsons|LB|Knee, Illness|L|Out
+GB|Sean Rhyan|C|Ankle|D|Out
+GB|Trey Smack|K||F|
+GB|Lukas Van Ness|LB|Back|L|Questionable
+GB|Josh Whyle|TE|Concussion|D|Out
+GB|Savion Williams|WR||L|
+GB|Kevin Zeitler|G|Ankle, Triceps|D|Questionable
+JAX|Jessie Bates|S|Not injury related - resting player|L|Out
+JAX|Ezra Cleveland|G||F|
+JAX|Branson Combs|LB||F|
+JAX|Jordan Davis|DT|Not injury related - resting player|L|Out
+JAX|BJ Green II|DE|Forearm|F|Out
+JAX|Robert Hainsey|C|Concussion|L|Questionable
+JAX|Antonio Johnson|S||L|
+JAX|Jakobi Meyers|WR||L|
+JAX|Chris Rodriguez Jr.|RB||L|
+JAX|Bhayshul Tuten|RB||L|
+JAX|Travon Walker|DE||L|
+TEN|Cody Barton|LB|Concussion|D|Out
+TEN|John Franklin-Myers|DE||F|
+TEN|Marcus Harris|CB||F|
+TEN|Anthony Hill Jr.|LB|Neck|D|Out
+TEN|Jaylon Jones|CB||F|
+TEN|JC Latham|T||F|
+TEN|Tony Pollard|RB||F|
+TEN|Peter Skoronski|G|Hamstring|D|Out
+TEN|Tyjae Spears|RB|Knee|F|Questionable
+TEN|Carnell Tate|WR|Shoulder|D|Out
+TEN|Tommy Townsend|P|Knee, Achilles|D|Out
+TEN|Kevin Winston Jr.|S||F|

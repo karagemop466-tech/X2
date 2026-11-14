@@ -10,39 +10,81 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
-  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="starters.html">Starters &amp; depth</a><a href="depth-analysis.html">Unit exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation</a><a href="leaderboard.html">Leaderboard</a><a href="decisions.html">Decision gates</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
 <h1>Executive summary</h1>
-<p class="note">Snapshot read 2026-11-14. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. Manual transcription spot-check remains open (F10), and permission for systematic collection/publication is not recorded (F16).</p>
-<div class="tiles"><div class="tile"><div class="num">76</div><div class="lbl">Out or Doubtful players</div></div><div class="tile"><div class="num">42</div><div class="lbl">Offense Out or Doubtful</div></div><div class="tile"><div class="num">32</div><div class="lbl">Defense Out or Doubtful</div></div><div class="tile"><div class="num">2</div><div class="lbl">Special teams Out or Doubtful</div></div></div>
-<h2>Key findings</h2>
-<ul class="findings">
-<li><strong>Coverage.</strong> The Week 10 NFL.com report lists 345 players across 28 teams in 14 games. The official NFL schedule identifies CHI, DEN, PHI, TB as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
-<li><strong>Game status.</strong> 66 players are Out, 10 Doubtful and 84 Questionable. 185 listed players carry no game-status label on the report.</li>
-<li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense 42, defense 32, special teams 2. Most-exposed teams by Out plus Doubtful count: DAL Cowboys (5 Out, 1 Doubtful), IND Colts (6 Out, 0 Doubtful), GB Packers (4 Out, 1 Doubtful), HOU Texans (5 Out, 0 Doubtful), MIN Vikings (5 Out, 0 Doubtful).</li>
-<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
-<li><strong>Strategy research.</strong> No strategy has been tested. Odds, historical results and correlation data have not been obtained through a verified, authorized source, so every performance gate is open (Strategy lab).</li>
-<li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
-<li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
-</ul>
-<h2>What is verified</h2>
+<p class="note">Snapshot read 2026-11-14. Every figure below is counted from <code>data/*.csv</code> and links to an
+official source. Where a value could not be confirmed it is blank and flagged, not estimated.</p>
+<div class="tiles"><div class="tile"><div class="num">76</div><div class="lbl">Out or Doubtful players</div></div><div class="tile"><div class="num">18</div><div class="lbl">validation gates</div></div><div class="tile"><div class="num">18</div><div class="lbl">gates still open or blocked</div></div><div class="tile"><div class="num">20</div><div class="lbl">decisions waiting on you</div></div><div class="tile"><div class="num">0</div><div class="lbl">strategies validated</div></div></div>
+
+<h2>The five things that matter</h2>
+<ol class="findings">
+<li><strong>The data you have is solid; the data you need is not here.</strong> The Week 10 injury snapshot re-verified
+cleanly: 345 rows across 28 teams and 14 games, 345 of 345 rows matching the official
+page on position, injury, practice status and game status (1380 field comparisons).
+<a href="verification.html">Verification</a></li>
+<li><strong>Starter identity turned out to be officially verifiable after all.</strong> The NFL publishes no pregame
+depth chart, so a "1st, 2nd, 3rd, 4th string" rank cannot be sourced. But the official NFL gamebook publishes the
+starting lineup by slot, the substitutions and the inactive list. Nineteen starter-identity rows are verified, and the
+earlier flag saying no official starter data existed is corrected as F20. <a href="starters.html">Starters and depth</a></li>
+<li><strong>You cannot originate a line yet, and the reason is data, not method.</strong> Twenty signal definitions, a
+seventeen-gate skill engine, ten anti-luck tests and a full correlation plan are written and published. Not one of them
+has a value, because there is no licensed price series, no historical results ledger and no paired settled outcomes.
+<a href="signals.html">Signals</a> · <a href="validation.html">Skill engine</a></li>
+<li><strong>"Remove luck" is the wrong target; bounding it is the right one.</strong> Football results carry large
+irreducible variance. What can be enforced is that a lucky result cannot pass: bootstrap intervals, a published search
+log, multiplicity-adjusted decisions and a held-out block. <a href="anti-luck.html">Anti-luck</a></li>
+<li><strong>Two gates block almost everything.</strong> Data rights (DQ-01) and jurisdiction plus contest design (DQ-02).
+NFL terms prohibit systematic retrieval to compile a database without written consent, and official Japanese guidance
+treats online sports betting as a criminal offence. Until those two are answered, expanding collection or enabling a
+reward would be imprudent. <a href="decisions.html">Decision gates</a></li>
+</ol>
+
+<h2>What is verified today</h2>
 <ul>
-<li>The Week 10 injury rows, game list, records, and news headlines (NFL.com, read 2026-11-14).</li>
-<li>Penal Code Chapter 23 gambling articles (e-Gov Law Search); Japan Sport Council state lottery products.</li>
+<li><strong>Injury snapshot:</strong> 66 Out, 10 Doubtful, 84 Questionable,
+185 with no game status, across 345 listed players. <a href="injuries.html">Injuries</a></li>
+<li><strong>Schedule and records:</strong> all 14 Week 10 games, with away and home resolved from the official
+"X at Y" order, and CHI, DEN, PHI, TB confirmed on bye from the schedule rather than inferred.
+<a href="games.html">Games</a></li>
+<li><strong>Exposure by side of ball:</strong> offense 42, defense 32, special teams
+2 players Out or Doubtful.</li>
+<li><strong>Starter identity:</strong> the Week 10 Commanders at Giants gamebook, including one full-practice player who
+did not play at all and one limited participant who started. <a href="starters.html">Starters</a></li>
+<li><strong>Law and terms:</strong> quoted directly from the NFL terms, the Government of Japan, the National Police
+Agency and the Penal Code. <a href="sources.html">Sources</a></li>
 </ul>
-<h2>What is not verified (left blank)</h2>
+
+<h2>What is not verified, and is therefore left blank</h2>
 <ul>
-<li>Starter vs backup order at every position (no official depth chart collected).</li>
-<li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
-<li>Historical results, player stats and correlation values (not yet collected).</li>
-<li>Injury-designation probabilities (NFL.com publishes labels, not probabilities).</li>
+<li><strong>Any line, price or odds value.</strong> No licensed odds source exists in this repository (F07).</li>
+<li><strong>Any correlation coefficient.</strong> No paired settled legs exist (C01 to C10 are blank).</li>
+<li><strong>Any pregame depth order.</strong> No official pregame depth chart exists (F20, DQ-06).</li>
+<li><strong>Any injury-designation probability.</strong> NFL.com publishes three labels and no probabilities (F04).</li>
+<li><strong>Any strategy score.</strong> No strategy has been tested, and none may be entered on the leaderboard (EG14).</li>
+<li><strong>Any reward.</strong> Nothing is defined, funded or legally reviewed (EG16, F09).</li>
 </ul>
+
+<h2>Most-exposed teams by Out plus Doubtful</h2>
+<p class="note">Counted from the official report. This is availability, not a measured weakness.</p>
+<ul>
+<li><strong>DAL Cowboys</strong> — 5 Out, 1 Doubtful, 5 Questionable (offense 3, defense 3, special teams 0)</li><li><strong>IND Colts</strong> — 6 Out, 0 Doubtful, 2 Questionable (offense 2, defense 3, special teams 1)</li><li><strong>GB Packers</strong> — 4 Out, 1 Doubtful, 7 Questionable (offense 3, defense 2, special teams 0)</li><li><strong>HOU Texans</strong> — 5 Out, 0 Doubtful, 6 Questionable (offense 3, defense 2, special teams 0)</li><li><strong>MIN Vikings</strong> — 5 Out, 0 Doubtful, 3 Questionable (offense 3, defense 2, special teams 0)</li><li><strong>TEN Titans</strong> — 5 Out, 0 Doubtful, 1 Questionable (offense 2, defense 2, special teams 1)</li><li><strong>CIN Bengals</strong> — 1 Out, 3 Doubtful, 0 Questionable (offense 2, defense 2, special teams 0)</li><li><strong>NO Saints</strong> — 4 Out, 0 Doubtful, 2 Questionable (offense 3, defense 1, special teams 0)</li>
+</ul>
+
+<h2>The three decisions that unlock the most work</h2>
+<ol>
+<li><strong>DQ-01 — data rights.</strong> Settle permission or a licence. Until then the site stays a source-linked summary and collection is not expanded or automated (F16).</li>
+<li><strong>DQ-02 — jurisdiction and contest design.</strong> Obtain a written legal opinion covering rewards and advertising before any prize is described (F09, EG16).</li>
+<li><strong>DQ-09 — historical depth.</strong> Decide how many seasons of schedules and gamebooks to collect; one week cannot support a single statistical gate.</li>
+</ol>
+<p>Every other open question, the exact choice you will face, and how to find the missing answer are on the
+<a href="decisions.html">Decision gates</a> page. Suggestions with options and effort are on the
+<a href="suggestions.html">Suggestions</a> page. Nothing on this site has been changed on the basis of a suggestion.
+
 <h2>Team exposure (Week 10, from the report)</h2>
 <div class="tablewrap"><table class="data"><thead><tr><th>Team</th><th>Listed</th><th>Out</th><th>Doubtful</th><th>Questionable</th><th>Offense Out/Doubtful</th><th>Defense Out/Doubtful</th><th>ST Out/Doubtful</th><th>Source</th></tr></thead><tbody><tr><td>DAL Cowboys</td><td>19</td><td>5</td><td>1</td><td>5</td><td>3</td><td>3</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>IND Colts</td><td>14</td><td>6</td><td>0</td><td>2</td><td>2</td><td>3</td><td>1</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>GB Packers</td><td>17</td><td>4</td><td>1</td><td>7</td><td>3</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>HOU Texans</td><td>16</td><td>5</td><td>0</td><td>6</td><td>3</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>MIN Vikings</td><td>13</td><td>5</td><td>0</td><td>3</td><td>3</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>TEN Titans</td><td>12</td><td>5</td><td>0</td><td>1</td><td>2</td><td>2</td><td>1</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>CIN Bengals</td><td>9</td><td>1</td><td>3</td><td>0</td><td>2</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>NO Saints</td><td>12</td><td>4</td><td>0</td><td>2</td><td>3</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>SEA Seahawks</td><td>15</td><td>4</td><td>0</td><td>0</td><td>3</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>AZ Cardinals</td><td>15</td><td>3</td><td>0</td><td>6</td><td>2</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>CAR Panthers</td><td>12</td><td>1</td><td>2</td><td>4</td><td>1</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>DET Lions</td><td>9</td><td>3</td><td>0</td><td>2</td><td>1</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>JAX Jaguars</td><td>11</td><td>3</td><td>0</td><td>1</td><td>0</td><td>3</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>KC Chiefs</td><td>13</td><td>3</td><td>0</td><td>3</td><td>1</td><td>2</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>MIA Dolphins</td><td>11</td><td>2</td><td>1</td><td>1</td><td>3</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>NE Patriots</td><td>15</td><td>3</td><td>0</td><td>9</td><td>2</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>ATL Falcons</td><td>11</td><td>1</td><td>1</td><td>3</td><td>1</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>CLE Browns</td><td>12</td><td>2</td><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>LAR Rams</td><td>14</td><td>2</td><td>0</td><td>5</td><td>2</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>WAS Commanders</td><td>9</td><td>2</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>BUF Bills</td><td>14</td><td>0</td><td>1</td><td>4</td><td>1</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>NYJ Jets</td><td>9</td><td>1</td><td>0</td><td>8</td><td>0</td><td>1</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>SF 49ers</td><td>12</td><td>1</td><td>0</td><td>7</td><td>1</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>BAL Ravens</td><td>8</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>LAC Chargers</td><td>19</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>LV Raiders</td><td>5</td><td>0</td><td>0</td><td>2</td><td>0</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>NYG Giants</td><td>11</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>PIT Steelers</td><td>8</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr></tbody></table></div>
-<h2>Next decisions</h2>
-<p>See <a href="suggestions.html">Suggestions</a> (10 options) and <a href="questions.html">Questions</a>. Nothing has been changed on the basis of a suggestion.</p>
 
 </main>
 <footer>

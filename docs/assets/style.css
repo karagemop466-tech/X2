@@ -10,6 +10,27 @@ nav{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:10px}
 nav a{text-decoration:none;color:var(--muted);padding:4px 2px;border-bottom:2px solid transparent}
 nav a:hover{color:var(--ink)}
 nav a.active{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+/* 20 nav items: group them so the header stays one or two lines on a laptop */
+nav{max-height:none;line-height:1.35}
+nav a{font-size:13px}
+header.top{position:static}
+@media (min-width:900px){
+  nav{display:grid;grid-template-columns:repeat(7,auto);gap:4px 16px;justify-content:start}
+}
+@media (max-width:899px){nav a{font-size:12.5px}}
+.b-ok{background:#e3f3e6;color:#1f6b32;font-weight:600}
+.b-rev{background:#fff0dc;color:var(--flag);font-weight:600}
+.b-bad{background:#fde7e5;color:var(--out);font-weight:600}
+table.data td.wrap-narrow{max-width:340px}
+ul.findings>li{margin-bottom:12px}
+ol.findings>li{margin-bottom:12px}
+.stage{font-weight:600;color:var(--ink)}
+.kv{margin:10px 0}
+.kv dt{font-weight:600;margin-top:10px}
+.kv dd{margin:2px 0 0 0;color:var(--muted)}
+.callout{background:#fff8e6;border:1px solid #f0dca8;border-radius:10px;padding:14px 16px;margin:14px 0}
+.callout p{margin:6px 0}
+.good{background:#f1f9f3;border-color:#cfe8d6}
 main{max-width:1200px;margin:0 auto;padding:24px}
 h1{font-size:26px;margin:4px 0 8px}
 h2{font-size:19px;margin:28px 0 8px}

@@ -238,5 +238,105 @@
   "accessed_date": "2026-11-14",
   "used_for": "T12 review of the separate Node depth-deficiency data file only.",
   "verification_note": "This file cites Ourlads third-party charts; the repository link verifies project contents, not official NFL depth-chart facts. Values remain flagged for official-source-only review."
+ },
+ {
+  "source_id": "SRC-25",
+  "title": "NFL Official Game Summary / Game Book: Commanders at Giants, 2026 regular season Week 10",
+  "publisher": "National Football League",
+  "url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
+  "type": "Official league game document",
+  "accessed_date": "2026-11-14",
+  "used_for": "Starting lineups by slot for both teams, substitutions, Did Not Play and Not Active lists, scoring plays and individual statistics.",
+  "verification_note": "The document states that use beyond assisting media coverage requires the written permission of the NFL. It establishes post-game starter identity not a pregame depth chart."
+ },
+ {
+  "source_id": "SRC-26",
+  "title": "NFL player page: Ben Brown",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/players/ben-brown-2/",
+  "type": "Official league player page",
+  "accessed_date": "2026-11-14",
+  "used_for": "Independent check of one injury-report row: the player page lists position G while the injury report lists C.",
+  "verification_note": "Two official pages disagree on the position. The snapshot keeps the declared source (injury report) and the conflict is flagged."
+ },
+ {
+  "source_id": "SRC-27",
+  "title": "National Police Agency — online casino and gambling warning (Japan)",
+  "publisher": "National Police Agency (Japan)",
+  "url": "https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html",
+  "type": "Official government guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Online gambling accessed from Japan is a criminal offence; advertising or guiding users to online casino sites was prohibited by the June 2025 amendment effective 25 September 2025.",
+  "verification_note": "Japan-specific. Does not decide the legality of a skill contest, a reward design, or any other jurisdiction."
+ },
+ {
+  "source_id": "SRC-28",
+  "title": "Government of Japan — online casino article (Cabinet Public Relations Office)",
+  "publisher": "Government of Japan",
+  "url": "https://www.gov-online.go.jp/article/202411/entry-6786.html",
+  "type": "Official government guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Plain-language statement that betting on sports online from Japan is gambling, that Penal Code Articles 185 and 186 apply, and that the advertising prohibition took effect 25 September 2025.",
+  "verification_note": "Japan-specific guidance, not a legal opinion for other jurisdictions."
+ },
+ {
+  "source_id": "SRC-29",
+  "title": "Penal Code (Meiji 40 Law No. 45) — e-Gov Law Search",
+  "publisher": "Government of Japan (e-Gov)",
+  "url": "https://laws.e-gov.go.jp/law/140AC0000000045",
+  "type": "Official statute text",
+  "accessed_date": "2026-11-14",
+  "used_for": "Chapter 23 on gambling and lotteries, including Articles 185 to 187.",
+  "verification_note": "Statute text only. Applying it to a specific contest or reward requires a qualified legal review."
+ },
+ {
+  "source_id": "SRC-30",
+  "title": "How can we make multiple comparisons? (NIST/SEMATECH e-Handbook 7.4.7)",
+  "publisher": "NIST/SEMATECH",
+  "url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Why repeated pairwise comparisons inflate the overall significance level, and which procedures account for it.",
+  "verification_note": "General method guidance. It supplies no NFL-specific cutoff, sample size or strategy threshold."
+ },
+ {
+  "source_id": "SRC-31",
+  "title": "How can I tell if a model fits my data? (NIST/SEMATECH e-Handbook 4.4.4)",
+  "publisher": "NIST/SEMATECH",
+  "url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
+  "type": "Official statistical guidance",
+  "accessed_date": "2026-11-14",
+  "used_for": "Why a high R-squared does not establish model fit and why residual analysis is the primary validation tool.",
+  "verification_note": "General method guidance, not a validation standard for sports forecasting."
+ },
+ {
+  "source_id": "SRC-32",
+  "title": "NFL.com Terms and Conditions",
+  "publisher": "NFL Enterprises LLC",
+  "url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions",
+  "type": "Official terms of service",
+  "accessed_date": "2026-11-14",
+  "used_for": "Section 1.3 permits individual non-commercial informational use and prohibits systematic retrieval to compile a collection, compilation, database or directory absent express prior written consent.",
+  "verification_note": "A licence or written permission is still not recorded for this project (Flag F16)."
+ },
+ {
+  "source_id": "SRC-33",
+  "title": "NFL Week 10 2026 schedule",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "type": "Official league schedule",
+  "accessed_date": "2026-11-14",
+  "used_for": "Away-at-home order, records, kickoff day and time, broadcast window and the Teams on Bye list.",
+  "verification_note": "Final records shown on the page are pre-Week-10 records; the Thursday game result is also shown."
+ },
+ {
+  "source_id": "SRC-34",
+  "title": "Buffalo Bills 2026 roster",
+  "publisher": "National Football League",
+  "url": "https://www.nfl.com/teams/buffalo-bills/roster",
+  "type": "Official league roster",
+  "accessed_date": "2026-11-14",
+  "used_for": "Roster fields are name, number, position, status, height, weight, experience and college. There is no depth-chart column.",
+  "verification_note": "Confirms that the official roster does not publish starter order; a roster listing is not a depth chart."
  }
 ]
