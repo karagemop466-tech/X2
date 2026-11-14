@@ -1,0 +1,72 @@
+[
+ {
+  "rule_id": "D1",
+  "trigger": "Signal interval no longer clears zero",
+  "proposed_condition": "95% interval for the signal (skill) estimate, over a rolling window of eligible out-of-sample forecasts, has a lower bound at or below 0",
+  "numeric_proposal": "Window: most recent 50 eligible forecasts; interval level 95%",
+  "action": "Return strategy from live to paper",
+  "current_status": "No strategy is live (all 7 graded strategies are paper-only), so this rule is inert until a strategy is promoted",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
+ },
+ {
+  "rule_id": "D2",
+  "trigger": "Multiplicity-adjusted significance fails",
+  "proposed_condition": "Benjamini-Hochberg q-value for the signal test, re-run on the whole family of tested rules, exceeds the cut-off",
+  "numeric_proposal": "q > 0.10 demotes",
+  "action": "Return strategy from live to paper",
+  "current_status": "No strategy is live (all 7 graded strategies are paper-only), so this rule is inert until a strategy is promoted",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "rule_id": "D3",
+  "trigger": "Sample below minimum",
+  "proposed_condition": "Eligible out-of-sample forecasts fall below the minimum sample rule (G2)",
+  "numeric_proposal": "n < 30 forecasts (same proposed rule as G2)",
+  "action": "Return strategy from live to paper; no new live status until the minimum is met again",
+  "current_status": "No strategy is live (all 7 graded strategies are paper-only), so this rule is inert until a strategy is promoted",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
+ },
+ {
+  "rule_id": "D4",
+  "trigger": "Official result or source revised",
+  "proposed_condition": "An official result or source row used as evidence is corrected or withdrawn and the re-run changes D1-D3",
+  "numeric_proposal": "Any change to a gate outcome",
+  "action": "Demote pending re-run; reinstatement requires a new pre-registered window",
+  "current_status": "No strategy is live (all 7 graded strategies are paper-only), so this rule is inert until a strategy is promoted",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+ },
+ {
+  "rule_id": "D5",
+  "trigger": "Provenance or legal clearance lost",
+  "proposed_condition": "G0 (provenance) or G8 (legal/jurisdiction) is no longer met for the live strategy",
+  "numeric_proposal": "Any loss of clearance",
+  "action": "Immediate demotion to paper, no re-test; no re-promotion until cleared in writing",
+  "current_status": "No strategy is live (all 7 graded strategies are paper-only), so this rule is inert until a strategy is promoted",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
+ },
+ {
+  "rule_id": "D6",
+  "trigger": "Staking cannot rescue or promote",
+  "proposed_condition": "Staking or return results (ROI, bankroll path) do not enter D1-D5 and cannot offset a failed signal gate",
+  "numeric_proposal": "Not applicable (rule is a prohibition)",
+  "action": "Signal failure demotes regardless of staking results; staking results never promote a strategy",
+  "current_status": "No strategy is live (all 7 graded strategies are paper-only), so this rule is inert until a strategy is promoted",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
+ },
+ {
+  "rule_id": "D7",
+  "trigger": "Price-based test once a priced archive exists (G4)",
+  "proposed_condition": "Mean closing-line value over the window has a 95% interval entirely below 0",
+  "numeric_proposal": "Window: most recent 50 priced bets (proposed)",
+  "action": "Return strategy from live to paper; diagnostic only, not proof of profit",
+  "current_status": "Not computable - no authorised timestamped odds archive (F07)",
+  "approval_status": "PROPOSED - awaiting project-owner approval (F17); not an official threshold",
+  "source_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
+ }
+]

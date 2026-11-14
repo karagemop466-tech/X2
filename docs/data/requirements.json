@@ -229,7 +229,7 @@
   "requirement (from brief)": "Determine correlation values",
   "status": "Done — 9 correlations computed from official results with confidence intervals and p-values",
   "where_addressed": "Player-prop and cross-game correlations unavailable (F31)",
-  "blocker_or_note": "fact",
+  "blocker_or_note": "Nine coefficients computed from official results with confidence intervals and p-values. Every value publishes its sample n beside it, and inputs come only from officially sourced numbers (the official results dataset and the official injury report); a build check now fails any correlation row without n (session ef971991, T45). Player-prop and parlay joint outcomes remain unavailable.",
   "row_type": "fact",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
@@ -335,9 +335,9 @@
  {
   "req_id": "R38",
   "requirement (from brief)": "Verified results feed so backtests and ROI can be computed",
-  "status": "Partially done - results verified; ROI not computable",
-  "where_addressed": "Season results; Market tables page",
-  "blocker_or_note": "137 games verified against the official schedule (R01). ROI requires prices (R37), so it is not computed.",
+  "status": "Partially done - verified results feed published; ROI not computable without prices",
+  "where_addressed": "Season results page (the verified results feed); Market tables page",
+  "blocker_or_note": "The feed is data/games_2026_results.csv: 137 games, each row linked to the official schedule and game page, reconciled against the official standings (0 mismatches). It supports backtests - the walk-forward backtest and leaderboard are computed from it. ROI cannot be computed at all until the price-snapshot store (R37) holds real market numbers; no ROI value is inferred.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
@@ -380,9 +380,9 @@
  {
   "req_id": "R43",
   "requirement (from brief)": "Depth of the replacement, not just the fact of a replacement",
-  "status": "Not done - blocked on official depth-chart order",
-  "where_addressed": "Depth analysis; Deficiency tracking",
-  "blocker_or_note": "An official string order is needed to rank backups (2nd/3rd/4th string). NFL.com depth-chart pages return 404 (R10, F06), so no depth rank is inferred.",
+  "status": "Partially done - depth of the replacement recorded where an official-domain chart confirms it; blank and flagged elsewhere",
+  "where_addressed": "Deficiency tracking page, 'Depth of the replacement' table (data/replacement_depth.csv, RD01-RD12)",
+  "blocker_or_note": "Twelve replacement events tracked with an explicit replacement_depth and next_in_line_depth column, not just the fact of a replacement. RD01-RD07 (DET, NE) carry club-chart-verified string order (2nd/3rd/4th string) with the self-labelled-'unofficial' caveat (F-05/F18). RD08-RD12 name the replacement or record that none is named, but leave depth blank - no club chart was collected for those clubs and NFL.com depth-chart URLs return 404 (F06). No string order is inferred.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  }
