@@ -31,7 +31,7 @@
   "known_facts_verified": "Only roster position and status are verified (NFL.com roster page)",
   "missing_information": "Official depth-chart ordering for all 32 teams",
   "how_to_discover_official_first": "Find an official depth-chart source (Suggestion S01)",
-  "decision_owner": "User decision",
+  "decision_owner": "Project/data-source review",
   "row_type": "gap",
   "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
  },
@@ -51,13 +51,13 @@
   "question_id": "Q05",
   "area": "Schedule",
   "question": "Which teams are on bye in Week 10?",
-  "status": "Partially answered",
-  "known_facts_verified": "14 games listed. CHI, DEN, PHI and TB are not on the injury report.",
-  "missing_information": "Official confirmation of byes",
-  "how_to_discover_official_first": "Official NFL schedule page (not yet fetched)",
+  "status": "Answered from the official Week 10 schedule",
+  "known_facts_verified": "The NFL schedule explicitly lists CHI, DEN, PHI and TB under Teams on Bye for Week 10; absence from the injury report alone was not sufficient evidence.",
+  "missing_information": "None for the Week 10 bye list; re-check the official schedule for each season/week.",
+  "how_to_discover_official_first": "Use the NFL schedule by week and inspect its Teams on Bye section.",
   "decision_owner": "Project",
   "row_type": "fact",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
   "question_id": "Q06",
@@ -69,7 +69,7 @@
   "how_to_discover_official_first": "Official NFL scores and schedule pages (Suggestion S02)",
   "decision_owner": "Project",
   "row_type": "gap",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://www.nfl.com/schedules/2026"
  },
  {
   "question_id": "Q07",
@@ -81,43 +81,43 @@
   "how_to_discover_official_first": "Official NFL standings page (not yet fetched)",
   "decision_owner": "Project",
   "row_type": "fact",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
   "question_id": "Q08",
   "area": "Lines",
   "question": "Which odds source may be used to build and grade our own lines?",
   "status": "Unanswered",
-  "known_facts_verified": "NFL does not publish odds. No official odds source was identified.",
-  "missing_information": "Licensed data source; terms of use; legality of use from Japan",
-  "how_to_discover_official_first": "Ask user to choose a licensed provider; review terms (Suggestion S03)",
-  "decision_owner": "User decision",
+  "known_facts_verified": "NFL Support says its widgets display odds, spreads and totals provided by bookmaker partners; the FAQ does not provide a public historical odds feed or this project’s reuse rights.",
+  "missing_information": "A licensed provider, written permitted-use terms, historical coverage, market definitions and timestamped prices.",
+  "how_to_discover_official_first": "Request written feed terms and permitted historical/derived use from the official provider; do not infer rights from a public widget.",
+  "decision_owner": "Project/data-provider review",
   "row_type": "gap",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
  },
  {
   "question_id": "Q09",
   "area": "Lines",
   "question": "What is the closing-line benchmark?",
   "status": "Unanswered",
-  "known_facts_verified": "None",
+  "known_facts_verified": "No closing-line history/feed is recorded in this repository; the linked NFL FAQ describes partner-sourced widget odds, not a historical archive.",
   "missing_information": "Closing line history",
   "how_to_discover_official_first": "Depends on Q08",
-  "decision_owner": "User decision",
+  "decision_owner": "Project methodology review",
   "row_type": "gap",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
  },
  {
   "question_id": "Q10",
   "area": "Strategy",
   "question": "Which single-bet strategies pass the validation gates?",
   "status": "Unanswered",
-  "known_facts_verified": "No data loaded; 0 strategies evaluated",
+  "known_facts_verified": "No strategy performance has been evaluated in this repository; NIST describes model validation as a separate model-building step.",
   "missing_information": "Historical verified results and odds",
-  "how_to_discover_official_first": "Depends on Q06 and Q08",
+  "how_to_discover_official_first": "Acquire permitted data, define the baseline and market first, then run a frozen time-ordered evaluation.",
   "decision_owner": "Project",
   "row_type": "gap",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
  },
  {
   "question_id": "Q11",
@@ -129,55 +129,55 @@
   "how_to_discover_official_first": "Depends on Q06 and official box scores",
   "decision_owner": "Project",
   "row_type": "gap",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
  },
  {
   "question_id": "Q12",
   "area": "Strategy",
   "question": "Which player-prop markets can be graded?",
   "status": "Unanswered",
-  "known_facts_verified": "None",
+  "known_facts_verified": "The NFL player-stat page provides official statistical categories; this repository has no player-prop market definitions or prices.",
   "missing_information": "Official player stats per game; prop market lines",
   "how_to_discover_official_first": "NFL.com player stats plus licensed prop data (Q08)",
   "decision_owner": "Project",
   "row_type": "gap",
-  "evidence_url": ""
+  "evidence_url": "https://www.nfl.com/stats/player-stats/"
  },
  {
   "question_id": "Q13",
   "area": "Strategy",
   "question": "How will rewards be defined for the leaderboard?",
   "status": "Unanswered",
-  "known_facts_verified": "Not defined",
-  "missing_information": "Reward type (points only, non-monetary, or other)",
-  "how_to_discover_official_first": "Decision by user",
-  "decision_owner": "User decision",
+  "known_facts_verified": "No reward design is recorded. Japan’s official guidance is specific to online gambling/sports betting and does not determine the legality of an unspecified skill contest or prize.",
+  "missing_information": "Reward type, entry terms, eligibility, jurisdiction and qualified legal review of the exact mechanics.",
+  "how_to_discover_official_first": "Keep rewards disabled and seek jurisdiction-specific legal review before defining any prize or entry terms.",
+  "decision_owner": "Product/legal review",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  },
  {
   "question_id": "Q14",
   "area": "Strategy",
-  "question": "What is the paper-trading period before any real-money use?",
+  "question": "What prospective no-stakes evaluation period and evidence gates are appropriate before a strategy is ranked or any reward is considered?",
   "status": "Unanswered",
-  "known_facts_verified": "Not defined",
-  "missing_information": "Length and sample size",
-  "how_to_discover_official_first": "Decision by user",
-  "decision_owner": "User decision",
+  "known_facts_verified": "No prospective forecast ledger or evaluation duration is recorded; NIST guidance supports reporting uncertainty but sets no NFL-specific duration.",
+  "missing_information": "A pre-registered evaluation period, sample definition and legal/data gates; numerical cutoffs are unset.",
+  "how_to_discover_official_first": "Agree a statistical plan after permitted data, market definition and jurisdiction are resolved; do not select cutoffs after seeing results.",
+  "decision_owner": "Statistician/project review",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
  },
  {
   "question_id": "Q15",
   "area": "Legal",
   "question": "Is wagering on NFL lawful for a resident of Japan?",
   "status": "Partially answered",
-  "known_facts_verified": "Penal Code Arts. 185-187 criminalize gambling outside the listed exceptions (e-Gov). State lottery products confirmed by Japan Sport Council.",
-  "missing_information": "Professional legal opinion on the specific activity",
-  "how_to_discover_official_first": "Consult a licensed Japanese attorney",
-  "decision_owner": "User decision",
+  "known_facts_verified": "Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and not a legal opinion on a particular product.",
+  "missing_information": "Qualified legal advice on the exact product, user location, contest/reward terms and any other target jurisdiction.",
+  "how_to_discover_official_first": "Use the official government guidance as a risk reference; obtain qualified Japanese legal advice for the specific activity and each target jurisdiction.",
+  "decision_owner": "Qualified Japanese counsel",
   "row_type": "fact",
-  "evidence_url": "https://laws.e-gov.go.jp/law/140AC0000000045"
+  "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  },
  {
   "question_id": "Q16",
@@ -185,34 +185,34 @@
   "question": "Is a LICENSE or data-use policy wanted?",
   "status": "Unanswered",
   "known_facts_verified": "No license file exists",
-  "missing_information": "User preference",
-  "how_to_discover_official_first": "User decision",
-  "decision_owner": "User decision",
+  "missing_information": "A project license/policy for original code and a separate data-use policy; third-party NFL material must not be treated as licensed by a repository license.",
+  "how_to_discover_official_first": "Review project licensing with a qualified maintainer/counsel; keep NFL data-use permission separate and follow the official NFL terms.",
+  "decision_owner": "Project maintainer/legal review",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
  },
  {
   "question_id": "Q17",
   "area": "Site",
   "question": "Should the site refresh automatically?",
   "status": "Unanswered",
-  "known_facts_verified": "Manual snapshot only",
-  "missing_information": "Scheduling and hosting permission",
-  "how_to_discover_official_first": "User decision (see Suggestion S07)",
-  "decision_owner": "User decision",
+  "known_facts_verified": "The site contains a static snapshot; NFL.com terms prohibit systematic retrieval absent express written consent.",
+  "missing_information": "A rights-cleared provider, retention/update terms and permitted refresh method.",
+  "how_to_discover_official_first": "Confirm written permission or an authorized feed before scheduling collection; otherwise link to the official page without archiving it.",
+  "decision_owner": "Project maintainer/data provider",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  },
  {
   "question_id": "Q18",
   "area": "Data",
   "question": "Do NFL.com terms of use permit reuse of this data on a public site?",
   "status": "Unanswered",
-  "known_facts_verified": "Not reviewed",
-  "missing_information": "NFL.com terms of use text",
-  "how_to_discover_official_first": "Read NFL.com terms of use before publishing data",
+  "known_facts_verified": "NFL.com terms restrict systematic retrieval/database compilation absent express prior written consent.",
+  "missing_information": "Written permission or a license covering each intended use; verify the current terms before collection or republishing.",
+  "how_to_discover_official_first": "Read the latest NFL.com terms and obtain written permission for systematic retrieval or other restricted use.",
   "decision_owner": "Project",
   "row_type": "gap",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  }
 ]

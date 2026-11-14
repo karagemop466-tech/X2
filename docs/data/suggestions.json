@@ -2,12 +2,12 @@
  {
   "suggestion_id": "S01",
   "area": "Data",
-  "suggestion": "Add an official depth-chart source and store the starter and backup order per position",
-  "benefit_for_decisions": "Enables the starter-vs-backup deficiency analysis the brief asks for",
+  "suggestion": "Use only a dated team-issued depth chart or licensed primary feed for starter/backup order; otherwise keep the rank blank.",
+  "benefit_for_decisions": "Supports offense and defense replacement research without inferring a player’s string rank from roster order.",
   "effort": "Medium",
-  "main_risk": "Source may not be official or machine readable",
-  "options": "A) Pull NFL.com depth charts manually each week; B) Use a licensed feed; C) Defer",
-  "status": "Awaiting your decision",
+  "main_risk": "A roster page is not a depth chart; access and reuse rights may be restricted.",
+  "options": "A) Obtain written permission for an official team chart; B) license a provider with explicit model-use rights; C) defer rank and leave it blank.",
+  "status": "For review — not implemented",
   "row_type": "decision",
   "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
  },
@@ -18,10 +18,10 @@
   "benefit_for_decisions": "Creates the history needed for any validation gate",
   "effort": "Large",
   "main_risk": "Scale of collection",
-  "options": "A) Current season only; B) Current plus prior 3 seasons; C) Full history",
-  "status": "Awaiting your decision",
+  "options": "A) Request licensed historical NFL results and box-score access; B) use a provider with explicit archive/model rights; C) keep historical values blank and publish source links only.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://www.nfl.com/schedules/2026"
  },
  {
   "suggestion_id": "S03",
@@ -29,94 +29,94 @@
   "suggestion": "Choose an odds data provider and review its terms",
   "benefit_for_decisions": "Needed to compare our lines with the market and measure closing line value",
   "effort": "Medium",
-  "main_risk": "Licensing cost and legal use from Japan",
-  "options": "A) Licensed paid API; B) Public free source (verify terms first); C) No odds (analysis only)",
-  "status": "Awaiting your decision",
+  "main_risk": "Provider access, historical completeness, permitted model use, market coverage and jurisdiction are unknown.",
+  "options": "A) Request a written licensed quote and reuse terms; B) compare authorized providers; C) do not use odds and keep line/price fields blank.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://www.nfl.com/news/nfl-draftkings-fanduel-fanatics-sports-betting-partners"
  },
  {
   "suggestion_id": "S04",
   "area": "Injuries",
-  "suggestion": "Save a timestamped snapshot each time the injury report changes",
+  "suggestion": "Archive injury-report versions only under written permission or an authorized feed, preserving publication and capture timestamps.",
   "benefit_for_decisions": "Allows tracking of status changes across the week",
   "effort": "Medium",
-  "main_risk": "Storage and scheduling",
-  "options": "A) Manual snapshots; B) Scheduled snapshots three times per game week",
-  "status": "Awaiting your decision",
+  "main_risk": "Systematic retrieval is restricted by NFL.com terms absent express written consent; public-page availability does not grant archive rights.",
+  "options": "A) Obtain permission and define retention; B) license an authorized historical feed; C) keep source links only and leave historical status changes blank.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": "https://www.nfl.com/injuries/"
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  },
  {
   "suggestion_id": "S05",
   "area": "Site",
-  "suggestion": "Add column filters and CSV export on table pages",
+  "suggestion": "Add lightweight filters for review; do not add bulk CSV export for NFL data until written rights permit it.",
   "benefit_for_decisions": "Easier review of rows",
   "effort": "Small",
-  "main_risk": "None significant",
-  "options": "A) Add now; B) Later",
-  "status": "Awaiting your decision",
+  "main_risk": "Export could reproduce or redistribute NFL data without a license; filters should not become a collection mechanism.",
+  "options": "A) Filters only for currently licensed/authorized fields; B) export only project metadata; C) defer export until written rights are cleared.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
  },
  {
   "suggestion_id": "S06",
   "area": "Site",
-  "suggestion": "Add a Decision Log page to record your choices on these suggestions",
-  "benefit_for_decisions": "Keeps decisions traceable",
+  "suggestion": "Keep source, license, validation and scope approvals traceable in the project record; consider a dedicated page only if needed.",
+  "benefit_for_decisions": "Keeps data-use permissions, methodology and implementation decisions auditable.",
   "effort": "Small",
   "main_risk": "Duplicates COORDINATION.md",
-  "options": "A) Use COORDINATION.md; B) New page",
-  "status": "Awaiting your decision",
+  "options": "A) Continue using COORDINATION.md; B) add a decision page only if multiple reviewers need it.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md"
  },
  {
   "suggestion_id": "S07",
   "area": "Operations",
-  "suggestion": "Automate the refresh with a scheduled GitHub Action",
+  "suggestion": "Consider an automated refresh only after the data provider grants written permission and the update/retention method is reviewed.",
   "benefit_for_decisions": "Keeps injury data current without manual work",
   "effort": "Medium",
-  "main_risk": "Requires workflow permissions and a scraping-compliance review",
-  "options": "A) Scheduled workflow; B) Manual refresh only",
-  "status": "Awaiting your decision",
+  "main_risk": "Requires an authorized feed and workflow permissions; do not automate scraping of NFL.com pages.",
+  "options": "A) Scheduled workflow using a licensed feed; B) manual source links without copying/archive; C) no refresh until rights are cleared.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
  },
  {
   "suggestion_id": "S08",
   "area": "Strategy",
-  "suggestion": "Set validation thresholds (sample size, out-of-sample split, significance level) before any strategy is tested",
-  "benefit_for_decisions": "Prevents post-hoc selection",
+  "suggestion": "Pre-register validation design and decision criteria before tests; leave unsupported numeric cutoffs blank until a qualified statistical review.",
+  "benefit_for_decisions": "Reduces post-hoc selection while avoiding invented NFL-specific sample-size or significance thresholds.",
   "effort": "Small",
-  "main_risk": "Thresholds may be too strict or too loose",
-  "options": "A) Use proposed thresholds in Strategy Lab; B) Your own values",
-  "status": "Awaiting your decision",
+  "main_risk": "Criteria cannot be selected responsibly before market, data rights, and eligible sample are defined.",
+  "options": "A) Pre-register with a statistician after data access is approved; B) publish methodology without a performance ranking; C) defer the leaderboard.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
  },
  {
   "suggestion_id": "S09",
   "area": "Strategy",
-  "suggestion": "Run new strategies as paper trades (no money) for a fixed period before any reward",
-  "benefit_for_decisions": "Separates skill from luck over time",
+  "suggestion": "Run timestamped no-stakes forecasts prospectively before ranking strategies; choose the duration and acceptance rule only in a pre-registered plan.",
+  "benefit_for_decisions": "Creates an auditable test of skill versus variance; prospective tracking reduces hindsight but cannot eliminate randomness or guarantee outcomes.",
   "effort": "Small",
-  "main_risk": "Slow feedback",
-  "options": "A) 4 weeks; B) 1 full season; C) Custom",
-  "status": "Awaiting your decision",
+  "main_risk": "No universal number of weeks or bets establishes skill; outcome and price data must be rights-cleared.",
+  "options": "A) Define a prospective period after data/legal gates; B) require untouched out-of-time evaluation; C) publish no leaderboard until those tests exist.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": ""
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
  },
  {
   "suggestion_id": "S10",
   "area": "Legal",
-  "suggestion": "Obtain a legal opinion on Japan wagering rules before any real-money step",
-  "benefit_for_decisions": "Avoids criminal exposure under Penal Code Arts. 185-187",
+  "suggestion": "Obtain qualified legal review of the exact product, audience, wager/referral/reward mechanics, and each target jurisdiction before any real-money or prize feature.",
+  "benefit_for_decisions": "Avoids treating Japan-specific online-betting guidance as a ruling on every contest or other jurisdiction.",
   "effort": "Small",
-  "main_risk": "Cost of advice",
-  "options": "A) Obtain advice first (recommended); B) Skip (not recommended)",
-  "status": "Awaiting your decision",
+  "main_risk": "Legal treatment depends on product mechanics, user location and applicable jurisdiction; this official guidance is Japan-specific.",
+  "options": "A) Obtain jurisdiction-specific advice first (recommended); B) keep this site no-stakes and reward-free; C) do not launch the affected feature.",
+  "status": "For review — not implemented",
   "row_type": "decision",
-  "evidence_url": "https://laws.e-gov.go.jp/law/140AC0000000045"
+  "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  }
 ]
