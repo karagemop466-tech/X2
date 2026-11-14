@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Executive Summary — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a class="active" href="executive-summary.html">Executive Summary</a>
+      <a href="decisions.html">Decision Framework</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="strategies.html">Strategies &amp; Signals</a>
+      <a href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a href="sources.html">Sources</a>
+      <a href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Executive Summary</h1>
+  <p class="section-sub">Prepared 2026-11-14 &middot; 2026 NFL regular season, Week 10 &middot; Repository: karagemop466-tech/X2, branch arena/6fac6aa4-x2</p>
+
+  <div class="card mb-24">
+    <h3>Purpose</h3>
+    <p>Collect, organize, and analyze NFL information to support betting decision-making: originate proprietary NFL lines, generate signals for single bets, parlays, and player-prop combinations, track injuries and depth-chart deficiencies (starters vs. 2nd/3rd/4th-string backups on offense and defense), and provide a decision framework with a dedicated suggestions section so changes are reviewed before implementation.</p>
+  </div>
+
+  <div class="grid cols-2 mb-24">
+    <div class="card">
+      <h3>Repository state at start</h3>
+      <p>Empty: one commit containing only <code>README.md</code> ("# X2"). No code, data, or site existed. All content in this session was built from verified official sources.</p>
+    </div>
+    <div class="card">
+      <h3>Site status</h3>
+      <p>GitHub Pages static site: landing dashboard + category subpages. Every data row carries a link to its official source; unverified items are blank and flagged.</p>
+    </div>
+  </div>
+
+  <h2>Key verified findings — 2026 NFL season (Week 10)</h2>
+  <p class="src-small">Source: <a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com official standings</a>, verified line by line 2026-11-14.</p>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">Division</th><th class="sortable">Leader (record)</th><th class="sortable num center">PCT</th><th class="sortable num center">PF</th><th class="sortable num center">PA</th><th class="sortable num center">Net</th><th class="left">Source</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">AFC East</td><td class="fl">Buffalo Bills (7-1)</td><td class="num">0.875</td><td class="num">256</td><td class="num">187</td><td class="num">69</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">AFC North</td><td class="fl">Pittsburgh Steelers (6-2) / Cincinnati Bengals (6-2)</td><td class="num">0.750</td><td class="num">180 / 240</td><td class="num">144 / 175</td><td class="num">36 / 65</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">AFC South</td><td class="fl">Jacksonville Jaguars (6-2)</td><td class="num">0.750</td><td class="num">229</td><td class="num">121</td><td class="num">108</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">AFC West</td><td class="fl">Denver Broncos (7-2)</td><td class="num">0.778</td><td class="num">198</td><td class="num">186</td><td class="num">12</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">NFC East</td><td class="fl">New York Giants (5-3-1)</td><td class="num">0.611</td><td class="num">203</td><td class="num">196</td><td class="num">7</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">NFC North</td><td class="fl">Chicago Bears (7-2)</td><td class="num">0.778</td><td class="num">241</td><td class="num">184</td><td class="num">57</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">NFC South</td><td class="fl">Carolina Panthers (3-5) / New Orleans Saints (3-5)</td><td class="num">0.375</td><td class="num">199 / 185</td><td class="num">219 / 216</td><td class="num">-20 / -31</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">NFC West</td><td class="fl">San Francisco 49ers (7-1)</td><td class="num">0.875</td><td class="num">235</td><td class="num">156</td><td class="num">79</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout mb-24">
+    <strong>Best record in NFL (tie):</strong> Buffalo Bills 7-1 (0.875) and San Francisco 49ers 7-1 (0.875).
+    <br><strong>Winless:</strong> Los Angeles Chargers 0-8.
+    <br><strong>Verified injuries (Week 10 sample):</strong> Detroit (Kerby Joseph S Out, Cade Mays C Out, D.J. Reed CB Out), New England (Ben Brown C Out, Carlton Davis III CB Out, TreVeyon Henderson RB Out), Washington (Lucas Patrick C Out, Colson Yankoff TE Out). Source: <a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a>.
+  </div>
+
+  <h2>Program components</h2>
+  <div class="grid cols-3 mb-24">
+    <div class="card">
+      <h3>1. Decision framework</h3>
+      <p>Open questions, information we have vs. lack, and answers required before any line-origination or strategy decision. See <a>Decision Framework</a>.</p>
+    </div>
+    <div class="card">
+      <h3>2. Suggestions section</h3>
+      <p>Dedicated area to submit, review, and approve changes before implementation. See <a>Suggestions</a>.</p>
+    </div>
+    <div class="card">
+      <h3>3. Strategies &amp; signals</h3>
+      <p>Line origination, single bets, parlays, player-prop combinations, correlation gates, validation gates, leaderboard. See <a>Strategies &amp; Signals</a> (original analysis — not official data).</p>
+    </div>
+    <div class="card">
+      <h3>4. Injuries &amp; depth</h3>
+      <p>Tracks injuries and flags offensive/defensive deficiencies when starters are replaced by 2nd/3rd/4th-string backups. See <a>Injuries &amp; Depth</a>.</p>
+    </div>
+    <div class="card">
+      <h3>5. Verified data tables</h3>
+      <p>Full 32-team standings and Week 10 injury sample, every row linked to its official source. See <a>Standings</a> and <a>Sources</a>.</p>
+    </div>
+    <div class="card">
+      <h3>6. Flagged for review</h3>
+      <p>Unverified items and irregularities published for your review. See <a>Flagged for Review</a>.</p>
+    </div>
+  </div>
+
+  <h2>Recommendations</h2>
+  <ol>
+    <li>Publish this site to GitHub Pages (landing page + category subpages, dashboard tables).</li>
+    <li>Maintain the Flagged for Review page for all unverified items and irregularities.</li>
+    <li>Before implementing any line or strategy change, route it through the Suggestions review section and validation gates.</li>
+    <li>Refresh injury and standings data weekly from official NFL sources; never infer or fill in missing values.</li>
+  </ol>
+
+  <h2>Next steps</h2>
+  <ul>
+    <li>Complete site build and deploy to GitHub Pages.</li>
+    <li>Final integration verification: re-verify combined data line by line, confirm build with no broken links.</li>
+    <li>Create pull request to main, merge, confirm GitHub Pages deploys successfully.</li>
+  </ul>
+
+  <div class="disclaimer">
+    Not financial or betting advice. All wagering involves risk. Betting lines, signals, correlations, and strategy rules are original analysis &mdash; not official NFL data. Verify all data against official sources before use.
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Official data sources: <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com Standings</a> &middot; <a href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">NFL.com Injury Report</a>.</p>
+    <p class="disclaimer">Not financial or betting advice. Unverified items are published on the Flagged for Review page.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

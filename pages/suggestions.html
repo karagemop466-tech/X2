@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suggestions — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="executive-summary.html">Executive Summary</a>
+      <a href="decisions.html">Decision Framework</a>
+      <a class="active" href="suggestions.html">Suggestions</a>
+      <a href="strategies.html">Strategies &amp; Signals</a>
+      <a href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a href="sources.html">Sources</a>
+      <a href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Suggestions — dedicated review section</h1>
+  <p class="section-sub">A dedicated section so someone can review suggestions and choose the best path before implementing any changes. No suggestion is implemented until reviewed here and approved via the Decision Framework.</p>
+
+  <div class="callout mb-24">
+    <strong>Review process:</strong> submit a suggestion &rarr; reviewer assesses it against the Decision Framework questions &rarr; approve, request revision, or reject &rarr; approved changes are implemented and logged in COORDINATION.md.
+  </div>
+
+  <h2>Active suggestions</h2>
+  <div class="sugg-card">
+    <header><span class="sugg-id">SUGG-001</span><span class="sugg-status">open</span></header>
+    <h4>Refresh NFL standings and injuries weekly</h4>
+    <p>After each NFL game week, pull the official standings (nfl.com/standings) and injury report (nfl.com/injuries/league/2026/REG{WEEK}) and update data files. Never infer missing values; leave blank and flag unverified.</p>
+    <div class="meta"><b>Owner:</b> unassigned &middot; <b>Source:</b> nfl.com &middot; <b>Review cadence:</b> weekly (Tue/Wed)</div>
+  </div>
+  <div class="sugg-card">
+    <header><span class="sugg-id">SUGG-002</span><span class="sugg-status">open</span></header>
+    <h4>Confirm depth charts on official NFL team pages</h4>
+    <p>Replacement-string values (2nd/3rd/4th string) currently come from third-party depth-chart aggregators. Fetch nfl.com/teams/{team} rosters and confirm starters and backups by position before using in line adjustments.</p>
+    <div class="meta"><b>Owner:</b> unassigned &middot; <b>Source:</b> nfl.com/teams/{team} &middot; <b>Flag:</b> unverified until confirmed</div>
+  </div>
+  <div class="sugg-card">
+    <header><span class="sugg-id">SUGG-003</span><span class="sugg-status">open</span></header>
+    <h4>Add reference sportsbook closing lines (market odds)</h4>
+    <p>Record moneyline/spread/total closing lines from one reference sportsbook weekly to compare against our originated lines. Flag as non-official third-party data; the NFL does not publish official odds.</p>
+    <div class="meta"><b>Owner:</b> unassigned &middot; <b>Source:</b> third-party sportsbook (non-official) &middot; <b>Flag:</b> unverified</div>
+  </div>
+  <div class="sugg-card">
+    <header><span class="sugg-id">SUGG-004</span><span class="sugg-status">open</span></header>
+    <h4>Compute leg-correlation matrix from 4+ weeks of results</h4>
+    <p>Placeholder correlation values in docs/strategies.md must be replaced with values computed from logged game results before any parlay is admitted.</p>
+    <div class="meta"><b>Owner:</b> unassigned &middot; <b>Source:</b> internal paper-trading log &middot; <b>Flag:</b> placeholder/unverified</div>
+  </div>
+  <div class="sugg-card">
+    <header><span class="sugg-id">SUGG-005</span><span class="sugg-status">open</span></header>
+    <h4>Assign a suggestions reviewer and weekly cadence</h4>
+    <p>Name a single reviewer for the Suggestions section and set a weekly review time so changes are considered before implementation.</p>
+    <div class="meta"><b>Owner:</b> unassigned &middot; <b>Cadence:</b> weekly &middot; <b>Log:</b> COORDINATION.md</div>
+  </div>
+
+  <h2>Before any change is implemented</h2>
+  <p>Every suggestion must pass these checks (from the Decision Framework):</p>
+  <ul>
+    <li>The relevant gate questions are answered (information we have vs. information we lack).</li>
+    <li>All data values are linked to an official source, or left blank and flagged unverified.</li>
+    <li>The change is logged in COORDINATION.md with sources and verification performed.</li>
+    <li>Strategy changes additionally pass validation gates G1–G6 (see Strategies &amp; Signals).</li>
+  </ul>
+
+  <div class="callout warn mb-24">
+    <strong>No manual input is required to read this site.</strong> To contribute a suggestion, edit pages/suggestions.html (or open an issue/PR) and assign yourself as owner in COORDINATION.md.
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Review changes here before implementing. See also <a href="decisions.html">Decision Framework</a> and <a href="flagged-review.html">Flagged for Review</a>.</p>
+    <p class="disclaimer">Not financial or betting advice.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

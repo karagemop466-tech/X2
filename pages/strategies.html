@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Strategies &amp; Signals — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="executive-summary.html">Executive Summary</a>
+      <a href="decisions.html">Decision Framework</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a class="active" href="strategies.html">Strategies &amp; Signals</a>
+      <a href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a href="sources.html">Sources</a>
+      <a href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Strategies &amp; Signals — originate our own NFL lines</h1>
+  <p class="section-sub">Treat signal generation as a leaderboard competition that rewards top-performing strategies. Single bets, parlays, and player-prop combinations. Every strategy passes validation gates; correlation values are determined; luck is removed by construction.</p>
+  <div class="callout warn mb-24"><strong>Analysis — not official NFL data.</strong> Lines, signals, correlations, gates, and leaderboard rules are original work product. Team-level inputs (standings, injuries) use verified official NFL data and are linked on the Sources page.</div>
+
+  <h2>1. Line origination (proposal)</h2>
+  <p>Opening line = (away team rating − home team rating) + home-field advantage (~2.5 points, to be calibrated). Team rating built from verified official inputs:</p>
+  <ul>
+    <li>Win rate W/(W+L+T) — <a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com standings</a> (verified)</li>
+    <li>Points differential (PF − PA) per game — <a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com standings</a> (verified)</li>
+    <li>Home / road / division / conference splits — <a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com standings</a> (verified)</li>
+    <li>Injury adjustments — starter Out/Questionable at high-impact positions shifts team rating down — <a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">NFL.com injury report</a> (verified)</li>
+  </ul>
+  <p>Our line vs. market line = edge. Bet when edge exceeds the G5 threshold (TBD). Market odds are not official — see Suggestion SUGG-003.</p>
+
+  <h2>2. Signal types in scope</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">Signal type</th><th class="sortable">Description</th><th class="sortable center">Legs</th><th class="sortable center">Correlation gate</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">Single — moneyline</td><td>Pick the winner</td><td class="num">1</td><td class="center">No</td></tr>
+        <tr><td class="fl">Single — spread</td><td>Cover the spread</td><td class="num">1</td><td class="center">No</td></tr>
+        <tr><td class="fl">Single — total</td><td>Over/under points</td><td class="num">1</td><td class="center">No</td></tr>
+        <tr><td class="fl">Parlay</td><td>2–3 single bets combined</td><td class="num">2–3</td><td class="center">Yes — every leg pair</td></tr>
+        <tr><td class="fl">Player-prop combination</td><td>QB pass / RB rush / WR receive yards props</td><td class="num">1–3</td><td class="center">Yes — cross-player</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>3. Correlation values (placeholder — flagged unverified)</h2>
+  <p>Correlation between legs must be computed from historical results. Values below are placeholders and are flagged unverified until computed from a 4-week game log (Suggestion SUGG-004).</p>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">Leg pair</th><th class="sortable num center">Estimated correlation</th><th class="sortable center">Status</th><th class="sortable">Action</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">Team moneyline + team spread (same game)</td><td class="num">~0.85</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Exclude from same parlay</td></tr>
+        <tr><td class="fl">Team total + game total (same game)</td><td class="num">~0.70</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Exclude from same parlay</td></tr>
+        <tr><td class="fl">QB pass yards + team pass yards (same team)</td><td class="num">~0.60</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Restrict: max one of pair per parlay</td></tr>
+        <tr><td class="fl">WR receive yards + QB pass yards (same team)</td><td class="num">~0.50</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Restrict</td></tr>
+        <tr><td class="fl">RB rush yards + team rush attempts</td><td class="num">~0.45</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Restrict</td></tr>
+        <tr><td class="fl">Two different games</td><td class="num">~0.00</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Allowed</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src-small">Rule: no parlay may contain a leg pair with correlation ≥ 0.30. This removes correlated (luck-driven) stacks and keeps parlays skill-based.</p>
+
+  <h2>4. Validation gates (every strategy must pass ALL gates)</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">Gate</th><th class="sortable">Rule</th><th class="sortable center">Pass condition</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">G1 Line origin</td><td>Line derived from verified official inputs only</td><td class="center">All inputs sourced &amp; linked</td></tr>
+        <tr><td class="fl">G2 Correlation</td><td>No leg pair ≥ 0.30 correlation</td><td class="center">Correlation matrix checked</td></tr>
+        <tr><td class="fl">G3 Injury filter</td><td>No bet on a team with a starter Out at a key position</td><td class="center">Official injury status = active</td></tr>
+        <tr><td class="fl">G4 Sample size</td><td>Back-tested on ≥ 4 weeks of paper results</td><td class="center">≥ 20 signals logged</td></tr>
+        <tr><td class="fl">G5 Edge threshold</td><td>Originated edge vs. market ≥ threshold (TBD)</td><td class="center">Edge ≥ threshold on every leg</td></tr>
+        <tr><td class="fl">G6 Skill vs. luck</td><td>Win rate exceeds break-even + variance margin</td><td class="center">Paper win rate &gt; break-even by margin</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src-small">A strategy failing any gate is rejected or revised before admission to the leaderboard.</p>
+
+  <h2>5. Leaderboard competition &amp; rewards</h2>
+  <ul>
+    <li>Each admitted strategy is scored weekly on paper results: units won, win rate, ROI, edge accuracy.</li>
+    <li>Leaderboard published here and updated weekly after NFL results are official.</li>
+    <li>Rewards (proposal): top 3 strategies each month receive recognition + increased paper allocation.</li>
+    <li>No real-money allocation until gates G4–G6 pass for 8 consecutive weeks.</li>
+  </ul>
+
+  <h2>6. Removing luck — design principles</h2>
+  <ol>
+    <li>Single bets first; parlays only after singles show skill.</li>
+    <li>Correlation caps prevent lucky stacks.</li>
+    <li>Injury filter removes bets damaged by backup replacements (2nd/3rd/4th string).</li>
+    <li>Paper-only for 4–8 weeks; real allocation only after gate passage.</li>
+    <li>Weekly review: strategies decaying below the edge threshold are removed.</li>
+  </ol>
+
+  <h2>7. Open items (flagged)</h2>
+  <ul>
+    <li>Market odds source not yet defined (non-official, to be flagged).</li>
+    <li>Correlation values not yet computed from real results (placeholder, unverified).</li>
+    <li>Edge threshold and bankroll rules TBD (see Decision Framework).</li>
+    <li>Reviewer assignment TBD (Suggestion SUGG-005).</li>
+  </ul>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Review strategy changes in <a href="suggestions.html">Suggestions</a> before implementing. See <a href="flagged-review.html">Flagged for Review</a> for unverified items.</p>
+    <p class="disclaimer">Not financial or betting advice.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

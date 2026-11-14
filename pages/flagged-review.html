@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flagged for Review — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="executive-summary.html">Executive Summary</a>
+      <a href="decisions.html">Decision Framework</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="strategies.html">Strategies &amp; Signals</a>
+      <a href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a href="sources.html">Sources</a>
+      <a class="active" href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Flagged for Review</h1>
+  <p class="section-sub">Unverified items and irregularities published for your review. These do <strong>not</strong> block the site launch; review them after the site is live and request changes. Nothing here was inferred or filled in — blank values simply could not be confirmed from an official source.</p>
+
+  <h2>Unverified data items</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">ID</th><th class="sortable">Item</th><th class="sortable">Where used</th><th class="sortable center">Status</th><th class="sortable">Suggested resolution</th><th class="left">Source link (for manual review)</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">F-001</td><td class="fl">Depth-chart replacement strings (2nd/3rd/4th string by position)</td><td class="left">pages/injuries.html, docs/injury-depth.md</td><td class="center"><span class="badge badge-unverified">unverified</span></td><td class="left">Confirm starters and backups on official NFL team pages (nfl.com/teams/{team})</td><td class="left"><a class="src" href="https://www.nfl.com/teams/" target="_blank" rel="noopener">nfl.com/teams/{team}/</a></td></tr>
+        <tr><td class="num">F-002</td><td class="fl">Injury coverage — only a Week 10 sample of games captured; not all 32 teams</td><td class="left">pages/injuries.html, data/nfl-injuries-week10-2026.json</td><td class="center"><span class="badge badge-unverified">incomplete</span></td><td class="left">Fetch remaining games from nfl.com/injuries/league/2026/REG10 and future weeks</td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries/league/2026/REG10</a></td></tr>
+        <tr><td class="num">F-003</td><td class="fl">Correlation values between parlay legs (~0.00–0.85)</td><td class="left">pages/strategies.html, docs/strategies.md</td><td class="center"><span class="badge badge-unverified">placeholder</span></td><td class="left">Compute from 4+ weeks of logged game results (Suggestion SUGG-004)</td><td class="left">internal paper-trading log (to be created)</td></tr>
+        <tr><td class="num">F-004</td><td class="fl">Market odds / closing lines for moneyline, spread, total</td><td class="left">docs/decision-framework.md, docs/strategies.md</td><td class="center"><span class="badge badge-unverified">none sourced</span></td><td class="left">Record from one reference sportsbook weekly; flag as non-official third-party (Suggestion SUGG-003)</td><td class="left">third-party sportsbook — not an official NFL source</td></tr>
+        <tr><td class="num">F-005</td><td class="fl">Edge threshold, bankroll/Kelly fraction, minimum single-bet edge</td><td class="left">docs/decision-framework.md</td><td class="center"><span class="badge badge-unverified">TBD</span></td><td class="left">Set thresholds before any real allocation; back-test 4+ weeks first</td><td class="left">internal (to be defined)</td></tr>
+        <tr><td class="num">F-006</td><td class="fl">Suggestions reviewer and weekly review cadence not assigned</td><td class="left">pages/suggestions.html, docs/decision-framework.md</td><td class="center"><span class="badge badge-unverified">unassigned</span></td><td class="left">Name a reviewer and log cadence in COORDINATION.md (Suggestion SUGG-005)</td><td class="left">COORDINATION.md</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Irregularities flagged</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">ID</th><th class="sortable">Irregularity</th><th class="sortable">Detail</th><th class="sortable center">Severity</th><th class="left">Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">IRR-001</td><td class="fl">No official single source for 1st–4th-string depth charts</td><td class="left">NFL.com publishes team rosters but not a consolidated official depth-chart page</td><td class="center"><span class="badge badge-warn">medium</span></td><td class="left">Use nfl.com/teams/{team} roster pages as the official source; flag third-party depth values</td></tr>
+        <tr><td class="num">IRR-002</td><td class="fl">NFL publishes no official betting lines or odds</td><td class="left">All line-origination, signals, parlays, and props are original analysis</td><td class="center"><span class="badge badge-warn">medium</span></td><td class="left">Clearly labeled "analysis — not official source" on every relevant page</td></tr>
+        <tr><td class="num">IRR-003</td><td class="fl">Repository started empty (only README.md)</td><td class="left">No prior code or data to audit; all content created in this session</td><td class="center"><span class="badge badge-ok">low</span></td><td class="left">Nothing to flag beyond the unverified items above</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout mb-24"><strong>How to review:</strong> open each source link above, confirm the value, then either update the data file and mark the item resolved in COORDINATION.md, or leave it flagged. Flagged items do not block the merge or the GitHub Pages launch.</div>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Review flagged items after the site is live. See <a href="sources.html">Sources</a> for official source links.</p>
+    <p class="disclaimer">Not financial or betting advice.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

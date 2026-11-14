@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Injuries &amp; Depth — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="executive-summary.html">Executive Summary</a>
+      <a href="decisions.html">Decision Framework</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="strategies.html">Strategies &amp; Signals</a>
+      <a class="active" href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a href="sources.html">Sources</a>
+      <a href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Injuries &amp; Depth-Chart Tracking</h1>
+  <p class="section-sub">The system tracks injuries and identifies offensive/defensive deficiencies when starters are replaced by 2nd, 3rd, or 4th-string backups. Same model applies to offense and defense.</p>
+
+  <div class="callout mb-24"><strong>Official injury source:</strong> <a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">NFL.com official injury report — Week 10, 2026</a> (verified 2026-11-14). <strong>Depth-chart note:</strong> NFL.com does not publish a single official 1st–4th-string depth-chart page; replacement-string values from third-party aggregators are flagged unverified and must be confirmed on official NFL team pages (nfl.com/teams/{team}).</div>
+
+  <h2>Data model</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">Field</th><th class="sortable">Description</th><th class="sortable center">Source</th><th class="sortable center">Official?</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">team</td><td>NFL team</td><td class="center">nfl.com standings</td><td class="center"><span class="badge badge-ok">yes</span></td></tr>
+        <tr><td class="fl">position</td><td>Position group (QB, RB, WR, TE, OT, OG, C, EDGE, DT, LB, CB, S, K, P)</td><td class="center">roster / depth chart</td><td class="center">roster yes / depth flagged</td></tr>
+        <tr><td class="fl">starter / backup2 / backup3 / backup4</td><td>1st–4th string by position</td><td class="center">depth chart</td><td class="center"><span class="badge badge-unverified">flagged</span></td></tr>
+        <tr><td class="fl">injured player / injury / practice status / game status</td><td>Injury detail and Out / Questionable / Doubtful</td><td class="center">nfl.com/injuries</td><td class="center"><span class="badge badge-ok">yes</span></td></tr>
+        <tr><td class="fl">deficiency flag</td><td>true when starter Out/Questionable and a backup must play</td><td class="center">computed from official inputs</td><td class="center"><span class="badge badge-ok">yes (computed)</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Deficiency rule (computed from official injury inputs)</h2>
+  <p>A position group is <strong>FLAGGED as deficient</strong> when:</p>
+  <ul>
+    <li>starter game status == "Out", OR</li>
+    <li>starter game status == "Questionable" with practice status == "Did Not Participate"</li>
+  </ul>
+  <p>Severity scales with replacement string: 2nd string = moderate, 3rd string = high, 4th string = severe.</p>
+
+  <h2>Verified deficiencies — Week 10 sample</h2>
+  <p class="src-small">All injury values verified against <a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries/league/2026/REG10</a>. Replacement-string values are depth-chart estimates — flagged unverified.</p>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">Team</th><th class="sortable">Position</th><th class="sortable">Injured starter</th><th class="sortable center">Game status</th><th class="sortable center">Replacement string (est.)</th><th class="sortable center">Deficiency</th><th class="left">Source</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">Detroit Lions</td><td class="center">S</td><td>Kerby Joseph</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Detroit Lions</td><td class="center">C</td><td>Cade Mays</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Detroit Lions</td><td class="center">CB</td><td>D.J. Reed</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">New England</td><td class="center">C</td><td>Ben Brown</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">New England</td><td class="center">CB</td><td>Carlton Davis III</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">New England</td><td class="center">RB</td><td>TreVeyon Henderson</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Washington</td><td class="center">C</td><td>Lucas Patrick</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">2nd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Washington</td><td class="center">TE</td><td>Colson Yankoff</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center">3rd <span class="badge badge-unverified">est.</span></td><td class="center"><span class="badge badge-warn">High</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Offense vs. defense coverage</h2>
+  <p>The model applies identically to both units:</p>
+  <ul>
+    <li><strong>Offense:</strong> QB, RB, WR, TE, OT, OG, C — a starter replaced by a backup shifts the offensive rating down.</li>
+    <li><strong>Defense:</strong> EDGE, DT, LB, CB, S — a starter replaced by a backup shifts the defensive rating down.</li>
+    <li><strong>Special teams:</strong> K, P tracked separately; minimal effect on moneyline/totals but logged.</li>
+  </ul>
+
+  <div class="callout warn mb-24"><strong>Missing coverage:</strong> this capture is a Week 10 sample of games fetched from the official page; not all 32 teams are represented. Missing rows are left blank and flagged unverified on the Flagged for Review page.</div>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Official injury data: <a href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a>. Depth-chart (1st–4th string) values are flagged unverified pending confirmation on official NFL team pages.</p>
+    <p class="disclaimer">Not financial or betting advice.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

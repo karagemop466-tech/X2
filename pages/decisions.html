@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Decision Framework — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="executive-summary.html">Executive Summary</a>
+      <a class="active" href="decisions.html">Decision Framework</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="strategies.html">Strategies &amp; Signals</a>
+      <a href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a href="sources.html">Sources</a>
+      <a href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Decision Framework</h1>
+  <p class="section-sub">Questions, information we have, information we lack, and answers required before any decision can reasonably be made. Suggestions to discover missing information are listed for each area and reviewed in the <a href="suggestions.html">Suggestions</a> section before implementation.</p>
+  <p class="src-small">Full detail: <a href="../docs/decision-framework.md" target="_blank" rel="noopener">docs/decision-framework.md</a></p>
+
+  <input type="text" id="filter" placeholder="Filter questions…" />
+
+  <h2>A. Originating our own NFL lines</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Question</th><th class="sortable">Information we have</th><th class="sortable">Information we do NOT have</th><th class="sortable center">Answer (preliminary)</th><th class="sortable">Suggestion to discover missing info</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">A1</td><td class="fl">What inputs should drive our opening line?</td><td class="left">2026 team standings (W/L/T, PF/PA, net points, home/road/div/conf splits) — official NFL standings (verified). Official injury report Week 10 (verified).</td><td class="left">Offensive/defensive DVOA or EPA by team; strength of schedule; venue/weather; rest/travel; official depth charts (1st–4th string) not available from an official NFL source.</td><td class="center">Baseline line = team rating difference + home-field advantage; rating built from PF/PA differential and win rate. Injury adjustment TBD.</td><td class="left">Compute team ratings from PF/PA and standings; pull EPA/DVOA from a secondary stats source and flag it; scrape official NFL team roster pages for starter/backup info.</td></tr>
+        <tr><td class="num">A2</td><td class="fl">How do injuries adjust the line?</td><td class="left">Per-player injury + game status (Out/Questionable/Doubtful) from official NFL injury report.</td><td class="left">Player replacement value (2nd/3rd/4th string); snap-count impact of each injured starter; positional importance weights.</td><td class="center">Out starter = negative adjustment; magnitude TBD by position and replacement quality.</td><td class="left">Build depth-chart table from official team pages; assign positional weights (QB highest); validate against line movement history.</td></tr>
+        <tr><td class="num">A3</td><td class="fl">Where do we publish opening lines for review?</td><td class="left">Suggestions section + decision framework exist on the site.</td><td class="left">None.</td><td class="center">Publish proposed lines on pages/strategies.html with validation-gate status before any use.</td><td class="left">N/A.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>B. Single bets</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Question</th><th class="sortable">Information we have</th><th class="sortable">Information we do NOT have</th><th class="sortable center">Answer (preliminary)</th><th class="sortable">Suggestion to discover missing info</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">B1</td><td class="fl">Which single bet types are in scope?</td><td class="left">Moneyline, spread, total (over/under), first-half, player props — standard bet types.</td><td class="left">Market odds from a sportsbook to compare against our originated lines (NFL does not publish official odds).</td><td class="center">Start with moneyline + spread + total using our originated lines vs. market odds (market odds = third-party, flagged).</td><td class="left">Record closing lines from one reference sportsbook; flag as non-official.</td></tr>
+        <tr><td class="num">B2</td><td class="fl">What is the minimum edge to bet a single?</td><td class="left">None defined yet.</td><td class="left">Bankroll, Kelly fraction, historical win rate of our signals.</td><td class="center">No bets until edge threshold and bankroll rules are set (suggestion: 3%+ edge, 1/4 Kelly).</td><td class="left">Back-test signal history once 4+ weeks of signals are logged.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>C. Parlays</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Question</th><th class="sortable">Information we have</th><th class="sortable">Information we do NOT have</th><th class="sortable center">Answer (preliminary)</th><th class="sortable">Suggestion to discover missing info</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">C1</td><td class="fl">How many legs max per parlay?</td><td class="left">None defined.</td><td class="left">Correlation data between legs; sportsbook parlay payout rules.</td><td class="center">Suggestion: max 3 legs; require correlation &lt; 0.30 between any two legs.</td><td class="left">Compute leg correlation from historical results; flag until 4 weeks of data.</td></tr>
+        <tr><td class="num">C2</td><td class="fl">Are correlated parlays allowed?</td><td class="left">Correlation framework documented in docs/strategies.md (not yet computed).</td><td class="left">Actual correlation values.</td><td class="center">No — correlated legs (e.g., same-game QB pass yards + team over) blocked by gate.</td><td class="left">Build correlation matrix from game logs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>D. Player-prop combinations</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Question</th><th class="sortable">Information we have</th><th class="sortable">Information we do NOT have</th><th class="sortable center">Answer (preliminary)</th><th class="sortable">Suggestion to discover missing info</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">D1</td><td class="fl">Which player props in scope?</td><td class="left">None defined.</td><td class="left">Prop markets (pass/rush/receive yards, TDs), player usage/snap counts, injury replacements.</td><td class="center">Suggestion: QB pass yards, RB rush yards, WR receive yards only; starter must be active (not Out).</td><td class="left">Collect prop lines from reference sportsbook; tie to official injury status.</td></tr>
+        <tr><td class="num">D2</td><td class="fl">How do backup QBs affect prop combos?</td><td class="left">Injury report lists QB status and practice participation.</td><td class="left">Backup QB depth and historical performance as starter.</td><td class="center">Exclude prop combos involving a team whose starter QB is Out.</td><td class="left">Depth chart from official team pages (flagged unverified).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>E. Strategy validation gates</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Question</th><th class="sortable">Information we have</th><th class="sortable">Information we do NOT have</th><th class="sortable center">Answer (preliminary)</th><th class="sortable">Suggestion to discover missing info</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">E1</td><td class="fl">What gates must every strategy pass?</td><td class="left">Gate definitions proposed in docs/strategies.md (line origin, correlation check, skill vs. luck, back-test minimum).</td><td class="left">Pass/fail thresholds; out-of-sample performance.</td><td class="center">Gates defined; thresholds TBD until 4 weeks of signal history exist.</td><td class="left">Run paper-trading back-test; record results on strategy leaderboard.</td></tr>
+        <tr><td class="num">E2</td><td class="fl">How is "luck" removed?</td><td class="left">Correlation controls + selective bet sizing + validation gates.</td><td class="left">Statistical luck model (variance decomposition).</td><td class="center">Skill-based subset only: strategies must show edge &gt; noise on paper results.</td><td class="left">Track luck-adjusted metrics; review monthly.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>F. Site &amp; process changes</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Question</th><th class="sortable">Information we have</th><th class="sortable">Information we do NOT have</th><th class="sortable center">Answer (preliminary)</th><th class="sortable">Suggestion to discover missing info</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">F1</td><td class="fl">Who reviews suggestions before implementation?</td><td class="left">Suggestions section exists (pages/suggestions.html); reviewer not assigned.</td><td class="left">Reviewer role &amp; schedule.</td><td class="center">Suggestion: repository owner reviews weekly; log decision in COORDINATION.md.</td><td class="left">Assign reviewer; add review log table.</td></tr>
+        <tr><td class="num">F2</td><td class="fl">How often is data refreshed?</td><td class="left">Weekly NFL cycle (injuries every week, standings after each game week).</td><td class="left">None.</td><td class="center">Refresh standings + injuries every Tuesday/Wednesday after NFL week completes.</td><td class="left">Set calendar reminder; log refresh date in data files.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Open suggestions to discover missing information</h2>
+  <ol>
+    <li>Depth charts: fetch official NFL team roster pages (nfl.com/teams/{team}) and record starter/2nd/3rd/4th string by position; flag any values still missing.</li>
+    <li>Market odds: record reference sportsbook closing lines weekly for moneyline/spread/total; flag as non-official third-party data.</li>
+    <li>Correlation matrix: compute leg-by-leg correlation from 4+ weeks of logged results; update docs/strategies.md.</li>
+    <li>Back-test: paper-trade all signals for 4 weeks before any real-money allocation; publish results on the strategy leaderboard.</li>
+    <li>Reviewer assignment: name a suggestions reviewer and set a weekly review cadence.</li>
+  </ol>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Review and approve changes in <a href="suggestions.html">Suggestions</a> before implementing.</p>
+    <p class="disclaimer">Not financial or betting advice.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

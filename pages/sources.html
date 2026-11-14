@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sources — X2 NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="executive-summary.html">Executive Summary</a>
+      <a href="decisions.html">Decision Framework</a>
+      <a href="suggestions.html">Suggestions</a>
+      <a href="strategies.html">Strategies &amp; Signals</a>
+      <a href="injuries.html">Injuries &amp; Depth</a>
+      <a href="standings.html">Standings</a>
+      <a class="active" href="sources.html">Sources</a>
+      <a href="flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<div class="container">
+  <a class="btn secondary mb-24" href="../index.html">&#8592; Back to dashboard</a>
+
+  <h1 class="section-title">Official sources — verified</h1>
+  <p class="section-sub">Every data row on this site carries a link to its official source. Values that cannot be confirmed from an official source are left blank and flagged on the Flagged for Review page.</p>
+
+  <h2>Verified official sources (checked 2026-11-14)</h2>
+  <div class="table-wrap mb-24">
+    <table class="data">
+      <thead>
+        <tr><th class="sortable">#</th><th class="sortable">Source</th><th class="sortable center">URL</th><th class="sortable">Purpose</th><th class="sortable center">Status</th><th class="sortable center">Last checked</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="num">1</td><td class="fl">NFL Official Injury Report</td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">https://www.nfl.com/injuries/league/2026/REG10</a></td><td class="left">Weekly player injuries, practice participation, game status (2026 Week 10)</td><td class="center"><span class="badge badge-ok">verified</span></td><td class="left">2026-11-14</td></tr>
+        <tr><td class="num">2</td><td class="fl">NFL Official Standings</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">https://www.nfl.com/standings/</a></td><td class="left">2026 regular-season standings, all 32 teams</td><td class="center"><span class="badge badge-ok">verified</span></td><td class="left">2026-11-14</td></tr>
+        <tr><td class="num">3</td><td class="fl">NFL Standings — Division view</td><td class="left"><a class="src" href="https://www.nfl.com/standings/division/2026/REG" target="_blank" rel="noopener">https://www.nfl.com/standings/division/2026/REG</a></td><td class="left">Division standings detail</td><td class="center"><span class="badge badge-ok">verified</span></td><td class="left">2026-11-14</td></tr>
+        <tr><td class="num">4</td><td class="fl">NFL Standings — Conference view</td><td class="left"><a class="src" href="https://www.nfl.com/standings/conference/2026/REG" target="_blank" rel="noopener">https://www.nfl.com/standings/conference/2026/REG</a></td><td class="left">Conference standings detail</td><td class="center"><span class="badge badge-ok">verified</span></td><td class="left">2026-11-14</td></tr>
+        <tr><td class="num">5</td><td class="fl">NFL Standings — League view</td><td class="left"><a class="src" href="https://www.nfl.com/standings/league/2026/REG" target="_blank" rel="noopener">https://www.nfl.com/standings/league/2026/REG</a></td><td class="left">Full league standings</td><td class="center"><span class="badge badge-ok">verified</span></td><td class="left">2026-11-14</td></tr>
+        <tr><td class="num">6</td><td class="fl">NFL Team Rosters (official team pages)</td><td class="left"><a class="src" href="https://www.nfl.com/teams/" target="_blank" rel="noopener">https://www.nfl.com/teams/{team}/</a></td><td class="left">Official team rosters; starters vs backups sourced from team pages</td><td class="center"><span class="badge badge-warn">pattern verified</span></td><td class="left">2026-11-14</td></tr>
+        <tr><td class="num">7</td><td class="fl">NFL Tie-Breaking Procedures</td><td class="left"><a class="src" href="http://www.nfl.com/standings/tiebreakingprocedures" target="_blank" rel="noopener">http://www.nfl.com/standings/tiebreakingprocedures</a></td><td class="left">Standings tie-breaker rules</td><td class="center"><span class="badge badge-ok">linked from nfl.com</span></td><td class="left">2026-11-14</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Source URL conventions used on this site</h2>
+  <ul>
+    <li>Injury report by week: <code>https://www.nfl.com/injuries/league/{YEAR}/REG{WEEK}</code> — example: <a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">2026 Week 10</a></li>
+    <li>Team roster: <code>https://www.nfl.com/teams/{team-slug}/</code> — example: <a class="src" href="https://www.nfl.com/teams/kansas-city-chiefs/" target="_blank" rel="noopener">Kansas City Chiefs</a></li>
+  </ul>
+
+  <h2>Non-official / third-party sources (flagged)</h2>
+  <p>Depth charts listing 1st/2nd/3rd/4th-string backups are not published as a single official league page on NFL.com. Third-party depth-chart aggregators observed in search results (e.g., nfl-depth-charts.com, sticktothemodel.com, tools.thehuddle.com) are NOT official NFL sources. Any depth-chart replacement-string value used on this site is flagged unverified and must be re-checked against official NFL team roster pages before use.</p>
+
+  <h2>Betting lines &amp; odds</h2>
+  <p>The NFL does not publish official betting lines or odds. All lines, signals, parlay/prop constructions, validation gates, and correlation values in this project are original analytical work product, not official NFL data. They are labeled "analysis — not official source" throughout the site.</p>
+
+  <div class="callout mb-24"><strong>Verification rule:</strong> if a value can't be confirmed from an official source, it is left blank and flagged as unverified. Never infer or fill in values.</div>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>See also <a href="flagged-review.html">Flagged for Review</a> for unverified items and irregularities.</p>
+    <p class="disclaimer">Not financial or betting advice.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>

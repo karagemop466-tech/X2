@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X2 — NFL Betting Analysis</title>
+<link rel="stylesheet" href="../assets/style.css" />
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="index.html"><span class="dot"></span> X2</a>
+    <nav class="nav-links">
+      <a href="pages/executive-summary.html">Executive Summary</a>
+      <a href="pages/decisions.html">Decision Framework</a>
+      <a href="pages/suggestions.html">Suggestions</a>
+      <a href="pages/strategies.html">Strategies &amp; Signals</a>
+      <a href="pages/injuries.html">Injuries &amp; Depth</a>
+      <a class="active" href="pages/standings.html">Standings</a>
+      <a href="pages/sources.html">Sources</a>
+      <a href="pages/flagged-review.html">Flagged for Review</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <h1>X2 — NFL Betting Analysis</h1>
+    <p>Collect, organize, and analyze NFL data to support betting decisions. Originate our own lines, generate signals for single bets, parlays, and player-prop combinations, track injuries and depth-chart deficiencies, and review suggestions before any change is implemented.</p>
+    <div class="meta">
+      <div><b>Season:</b> 2026 NFL regular season</div>
+      <div><b>Week:</b> 10 (Nov 12–15, 2026)</div>
+      <div><b>Data:</b> verified against official NFL sources</div>
+      <div><b>Site:</b> GitHub Pages — static dashboard</div>
+    </div>
+  </div>
+</section>
+
+<div class="container">
+  <div class="grid cols-4 mb-24">
+    <a class="card" href="pages/executive-summary.html">
+      <h3>Executive Summary</h3>
+      <p>Purpose, current state, key verified findings, and recommendations at a glance.</p>
+      <span class="btn">Read summary</span>
+    </a>
+    <a class="card" href="pages/decisions.html">
+      <h3>Decision Framework</h3>
+      <p>Questions, information we have and lack, and answers required before any decision.</p>
+      <span class="btn">Review framework</span>
+    </a>
+    <a class="card" href="pages/suggestions.html">
+      <h3>Suggestions</h3>
+      <p>Dedicated section to submit, review, and approve changes before implementation.</p>
+      <span class="btn">View suggestions</span>
+    </a>
+    <a class="card" href="pages/strategies.html">
+      <h3>Strategies &amp; Signals</h3>
+      <p>Line origination, single bets, parlays, player props, correlation, validation gates, leaderboard.</p>
+      <span class="btn">Explore strategies</span>
+    </a>
+  </div>
+
+  <h2 class="section-title">2026 NFL Standings — verified snapshot</h2>
+  <p class="section-sub">Every row verified line-by-line against <a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com official standings</a> (2026 regular season, fetched 2026-11-14). Full table on the Standings page.</p>
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th class="sortable">Team</th><th class="sortable center">Conf</th><th class="sortable center">Div</th>
+          <th class="sortable num center">W</th><th class="sortable num center">L</th><th class="sortable num center">T</th><th class="sortable num center">PCT</th>
+          <th class="sortable num center">PF</th><th class="sortable num center">PA</th><th class="sortable num center">Net</th><th class="sortable center">Strk</th><th class="left">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">Kansas City Chiefs</td><td class="center">AFC</td><td class="center">West</td><td class="num">6</td><td class="num">2</td><td class="num">0</td><td class="num">0.750</td><td class="num">202</td><td class="num">143</td><td class="num">59</td><td class="center">1W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Buffalo Bills</td><td class="center">AFC</td><td class="center">East</td><td class="num">7</td><td class="num">1</td><td class="num">0</td><td class="num">0.875</td><td class="num">256</td><td class="num">187</td><td class="num">69</td><td class="center">4W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Denver Broncos</td><td class="center">AFC</td><td class="center">West</td><td class="num">7</td><td class="num">2</td><td class="num">0</td><td class="num">0.778</td><td class="num">198</td><td class="num">186</td><td class="num">12</td><td class="center">5W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">San Francisco 49ers</td><td class="center">NFC</td><td class="center">West</td><td class="num">7</td><td class="num">1</td><td class="num">0</td><td class="num">0.875</td><td class="num">235</td><td class="num">156</td><td class="num">79</td><td class="center">1W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Detroit Lions</td><td class="center">NFC</td><td class="center">North</td><td class="num">6</td><td class="num">2</td><td class="num">0</td><td class="num">0.750</td><td class="num">222</td><td class="num">189</td><td class="num">33</td><td class="center">4W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Chicago Bears</td><td class="center">NFC</td><td class="center">North</td><td class="num">7</td><td class="num">2</td><td class="num">0</td><td class="num">0.778</td><td class="num">241</td><td class="num">184</td><td class="num">57</td><td class="center">4W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Jacksonville Jaguars</td><td class="center">AFC</td><td class="center">South</td><td class="num">6</td><td class="num">2</td><td class="num">0</td><td class="num">0.750</td><td class="num">229</td><td class="num">121</td><td class="num">108</td><td class="center">2W</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Los Angeles Chargers</td><td class="center">AFC</td><td class="center">West</td><td class="num">0</td><td class="num">8</td><td class="num">0</td><td class="num">0.000</td><td class="num">121</td><td class="num">219</td><td class="num">-98</td><td class="center">8L</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+        <tr><td class="fl">Philadelphia Eagles</td><td class="center">NFC</td><td class="center">East</td><td class="num">2</td><td class="num">7</td><td class="num">0</td><td class="num">0.222</td><td class="num">148</td><td class="num">221</td><td class="num">-73</td><td class="center">7L</td><td class="left"><a class="src" href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src-small">All 32 teams are listed on the Standings page, each with a link to the official source. Values that cannot be confirmed from an official source are left blank and flagged on the Flagged for Review page.</p>
+
+  <h2 class="section-title">Injuries — official report sample (Week 10)</h2>
+  <p class="section-sub">Verified against <a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">NFL.com official injury report</a>. Deficiency = starter Out/Questionable requiring a backup replacement.</p>
+  <div class="table-wrap">
+    <table class="data">
+      <thead>
+        <tr>
+          <th class="sortable">Team</th><th class="sortable">Player</th><th class="sortable center">Pos</th><th class="sortable center">Injury</th><th class="sortable center">Game status</th><th class="sortable center">Deficiency</th><th class="left">Source</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td class="fl">Detroit Lions</td><td>Kerby Joseph</td><td class="center">S</td><td class="center">Knee</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Detroit Lions</td><td>Cade Mays</td><td class="center">C</td><td class="center">Ankle</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Detroit Lions</td><td>D.J. Reed</td><td class="center">CB</td><td class="center">Hip</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">New England</td><td>Ben Brown</td><td class="center">C</td><td class="center">Knee</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">New England</td><td>Carlton Davis III</td><td class="center">CB</td><td class="center">Knee</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">New England</td><td>TreVeyon Henderson</td><td class="center">RB</td><td class="center">Illness</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Washington</td><td>Lucas Patrick</td><td class="center">C</td><td class="center">Concussion</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">Moderate</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+        <tr><td class="fl">Washington</td><td>Colson Yankoff</td><td class="center">TE</td><td class="center">Knee</td><td class="center"><span class="badge badge-danger">Out</span></td><td class="center"><span class="badge badge-warn">High</span></td><td class="left"><a class="src" href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">nfl.com/injuries</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="src-small">Sample of verified Week 10 injuries. Full capture and replacement-string (2nd/3rd/4th-string) values are on the Injuries &amp; Depth page; replacement-string values from non-official depth-chart aggregators are flagged unverified.</p>
+
+  <div class="callout mb-24">
+    <strong>How to use this site:</strong> start with the <a>Executive Summary</a>, review open questions in the <a>Decision Framework</a>, submit or review changes in <a>Suggestions</a>, evaluate <a>Strategies &amp; Signals</a>, then verify every data row against the <a>Sources</a> and <a>Flagged for Review</a> pages. No manual input is required to read the site; data is refreshed weekly from official NFL sources.
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="foot-inner">
+    <h4>X2 — NFL Betting Analysis</h4>
+    <p>Official data sources: <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL.com Standings</a> &middot; <a href="https://www.nfl.com/injuries/league/2026/REG10" target="_blank" rel="noopener">NFL.com Injury Report</a>. Betting lines, signals, correlations, and strategy rules are original analysis — not official NFL data.</p>
+    <p class="disclaimer">Not financial or betting advice. All wagering involves risk. Verify all data against official sources before use. Unverified items are published on the Flagged for Review page.</p>
+  </div>
+</footer>
+
+<script src="../assets/app.js"></script>
+</body>
+</html>
