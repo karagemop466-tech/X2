@@ -489,10 +489,10 @@
   "flag_id": "F55",
   "category": "Statistical independence",
   "item": "C06 uses n = 228 team-game rows",
-  "detail": "Each game appears once for each team, so pairs are not independent and the p-value is optimistic.",
+  "detail": "C06 uses n = 228 team-game rows: each game appears once for each team, so pairs are not independent and a p-value computed on them is optimistic. Resolution: correlations_computed.csv C06 now publishes the coefficient and n = 228 with the interval and p-value blank by design (scripts/model.py add_corr descriptive=True), and the desk.py audit note records why. The coefficient itself (0.087) is unchanged.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Open",
-  "action_requested": "Recompute on one row per game, or report as descriptive."
+  "status": "Resolved (session d2915d86, T53): C06 published as descriptive",
+  "action_requested": "None - reviewer can confirm on the correlations and verification pages (C06 interval and p blank)."
  },
  {
   "flag_id": "F56",
@@ -636,7 +636,7 @@
   "detail": "The Week 10 injury report lists Ben Brown as C. His official NFL player page lists G (No. 77, New England Patriots). Both are nfl.com pages, so the snapshot cannot be treated as internally consistent for this row. The snapshot keeps the value from the declared source for the row (the injury report).",
   "source_url": "https://www.nfl.com/players/ben-brown-2/",
   "status": "Irregularity - open",
-  "action_requested": "Decide the source-precedence rule for conflicting official pages (decision gate DQ-18). [Renumbered from F19 during integration: parallel sessions had already used the lower IDs.] [Renumbered F30->F77 across three takeover passes: 25d6114f F30 -> F56-F59 -> F74-F77 -> F77 (main assigned F74-F76 while this branch was open). Session cbb6c2f3, T84.]"
+  "action_requested": "Decide the source-precedence rule for conflicting official pages (decision gate DQ-18). [Renumbered from F19 during integration: parallel sessions had already used the lower IDs.] [Renumbered F30->F77 across three takeover passes: 25d6114f F30 -> F56-F59 -> F74-F77 -> F77 (main assigned F74-F76 while this branch was open). Session cbb6c2f3, T88.]"
  },
  {
   "flag_id": "F78",
@@ -645,7 +645,7 @@
   "detail": "F06 said no official depth-chart data was found. The official team roster page does lack a depth column, but the official NFL gamebook publishes the complete starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen starter-identity rows from the Week 10 Commanders at Giants gamebook are recorded on the Starters page. A pregame depth chart is still not published by the NFL.",
   "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
   "status": "Irregularity - partially resolved",
-  "action_requested": "Review the Starters page and decide whether the gamebook is the accepted starter-identity source (decision gate DQ-05). [Renumbered from F20 during integration: parallel sessions had already used the lower IDs.] [Renumbered F31->F78 across three takeover passes (F31 -> F57 -> F75 -> F78; main assigned F75 while this branch was open). Session cbb6c2f3, T84.]"
+  "action_requested": "Review the Starters page and decide whether the gamebook is the accepted starter-identity source (decision gate DQ-05). [Renumbered from F20 during integration: parallel sessions had already used the lower IDs.] [Renumbered F31->F78 across three takeover passes (F31 -> F57 -> F75 -> F78; main assigned F75 while this branch was open). Session cbb6c2f3, T88.]"
  },
  {
   "flag_id": "F79",
@@ -654,7 +654,7 @@
   "detail": "The gamebook states that the summary and play-by-play are provided for the express purpose of assisting media in their coverage of the game and that any other use is prohibited without the written permission of the National Football League. Starter-identity values are published here as source-linked research only.",
   "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
   "status": "Irregularity - open",
-  "action_requested": "Include the gamebook in the permission request described in Flag F16 (decision gate DQ-01). [Renumbered from F21 during integration: parallel sessions had already used the lower IDs.] [Renumbered F32->F79 across three takeover passes (F32 -> F58 -> F76 -> F79; main assigned F76 while this branch was open). Session cbb6c2f3, T84.]"
+  "action_requested": "Include the gamebook in the permission request described in Flag F16 (decision gate DQ-01). [Renumbered from F21 during integration: parallel sessions had already used the lower IDs.] [Renumbered F32->F79 across three takeover passes (F32 -> F58 -> F76 -> F79; main assigned F76 while this branch was open). Session cbb6c2f3, T88.]"
  },
  {
   "flag_id": "F80",
@@ -663,7 +663,7 @@
   "detail": "The line-by-line comparison in data/verification_week10_2026.csv was produced in the same session that transcribed the snapshot, so a repeated misreading of the official page would not be detected. The comparison does confirm internal consistency and field-level agreement with the transcription as read.",
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Known limitation",
-  "action_requested": "Commission an independent second transcription and publish the disagreement rate (suggestion SR-13, decision gate DQ-19). [Renumbered from F22 during integration: parallel sessions had already used the lower IDs.] [Renumbered F33->F80 across three takeover passes (F33 -> F59 -> F77 -> F80; main advanced past F77 while this branch was open). Session cbb6c2f3, T84.]"
+  "action_requested": "Commission an independent second transcription and publish the disagreement rate (suggestion SR-13, decision gate DQ-19). [Renumbered from F22 during integration: parallel sessions had already used the lower IDs.] [Renumbered F33->F80 across three takeover passes (F33 -> F59 -> F77 -> F80; main advanced past F77 while this branch was open). Session cbb6c2f3, T88.]"
  },
  {
   "flag_id": "F81",

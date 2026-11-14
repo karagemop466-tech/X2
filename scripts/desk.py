@@ -215,7 +215,9 @@ AUDIT = {
     "C05": ("Model predicted total (model output)", "Official total points", "no",
             "Predictor is a model output. Diagnostic only."),
     "C06": ("Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes",
-            "Official results. n = 228 counts each game once per team, so pairs are not independent (F55)."),
+            "Official results, published as descriptive (F55): n = 228 team-game pairs and each game "
+            "supplies both teams' margins, so the pairs are not independent; interval and p-value are "
+            "blank by design (session d2915d86, T53)."),
     "C07": ("Model-generated side and total legs", "Model-generated side and total legs", "no",
             "Both legs are model-generated selections; n = 24 tickets. Diagnostic only."),
     "C08": ("Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)", "yes",

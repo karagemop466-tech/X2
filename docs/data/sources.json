@@ -798,5 +798,45 @@
   "accessed_date": "2026-11-14",
   "used_for": "Shows the official Game Book PDF link (DEC-06); score hidden (F45).",
   "verification_note": "Opened and read on 2026-11-14 with fetch_page; see repo_review_2026-11-14.csv"
+ },
+ {
+  "source_id": "SRC-81",
+  "title": "Green Bay Packers unofficial depth chart",
+  "publisher": "Green Bay Packers (club website)",
+  "url": "https://www.packers.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for GB RB (A08)",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page (session d2915d86). Page self-labels \"Unofficial, Nov. 10, 2026\". RB order: Jacobs, Lloyd, Strong, Johnson."
+ },
+ {
+  "source_id": "SRC-82",
+  "title": "Los Angeles Rams unofficial depth chart",
+  "publisher": "Los Angeles Rams (club website)",
+  "url": "https://www.therams.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for LAR WR (A09)",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page (session d2915d86). Heading self-labels \"UNOFFICIAL DEPTH CHART\"; undated. Nacua WR row: Nacua, Whittington, Atwell."
+ },
+ {
+  "source_id": "SRC-83",
+  "title": "Kansas City Chiefs unofficial depth chart",
+  "publisher": "Kansas City Chiefs (club website)",
+  "url": "https://www.chiefs.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth order for KC RB (A10)",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page (session d2915d86). Heading self-labels \"Unofficial Depth Chart\"; undated. RB order: Walker, Johnson, Ott."
+ },
+ {
+  "source_id": "SRC-84",
+  "title": "Indianapolis Colts unofficial depth chart (Week 10 edition)",
+  "publisher": "Indianapolis Colts (club website)",
+  "url": "https://www.colts.com/team/depth-chart",
+  "type": "Official club website",
+  "accessed_date": "2026-11-14",
+  "used_for": "Depth check for IND DE (A11): Arden Key not listed",
+  "verification_note": "Opened and read on 2026-11-14 with fetch_page (session d2915d86). Club news links label each weekly chart unofficial; the current edition is the Week 10 chart. DE rows: Tuimoloau, Gumbs and Latu, Curry - Arden Key is absent."
  }
 ]
