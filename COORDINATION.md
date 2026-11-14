@@ -183,6 +183,16 @@ by session-09d7cc77:
   into this single board; no session's records were discarded. The d80442c2 requests
   that target e98c7ba0-owned files are logged under "Requests between sessions" and
   were not edited by 09d7cc77. README legal language was updated to neutral.
+- **2026-11-14 · session-09d7cc77 · PR #4 merged.** Pull request
+  https://github.com/karagemop466-tech/X2/pull/4 (base `main`, head
+  `arena/09d7cc77-x2`) merged with `--merge`; merge commit `2657d4d`. After the
+  merge, `main` is an ancestor of the branch (clean fast-forward). Both build
+  systems pass: `python3 scripts/build.py` (11 pages, 345 injury rows) and
+  `npm run build` + `npm run verify` (12 pages, all checks). GitHub Pages rebuilt
+  from `main` and is `built`. **Live site verified:**
+  https://karagemop466-tech.github.io/X2/ serves the NFL Research Dashboard
+  (executive summary, injuries, games, depth exposure, strategy lab, questions,
+  requirements, suggestions, flagged for review, sources).
 
 ## Handoff log
 
