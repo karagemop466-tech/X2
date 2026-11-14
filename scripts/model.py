@@ -634,13 +634,18 @@ GATE_DEFS = [
      "p_permutation < 0.05", "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"),
     ("G8", "Beats the reference line outright", "Mean absolute error lower than the naive reference line",
      "mean_err_model < mean_err_ref", "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"),
+    ("G9", "Demotion gate (live back to paper)",
+     "A strategy that is live is demoted back to paper when its skill 95% CI includes zero, "
+     "or any core gate G1-G5 fails on the latest window, or its mean edge turns negative",
+     "status = Live only if G1-G8 all pass and skill boot_lo > 0; otherwise Paper (demoted)",
+     "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"),
 ]
 
 
 def gate_eval(s):
     acc = s["accuracy"] or {}
     sk = s["skill"] or {}
-    return {
+    passed = {
         "G1": True,
         "G2": (s["n_bets"] or 0) >= 30,
         "G3": sk.get("p_perm") is not None and sk["p_perm"] < 0.05,
@@ -650,6 +655,12 @@ def gate_eval(s):
         "G7": s["p_permutation"] is not None and s["p_permutation"] < 0.05,
         "G8": ("mean_err_model" in acc and acc["mean_err_model"] < acc["mean_err_ref"]),
     }
+    # G9 demotion gate: a strategy keeps (or earns) Live status only when every
+    # gate G1-G8 passes AND the skill interval still excludes zero. Anything
+    # else sends it back to paper.
+    passed["G9"] = all(passed[g] for g in ("G1", "G2", "G3", "G4", "G5", "G6", "G7", "G8")) \
+        and passed["G5"]
+    return passed
 
 
 def fmt(x, nd=3):
@@ -663,27 +674,65 @@ for sid, _label, lam, hl in STRATEGIES:
     final_params[sid] = p
 main = final_params["M1"]
 
+def american_ml(p):
+    """Fair American moneyline implied by probability p (no vig).
+
+    If p is the probability of the side, the fair price is -100*p/(1-p) for
+    p >= 0.5 and 100*(1-p)/p below. Returns None for degenerate probabilities.
+    """
+    if p is None or p <= 0.0 or p >= 1.0:
+        return None
+    if p >= 0.5:
+        return -round(100.0 * p / (1.0 - p))
+    return round(100.0 * (1.0 - p) / p)
+
+
 lines_rows = []
 for g in week11:
     home, away = g["home_team"], g["away_team"]
+    # Origination order: the SIDE first, then the TOTAL, then the MONEYLINE.
     pr = predict(main, home, away)
-    rl = ref_line(11, home, away)
+    # 1. Side: the spread, from the ridge margin prediction.
+    side_fair = pr["margin"]
+    # 2. Total: the points total, from the same ratings system.
+    total_fair = pr["total"]
+    # 3. Moneyline: fair American prices implied by the model win probability.
     p_home = norm_cdf(pr["margin"] / sd_margin)
-    p_over = norm_cdf((pr["total"] - rl["total"]) / sd_total)
+    p_away = 1.0 - p_home
+    ml_home = american_ml(p_home)
+    ml_away = american_ml(p_away)
+    rl = ref_line(11, home, away)
     lines_rows.append({
         "game_no": g["game_no"],
         "matchup": f"{away} at {home}",
         "kickoff_et": f"{g['kickoff_day']} {g['kickoff_time_et']}",
-        "model_spread_home": fmt(pr["margin"], 1),
-        "model_total": fmt(pr["total"], 1),
+        # --- SIDE market (originated first) ---
+        "fair_spread": fmt(side_fair, 1),
+        "market_spread": "",
+        "fair_minus_market_spread": "",
+        # --- TOTAL market (originated second) ---
+        "fair_total": fmt(total_fair, 1),
+        "market_total": "",
+        "fair_minus_market_total": "",
+        # --- MONEYLINE market (originated third) ---
+        "fair_moneyline_home": (str(ml_home) if ml_home is not None else ""),
+        "fair_moneyline_away": (str(ml_away) if ml_away is not None else ""),
+        "market_moneyline_home": "",
+        "market_moneyline_away": "",
+        "fair_minus_market_moneyline_home": "",
+        "fair_minus_market_moneyline_away": "",
+        # model point projection and reference line (kept for the backtest).
+        # The model_spread_home / model_total aliases are retained so that the
+        # independent market generator (scripts/markets.py, session c125b2f7)
+        # keeps reading this file unchanged.
+        "model_spread_home": fmt(side_fair, 1),
+        "model_total": fmt(total_fair, 1),
         "model_home_points": fmt(pr["home_points"], 1),
         "model_away_points": fmt(pr["away_points"], 1),
         "home_win_prob": fmt(p_home, 3),
         "reference_spread_home": fmt(rl["margin"], 1),
         "reference_total": fmt(rl["total"], 1),
-        "model_minus_reference": fmt(pr["margin"] - rl["margin"], 1),
-        "market_spread": "",
-        "market_total": "",
+        "model_minus_reference": fmt(side_fair - rl["margin"], 1),
         "market_note": "No licensed odds feed in this project — market columns intentionally blank (F07)",
         "game_url": g["game_url"],
         "source_url": g["source_url"],
@@ -828,11 +877,22 @@ def reward_tier(passed, s):
 
 leader_rows = []
 rank = 0
+# Live operation is NOT enabled: the qualification is disputed by the
+# independent cross-check (F42), the gate cut-offs await owner approval (F17)
+# and wagering/rewards stay disabled (F09/F16/F19). The demotion gate (G9) is
+# therefore armed but nothing is promoted to Live today; every strategy is
+# Paper. A strategy that were Live would be demoted back to Paper the moment
+# any of G1-G8 fails or the skill interval includes zero.
+LIVE_ENABLED = False
 order = sorted(summaries, key=lambda s: -((s[0]["skill"] or {}).get("mean") or -99))
 for s, label, kind in order:
     passed = gate_eval(s)
     n_pass = sum(1 for v in passed.values() if v)
     tier, reward = reward_tier(passed, s)
+    # Demotion gate (G9): a strategy keeps (or earns) Live status only when
+    # every gate passes AND live operation is enabled. Anything else is Paper.
+    status = "Live" if (LIVE_ENABLED and all(passed.values())) else "Paper"
+    demotion_safe = "Yes" if all(passed.values()) else "No"
     rank += 1
     sk = s["skill"] or {}
     acc = s["accuracy"] or {}
@@ -841,6 +901,9 @@ for s, label, kind in order:
         "strategy_id": s["strategy_id"],
         "strategy": label,
         "market": kind,
+        "status": status,
+        "demotion_safe": demotion_safe,
+        # --- SIGNAL block (forecast skill, independent of any staking plan) ---
         "skill_score_mae_improvement_pts": fmt(sk.get("mean"), 2),
         "skill_ci_low": fmt(sk.get("boot_lo"), 2),
         "skill_ci_high": fmt(sk.get("boot_hi"), 2),
@@ -865,10 +928,15 @@ for s, label, kind in order:
         "sample_shortfall": (lambda r, n: str(max(0, r - n)) if 0 < r <= 10000
                              else ("not reachable at this effect size" if r > 10000 else "not estimable"))(
                                  max([x for x in (s["req_n_hit"], s["req_n_edge"]) if x] or [0]), s["n_bets"]),
-        "gates_passed": f"{n_pass}/8",
+        "gates_passed": f"{n_pass}/9",
         "gates_failed": ", ".join(g for g, v in passed.items() if not v) or "none",
         "reward_tier": tier,
         "reward_status": "Proposed only — no reward is paid; wagering and rewards stay disabled pending legal and rights review (F09/F16)",
+        # --- STAKING block (separate from signal; no prices exist, so ROI is blank) ---
+        "staking_plan": "Flat 1 unit per bet (proposed; not enabled)",
+        "staking_units_wagered": "",
+        "staking_roi_pct": "",
+        "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
         "source_url": SRC_SCHED + "10",
     })
 
@@ -914,12 +982,76 @@ for r in sorted(oos, key=lambda r: (r["week"], r["home_team"])):
         "game_url": r["game_url"], "source_url": r["source_url"],
     })
 
+# ------------------------------------------------------ price snapshots ----
+# A price-snapshot store records the opening and closing numbers of every
+# market this project originates (side, total, moneyline). No licensed odds
+# feed is connected and no official free source publishes opening or closing
+# NFL market numbers, so every opening/closing value is left BLANK and
+# flagged (F07/F31/F45) rather than inferred. The store schema and one row
+# per originated market are published so the structure is in place the moment
+# an official, rights-cleared odds source is connected.
+SNAP_NOTE = ("Blank — no licensed odds feed; opening/closing numbers not "
+             "confirmable from an official source (F07/F31/F45)")
+snap_rows = []
+snap_id = 0
+
+def add_snapshot(week, matchup, market, fair_line, src):
+    global snap_id
+    snap_id += 1
+    snap_rows.append({
+        "snapshot_id": f"PS{snap_id:04d}",
+        "week": week,
+        "matchup": matchup,
+        "market": market,
+        "fair_line": fair_line,
+        "opening_number": "",
+        "opening_source": "",
+        "opening_verified": "No",
+        "closing_number": "",
+        "closing_source": "",
+        "closing_verified": "No",
+        "captured_at": AS_OF,
+        "status": SNAP_NOTE,
+        "source_url": src,
+    })
+
+# Week 11 originated markets (side, then total, then moneyline per game).
+for lr in lines_rows:
+    src = lr["source_url"]
+    m = lr["matchup"]
+    add_snapshot(11, m, "Side (spread)", lr["fair_spread"], src)
+    add_snapshot(11, m, "Total", lr["fair_total"], src)
+    add_snapshot(11, m, "Moneyline",
+                 f"home {lr['fair_moneyline_home']} / away {lr['fair_moneyline_away']}", src)
+
+# Out-of-sample originated markets for the backtest window (weeks 4-10).
+for r in oos:
+    m = f"{r['away_team']} at {r['home_team']}"
+    p_home = norm_cdf(r["M1_margin"] / sd_margin)
+    ml_home = american_ml(p_home)
+    ml_away = american_ml(1.0 - p_home)
+    ml_txt = (f"home {ml_home} / away {ml_away}" if ml_home is not None else "")
+    add_snapshot(r["week"], m, "Side (spread)", fmt(r["M1_margin"], 1), r["source_url"])
+    add_snapshot(r["week"], m, "Total", fmt(r["M1_total"], 1), r["source_url"])
+    add_snapshot(r["week"], m, "Moneyline", ml_txt, r["source_url"])
+
 # -------------------------------------------------------------- output ------
 write("model_lines_week11.csv", lines_rows,
-      ["game_no", "matchup", "kickoff_et", "model_spread_home", "model_total",
-       "model_home_points", "model_away_points", "home_win_prob", "reference_spread_home",
-       "reference_total", "model_minus_reference", "market_spread", "market_total",
+      ["game_no", "matchup", "kickoff_et",
+       "fair_spread", "market_spread", "fair_minus_market_spread",
+       "fair_total", "market_total", "fair_minus_market_total",
+       "fair_moneyline_home", "fair_moneyline_away",
+       "market_moneyline_home", "market_moneyline_away",
+       "fair_minus_market_moneyline_home", "fair_minus_market_moneyline_away",
+       "model_home_points", "model_away_points", "home_win_prob",
+       "model_spread_home", "model_total",
+       "reference_spread_home", "reference_total", "model_minus_reference",
        "market_note", "game_url", "source_url"])
+write("price_snapshots_extended.csv", snap_rows,
+      ["snapshot_id", "week", "matchup", "market", "fair_line",
+       "opening_number", "opening_source", "opening_verified",
+       "closing_number", "closing_source", "closing_verified",
+       "captured_at", "status", "source_url"])
 write("model_ratings.csv", ratings_rows,
       ["team", "attack_rating", "defence_rating", "net_rating", "games_played", "notes", "source_url"])
 write("model_backtest.csv", backtest_rows,
@@ -930,13 +1062,16 @@ write("model_bets.csv", bet_rows,
       ["strategy_id", "week", "matchup", "bet", "reference_line", "model_line", "actual",
        "edge_points", "result", "game_url", "source_url"])
 write("strategy_leaderboard.csv", leader_rows,
-      ["rank", "strategy_id", "strategy", "market", "skill_score_mae_improvement_pts",
+      ["rank", "strategy_id", "strategy", "market", "status", "demotion_safe",
+       "skill_score_mae_improvement_pts",
        "skill_ci_low", "skill_ci_high", "skill_p_permutation", "q_bh_fdr", "mae_model",
        "mae_reference", "oos_games", "bets_vs_reference", "wins", "losses",
        "hit_rate_vs_reference", "mean_edge_points", "edge_ci_low", "edge_ci_high",
        "p_binomial", "p_permutation_bets", "sd_edge_points",
        "min_n_for_80pct_power", "sample_shortfall",
-       "gates_passed", "gates_failed", "reward_tier", "reward_status", "source_url"])
+       "gates_passed", "gates_failed", "reward_tier", "reward_status",
+       "staking_plan", "staking_units_wagered", "staking_roi_pct", "staking_note",
+       "source_url"])
 write("gate_results.csv", gate_rows,
       ["gate_id", "gate", "meaning", "rule", "status", "strategies_passing", "source_url"])
 write("correlations_computed.csv", corr_rows,
@@ -967,6 +1102,9 @@ summary = {
     "strategies_tested": len(summaries),
     "qualified_strategies": sum(1 for r in leader_rows if r["reward_tier"] != "Not qualified"),
     "tier1_strategies": sum(1 for r in leader_rows if r["reward_tier"].startswith("Tier 1")),
+    "live_strategies": sum(1 for r in leader_rows if r["status"] == "Live"),
+    "paper_strategies": sum(1 for r in leader_rows if r["status"] == "Paper"),
+    "price_snapshot_rows": len(snap_rows),
     "injury_rows": len(injuries),
     "injury_teams": len({r["team_abbr"] for r in injuries}),
     "seed": SEED,
@@ -978,8 +1116,9 @@ print(json.dumps(summary, indent=1))
 print("\nLeaderboard:")
 for r in leader_rows:
     print("  {}. {:3s} {:44s} skill={:>6s} CI[{:>6s},{:>6s}] q={:>6s} n={:>3s} "
-          "hit={:>6s} gates={} {}".format(
+          "hit={:>6s} gates={} {} {}".format(
               r["rank"], r["strategy_id"], r["strategy"][:44],
               r["skill_score_mae_improvement_pts"] or "-", r["skill_ci_low"] or "-",
               r["skill_ci_high"] or "-", r["q_bh_fdr"] or "-", str(r["bets_vs_reference"]),
-              r["hit_rate_vs_reference"] or "-", r["gates_passed"], r["reward_tier"]))
+              r["hit_rate_vs_reference"] or "-", r["gates_passed"], r["status"],
+              r["reward_tier"]))

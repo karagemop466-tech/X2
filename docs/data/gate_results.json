@@ -70,5 +70,14 @@
   "status": "Proposed cut-off — awaiting project-owner approval (F17)",
   "strategies_passing": "M1, M2, M3, M4",
   "source_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"
+ },
+ {
+  "gate_id": "G9",
+  "gate": "Demotion gate (live back to paper)",
+  "meaning": "A strategy that is live is demoted back to paper when its skill 95% CI includes zero, or any core gate G1-G5 fails on the latest window, or its mean edge turns negative",
+  "rule": "status = Live only if G1-G8 all pass and skill boot_lo > 0; otherwise Paper (demoted)",
+  "status": "Proposed cut-off — awaiting project-owner approval (F17)",
+  "strategies_passing": "M1, M2, M4",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
  }
 ]
