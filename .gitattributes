@@ -1,5 +1,4 @@
-# The CSV registers in data/ are written by Python's csv.writer, which uses
-# CRLF line endings (the format they have had since they were created).
-# Treat CR at end-of-line as expected in these files so `git diff --check`
-# reports real trailing whitespace instead of the row terminator.
-*.csv whitespace=cr-at-eol
+# Data CSVs are written by Python's csv module, which uses CRLF line endings.
+# The CR at end of line is part of the committed format (every row of every
+# data/*.csv file in this repository uses it), not trailing whitespace.
+data/*.csv whitespace=cr-at-eol

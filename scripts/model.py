@@ -5,6 +5,8 @@ parlay/total correlation study and strategy leaderboard.
 Standard library only (no numpy). Inputs (all transcribed from official
 NFL.com pages; see data/*.csv and data/sources.csv):
   data/games_2026_results.csv   2026 regular-season results, weeks 1-10 (TNF)
+                                neutral_site column: 'Y' only where the official
+                                2026 International Games slate says so, else blank
   data/schedule_week11_2026.csv Week 11 schedule (no results yet)
   data/injuries_week10_2026.csv Week 10 injury-report snapshot (availability)
 
@@ -18,11 +20,15 @@ One ridge-regularised least-squares system is fitted on points scored:
 
     points(team t vs opponent o, home flag) = mu + A_t - D_o + h * home
 
+where `home` is 1 only when the home team is actually at home. International
+games are neutral-site: the designated home team gets no home-field term
+(`home` = 0), because the game is not played in its stadium.
+
 with A_t an attack rating, D_t a defence rating (higher = fewer points
 allowed), mu a league mean and h a home-field term. Predictions follow:
 
-    home margin = (A_home + D_home) - (A_away + D_away) + h
-    total       = 2*mu + (A_home + A_away) - (D_home + D_away) + h
+    home margin = (A_home + D_home) - (A_away + D_away) + h*home
+    total       = 2*mu + (A_home + A_away) - (D_home + D_away) + h*home
 
 Every prediction for week W is fitted ONLY on games strictly before week W
 (walk-forward). No market/odds input is used anywhere: this project has no
@@ -75,6 +81,7 @@ for r in results:
     r["week"] = int(r["week"])
     r["away_points"] = int(r["away_points"])
     r["home_points"] = int(r["home_points"])
+    r["neutral"] = (r.get("neutral_site", "").strip().upper() == "Y")
     r["margin"] = r["home_points"] - r["away_points"]      # home - away
     r["total"] = r["home_points"] + r["away_points"]
 
@@ -117,7 +124,8 @@ def fit(games, lam, half_life=None, ref_week=None):
             w = 0.5 ** ((ref_week - g["week"]) / half_life)
         else:
             w = 1.0
-        for t, o, home in ((g["home_team"], g["away_team"], 1.0),
+        hfa = 0.0 if g.get("neutral") else 1.0        # neutral site: no home edge
+        for t, o, home in ((g["home_team"], g["away_team"], hfa),
                            (g["away_team"], g["home_team"], 0.0)):
             cols = [(0, 1.0), (1 + IDX[t], 1.0), (1 + NT + IDX[o], -1.0), (1 + 2 * NT, home)]
             y = g["home_points"] if home else g["away_points"]
@@ -133,8 +141,9 @@ def fit(games, lam, half_life=None, ref_week=None):
             "h": beta[1 + 2 * NT]}, n_obs
 
 
-def predict(p, home, away):
-    home_pts = p["mu"] + p["A"][IDX[home]] - p["D"][IDX[away]] + p["h"]
+def predict(p, home, away, neutral=False):
+    hfa = 0.0 if neutral else p["h"]               # neutral site: no home edge
+    home_pts = p["mu"] + p["A"][IDX[home]] - p["D"][IDX[away]] + hfa
     away_pts = p["mu"] + p["A"][IDX[away]] - p["D"][IDX[home]]
     return {"home_points": home_pts, "away_points": away_pts,
             "margin": home_pts - away_pts, "total": home_pts + away_pts}
@@ -155,12 +164,12 @@ def season_to_date(week):
 HFA_REF = 2.5                                          # pre-registered constant
 
 
-def ref_line(week, home, away):
+def ref_line(week, home, away, neutral=False):
     """Naive published reference line.
 
     home margin = 2.5 (fixed home-field) + (home season scoring differential per
     game - away season scoring differential per game), using only games strictly
-    before `week`. No opponent adjustment: this is the standard naive benchmark
+    before `week`. At a neutral site the 2.5-point home-field term is not added. No opponent adjustment: this is the standard naive benchmark
     an originated line has to beat. The differential is used at full scale - it
     is NOT halved - so the benchmark is not artificially mis-scaled.
 
@@ -178,7 +187,7 @@ def ref_line(week, home, away):
     lg_total = 2 * lg_ppg
     hd = (st[home][0] - st[home][1]) / st[home][2] if st[home][2] else 0.0
     ad = (st[away][0] - st[away][1]) / st[away][2] if st[away][2] else 0.0
-    margin = HFA_REF + (hd - ad)
+    margin = (0.0 if neutral else HFA_REF) + (hd - ad)
     return {"margin": margin, "total": lg_total}
 
 
@@ -446,11 +455,11 @@ for wk in completed_weeks:
                "away_points": g["away_points"], "home_points": g["home_points"],
                "actual_margin": g["margin"], "actual_total": g["total"],
                "game_url": g["game_url"], "source_url": g["source_url"]}
-        rl = ref_line(wk, g["home_team"], g["away_team"])
+        rl = ref_line(wk, g["home_team"], g["away_team"], g["neutral"])
         row["ref_margin"] = rl["margin"]
         row["ref_total"] = rl["total"]
         for sid, _l, _lam, _hl in STRATEGIES:
-            pr = predict(preds[sid], g["home_team"], g["away_team"])
+            pr = predict(preds[sid], g["home_team"], g["away_team"], g["neutral"])
             row[sid + "_margin"] = pr["margin"]
             row[sid + "_total"] = pr["total"]
         oos.append(row)
@@ -679,7 +688,8 @@ for (s, _l, _k), q in zip(summaries, qvals):
 # yet approved by the project owner.
 GATE_DEFS = [
     ("G1", "No look-ahead", "Every prediction for week W is fitted only on games played before week W",
-     "Verified in code: the training set is filtered to week < W", "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"),
+     "Audited: for every out-of-sample week, training games are strictly earlier weeks and none are empty "
+     "(scripts/model.py audit_no_lookahead)", "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"),
     ("G2", "Minimum sample", "At least 30 decided bets and at least 30 out-of-sample games",
      "n_bets >= 30", "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm"),
     ("G3", "Skill is significant", "Sign-flip permutation test on the paired accuracy improvement, p < 0.05",
@@ -751,7 +761,9 @@ lines_rows = []
 for g in week11:
     home, away = g["home_team"], g["away_team"]
     # Origination order: the SIDE first, then the TOTAL, then the MONEYLINE.
-    pr = predict(main, home, away)
+    # Neutral-site games carry no home-field term (F71).
+    g["neutral"] = (g.get("neutral_site", "").strip().upper() == "Y")
+    pr = predict(main, home, away, g["neutral"])
     # 1. Side: the spread, from the ridge margin prediction.
     side_fair = pr["margin"]
     # 2. Total: the points total, from the same ratings system.
@@ -761,7 +773,7 @@ for g in week11:
     p_away = 1.0 - p_home
     ml_home = american_ml(p_home)
     ml_away = american_ml(p_away)
-    rl = ref_line(11, home, away)
+    rl = ref_line(11, home, away, g["neutral"])
     lines_rows.append({
         "game_no": g["game_no"],
         "matchup": f"{away} at {home}",
@@ -832,6 +844,98 @@ def add_corr(cid, question, r, n, note, src, input_a, input_b, official_only, qu
                       "interpretation": note, "audit_note": audit_note, "source_url": src})
 
 
+def t_cdf(t, df):
+    """CDF of Student's t, via the regularised incomplete beta function."""
+    x = df / (df + t * t)
+
+    def betacf(a, b, x):
+        MAXIT, EPS, FPMIN = 200, 3e-16, 1e-300
+        qab, qap, qam = a + b, a + 1.0, a - 1.0
+        c, d = 1.0, 1.0 - qab * x / qap
+        if abs(d) < FPMIN:
+            d = FPMIN
+        d = 1.0 / d
+        h = d
+        for m in range(1, MAXIT + 1):
+            m2 = 2 * m
+            aa = m * (b - m) * x / ((qam + m2) * (a + m2))
+            d = 1.0 + aa * d
+            if abs(d) < FPMIN:
+                d = FPMIN
+            c = 1.0 + aa / c
+            if abs(c) < FPMIN:
+                c = FPMIN
+            d = 1.0 / d
+            h *= d * c
+            aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2))
+            d = 1.0 + aa * d
+            if abs(d) < FPMIN:
+                d = FPMIN
+            c = 1.0 + aa / c
+            if abs(c) < FPMIN:
+                c = FPMIN
+            d = 1.0 / d
+            de = d * c
+            h *= de
+            if abs(de - 1.0) < EPS:
+                break
+        return h
+
+    def betai(a, b, x):
+        if x <= 0.0:
+            return 0.0
+        if x >= 1.0:
+            return 1.0
+        lbeta = (math.lgamma(a + b) - math.lgamma(a) - math.lgamma(b)
+                 + a * math.log(x) + b * math.log(1.0 - x))
+        bt = math.exp(lbeta)
+        if x < (a + 1.0) / (a + b + 2.0):
+            return bt * betacf(a, b, x) / a
+        return 1.0 - bt * betacf(b, a, 1.0 - x) / b
+
+    two_tail = betai(df / 2.0, 0.5, x)
+    return 1.0 - two_tail / 2.0 if t > 0 else two_tail / 2.0
+
+
+def t_ppf_975(df):
+    """97.5th percentile of Student's t (bisection on t_cdf)."""
+    lo, hi = 0.0, 50.0
+    for _ in range(200):
+        mid = (lo + hi) / 2.0
+        if t_cdf(mid, df) < 0.975:
+            lo = mid
+        else:
+            hi = mid
+    return (lo + hi) / 2.0
+
+
+def add_slope(cid, question, estimate, se, df, note, src, null=1.0):
+    """A regression coefficient is not a correlation.
+
+    The interval is the coefficient's own t interval (estimate +/- t*SE) and the
+    p-value tests the coefficient against `null`. Applying Fisher's z interval
+    here would be a formula error: that transform is for a Pearson r, whose
+    standard error is 1/sqrt(n-3), not SE(beta).
+    """
+    tcrit = t_ppf_975(df)
+    lo, hi = estimate - tcrit * se, estimate + tcrit * se
+    tstat = (estimate - null) / se
+    p = 2.0 * (1.0 - t_cdf(abs(tstat), df))
+    corr_rows.append({"corr_id": cid, "question": question, "value": fmt(estimate),
+                      "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(p, 4),
+                      "sample_n": df + 2,
+                      "input_A": "Model predicted margin (model output)",
+                      "input_B": "Official final margin",
+                      "officially_sourced_inputs_only": "no",
+                      "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
+                      "interpretation": note,
+                      "audit_note": "A regression slope, not a correlation. Interval and p use the "
+                                    "coefficient's own standard error with the exact t quantile at "
+                                    "df = n - 2 (session cf6709c0); see F72.",
+                      "source_url": src})
+    return lo, hi, p
+
+
 xs = [r["M1_margin"] for r in oos]
 ys = [r["actual_margin"] for r in oos]
 r1, n1 = pearson(xs, ys)
@@ -894,27 +998,21 @@ slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sxx
 intercept = my - slope * mx
 resid = [y - (intercept + slope * x) for x, y in zip(xs, ys)]
 se_slope = math.sqrt(sum(e * e for e in resid) / (len(xs) - 2) / sxx)
-# C09 is a regression slope, NOT a Pearson r: its interval and p-value come from
-# the slope's own standard error, not from the Fisher correlation formula.
-# Correction applied 2026-11-14 (session f25d6b55) per REQ-8a-1 / flag F48 and
-# data/correlation_audit.csv. p tests the null hypothesis slope = 1.0.
-z09 = (slope - 1.0) / se_slope
-c09_lo = slope - 1.959963985 * se_slope
-c09_hi = slope + 1.959963985 * se_slope
-c09_p = 2 * (1 - norm_cdf(abs(z09)))
-corr_rows.append({"corr_id": "C09",
-                  "question": "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
-                  "value": fmt(slope), "ci_low": fmt(c09_lo), "ci_high": fmt(c09_hi),
-                  "p_value": fmt(c09_p, 4), "sample_n": len(xs),
-                  "input_A": "Model predicted margin (model output)", "input_B": "Official final margin",
-                  "officially_sourced_inputs_only": "no",
-                  "qualifies_under_owner_rule": "no - shown as model diagnostic (DEC-09)",
-                  "interpretation": f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. "
-                                    "A slope clearly below 1 would mean the model is over-shy; clearly above 1, over-confident.",
-                  "audit_note": "A regression slope, not a correlation. Interval and p use the slope's own "
-                                "standard error (correction applied 2026-11-14, session f25d6b55; see "
-                                "correlation_audit.csv and F48).",
-                  "source_url": SRC_SCHED + "10"})
+c09_lo, c09_hi, c09_p = add_slope(
+          "C09", "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
+          slope, se_slope, len(xs) - 2,
+          f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. The interval is the "
+          f"slope's own t interval over {len(xs)} forecasts; the p-value tests the slope against 1.0, "
+          "not against 0. A slope clearly below 1 would mean the model is over-shy; clearly above 1, "
+          "over-confident. This row is a regression slope, not a correlation.",
+          SRC_SCHED + "10")
+# NOTE ON THE DUPLICATE FIX: session f25d6b55 independently corrected C09 in
+# PR #36 using the normal quantile 1.959964 at df = 87, publishing 0.335-1.435.
+# This build keeps the exact Student-t quantile (t(0.975, 87) = 1.98761), which
+# is the right reference for a coefficient whose variance is estimated from the
+# sample, and publishes 0.328-1.443. The two agree to about 0.007 at each end;
+# the point estimate and the conclusion are identical, so nothing from f25d6b55
+# is discarded. See F72.
 # parlay leg correlation (phi)
 add_corr("C07", "Are the side leg and the total leg of the same game correlated (phi)?", phi_pl, n_pl,
          "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",
@@ -1393,6 +1491,11 @@ summary = {
     "live_strategies": sum(1 for r in leader_rows if r["status"] == "Live"),
     "paper_strategies": sum(1 for r in leader_rows if r["status"] == "Paper"),
     "price_snapshot_rows": len(snap_rows),
+    "lookahead_audit_pass": G1_PASSED,
+    "lookahead_audit_weeks": len({f["test"] for f in lookahead}),
+    "neutral_site_games_modelled": sum(1 for g in results if g["neutral"]),
+    "neutral_site_rows_blank": sum(1 for r in read("games_2026_results.csv")
+                                   if r.get("neutral_site", "").strip() == ""),
     "injury_rows": len(injuries),
     "injury_teams": len({r["team_abbr"] for r in injuries}),
     "seed": SEED,

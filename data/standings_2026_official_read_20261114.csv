@@ -1,0 +1,33 @@
+team_abbr,team_name,wins,losses,ties,points_for,points_against,net_points,source_url
+BUF,Buffalo Bills,7,1,0,256,187,69,https://www.nfl.com/standings/
+NE,New England Patriots,5,4,0,211,207,4,https://www.nfl.com/standings/
+NYJ,New York Jets,2,7,0,182,223,-41,https://www.nfl.com/standings/
+MIA,Miami Dolphins,1,7,0,126,200,-74,https://www.nfl.com/standings/
+PIT,Pittsburgh Steelers,6,2,0,180,144,36,https://www.nfl.com/standings/
+CIN,Cincinnati Bengals,6,2,0,240,175,65,https://www.nfl.com/standings/
+CLE,Cleveland Browns,5,4,0,161,196,-35,https://www.nfl.com/standings/
+BAL,Baltimore Ravens,4,5,0,189,236,-47,https://www.nfl.com/standings/
+JAX,Jacksonville Jaguars,6,2,0,229,121,108,https://www.nfl.com/standings/
+HOU,Houston Texans,3,5,0,209,192,17,https://www.nfl.com/standings/
+IND,Indianapolis Colts,2,7,0,184,249,-65,https://www.nfl.com/standings/
+TEN,Tennessee Titans,1,7,0,144,199,-55,https://www.nfl.com/standings/
+DEN,Denver Broncos,7,2,0,198,186,12,https://www.nfl.com/standings/
+KC,Kansas City Chiefs,6,2,0,202,143,59,https://www.nfl.com/standings/
+LV,Las Vegas Raiders,4,5,0,238,268,-30,https://www.nfl.com/standings/
+LAC,Los Angeles Chargers,0,8,0,121,219,-98,https://www.nfl.com/standings/
+NYG,New York Giants,5,3,1,203,196,7,https://www.nfl.com/standings/
+DAL,Dallas Cowboys,4,5,0,246,236,10,https://www.nfl.com/standings/
+WAS,Washington Commanders,3,5,1,196,223,-27,https://www.nfl.com/standings/
+PHI,Philadelphia Eagles,2,7,0,148,221,-73,https://www.nfl.com/standings/
+CHI,Chicago Bears,7,2,0,241,184,57,https://www.nfl.com/standings/
+DET,Detroit Lions,6,2,0,222,189,33,https://www.nfl.com/standings/
+MIN,Minnesota Vikings,6,2,0,146,116,30,https://www.nfl.com/standings/
+GB,Green Bay Packers,6,3,0,216,191,25,https://www.nfl.com/standings/
+CAR,Carolina Panthers,3,5,0,199,219,-20,https://www.nfl.com/standings/
+NO,New Orleans Saints,3,5,0,185,216,-31,https://www.nfl.com/standings/
+TB,Tampa Bay Buccaneers,3,6,0,202,178,24,https://www.nfl.com/standings/
+ATL,Atlanta Falcons,3,6,0,188,223,-35,https://www.nfl.com/standings/
+SF,San Francisco 49ers,7,1,0,235,156,79,https://www.nfl.com/standings/
+SEA,Seattle Seahawks,5,4,0,202,162,40,https://www.nfl.com/standings/
+LA,Los Angeles Rams,5,4,0,214,181,33,https://www.nfl.com/standings/
+AZ,Arizona Cardinals,3,6,0,178,255,-77,https://www.nfl.com/standings/
