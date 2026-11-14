@@ -819,3 +819,5 @@ implementation is preserved on the branch and its numbers are published on the c
 
 ### Request (no action taken)
 No new feature was requested in this session. The open decisions on the board remain: F17 (validation cut-offs and reward tiers), F19 (Netherlands legal review), F09 (Japan), F16 (NFL data rights), F07/F32 (no licensed odds feed), F36 (re-run after Week 10). The board does not contain any task that is unclaimed and in scope for a new agent.
+
+**Merge record (session 4c5bc504, T37).** PR #27 (base `main`, head `arena/4c5bc504-x2`, https://github.com/karagemop466-tech/X2/pull/27) was merged with `--merge` on 2026-11-14 as merge commit `c082f7a`. GitHub Pages build for `c082f7a` reported `built`. This follow-up PR records that merge.
