@@ -661,6 +661,25 @@ had already been raised by session `324b0cd2`, so it was not duplicated.
   session. The registers in `data/*.csv` are append-only and ID-ordered — continue from the highest existing ID
   and record the change here.
 
+### Honesty-consistency follow-up (session 73cbec41, after PR #22)
+
+Four statements left over from before the model existed contradicted the published results. Each was
+corrected against the same official sources; no value was inferred and nothing was deleted from another
+session's record — the stale sentence was replaced with the accurate one and the owner-facing question kept.
+
+| Location | Was | Now |
+|---|---|---|
+| Executive summary (`scripts/build.py`) | "No strategy has been tested." | Seven pre-registered strategies graded walk-forward on the official results: four qualify, three reach the top tier, graded on forecast accuracy not price, no reward paid (F32, F33). |
+| Executive summary, "not verified" list | "Historical results, player stats and correlation values (not yet collected)." | Split: results and game-level correlations are now computed and verified; player stats, prop outcomes and prop prices stay blank (F31), and market prices / closing lines / return on investment stay blank (F07, F32). |
+| `data/questions.csv` Q10 (status `Unanswered`) | "No strategy performance has been evaluated in this repository." | `Partially answered`: the walk-forward result, with the licensed-odds-archive gap recorded as what is still missing. |
+| `data/decision-chain.csv` D08 | "No correlation value is computed. No paired same-game outcome set exists (Q11)." | `Partially resolved`: nine game-level correlations computed with intervals and p-values; prop-level correlations stay blank (F31). |
+
+Also corrected: the Strategy lab tile on the landing page, which still said "No strategy has passed yet."
+
+**Process note for later sessions:** a shared-CSV patch script that opens the target with `open(path, "w")`
+before validating its keys truncated `data/questions.csv` from 30 rows to 9. It was restored from `HEAD`.
+Always validate keys first and write via a temp file plus `os.replace`.
+
 ## PR and deployment record — session 73cbec41 (T23-T30, final integration)
 
 | Item | Result |

@@ -88,11 +88,11 @@
   "sequence": "8",
   "decision_needed": "What correlation quantity is being measured, and on what paired data?",
   "why_it_blocks": "'Correlation' can mean leg dependence, forecast agreement, or co-movement of returns. Pairwise correlation alone does not determine joint-tail probability for a parlay or prop combo.",
-  "current_state": "No correlation value is computed. No paired same-game outcome set exists (Q11).",
+  "current_state": "Nine correlation values are now computed from the official 2026 results, with confidence intervals, p-values and the pairing used (see the Correlations page). Still blank: correlations between player-prop outcomes and between prop legs, because no prop outcome or price data exists in this repository (F31).",
   "answer_required": "A chosen quantity, a paired aligned dataset, and a stated uncertainty method that preserves game/week clustering.",
   "what_it_unblocks": "Same-game prop combos, cross-game parlay joint probability, gate G5.",
   "owner": "Statistician / project review",
-  "status": "Open - correlation values stay blank",
+  "status": "Partially resolved - game-level correlations computed; prop-level correlations stay blank (F31)",
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
  },
  {
