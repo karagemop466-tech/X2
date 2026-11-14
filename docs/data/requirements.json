@@ -146,9 +146,9 @@
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "Merged through PRs #1-#18; closing honesty-consistency PR from session 3988bdab open (see the COORDINATION.md merge log)",
+  "status": "Merged through PRs #1-#20 (closing PR #20 merged)",
   "where_addressed": "Final step",
-  "blocker_or_note": "Integration PRs #1-#18 are merged and the live site is confirmed. The closing session (3988bdab) delivers the last honesty-consistency fixes (T22) and records its merge result in COORDINATION.md.",
+  "blocker_or_note": "Integration PRs #1-#20 are merged and the live site is confirmed. Session 3988bdab delivered the closing honesty-consistency fixes (T22) and recorded its merge result in COORDINATION.md.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/pull/11"
  },
