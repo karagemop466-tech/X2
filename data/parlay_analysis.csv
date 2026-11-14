@@ -1,0 +1,2 @@
+parlay_id,definition,legs,tickets,leg1_hit_rate,leg2_hit_rate,observed_joint_hit_rate,independence_expected_rate,difference_observed_minus_independence,phi_correlation,two_by_two,note,source_url
+P1,"Same-game 2-leg ticket: side and total, each taken only when the model and the reference line differ by >= 3",2,24,0.667,0.417,0.208,0.278,-0.069,-0.299,"both=5, side only=11, total only=5, neither=3",Small sample; the ticket count is the number of walk-forward games where both legs qualified.,https://www.nfl.com/schedules/2026/by-week/week-10

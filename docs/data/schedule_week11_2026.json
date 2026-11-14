@@ -1,0 +1,145 @@
+[
+ {
+  "game_no": "1",
+  "kickoff_day": "Thursday November 19th",
+  "kickoff_time_et": "8:15 PM ET",
+  "broadcast": "PRIME",
+  "away_team": "IND",
+  "home_team": "HOU",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "2",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "CBS",
+  "away_team": "MIA",
+  "home_team": "BUF",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/dolphins-at-bills-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "3",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "away_team": "BAL",
+  "home_team": "CAR",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/ravens-at-panthers-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "4",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "away_team": "NO",
+  "home_team": "CHI",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/saints-at-bears-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "5",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "away_team": "TEN",
+  "home_team": "DAL",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/titans-at-cowboys-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "6",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "FOX",
+  "away_team": "TB",
+  "home_team": "DET",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/buccaneers-at-lions-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "7",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "CBS",
+  "away_team": "AZ",
+  "home_team": "KC",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/cardinals-at-chiefs-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "8",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "1:00 PM ET",
+  "broadcast": "CBS",
+  "away_team": "PIT",
+  "home_team": "PHI",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/steelers-at-eagles-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "9",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "4:05 PM ET",
+  "broadcast": "FOX",
+  "away_team": "NYJ",
+  "home_team": "LAC",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/jets-at-chargers-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "10",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "4:25 PM ET",
+  "broadcast": "CBS",
+  "away_team": "JAX",
+  "home_team": "NYG",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/jaguars-at-giants-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "11",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "4:25 PM ET",
+  "broadcast": "CBS",
+  "away_team": "LV",
+  "home_team": "DEN",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/raiders-at-broncos-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "12",
+  "kickoff_day": "Sunday November 22nd",
+  "kickoff_time_et": "8:20 PM ET",
+  "broadcast": "NBC",
+  "away_team": "MIN",
+  "home_team": "SF",
+  "neutral_site_note": "Mexico City (NFL international game)",
+  "game_url": "https://www.nfl.com/games/vikings-at-49ers-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "game_no": "13",
+  "kickoff_day": "Monday November 23rd",
+  "kickoff_time_et": "8:15 PM ET",
+  "broadcast": "ESPN",
+  "away_team": "CIN",
+  "home_team": "WAS",
+  "neutral_site_note": "",
+  "game_url": "https://www.nfl.com/games/bengals-at-commanders-2026-reg-11",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ }
+]

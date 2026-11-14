@@ -298,5 +298,135 @@
   "accessed_date": "2026-11-14",
   "used_for": "F22 Thursday-night result verification (Commanders 24, Giants 21 final).",
   "verification_note": "Cross-checked against the official Week 10 schedule page (SRC-05); the game-page and schedule values agree. Not a depth chart or unrestricted dataset (see SRC-20 note). (Originally drafted as SRC-25; renumbered after session 45a0ec8c claimed SRC-25-SRC-29 in PR #12.)"
+ },
+ {
+  "source_id": "SRC-31",
+  "title": "NFL 2026 Schedule — Week 1 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-1",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 1 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-32",
+  "title": "NFL 2026 Schedule — Week 2 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-2",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 2 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-33",
+  "title": "NFL 2026 Schedule — Week 3 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-3",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 3 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-34",
+  "title": "NFL 2026 Schedule — Week 4 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-4",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 4 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-35",
+  "title": "NFL 2026 Schedule — Week 5 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-5",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 5 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-36",
+  "title": "NFL 2026 Schedule — Week 6 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-6",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 6 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-37",
+  "title": "NFL 2026 Schedule — Week 7 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-7",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 7 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-38",
+  "title": "NFL 2026 Schedule — Week 8 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-8",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 8 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-39",
+  "title": "NFL 2026 Schedule — Week 9 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-9",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 9 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-40",
+  "title": "NFL 2026 Schedule — Week 10 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 10 results (final scores) and teams on bye; transcribed to data/games_2026_results.csv",
+  "verification_note": "Read in full (2 chunks). Every game row was reconciled against the official division standings: all 32 teams' computed W-L-T, points for and points against match the standings page exactly."
+ },
+ {
+  "source_id": "SRC-41",
+  "title": "NFL 2026 Schedule — Week 11 (scores, kickoff times, teams on bye)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Week 11 matchups for the originated lines in data/schedule_week11_2026.csv",
+  "verification_note": "Read in full (2 chunks). 13 games and 6 teams on bye (ATL, CLE, GB, LA, NE, SEA) as displayed on the page."
+ },
+ {
+  "source_id": "SRC-42",
+  "title": "2026 NFL Division Standings",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/standings/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Official W-L-T, points for and points against for all 32 teams; used as the independent check on the transcribed results",
+  "verification_note": "Read in full (2 chunks). Standings include the Week 10 Thursday game (Commanders 24, Giants 21). Reconciliation against data/games_2026_results.csv: 32/32 teams match on W, L, T, PF and PA."
+ },
+ {
+  "source_id": "SRC-43",
+  "title": "The Netherlands Gambling Authority (Kansspelautoriteit)",
+  "publisher": "Kansspelautoriteit (Ksa)",
+  "url": "https://kansspelautoriteit.nl/netherlands-gambling-authority",
+  "type": "Official regulator",
+  "accessed_date": "2026-11-14",
+  "used_for": "Establishes that the Ksa is the supervisor and regulator of gambling services in the European part of the Kingdom of the Netherlands, and that legal online operators appear in a public register of licensees",
+  "verification_note": "Read the English landing page. No legal conclusion is drawn from it; it is recorded because earlier sessions documented Japan-specific guidance while this session's account location is in the Netherlands. Jurisdiction is unconfirmed (flag F19)."
  }
 ]

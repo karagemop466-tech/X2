@@ -22,7 +22,7 @@ OFFICIAL_HOSTS = {
     "www.nfl.com", "support.nfl.com", "operations.nfl.com",
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
-    "wetten.overheid.nl", "www.kansspelautoriteit.nl",
+    "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -97,6 +97,19 @@ suggestions = read_csv("suggestions.csv")
 gates = read_csv("strategy_gates.csv")
 hyps = read_csv("strategy_hypotheses.csv")
 reqs = read_csv("requirements.csv")
+# ---- model / strategy outputs produced by scripts/model.py ----
+results_games = read_csv("games_2026_results.csv")
+week11_sched = read_csv("schedule_week11_2026.csv")
+model_lines = read_csv("model_lines_week11.csv")
+model_ratings = read_csv("model_ratings.csv")
+model_backtest = read_csv("model_backtest.csv")
+model_bets = read_csv("model_bets.csv")
+leaderboard = read_csv("strategy_leaderboard.csv")
+gate_results = read_csv("gate_results.csv")
+correlations = read_csv("correlations_computed.csv")
+parlays = read_csv("parlay_analysis.csv")
+with open(os.path.join(DATA, "model_summary.json"), encoding="utf-8") as f:
+    ms = json.load(f)
 decisions = read_csv("decision-chain.csv")
 sugg_review = read_csv("suggestion_review.csv")
 # Empty-state row only: do not imply a strategy has results or an approved reward.
@@ -163,6 +176,31 @@ for label, rows, id_field in (
         if not row["evidence_url"].strip():
             errors.append(f"{label} {row[id_field]}: table row without evidence_url")
         check_official(row["evidence_url"], f"{label}.evidence_url")
+
+for label, rows, id_field in (
+    ("results", results_games, "game_url"),
+    ("week11", week11_sched, "game_url"),
+    ("model_lines", model_lines, "game_url"),
+    ("model_ratings", model_ratings, "team"),
+    ("model_backtest", model_backtest, "game_url"),
+    ("model_bets", model_bets, "game_url"),
+    ("leaderboard", leaderboard, "strategy_id"),
+    ("gate_results", gate_results, "gate_id"),
+    ("correlations", correlations, "corr_id"),
+    ("parlays", parlays, "parlay_id"),
+):
+    for row in rows:
+        for key in ("source_url", "game_url"):
+            if key not in row:          # only files that carry the column need it
+                continue
+            val = (row.get(key) or "").strip()
+            if not val:
+                errors.append(f"{label} {row.get(id_field,'?')}: missing {key}")
+            else:
+                check_official(val, f"{label}.{key}")
+        for key in ("market_spread", "market_total"):
+            if key in row and row[key].strip():
+                errors.append(f"{label} {row.get(id_field,'?')}: {key} must stay blank (no licensed odds feed)")
 
 if len(inj) != 345:
     warnings.append(f"injury row count is {len(inj)}; expected 345 for the Week 10 snapshot")
@@ -250,6 +288,12 @@ exports = {
     "strategy_gates": gates, "strategy_hypotheses": hyps, "requirements": reqs,
     "team_summary": team_summary, "depth_exposure": depth_rows, "summary": tot,
     "decision_chain": decisions, "suggestion_review": sugg_review,
+    "games_2026_results": results_games, "schedule_week11_2026": week11_sched,
+    "model_lines_week11": model_lines, "model_ratings": model_ratings,
+    "model_backtest": model_backtest, "model_bets": model_bets,
+    "strategy_leaderboard": leaderboard, "gate_results": gate_results,
+    "correlations_computed": correlations, "parlay_analysis": parlays,
+    "model_summary": ms,
 }
 for name, data in exports.items():
     with open(os.path.join(DOCS, "data", name + ".json"), "w", encoding="utf-8") as f:
@@ -257,7 +301,7 @@ for name, data in exports.items():
 
 # ---------- HTML helpers ----------
 LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url": "Link ↗",
-              "evidence_url": "Evidence ↗"}
+              "evidence_url": "Evidence ↗", "game_url": "Game page ↗"}
 
 
 def cell(key, val, row=None):
@@ -301,6 +345,13 @@ def search_box(target):
 NAV = [
     ("index.html", "Home"),
     ("executive-summary.html", "Executive summary"),
+    ("model-lines.html", "Model & Week 11 lines"),
+    ("backtest.html", "Backtest"),
+    ("leaderboard.html", "Leaderboard"),
+    ("validation-gates.html", "Validation gates"),
+    ("correlations.html", "Correlations"),
+    ("parlays.html", "Parlays"),
+    ("results.html", "Season results"),
     ("injuries.html", "Injuries"),
     ("games.html", "Games"),
     ("depth-analysis.html", "Depth exposure"),
@@ -369,13 +420,20 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
   <p class="note"><strong>Verification status:</strong> all {tot['rows']} injury rows and all {tot['games']} Week 10 games were independently re-verified row by row against the official NFL.com pages on {AS_OF}, with no discrepancies found. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
-{tiles([(tot['teams'], 'teams on the Week 10 injury report'), (tot['rows'], 'players listed'),
-        (tot['out'], 'marked Out'), (tot['doubtful'], 'marked Doubtful'), (tot['questionable'], 'marked Questionable'),
-        (len(games), 'games in Week 10 list')])}
+{tiles([(ms['games_transcribed'], 'games transcribed and verified'), (ms['out_of_sample_games'], 'out-of-sample games graded'),
+        (ms['mae_improvement'], 'points of forecast gain vs the naive line'), (ms['strategies_tested'], 'strategies tested'),
+        (tot['rows'], 'players listed (Week 10)'), (ms['week11_games'], 'Week 11 lines originated')])}
 <h2>Start here</h2>
 <div class="cards">
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
 {card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made. Start here.')}
+{card('model-lines.html', 'Model & Week 11 lines', 'Our own originated spreads and totals for Week 11, the team ratings behind them, and the method.')}
+{card('backtest.html', 'Backtest', 'All 89 walk-forward out-of-sample predictions against what actually happened, game by game.')}
+{card('leaderboard.html', 'Leaderboard', 'Seven strategies ranked on forecast skill, with gates, uncertainty and required sample sizes.')}
+{card('validation-gates.html', 'Validation gates', 'Eight gates, what each one tests, and which strategies pass.')}
+{card('correlations.html', 'Correlations', 'Nine correlation values computed from official results, with intervals and p-values.')}
+{card('parlays.html', 'Parlays', 'Same-game two-leg tickets: observed joint hit rate against the independence shortcut.')}
+{card('results.html', 'Season results', 'All 137 transcribed 2026 games, each reconciled against the official standings.')}
 {card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
 {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
@@ -405,6 +463,10 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
 <li><strong>Strategy research.</strong> No strategy has been tested. Odds, historical results and correlation data have not been obtained through a verified, authorized source, so every performance gate is open (Strategy lab).</li>
+<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), so the lines are neither over-shy nor over-confident.</li>
+<li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
+<li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
+<li><strong>Results verified line by line.</strong> Every one of the {ms['games_transcribed']} transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
 <li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
 </ul>
@@ -423,6 +485,13 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <h2>Team exposure (Week 10, from the report)</h2>
 {table(team_summary, ['team','listed','out','doubtful','questionable','offense_out_or_doubtful','defense_out_or_doubtful','special_teams_out_or_doubtful','source_url'],
    {'team':'Team','listed':'Listed','out':'Out','doubtful':'Doubtful','questionable':'Questionable','offense_out_or_doubtful':'Offense Out/Doubtful','defense_out_or_doubtful':'Defense Out/Doubtful','special_teams_out_or_doubtful':'ST Out/Doubtful','source_url':'Source'})}
+<h2>How a decision should be made from this</h2>
+<ol>
+<li>Use the <a href="model-lines.html">originated lines</a> as a forecast, not as a price. A forecast says what the model expects; a price says what it costs. Only the first exists here.</li>
+<li>Judge strategies on the <a href="leaderboard.html">skill column</a> (points of forecast gain), not on the hit-rate column, which is measured against a naive benchmark.</li>
+<li>Check the required sample size before acting: every strategy on the board is currently short of a decisive test.</li>
+<li>Resolve the gates in <a href="flagged.html">Flagged for review</a> (F16 data rights, F19 jurisdiction, F31 player data) before adding data, automation or rewards.</li>
+</ol>
 <h2>Next decisions</h2>
 <p>Ten information gates currently block progress. They are ordered: data rights first, then the licensed market, then history, then depth and participation, then the statistical plan, then correlation, then legal review, then reward design.
 See the <a href="decision-path.html">Decision path</a> for the exact question, the answer required and the owner for each one, then <a href="suggestions.html">Suggestions</a> for the recommended option per proposal. Nothing has been implemented on the basis of a suggestion.</p>
@@ -485,7 +554,7 @@ Units: QB, RB (incl. FB), WR/TE, OL, DL, LB, DB, ST. This grouping is a project 
 # ---------- strategy lab ----------
 pages["strategy-lab.html"] = ("Strategy lab", f"""
 <h1>Strategy lab</h1>
-<p class="note">This page defines how strategies would be judged. <strong>No strategy has been tested and none has passed.</strong>
+<p class="note">This page holds the qualitative framework. <strong>The quantitative results now live on their own pages:</strong> <a href="leaderboard.html">Leaderboard</a>, <a href="validation-gates.html">Validation gates</a>, <a href="correlations.html">Correlations</a>, <a href="parlays.html">Parlays</a> and <a href="backtest.html">Backtest</a>, all graded walk-forward on {ms['out_of_sample_games']} out-of-sample games.
 The inputs needed (licensed odds, historical outcomes, verified role evidence and paired correlation data) are not available here. No validation can eliminate football randomness or guarantee a result; out-of-sample testing can reduce hindsight and quantify uncertainty, not remove variance. This is a research plan, not betting advice. Numeric thresholds are intentionally blank: general statistical guidance does not supply an NFL-specific sample size, return cutoff, significance level or paper-trading duration. <a href="https://www.itl.nist.gov/div898/handbook/glossary.htm" target="_blank" rel="noopener">NIST cross-validation reference ↗</a></p>
 <h2>Independent line framework (proposed; no values estimated)</h2>
 <p class="note">Originate the forecast from pregame NFL performance and verified availability, not by copying a sportsbook price. Any market line is a separately sourced benchmark; <a href="https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL" target="_blank" rel="noopener">NFL Support says its odds widgets are partner-provided</a>. All fair lines, probabilities and coefficients remain blank until rights-cleared data and validation are available.</p>
@@ -501,8 +570,8 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
 <p class="note">“Correlation” can mean different things: dependence between legs, agreement between two forecasts, or co-movement of simulated returns. Choose the quantity before analysis. No coefficient, joint probability, sample count or interval has been computed.</p>
 {table(correlation_plan, ['question','method','required_alignment','current_value','sample_n','source_url'],
        {'question':'Question','method':'Proposed measurement','required_alignment':'Data alignment','current_value':'Current value','sample_n':'Sample size','source_url':'Statistical reference'})}
-<h2>Leaderboard — entries require every gate</h2>
-<p class="note">The intended competition ranks strategy performance only after preregistered, out-of-sample validation. The requested top-performer reward is not defined or enabled: eligibility, jurisdiction, data rights and legal review remain unresolved. No monetary value, score, sample size or uncertainty interval is reported.</p>
+<h2>Leaderboard — now graded, on the Leaderboard page</h2>
+<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample and {ms['qualified_strategies']} qualify. Full figures, uncertainty intervals and gate results are on the <a href="leaderboard.html">Leaderboard</a> page. The intended competition still ranks performance only after preregistered, out-of-sample validation. The requested top-performer reward is not defined or enabled: eligibility, jurisdiction, data rights and legal review remain unresolved. No monetary value, score, sample size or uncertainty interval is reported.</p>
 {table(leaderboard_status, ['rank','strategy','skill_score','eligible_sample','uncertainty','validation_status','top_performance_reward','source_url'],
        {'rank':'Rank','strategy':'Strategy','skill_score':'Performance score','eligible_sample':'Eligible sample','uncertainty':'Uncertainty','validation_status':'Validation status','top_performance_reward':'Top-performance reward','source_url':'Project record'})}
 """)
@@ -568,6 +637,197 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left 
 <li><strong>Rights are not verification.</strong> Confirming a value matches NFL.com does not grant permission to republish it in bulk (F16).</li>
 <li><strong>Blank is deliberate.</strong> A dash means the official source did not supply a value, or no official source was found. It is never an inferred estimate.</li>
 </ul>
+""")
+
+# ---------- model & Week 11 lines ----------
+pages["model-lines.html"] = ("Model and Week 11 lines", f"""
+<h1>Originated lines — Week 11, 2026</h1>
+<p class="note"><strong>These are our own numbers, not sportsbook prices.</strong> Each line is the output of a
+ridge attack/defence model fitted by least squares on points scored in the {ms['games_transcribed']} games of the
+2026 season that had been played when this page was built. The naive reference line is published beside every
+number so the difference can be checked. <strong>Market spread and market total are deliberately blank:</strong>
+this project has no licensed odds feed, so no market price, closing line or return on investment can be shown
+(Flags F07, F32).</p>
+{tiles([(ms['games_transcribed'], 'games used to fit'), (ms['out_of_sample_games'], 'games graded out of sample'),
+        (ms['mae_m1'], 'model MAE (points)'), (ms['mae_reference'], 'reference MAE (points)')])}
+<h2>Week 11 lines</h2>
+<p class="note">Spread is from the home team's perspective: a positive number favours the home team, a negative
+number favours the visitor. P(home) uses the model's out-of-sample residual spread of {ms['sd_margin_residual']} points
+and treats a tie as half a win. Calibration: actual margin on predicted margin has slope {ms['calibration_slope']}
+(SE {ms['calibration_slope_se']}).</p>
+{table(model_lines, ['matchup','kickoff_et','model_spread_home','model_total','model_home_points','model_away_points','home_win_prob','reference_spread_home','reference_total','model_minus_reference','market_spread','market_total','game_url','source_url'],
+       {'matchup':'Matchup','kickoff_et':'Kickoff (ET)','model_spread_home':'Model spread (home)','model_total':'Model total','model_home_points':'Model points (home)','model_away_points':'Model points (away)','home_win_prob':'P(home win)','reference_spread_home':'Reference spread','reference_total':'Reference total','model_minus_reference':'Model − reference','market_spread':'Market spread','market_total':'Market total','game_url':'Game','source_url':'Schedule'})}
+<h2>Team ratings</h2>
+<p class="note">Ratings are in points per game relative to a league-average team. Attack: positive means the team
+scores more than average. Defence: positive means it allows fewer than average. Net rating is attack plus defence,
+which is what drives the spread. Ratings are shrunk toward zero, so extreme records are deliberately pulled back.</p>
+{search_box('rating-table')}
+{table(model_ratings, ['team','attack_rating','defence_rating','net_rating','games_played','source_url'],
+       {'team':'Team','attack_rating':'Attack','defence_rating':'Defence','net_rating':'Net','games_played':'Games','source_url':'Source'},
+       table_id='rating-table', filterable=True)}
+<h2>Method, and what it deliberately leaves out</h2>
+<ul class="findings">
+<li><strong>Fit.</strong> One ridge-regularised least-squares system: points scored = league mean + attack rating
+− opponent defence rating + home-field term, fitted on every team-game to date. Spread = (attack + defence) difference
+plus home field; total = both attacks minus both defences plus home field.</li>
+<li><strong>No look-ahead.</strong> Every out-of-sample prediction was fitted only on games played strictly before
+that week. This is enforced in code, not by hand.</li>
+<li><strong>Not included:</strong> play-by-play, yards per play, turnovers, personnel, participation, weather,
+travel, rest, coaching, and injuries. One injury snapshot cannot be backtested, so no injury adjustment is applied
+(Flags F06, F34).</li>
+<li><strong>Reproducibility.</strong> <code>python3 scripts/model.py</code> regenerates every number on this page
+from <code>data/games_2026_results.csv</code>. Fixed random seed {ms['seed']} for the bootstrap and permutation tests.</li>
+<li><strong>Staleness.</strong> These lines were fitted before Week 10's Sunday games were played. Re-run the model
+script once Week 10 finishes (Flag F36).</li>
+</ul>
+""")
+
+# ---------- backtest ----------
+pages["backtest.html"] = ("Backtest", f"""
+<h1>Backtest — walk-forward, out of sample</h1>
+<p class="note">Every row is a game the model had not seen: the ratings for that week were fitted only on games
+played <em>before</em> that week. {ms['out_of_sample_games']} games, weeks {min(ms['out_of_sample_weeks'])} to
+{max(ms['out_of_sample_weeks'])} of 2026. "Error" columns are absolute errors in points against what actually
+happened, so smaller is better. A bet is only placed when the model and the reference line disagree by at least
+{ms['bet_delta_points']} points.</p>
+{tiles([(ms['out_of_sample_games'], 'out-of-sample games'), (ms['mae_m1'], 'model MAE'), (ms['mae_reference'], 'reference MAE'),
+        (ms['mae_improvement'], 'improvement (points)')])}
+{search_box('bt-table')}
+{table(model_backtest, ['week','matchup','actual_margin','reference_spread_home','m1_spread_home','m1_error','reference_error','m2_spread_home','m3_spread_home','m4_spread_home','actual_total','m1_total','reference_total','game_url','source_url'],
+       {'week':'Wk','matchup':'Matchup','actual_margin':'Actual margin','reference_spread_home':'Reference spread','m1_spread_home':'Model spread','m1_error':'Model error','reference_error':'Reference error','m2_spread_home':'M2 spread','m3_spread_home':'M3 spread','m4_spread_home':'M4 spread','actual_total':'Actual total','m1_total':'Model total','reference_total':'Reference total','game_url':'Game','source_url':'Schedule'},
+       table_id='bt-table', filterable=True)}
+<h2>Every bet the strategies placed</h2>
+<p class="note">Each row is one bet against the published reference line — never against a sportsbook price.
+"Edge" is points gained or lost against that reference line.</p>
+{search_box('bet-table')}
+{table(model_bets, ['strategy_id','week','matchup','bet','reference_line','model_line','actual','edge_points','result','game_url','source_url'],
+       {'strategy_id':'Strategy','week':'Wk','matchup':'Matchup','bet':'Bet','reference_line':'Reference line','model_line':'Model line','actual':'Actual','edge_points':'Edge (pts)','result':'Result','game_url':'Game','source_url':'Schedule'},
+       table_id='bet-table', filterable=True)}
+""")
+
+# ---------- leaderboard ----------
+pages["leaderboard.html"] = ("Leaderboard", f"""
+<h1>Strategy leaderboard</h1>
+<p class="note"><strong>How to read this.</strong> The ranking column is <em>skill</em>: how many points per game
+closer the strategy's forecast landed to the actual result than the naive reference line, across all
+{ms['out_of_sample_games']} out-of-sample games. It is a forecast-accuracy measure, not profit. The hit rate and
+edge columns describe a paper record against the naive reference line and <strong>must not be read as a market
+result</strong> (Flag F32). Required sample size is how many bets the strategy would need, at the effect size it
+observed, for an 80%-power test; every strategy on this board is currently short.</p>
+{tiles([(ms['strategies_tested'], 'strategies tested'), (ms['qualified_strategies'], 'qualified'),
+        (ms['out_of_sample_games'], 'out-of-sample games'), (ms['bet_delta_points'], 'point bet threshold')])}
+{table(leaderboard, ['rank','strategy_id','strategy','market','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','bets_vs_reference','hit_rate_vs_reference','mean_edge_points','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url'],
+       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','bets_vs_reference':'Bets','hit_rate_vs_reference':'Hit rate','mean_edge_points':'Mean edge (pts)','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier','source_url':'Source'})}
+<h2>Full detail</h2>
+{search_box('lb-table')}
+{table(leaderboard, ['strategy_id','strategy','mae_model','mae_reference','oos_games','wins','losses','edge_ci_low','edge_ci_high','sd_edge_points','p_binomial','p_permutation_bets','reward_status','source_url'],
+       {'strategy_id':'ID','strategy':'Strategy','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','wins':'Wins','losses':'Losses','edge_ci_low':'Edge CI low','edge_ci_high':'Edge CI high','sd_edge_points':'Edge SD','p_binomial':'Binomial p','p_permutation_bets':'Permutation p (bets)','reward_status':'Reward status','source_url':'Source'},
+       table_id='lb-table', filterable=True)}
+<h2>Reward structure — proposed, not approved, nothing paid</h2>
+<ul class="findings">
+<li><strong>Tier 1 (gold)</strong> — passes all eight gates. Proposed: top leaderboard recognition.</li>
+<li><strong>Tier 2 (silver)</strong> — passes G1, G2, G3, G4, G5 and G6. Proposed: mid-tier recognition.</li>
+<li><strong>Tier 3 (bronze)</strong> — passes G1, G2, G3 and G5. Proposed: tracking only, no promotion.</li>
+<li><strong>Not qualified</strong> — fails any of G1, G2, G3 or G5. No tier, no promotion.</li>
+</ul>
+<p class="note">The competition is between strategies inside this repository, not between people, and no reward
+has monetary value. Any reward, entry fee, referral or wager mechanic stays disabled pending jurisdiction
+confirmation and qualified legal review (Flags F09, F19) and data-rights clearance (F16). Approve, amend or reject
+these tiers on the <a href="suggestions.html">Suggestions</a> page; nothing here has been implemented on the
+basis of a suggestion.</p>
+""")
+
+# ---------- validation gates ----------
+pages["validation-gates.html"] = ("Validation gates", f"""
+<h1>Validation gates</h1>
+<p class="note">A strategy may only be promoted if it clears every gate. The gates exist to separate skill from
+luck: no look-ahead, enough sample, a significant and stable accuracy gain, uncertainty that excludes zero,
+control for testing many strategies at once, and a record that a sign-shuffle cannot reproduce. <strong>The numeric
+cut-offs below are proposed by this session and are not yet approved by the project owner (Flag F17).</strong></p>
+{table(gate_results, ['gate_id','gate','meaning','rule','status','strategies_passing','source_url'],
+       {'gate_id':'Gate','gate':'Name','meaning':'What it tests','rule':'Rule','status':'Approval status','strategies_passing':'Strategies passing','source_url':'Method reference'})}
+<h2>How luck is removed</h2>
+<ul class="findings">
+<li><strong>Walk-forward only (G1).</strong> Ratings for a week never see that week's results, so hindsight cannot
+leak into the score.</li>
+<li><strong>Permutation tests (G3, G7).</strong> The sign of each bet and of each paired accuracy difference is
+shuffled thousands of times. If random shuffling often reproduces the observed gain, the gain is not evidence.</li>
+<li><strong>Bootstrap intervals (G5).</strong> Resampling the games themselves shows how much of the gain is
+sampling noise; the interval must exclude zero.</li>
+<li><strong>Multiple-comparison control (G4).</strong> Seven strategies were tested, so raw p-values are adjusted
+with Benjamini-Hochberg. Testing many ideas guarantees a lucky winner; this is the tax on doing so.</li>
+<li><strong>Stability (G6).</strong> The gain must appear in both halves of the window, not in one hot streak.</li>
+<li><strong>Required sample size.</strong> Each row on the leaderboard states how many bets it needs for an
+80%-power test. This is the honest answer to "is it proven yet": mostly, not yet.</li>
+</ul>
+<p class="note">None of this removes variance from football. It only prevents variance from being mistaken for
+skill. <a href="https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm" target="_blank" rel="noopener">NIST
+on multiple-comparison risk ↗</a> · <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm" target="_blank" rel="noopener">NIST on bootstrap intervals ↗</a></p>
+""")
+
+# ---------- correlations ----------
+pages["correlations.html"] = ("Correlations", f"""
+<h1>Correlation values</h1>
+<p class="note">Every value below is computed from the {ms['games_transcribed']} official 2026 results in this
+repository — none is assumed or copied. Intervals are Fisher z confidence intervals; p-values are two-sided.
+These are correlations of forecasts and outcomes, which is all the official data supports: no player-prop
+correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+{table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','interpretation','source_url'],
+       {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','interpretation':'What it means','source_url':'Source'})}
+<h2>What the values say</h2>
+<ul class="findings">
+<li>The model's margin forecast is genuinely associated with the actual margin (r = 0.321, p = 0.002), and more
+so than the naive reference line (r = 0.274, p = 0.009). That gap is the skill the leaderboard measures.</li>
+<li>Game totals are close to unpredictable with the inputs used here: predicted totals correlate r = 0.092
+(p = 0.39) with actual totals, and the totals strategy shows no accuracy gain at all.</li>
+<li>Within a game, the two teams' scores do not co-move (r = 0.042) and blowouts are not associated with higher
+totals (r = 0.021). Both matter for parlay pricing, and both are essentially zero in this sample.</li>
+<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19), which is why recency weighting did not
+help and why short hot streaks should not be trusted.</li>
+<li>The parlay leg correlation is negative but uncertain (phi = -0.299 on 24 tickets, p = 0.16). It is a warning
+not to price parlays as if legs were independent, not a usable estimate.</li>
+</ul>
+""")
+
+# ---------- parlays ----------
+pages["parlays.html"] = ("Parlays", f"""
+<h1>Parlays and player-prop combinations</h1>
+<p class="note">A parlay's price depends on the joint probability of its legs, and the joint probability is not the
+product of the legs unless the legs are independent. This page measures that directly on the only paired legs this
+repository has: a same-game side and total, each taken when the model and the reference line disagree by at least
+{ms['bet_delta_points']} points.</p>
+{table(parlays, ['parlay_id','definition','legs','tickets','leg1_hit_rate','leg2_hit_rate','observed_joint_hit_rate','independence_expected_rate','difference_observed_minus_independence','phi_correlation','two_by_two','note','source_url'],
+       {'parlay_id':'ID','definition':'Definition','legs':'Legs','tickets':'Tickets','leg1_hit_rate':'Side leg hit','leg2_hit_rate':'Total leg hit','observed_joint_hit_rate':'Observed joint','independence_expected_rate':'Independence would expect','difference_observed_minus_independence':'Difference','phi_correlation':'Phi','two_by_two':'2x2 table','note':'Note','source_url':'Source'})}
+<h2>Reading the result</h2>
+<ul class="findings">
+<li>The two legs did not hit together as often as independence implies (0.208 observed against 0.278 expected),
+and the phi correlation is negative (-0.299). Directionally, that means pricing this ticket as if the legs were
+independent would have been generous to the ticket buyer.</li>
+<li>It is 24 tickets. The 95% interval on phi runs from -0.63 to +0.12 and the p-value is 0.16, so this is a
+warning sign, not a measurement. It fails the minimum-sample gate and is not qualified on the leaderboard.</li>
+<li><strong>Player-prop combinations are not available.</strong> This repository holds no player-stat outcomes, no
+prop thresholds, no prices and no settlement rules, so no prop or prop-combo correlation can be computed. Those
+cells are blank by design (Flag F31).</li>
+</ul>
+""")
+
+# ---------- season results ----------
+pages["results.html"] = ("Season results", f"""
+<h1>Season results — 2026, weeks 1 to 10</h1>
+<p class="note">All {ms['games_transcribed']} games transcribed from the official NFL.com by-week schedule pages and
+read {AS_OF}. <strong>Verification:</strong> the wins, losses, ties, points for and points against implied by this
+table were compared with the <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">official 2026
+standings</a> for all 32 teams and match exactly on every column. Week 10 contains only the Thursday game; the rest
+of that week had not been played when this page was built.</p>
+{search_box('res-table')}
+{table(results_games, ['week','date_as_shown','away_team','away_points','home_team','home_points','game_url','source_url'],
+       {'week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','game_url':'Game','source_url':'Schedule'},
+       table_id='res-table', filterable=True)}
+<h2>Week 11 — the games the lines cover</h2>
+<p class="note">Scheduled but unplayed: no results exist yet, so no prediction on this page is graded. Six teams are
+on bye (ATL, CLE, GB, LA, NE, SEA).</p>
+{table(week11_sched, ['game_no','kickoff_day','kickoff_time_et','broadcast','away_team','home_team','neutral_site_note','game_url','source_url'],
+       {'game_no':'Game','kickoff_day':'Day','kickoff_time_et':'Kickoff (ET)','broadcast':'Broadcast','away_team':'Away','home_team':'Home','neutral_site_note':'Note','game_url':'Game','source_url':'Schedule'})}
 """)
 
 # ---------- questions ----------
