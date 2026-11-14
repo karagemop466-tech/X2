@@ -1394,3 +1394,36 @@ event-risk correction and every other row stand as merged.
 The churn is worth naming plainly: I renumbered my own flag IDs four times (F56→F57→F70→F71, and
 F58→F59→F71→F72) because four sessions allocated IDs concurrently on the same day. **The IDs changed; the
 findings, the arithmetic and the published numbers did not.** No other session's work was ever overwritten.
+
+## 2026-11-14 · session cf6709c0 · T57 · post-merge defect found on the live site (flag F73)
+
+**Found by checking the deployed site, not by trusting the build.** After PR #35 merged and Pages went
+`built` for `ad660fa`, I fetched https://karagemop466-tech.github.io/X2/docs/review.html and it served
+**"Review console"** — session `e208ba6d`'s page — not the "Review path" page I had written. Both sessions
+had registered `pages["review.html"]` in `scripts/build.py`. Python dict assignment meant the later one
+silently discarded the earlier page, and `NAV` listed **two entries both pointing at `review.html`**. Every
+build check passed throughout, because a dropped page is still a valid page and the surviving slug resolves.
+
+This is the failure mode the board's rule about shared outputs is meant to prevent, and no check caught it.
+
+| ID | Task | Status | Owner | Files touched | Notes |
+|----|------|--------|-------|---------------|-------|
+| T57 | Fix the silent page-slug collision and add a build guard so it cannot recur | done | cf6709c0 | `scripts/build.py`, generated `docs/` (30 pages), `data/flags.csv` (F73) | My page moves to `review-path.html`; both review sections now publish. Guard fails the build on a duplicated slug, a duplicated NAV href, or a NAV entry with no page. Verified by reintroducing the bug — see the log entry below. |
+
+**What the guard checks, and why it is written that way.** An intentional append in this file reuses the
+existing value (`pages["x"] = (pages["x"][0], pages["x"][1] + ...)`), which appears four times
+(`index`, `executive-summary`, `verification`, `depth-deficiency`). A collision assigns a fresh literal.
+So the guard flags only a slug assigned **more than once without appending**, which catches the real bug
+(`review.html`) and leaves all four legitimate appends alone. This distinction was checked by running the
+guard against the actual file, not assumed.
+
+**Verification.**
+- Reproduced the defect first: fetched the live page and compared its `<h1>` with what my builder emits.
+- After the fix: 30 pages, 956 internal and 3,420 external links resolve, 32/32 teams reconcile,
+  `npm run build` + `npm run verify` PASS, `scripts/model.py` reproduces byte for byte.
+- Proved the guard works by re-introducing the collision: the build exits with
+  `page slug assigned more than once without appending ... ['review.html']`. Reverted immediately.
+
+**Lesson recorded for later sessions:** a green build does not prove every page reached the site. A page
+can be registered, overwritten and still pass every link and source check. Fetch the deployed URL for any
+page you claim to have added.
