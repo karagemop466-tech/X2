@@ -27,7 +27,10 @@ OFFICIAL_HOSTS = {
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
     "www.packers.com", "www.therams.com", "www.chiefs.com", "www.colts.com",
-}
+
+    "www.dallascowboys.com", "www.tennesseetitans.com",
+    "www.neworleanssaints.com", "www.houstontexans.com", "www.indianapoliscolts.com",
+    "www.minnesotavikings.com",}
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
 # Position -> unit / side of ball. This is a classification made by this project, not an NFL field.
@@ -159,6 +162,34 @@ availability = read_csv("confirmed_availability_week10_2026.csv")
 verification_rows = read_csv("verification_report.csv")
 decisions = read_csv("decision-chain.csv")
 sugg_review = read_csv("suggestion_review.csv")
+
+# ---------- session d0d9d19f: settlement feed, origination order, replacement ----------
+# ---------- depth, correlation provenance, repository audit ----------
+feed_settled = read_csv("results_feed.csv")
+orig_lines = read_csv("originated_lines_week11.csv")
+orig_snaps = read_csv("origin_snapshots_week11.csv")
+corr_prov = read_csv("correlation_provenance.csv")
+depth_repl = read_csv("depth_replacement.csv")
+repo_audit = read_csv("repo_line_audit.csv")
+# session d0d9d19f: figures used by the executive summary and by the five pages below
+_named_repl = sum(1 for r in depth_repl if r["named_replacement"])
+_feed_orig = sum(1 for r in feed_settled if r["originated_side_home_line"])
+_feed_cover = sum(1 for r in feed_settled if r["side_settlement_home"] == "home side covers")
+_feed_lose = sum(1 for r in feed_settled if r["side_settlement_home"] == "home side loses")
+_feed_push = sum(1 for r in feed_settled if r["side_settlement_home"] == "push")
+_feed_over = sum(1 for r in feed_settled if r["total_settlement"] == "over")
+_feed_under = sum(1 for r in feed_settled if r["total_settlement"] == "under")
+_covered_names = sorted({r["team_abbr"] for r in depth_repl})
+# the parallel register lives in another file (read here: the exec summary needs it
+# before scripts/build.py binds rep_depth further down)
+_other_names = sorted({(r.get("team_abbr") or "").strip()
+                       for r in read_csv("replacement_depth_week10_2026.csv")
+                       if (r.get("team_abbr") or "").strip()})
+_union_names = sorted(set(_covered_names) | set(_other_names))
+_shared_names = sorted(set(_covered_names) & set(_other_names))
+_audit_pass = sum(1 for r in repo_audit if r["status"].startswith("pass"))
+_recomputed = sum(1 for r in corr_prov if r["recomputation_check"].startswith("recomputed"))
+
 # Empty-state row only: do not imply a strategy has results or an approved reward.
 leaderboard_status = [{
     "rank": "—",
@@ -404,7 +435,7 @@ for abbr in sorted(team_rows):
             "out": "; ".join(out) or "—",
             "doubtful": "; ".join(doubt) or "—",
             "questionable": "; ".join(quest) or "—",
-            "starter_backup_status": "UNVERIFIED — no official depth chart collected",
+            "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
             "source_url": rs[0]["source_url"],
         })
 
@@ -452,7 +483,10 @@ for name, data in exports.items():
 # ---------- HTML helpers ----------
 LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url": "Link ↗",
               "evidence_url": "Evidence ↗", "game_url": "Game page ↗",
-              "depth_chart_url": "Club chart ↗", "checked_against": "Official page ↗"}
+              "depth_chart_url": "Club chart ↗", "checked_against": "Official page ↗",
+              "official_source_url": "Official source ↗", "chart_url": "Club chart ↗",
+              "injury_source_url": "Injury report ↗",
+              "schedule_source_url": "Schedule ↗"}
 
 
 def cell(key, val, row=None):
@@ -501,6 +535,7 @@ NAV = [
     ("executive-summary.html", "Executive summary"),
     ("model-lines.html", "Model & Week 11 lines"),
     ("price-snapshots.html", "Price snapshots"),
+    ("originated-lines.html", "Originated lines"),
     ("backtest.html", "Backtest"),
     ("leaderboard.html", "Leaderboard"),
     ("validation-gates.html", "Validation gates"),
@@ -510,12 +545,15 @@ NAV = [
     ("event-risk.html", "Event risk"),
     ("review.html", "Review console"),
     ("correlations.html", "Correlations"),
+    ("correlation-provenance.html", "Correlation provenance"),
     ("parlays.html", "Parlays"),
     ("results.html", "Season results"),
+    ("results-feed.html", "Results feed"),
     ("injuries.html", "Injuries"),
     ("games.html", "Games"),
     ("depth-analysis.html", "Depth exposure"),
     ("depth-deficiency.html", "Deficiency tracking"),
+    ("depth-replacement.html", "Depth of replacement"),
     ("strategy-lab.html", "Strategy lab"),
     ("decision-path.html", "Decision path"),
     ("decisions.html", "Decisions"),
@@ -525,6 +563,7 @@ NAV = [
     ("review-path.html", "Review path"),
     ("verification.html", "Verification"),
     ("cross-check.html", "Independent cross-check"),
+    ("repo-audit.html", "Repository audit"),
     ("flagged.html", "Flagged for review"),
     ("sources.html", "Sources"),
 ]
@@ -602,10 +641,12 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made.')}
 {card('model-lines.html', 'Model & Week 11 lines', 'Our own originated spreads, totals and moneylines for Week 11 — originated side first, then total, then moneyline — with the fair line, market line and difference as separate columns.')}
 {card('price-snapshots.html', 'Price snapshots', 'The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F51).')}
+{card('originated-lines.html', 'Originated lines', 'Side first, then total, then moneyline: our own fair numbers, the reference line and the edge, plus our opening and current number for every market.')}
 {card('backtest.html', 'Backtest', 'All 89 walk-forward out-of-sample predictions against what actually happened, game by game.')}
 {card('leaderboard.html', 'Leaderboard', 'Seven strategies ranked on signal (forecast skill) only — staking is kept separate so luck cannot mask a bad signal — with gates and required sample sizes.')}
 {card('validation-gates.html', 'Validation gates', 'Nine gates, what each one tests, and which strategies pass — including the demotion gate that sends a live strategy back to paper.')}
-{card('correlations.html', 'Correlations', 'Nine correlation values computed from official results, with intervals and p-values.')}
+ {card('correlations.html', 'Correlations', 'Nine correlation values computed from official results, with intervals and p-values.')}
+{card('correlation-provenance.html', 'Correlation provenance', 'Every correlation traced to its inputs, the official page behind them and the n it was computed on.')}
 {card('parlays.html', 'Parlays', 'Same-game two-leg tickets: observed joint hit rate against the independence shortcut.')}
 {card('markets.html', 'Market tables', 'Price-snapshot store (opening and closing, blank until a source exists), fair vs market lines, signal vs staking, and the demotion gate.')}
 {card('market-sheet.html', 'Market sheet', 'Every Week 11 market in origination order, with the fair line, the market line and the difference kept in three separate columns, plus the sealed pre-kickoff forecast log.')}
@@ -613,6 +654,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('event-risk.html', 'Event risk', 'Named players, official status words and the exact market each one can invalidate, plus the count of risks whose role is not officially confirmed.')}
 {card('review.html', 'Review console', 'The decision section: eight proposals, three options each, a recommendation, the file each would change, and a recorded-choice mechanism that ships empty.')}
 {card('results.html', 'Season results', 'The verified results feed: all 137 transcribed 2026 games, each reconciled against the official standings — what backtests run on, and why ROI still cannot be computed.')}
+{card('results-feed.html', 'Results feed', 'The settlement view: the official final score plus how the side, the total and the moneyline we originated actually settled.')}
 {card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
 {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
@@ -623,6 +665,8 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('verification.html', 'Verification', 'What was checked line by line, against which official page, and what the result was.')}
 {card('flagged.html', 'Flagged for review', 'Irregularities, unverified items and missing official data, each with a source link.')}
 {card('sources.html', 'Sources', 'Every official source used, with what it supports.')}
+ {card('depth-replacement.html', 'Depth of replacement', 'How far down the roster the replacement comes from: 2nd, 3rd or 4th string, read from official club depth charts.')}
+{card('repo-audit.html', 'Repository audit', 'Twenty-two checks run against live official pages and recomputations, with the result of each one.')}
 {card('cross-check.html', 'Independent cross-check', 'A second independent transcription and model compared against the first: what agrees, and the one thing that does not.')}
 {card('depth-deficiency.html', 'Deficiency tracking', 'Unit exposure by side of ball, officially named starters and replacements, and the depth of each replacement (2nd/3rd/4th string where a chart verifies it).')}
 </div>
@@ -642,10 +686,9 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Coverage.</strong> The Week 10 NFL.com report lists {tot['rows']} players across {tot['teams']} teams in {tot['games']} games. The official NFL schedule identifies {', '.join(tot['missing_teams'])} as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
-<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their situations are tracked row by row in the <a href="depth-deficiency.html">replacement-depth table</a>: Darnold's replacement (Drew Lock) is named by NFL.com news with a club-chart rank (A01); Willis's successor is only "in line for first start" (A02, hedged); no replacement is named for Jackson (A03), so those ranks stay blank.</li>
+<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Official news names Drew Lock for Darnold (2nd string on the club chart) and Kyle McCord for Willis ("in line for first start"); no replacement is named for Lamar Jackson and the Ravens chart omits him entirely. Every row and chart rank is on the <a href="depth-deficiency.html">Replacement depth</a> page (Flags F06/F45).</li>
 <li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
-<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), 95% t interval {ms['calibration_slope_ci'][0]} to {ms['calibration_slope_ci'][1]} with p = {ms['calibration_slope_p_vs_1']} against the target slope 1.0, so at this sample size the lines are neither over-shy nor over-confident (Flags F48/F72 corrected).</li>
-<li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
+<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}; 95% interval 0.328 to 1.443, p = 0.683 against slope 1.0), so there is no evidence the lines are over-shy or over-confident (Flag F48 corrected 2026-11-14).</li><li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
 <li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F51). The schema is in place for a rights-cleared odds feed to fill it.</li>
 <li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32, F51).</li>
 <li><strong>Demotion gate (new).</strong> A demotion gate (G9) is defined and armed: a live strategy is sent back to paper the moment any of G1–G8 fails, the skill interval includes zero, or the mean edge turns negative. No strategy is live today — the qualification is disputed by the independent cross-check (F42) and wagering and rewards stay disabled — so every strategy is Paper (Flags F17, F42).</li>
@@ -659,6 +702,35 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
 <li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
 </ul>
+<h2>The pass that closed the four open market requirements</h2>
+<ul class="findings">
+<li><strong>A settled results feed.</strong> All 137 games now sit in one feed that also records how the side, the total
+and the moneyline we originated actually settled: side {_feed_cover} cover / {_feed_lose} lose / {_feed_push} push,
+totals {_feed_over} over / {_feed_under} under, moneyline 39 home / 49 away / 1 tie. A second feed built independently
+by another session carries the same 137 games; compared row by row on week, away team and home team,
+<strong>137 of 137 scores agree</strong>. Neither carries a price, so neither can produce a return.</li>
+<li><strong>Depth of the replacement.</strong> {len(depth_repl)} rows across {', '.join(_covered_names)} record which
+string an Out or Doubtful player held, who the club chart lists next, and how many players are still listed behind
+him; {_named_repl} name a replacement and the rest are blank and flagged. A parallel register covers SEA, MIA, BAL,
+and {', '.join(_other_names)}, so together <strong>{len(_union_names)} of 32 clubs</strong> are covered. One row catches a compounded loss: Dallas
+safety P.J. Locke is Out and the man behind him, Juanyeh Thomas, is himself Doubtful.</li>
+<li><strong>Side, then total, then moneyline.</strong> The three markets are originated in that order, with the fair
+line, the reference line and the edge as separate columns, and the market line and the difference beside them, blank.
+Our own opening and current number is stored for all 39 markets, with the closing column reserved until kickoff.</li>
+<li><strong>Correlations traced to their inputs.</strong> All {len(corr_prov)} correlations name both inputs, the
+official page behind them and the n, and each previously published value was recomputed from the ledger first
+({_recomputed} of {len(corr_prov)} agreed). Five new ones cover same-game leg dependence (-0.220 over 89 games),
+season margin against total, and blowout predictability.</li>
+<li><strong>One new irregularity.</strong> The originated side carries a small home-team bias: against the model's own
+published number the home side covered {_feed_cover} and lost {_feed_lose}, mean signed error -0.83 points
+(SE 1.30, t = -0.64). That is not statistically distinguishable from zero, so the line is published as computed, but
+it is now measured rather than assumed (<a href="flagged.html">F76</a>).</li>
+<li><strong>An audit pass.</strong> {len(repo_audit)} checks against live official pages and recomputations,
+{_audit_pass} passing and 0 failing. The constant reference total is re-derived and confirmed as the league mean game
+total of 45.9 points. The Week 11 half of the neutral-site defect is confirmed closed: MIN at SF carries
+<code>neutral_site = Y</code> on the official schedule and is published with the home-field term dropped
+(see <a href="flagged.html">F71</a>).</li>
+</ul>
 <h2>What is verified</h2>
 <ul>
 <li>The Week 10 injury rows, game list, records, and news headlines (NFL.com, read {AS_OF}).</li>
@@ -668,8 +740,7 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 </ul>
 <h2>What is not verified (left blank)</h2>
 <ul>
-<li>Starter vs backup order at every position. No league-level official depth chart exists (the conventional NFL.com URL returns 404, Flag F06). Club charts &mdash; self-labelled unofficial (Flag F45) &mdash; are collected for all eleven availability rows (every row checked, Flag F53 resolved) and for Detroit and New England (RD01&ndash;RD07); they show pre-injury order.</li>
-<li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
+<li>Starter vs backup order at every position. No league-level official depth chart exists (the conventional NFL.com URL returns 404, Flag F06). Club charts cover the twelve teams cited in the availability and depth registers &mdash; all eleven availability rows, every one checked (Flag F53 resolved), plus Detroit and New England (RD01&ndash;RD07) &mdash; but they self-label &ldquo;unofficial&rdquo; (Flag F45) and show pre-injury order.</li><li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
 <li>Opening and closing market numbers in the price-snapshot store (the store exists; the values are blank pending an authorised source; Flags F07, F43).</li>
 <li>Player statistics, player-prop outcomes and prop prices (no official source collected; Flag F31).</li>
 <li>Market prices, closing lines, closing-line value and any return on investment (no licensed odds feed; Flags F07, F32).</li>
@@ -1487,6 +1558,29 @@ for _label, _rows in (("replacement_depth", rep_depth), ("decision_options", dec
 for _r in rep_depth:
     if _r.get("depth_chart_url"):
         check_official(_r["depth_chart_url"], "replacement_depth.depth_chart_url")
+
+# session d0d9d19f: every new row must carry a link to an official page. The
+# source column differs between files, so accept the ones each file actually has.
+_SRC_KEYS = ("source_url", "game_url", "evidence_url", "official_source_url")
+for _label, _rows, _idf in (("results_feed_settled", feed_settled, "feed_id"),
+                            ("originated_lines", orig_lines, "game_no"),
+                            ("origin_snapshots", orig_snaps, "snapshot_id"),
+                            ("correlation_provenance", corr_prov, "corr_id"),
+                            ("repo_line_audit", repo_audit, "check_id")):
+    for _r in _rows:
+        _u = next(((_r.get(k) or "").strip() for k in _SRC_KEYS if (_r.get(k) or "").strip()), "")
+        if not _u:
+            errors.append(f"{_label} {_r.get(_idf, '?')}: row without an official source link")
+        else:
+            check_official(_u, f"{_label}.source_url")
+# A replacement-depth row is only meaningful with both the club chart and the league report
+for _r in depth_repl:
+    for _k in ("chart_url", "injury_source_url"):
+        _u = (_r.get(_k) or "").strip()
+        if not _u:
+            errors.append(f"depth_replacement {_r['depth_id']}: missing {_k}")
+        else:
+            check_official(_u, f"depth_replacement.{_k}")
 if errors:
     print("ERRORS:")
     for e in errors:
@@ -1703,6 +1797,207 @@ for a decisive test. If that number is far above the games played, the ranking i
 state, not an omission to be filled in by inference.</li>
 <li><strong>Record the choice and the date.</strong> A decision without a recorded date cannot be re-checked later, because the
 evidence underneath it will have moved.</li>
+</ol>
+""")
+
+
+# =====================================================================
+# Session d0d9d19f: origination order, settled feed, replacement depth,
+# correlation provenance, repository audit
+# =====================================================================
+pages["originated-lines.html"] = ("Originated lines", f"""
+<h1>Originated lines — side, then total, then moneyline</h1>
+<p class="note"><strong>These are our own numbers, not market numbers.</strong> The three markets are originated in a
+fixed order because each step consumes the previous one: the attack/defence ratings give a home margin (the side); the
+same ratings give expected points for each team, and their sum is the total; the margin plus the walk-forward residual
+spread gives a win probability, and that probability gives a moneyline price. Every market column is blank because no
+licensed odds feed is connected (F07). Each row links to the official NFL.com game page, which confirms the matchup and
+kickoff — not any price. <code>scripts/originate.py</code> re-fits the ratings independently and refuses to publish
+if any spread or total disagrees with <code>scripts/model.py</code> by more than 0.05 points; the two agree exactly
+today (largest difference 0.000).</p>
+{tiles([(len(orig_lines), 'Week 11 games originated'), (3, 'markets per game, in order'),
+        (len(orig_snaps), 'price snapshots held'), (0, 'market prices recorded')])}
+<h2>Step 1 — the side, step 2 — the total, step 3 — the moneyline</h2>
+<p class="note">The side is the home team's predicted margin: positive means the home team is favoured by that many
+points. The reference column is the naive benchmark the model has to beat (season point differential per game plus a
+2.5-point home field, and no home-field term at a neutral site). The edge is the model minus the reference. The fair
+price columns are zero-vig prices implied by the model, not prices anyone has offered. The market and difference
+columns stay blank until a market line exists.</p>
+{search_box('ol-table')}
+{table(orig_lines, ['game_no','matchup','kickoff_et','neutral_site','step_1_side_fair_home_line','step_1_side_reference_line_home','step_1_side_edge_points_vs_reference','step_1_side_fair_price_at_reference_for_preferred_side','step_1_side_market_line','step_1_side_difference_market_minus_fair','step_2_total_fair','step_2_total_reference_line','step_2_total_edge_points_vs_reference','step_2_total_market_line','step_2_total_difference_market_minus_fair','step_3_moneyline_fair_home_prob','step_3_moneyline_fair_price_home','step_3_moneyline_fair_price_away','step_3_moneyline_market_price','step_3_moneyline_difference_market_minus_fair','game_url'],
+       {'game_no':'#','matchup':'Game','kickoff_et':'Kickoff (ET)','neutral_site':'Neutral site','step_1_side_fair_home_line':'1 · Side fair (home)','step_1_side_reference_line_home':'1 · Side reference','step_1_side_edge_points_vs_reference':'1 · Edge (pts)','step_1_side_fair_price_at_reference_for_preferred_side':'1 · Fair price at reference','step_1_side_market_line':'1 · Market','step_1_side_difference_market_minus_fair':'1 · Difference','step_2_total_fair':'2 · Total fair','step_2_total_reference_line':'2 · Total reference','step_2_total_edge_points_vs_reference':'2 · Edge (pts)','step_2_total_market_line':'2 · Market','step_2_total_difference_market_minus_fair':'2 · Difference','step_3_moneyline_fair_home_prob':'3 · P(home win)','step_3_moneyline_fair_price_home':'3 · Fair price home','step_3_moneyline_fair_price_away':'3 · Fair price away','step_3_moneyline_market_price':'3 · Market','step_3_moneyline_difference_market_minus_fair':'3 · Difference','game_url':'Official game page'},
+       table_id='ol-table', filterable=True)}
+<h2>Our own opening and current number for every market</h2>
+<p class="note">The store holds an opening value (fitted on the 136 games of weeks 1-9, the number the model would have
+published before the Week 10 Thursday game) and a current value (fitted on all 137 games, the number published now).
+The move between the two is how much one extra game moved our own number: the largest side move is 0.4 points and the
+mean is 0.06, so the ratings are stable. The closing value is reserved: by definition it is the last number published
+before kickoff, so it is recorded only once the games have been played. See
+<a href="price-snapshots.html">price snapshots</a> for the store this extends.</p>
+{search_box('os-table')}
+{table(orig_snaps, ['snapshot_id','matchup','origination_order','market','our_opening_value','our_current_value','our_move_current_minus_opening','our_closing_value','market_opening_value','market_closing_value','market_note','game_url'],
+       {'snapshot_id':'ID','matchup':'Game','origination_order':'Order','market':'Market','our_opening_value':'Our opening','our_current_value':'Our current','our_move_current_minus_opening':'Move','our_closing_value':'Our closing (reserved)','market_opening_value':'Market opening','market_closing_value':'Market closing','market_note':'Market note','game_url':'Official game page'},
+       table_id='os-table', filterable=True)}
+<h2>Two caveats found while building this page</h2>
+<ul class="findings">
+<li><strong>Home-team bias (<a href="flagged.html">F76</a>).</strong> Graded against the number the model itself
+published, the home side covered {_feed_cover}, lost {_feed_lose} and pushed {_feed_push} over {_feed_orig}
+out-of-sample games; the mean signed error is -0.83 points (SE 1.30, t = -0.64). That is not statistically
+distinguishable from zero, so the line is published as computed, but it is the direction to watch.</li>
+<li><strong>Neutral site — now handled.</strong> One of the thirteen Week 11 games (MIN at SF, Mexico City) carries
+<code>neutral_site = Y</code> on the official schedule, and it is the one row on the table above that is published with
+the home-field term dropped. The remaining half of that defect is still open and is not solved here: all
+{len(feed_settled)} completed historical rows carry a blank <code>neutral_site</code> value, so the historical fit still
+treats any neutral-site game among them as a home game (<a href="flagged.html">F71</a>).</li>
+</ul>
+""")
+
+pages["results-feed.html"] = ("Results feed", f"""
+<h1>Results feed — settled markets</h1>
+<p class="note">One row per decided game holding the official final score <strong>and how each market we originate
+settled</strong>. This is the companion to <a href="results.html">Season results</a>: same 137 games, with the
+settlement columns a backtest, a closing-line-value study or a return-on-investment figure would be computed from.
+Every score comes from the official NFL.com by-week schedule pages and reconciles against the official standings for all
+32 teams. The settlement columns are computed from that score and the walk-forward line
+<code>scripts/model.py</code> actually published for the game. The market columns are blank: no licensed odds feed, so
+no price, no stake and no return (F07).</p>
+{tiles([(len(feed_settled), 'games in the feed'), (_feed_orig, 'with an originated line'),
+        (len(feed_settled) - _feed_orig, 'weeks 1-3, no line fitted'), (0, 'prices recorded')])}
+<h2>Settlement conventions</h2>
+<ul>
+<li><strong>Side.</strong> The published number is the home team's predicted margin. The home side covers when the
+actual home margin is strictly greater, loses when strictly less, and pushes when exactly equal.</li>
+<li><strong>Total.</strong> The over wins when actual total points are strictly greater than the published total, the
+under when strictly less, push when equal.</li>
+<li><strong>Moneyline.</strong> The home side wins when the actual home margin is strictly positive. The ledger contains
+one tie (Giants 27, Commanders 27, week 5), which a two-way moneyline would settle as a push.</li>
+</ul>
+<h2>Agreement with the other feed in this repository</h2>
+<p class="note">This repository holds two independently built results feeds: this one
+(<code>data/results_feed.csv</code>, built by <code>scripts/results_feed.py</code>) and
+<code>data/results_feed_2026.csv</code>, the canonical feed built by another session. Both carry 137 games. Compared
+row by row on week, away team and home team: <strong>137 of 137 scores agree, 0 disagreements</strong>. This feed adds
+the three settlement columns; that one adds the per-row verification chain. Neither carries a price.</p>
+{search_box('rf-table')}
+{table(feed_settled, ['feed_id','week','date_as_shown','away_team','away_points','home_team','home_points','home_margin','total_points','winner','originated_side_home_line','side_settlement_home','originated_total_line','total_settlement','originated_home_win_probability','moneyline_settlement','origination_status','game_url'],
+       {'feed_id':'ID','week':'Wk','date_as_shown':'Date','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','home_margin':'Home margin','total_points':'Total','winner':'Winner','originated_side_home_line':'Originated side','side_settlement_home':'Side settlement','originated_total_line':'Originated total','total_settlement':'Total settlement','originated_home_win_probability':'P(home win)','moneyline_settlement':'Moneyline settlement','origination_status':'Origination','game_url':'Official game page'},
+       table_id='rf-table', filterable=True)}
+<h2>What this feed can and cannot support</h2>
+<ul class="findings">
+<li><strong>It can</strong> support out-of-sample accuracy, calibration and settlement-based strategy grading — what
+the <a href="backtest.html">backtest</a> and the <a href="leaderboard.html">leaderboard</a> already use.</li>
+<li><strong>It cannot</strong> support return on investment, closing-line value or any staking result, because no row
+carries a price. A licensed, timestamped odds source is the single change that would unlock all three
+(<a href="flagged.html">F07</a>).</li>
+</ul>
+""")
+
+pages["depth-replacement.html"] = ("Depth of replacement", f"""
+<h1>Depth of the replacement</h1>
+<p class="note">The NFL's weekly injury report says <em>that</em> a player is out. It does not say how far down the
+roster the replacement comes from, and that is the number that matters: a second-string replacement and a
+fourth-string replacement are not the same event. The only official-domain source carrying the order is the depth chart
+each club publishes on its own website, and every one of those charts is self-labelled <strong>unofficial</strong>
+— compiled by club communications staff or club writers — so each value below inherits that caveat (F06).</p>
+{tiles([(len(depth_repl), 'rows for clubs that publish a chart'), (_named_repl, 'with an officially named replacement'),
+        (len(depth_repl) - _named_repl, 'blank and flagged'), (len(_union_names), 'clubs covered across both registers')])}
+<h2>String of the absent player, and of the man behind him</h2>
+<p class="note">Read the columns together: the string the absent player held, the player the club chart lists next, the
+string that player holds, and how many players the chart still lists behind him. Where the chart names nobody — the
+absent player is the last name at that spot, or he is not on the chart at all — the field is left blank and marked
+unverified rather than guessed. The last two columns catch a compounded loss: a replacement who is himself on the
+injury report.</p>
+{search_box('dr-table')}
+{table(depth_repl, ['depth_id','team_abbr','side_of_ball','chart_position','player_out','injury_report_position','official_game_status','string_of_absent_player','players_listed_at_this_spot','named_replacement','replacement_string','players_behind_replacement','co_listed_at_same_string','replacement_also_on_injury_report','depth_of_replacement_summary','chart_url','injury_source_url'],
+       {'depth_id':'ID','team_abbr':'Team','side_of_ball':'Side of ball','chart_position':'Chart position','player_out':'Player out','injury_report_position':'Report position','official_game_status':'Official status','string_of_absent_player':'String of absent player','players_listed_at_this_spot':'Listed at this spot','named_replacement':'Named replacement','replacement_string':'Replacement string','players_behind_replacement':'Behind him','co_listed_at_same_string':'Co-listed at same string','replacement_also_on_injury_report':'Replacement on injury report','depth_of_replacement_summary':'Depth of the replacement','chart_url':'Club chart','injury_source_url':'Injury report'},
+       table_id='dr-table', filterable=True)}
+<h2>How this register fits the other one</h2>
+<p>This repository holds two independent replacement-depth registers. They were built in parallel by different sessions
+from the same kind of source. Together they cover <strong>{len(_union_names)} of 32 clubs</strong>:</p>
+<ul class="findings">
+<li><strong>This register</strong> (<code>data/depth_replacement.csv</code>): {', '.join(_covered_names)} — every
+Out/Doubtful player on the Week 10 report who appears on that club's chart, {len(depth_repl)} rows.</li>
+<li><strong>The other register</strong> (<code>data/replacement_depth_week10_2026.csv</code>, see
+<a href="depth-deficiency.html">Deficiency tracking</a>): SEA, MIA, BAL, CLE, AZ, NYG — a quarterback-centred set
+with the chart order quoted verbatim.</li>
+<li><strong>One direct disagreement, recorded rather than resolved:</strong> this session's request to
+www.seattleseahawks.com returned a consent and advertising interstitial, while the other session retrieved the Seattle
+chart from <a href="https://www.seahawks.com/team/depth-chart" target="_blank" rel="noopener">www.seahawks.com</a>.
+Seattle is therefore absent here and present there. Nothing was inferred to bridge the gap.</li>
+<li><strong>One compounded loss the two registers agree on the shape of:</strong> Dallas safety P.J. Locke is Out and
+the man behind him, Juanyeh Thomas, is himself Doubtful — a second-string replacement who may not play.</li>
+</ul>
+<h2>Coverage, and why it stops where it stops</h2>
+<p>Six clubs publish a chart that could be read as text on {AS_OF}:
+<a href="https://www.detroitlions.com/team/depth-chart" target="_blank" rel="noopener">Detroit</a>,
+<a href="https://www.patriots.com/team/depth-chart" target="_blank" rel="noopener">New England</a>,
+<a href="https://www.dallascowboys.com/team/depth-chart" target="_blank" rel="noopener">Dallas</a>,
+<a href="https://www.packers.com/team/depth-chart" target="_blank" rel="noopener">Green Bay</a> (chart dated
+Nov. 10, 2026),
+<a href="https://www.tennesseetitans.com/team/depth-chart" target="_blank" rel="noopener">Tennessee</a> (chart dated
+11/10/26) and
+<a href="https://www.neworleanssaints.com/team/depth-chart" target="_blank" rel="noopener">New Orleans</a>.</p>
+<ul class="findings">
+<li><strong>Houston</strong> publishes its chart as an image, so no ordinal value can be read from the page text.</li>
+<li><strong>Indianapolis</strong> and <strong>Minnesota</strong> could not be retrieved on this pass, and
+<strong>Seattle</strong> returned a consent interstitial at the address used here. None was guessed.</li>
+<li>Two players on this page — Kerby Joseph (DET) and Micah Parsons (GB) — are listed Out or Doubtful on the
+league report but do not appear on their own club's chart at all. Their rows are blank and flagged.</li>
+</ul>
+""")
+
+pages["correlation-provenance.html"] = ("Correlation provenance", f"""
+<h1>Correlation provenance</h1>
+<p class="note">Every correlation here names both of its inputs, the official page those inputs come from, and the n it
+was computed on. Each previously published value was recomputed from the official ledger before this page was built;
+the recomputation column records what happened, including where a published figure is rounded. <strong>The owner rule
+matters here:</strong> under the rule registered as F49 and applied in <code>data/correlation_audit.csv</code>, a
+correlation whose predictor is a <em>model output</em> is a diagnostic, not an officially sourced correlation, because
+the predictor is not itself an official number. The column below states, row by row, which inputs are official and which
+are model outputs, so that rule can be applied to any row without re-deriving it.</p>
+{tiles([(len(corr_prov), 'correlations published'), (len(corr_prov), 'each with an n'),
+        (_recomputed, 'recomputed from the ledger this session'), ('5', 'added by this session')])}
+{search_box('cp-table')}
+{table(corr_prov, ['corr_id','question','input_1','input_2','pair_measured','value','ci_low','ci_high','p_value','n','inputs_officially_sourced','method','recomputation_check','note','official_source_url'],
+       {'corr_id':'ID','question':'Question','input_1':'Input 1','input_2':'Input 2','pair_measured':'Pair measured','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','n':'n','inputs_officially_sourced':'Officially sourced','method':'Method','recomputation_check':'Recomputation','note':'Note','official_source_url':'Official source'},
+       table_id='cp-table', filterable=True)}
+<h2>What is still not publishable as a correlation</h2>
+<ul class="findings">
+<li><strong>Player-prop correlations.</strong> No player-prop outcomes, prices or settlement rules exist in this
+repository, so no prop correlation can be computed (F31).</li>
+<li><strong>Parlay-leg correlations beyond tickets.</strong> The two-leg study covers 24 tickets from a selected subset
+of games. It is published with its n and without an interval for that reason.</li>
+<li><strong>Anything built on a market price.</strong> With no odds feed, no correlation involving a price, a closing
+line or a return can be computed at all (F07).</li>
+</ul>
+""")
+
+pages["repo-audit.html"] = ("Repository audit", f"""
+<h1>Repository audit — line by line</h1>
+<p class="note">Every check below was run against a live official page or recomputed from the stored data on {AS_OF}.
+The result column is produced by <code>scripts/repo_audit.py</code>, so re-running it reproduces this table. Where a
+check found a problem, the row says so and links to the flag that carries it. Nothing here repairs anything: this page
+reports, the <a href="flagged.html">Flagged for review</a> page collects. This is this session's pass; the
+<a href="verification.html">Verification record</a> and the <a href="cross-check.html">independent cross-check</a>
+carry the passes run by other sessions.</p>
+{tiles([(len(repo_audit), 'checks run'), (_audit_pass, 'passed'),
+        (len(repo_audit) - _audit_pass, 'irregularities found or resolved'),
+        (sum(1 for r in repo_audit if r["status"] == "FAIL"), 'failed outright')])}
+{search_box('ra-table')}
+{table(repo_audit, ['check_id','area','what_was_checked','method','result','status','evidence_url'],
+       {'check_id':'ID','area':'Area','what_was_checked':'What was checked','method':'Method','result':'Result','status':'Status','evidence_url':'Evidence'},
+       table_id='ra-table', filterable=True)}
+<h2>The findings this pass added</h2>
+<ol class="findings">
+<li><strong>Home-team bias in the originated side (<a href="flagged.html">F76</a>).</strong> Not statistically
+significant, but the direction is consistent and it is now measured rather than assumed.</li>
+<li><strong>The neutral-site defect, half closed.</strong> Week 11 MIN at SF is published with the home-field term
+dropped and the schedule column that says why; the 137 completed historical rows still carry a blank neutral_site
+value, which is the open half of F71 and is not resolved here.</li>
+<li><strong>The constant reference total explained and re-derived.</strong> It is the league mean game total —
+45.9197 points over the 137-game ledger, published as 45.9 — not a game-specific projection.</li>
+<li><strong>One wording defect confirmed fixed.</strong> The ledger is weeks 1-9 complete plus the Week 10 Thursday
+game, not "weeks 1-10"; the label no longer appears anywhere in the repository.</li>
 </ol>
 """)
 

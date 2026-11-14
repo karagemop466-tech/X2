@@ -444,10 +444,10 @@
   "flag_id": "F50",
   "category": "Gate integrity",
   "item": "Gate G1 (no look-ahead) is a constant True",
-  "detail": "scripts/model.py originally set G1 to a constant True. Resolution: the merged tree computes G1 from an explicit no-look-ahead audit (audit_no_lookahead / G1_PASSED in scripts/model.py, rule text in data/gate_results.csv) - for every out-of-sample week the training games are strictly earlier weeks and none are empty. Session d2915d86 independently implemented the same computed gate (fit-week checks) on its branch before the merge; the merged audit is the stronger of the two and is kept. This run: lookahead_audit_pass true across 10 tests.",
+  "detail": "scripts/model.py gate_eval() set G1 to a constant True. The no-look-ahead property holds by construction in the walk-forward loop but was not computed as a gate. Fixed 2026-11-14 by two independent passes: sessions f25d6b55/e208ba6d added the lookahead_audit() computation (G1_PASSED) now in scripts/model.py, and session 20e6161b independently added a measured max(training week) < W check (superseded by the merged audit).",
   "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
-  "status": "Resolved (G1 computed; session d2915d86 confirmed on the merged tree)",
-  "action_requested": "None - reviewer can confirm in data/gate_results.csv (G1 rule) and model_summary.json (lookahead_audit_pass, lookahead_tests)."
+  "status": "Resolved 2026-11-14 (main: lookahead_audit in scripts/model.py; session 20e6161b T52 applied the same fix independently and re-derived it)",
+  "action_requested": "G1 is a measured gate; no action remains. If the audit ever fails the build output shows it in gate_results.csv."
  },
  {
   "flag_id": "F51",
@@ -471,10 +471,10 @@
   "flag_id": "F53",
   "category": "Coverage gap",
   "item": "Four availability rows have no depth check",
-  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) were shown without a club-chart check. Resolution: all four official club charts were fetched on 2026-11-14 (packers.com, therams.com, chiefs.com, colts.com; sources SRC-74 to SRC-77) and recorded in replacement_depth_week10_2026.csv. Chart orders are filled; depth ranks stay blank because no official source names a replacement for these four rows (A11: Key is returning from IR, not replaced, and is absent from the Week 10 chart, which predates his Saturday activation).",
+  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) were shown without a club-chart check. Closed 2026-11-14 (session 20e6161b, T53): all four rows are now checked against the club charts (packers.com, therams.com, chiefs.com, colts.com) and their NFL.com source articles were re-read. A10's source was upgraded to the Saturday downgrade article, which names the replacements (Emmett Johnson, named lead, 2nd string RB2 on the chart). A08/A09 name groups only, so their rank cells stay blank with the chart order recorded; A11 is an IR activation (no replacement) and Key is absent from the Week 10 chart (released before the Saturday activation).",
   "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
-  "status": "Resolved (session d2915d86, T52): A08-A11 checked against club charts",
-  "action_requested": "None - reviewer can confirm on the depth-deficiency page, where all eleven rows A01-A11 now carry a club-chart check."
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53)",
+  "action_requested": "None remaining. Chart caveats (self-labelled unofficial, pre-injury order) stay under F45."
  },
  {
   "flag_id": "F54",
@@ -601,5 +601,32 @@
   "source_url": "https://karagemop466-tech.github.io/X2/docs/review-path.html",
   "status": "Resolved",
   "action_requested": "My page moved to review-path.html so both publish (30 pages). scripts/build.py now fails the build on a slug assigned twice without appending, on two NAV entries pointing at one file, and on a NAV entry with no generated page. Verified by reintroducing the bug."
+ },
+ {
+  "flag_id": "F74",
+  "category": "Register accuracy (line-by-line review)",
+  "item": "Availability register rows contradicted or superseded by their own cited sources",
+  "detail": "A session 20e6161b line-by-line pass (T53/T54) re-read the body of every source cited by confirmed_availability_week10_2026.csv rows A08-A11. A08 (GB) claimed \"no replacement is named in the official sources checked\" while the body of its own cited NFL.com article names the replacement group (Kaleb Johnson, MarShawn Lloyd, Pierre Strong, Chris Brooks); corrected with the article quote. A10 (KC) carried a Friday snapshot (Walker Questionable) that the Saturday official update supersedes (downgraded to Out, replacement group named); a dated update was added and the snapshot text preserved per the F26 convention. A09 and A11 checked and left unchanged.",
+  "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53/T54) — corrections applied and labelled",
+  "action_requested": "Reviewer to confirm the dated-update style for superseded snapshots (same mechanism as the F26 owner decision)."
+ },
+ {
+  "flag_id": "F75",
+  "category": "Register consistency",
+  "item": "Two registers share the A01-A11 ID scheme for different rows",
+  "detail": "data/confirmed_availability_week10_2026.csv (session 10a76288, T34) and data/replacement_depth_week10_2026.csv (session 8a0bf37e, T42) both number their rows A01-A11, but the rows do not correspond one to one and the columns differ. On the published pages the context is always shown, but a bare \"A08\" citation is ambiguous between the two registers.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open — needs review",
+  "action_requested": "Owner to choose one ID scheme (e.g. AV01- vs RD01-) in a later integration pass; renaming ripples through scripts/build.py and flag text, so it is not done unilaterally here."
+ },
+ {
+  "flag_id": "F76",
+  "category": "Irregularity - model behaviour",
+  "item": "Originated side carries a home-team bias against the number the model itself published",
+  "detail": "Graded every out-of-sample game against the walk-forward line scripts/model.py published for it: home side 36 cover / 52 lose / 1 push over 89 games; mean signed error (actual minus predicted) -0.83 points, SE 1.30, t = -0.64. The direction favours the away side but is not statistically distinguishable from zero, so the line is published as computed. Raised by session d0d9d19f (check A09 in data/repo_line_audit.csv). Monitor: re-check after each week is settled.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Open - monitoring",
+  "action_requested": "Re-run scripts/repo_audit.py after each week is added; escalate only if the interval excludes zero."
  }
 ]
