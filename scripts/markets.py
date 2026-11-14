@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Derive the market tables (session c125b2f7, tasks T37-T38).
+"""Derive the market tables (session c125b2f7, tasks T39-T40).
 
 Reads only existing project files:
   data/model_lines_week11.csv   - originated fair lines (model_*), one row per game
@@ -43,7 +43,7 @@ def teams(matchup):
 games = read("model_lines_week11.csv")
 leaderboard = read("strategy_leaderboard.csv")
 
-# ---------- T37a: price-snapshot store (side -> total -> moneyline) ----------
+# ---------- T39a: price-snapshot store (side -> total -> moneyline) ----------
 MARKETS = [
     (1, "side", "Spread (home side)"),
     (2, "total", "Game total (over/under)"),
@@ -81,7 +81,7 @@ for g in games:
         })
 write("price_snapshots.csv", price_rows, price_fields)
 
-# ---------- T37b: fair line / market line / difference as separate columns ----------
+# ---------- T39b: fair line / market line / difference as separate columns ----------
 # Difference convention: market minus fair. It is blank unless a market value exists.
 comp_fields = [
     "game_no", "matchup", "kickoff_et",
@@ -110,7 +110,7 @@ for g in games:
     })
 write("line_comparison_week11.csv", comp_rows, comp_fields)
 
-# ---------- T38b: signal and staking kept apart ----------
+# ---------- T40b: signal and staking kept apart ----------
 # Rank is by the signal metric only (skill, points). Staking has no measured value
 # because no prices exist, so a staking result can never move a strategy up the signal rank.
 sig_fields = [
