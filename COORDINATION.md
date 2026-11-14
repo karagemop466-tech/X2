@@ -22,7 +22,7 @@ Files listed are the ones each task touches. Shared outputs (`docs/`, `scripts/b
 | T07 | Legal check: wagering from Japan | needs review | e98c7ba0 | data/flags.csv (F09) | S03, S04 | Official Penal Code text and JSC page checked. Legal opinion still needed |
 | T08 | Executive summary | done | e98c7ba0 | scripts/build.py (exec summary) | S01, S03, S04 | Numbers computed by build script |
 | T09 | Site: landing, category subpages, Flagged for Review | done | e98c7ba0 | docs/, scripts/build.py | all | Static HTML, no external dependencies |
-| T10 | Integration: validate, build, PR, merge, Pages | done (merge + Pages step recorded in log) | e98c7ba0 | COORDINATION.md, PR | all | PR #1: https://github.com/karagemop466-tech/X2/pull/1 |
+| T10 | Integration: validate, build, PR, merge, Pages | done | e98c7ba0 | COORDINATION.md, PR | all | PR #1 (merged 0563aab): https://github.com/karagemop466-tech/X2/pull/1 · PR #2 (merged 2c9f374): https://github.com/karagemop466-tech/X2/pull/2 · Live: https://karagemop466-tech.github.io/X2/ |
 
 ## Source registry
 
@@ -60,4 +60,7 @@ See `data/flags.csv` (F01–F14), also published at `docs/flagged.html` under "F
 - 2026-11-14 · e98c7ba0 · Integration check: `python3 scripts/build.py` passes (345 injury rows, 14 games, 11 pages, all links resolve, all row links official).
 - 2026-11-14 · e98c7ba0 · Pull request opened: https://github.com/karagemop466-tech/X2/pull/1 (base `main`, head `arena/e98c7ba0-x2`). Merge with `--merge` next, without waiting for approval, per the brief.
 - 2026-11-14 · e98c7ba0 · PR #1 merged into main (merge commit 0563aab). Enabling Pages from main /docs returned HTTP 403, and the existing Pages config is main /. Workaround in PR #2: root index.html forwards to docs/ (Flag F15).
+- 2026-11-14 · e98c7ba0 · PR #1 merged to main (`--merge`, merge commit 0563aab, 02:45:30Z).
+- 2026-11-14 · e98c7ba0 · Pages source change to /docs refused (HTTP 403). PR #2 merged to main (merge commit 2c9f374, 02:46:10Z) with a root index.html that forwards to docs/ (F15).
+- 2026-11-14 · e98c7ba0 · GitHub Pages build for commit 2c9f374: status `built`. Live check: https://karagemop466-tech.github.io/X2/ forwards to docs/index.html and shows 345 players, 28 teams, 66 Out, 10 Doubtful, 84 Questionable. Flagged page live at https://karagemop466-tech.github.io/X2/docs/flagged.html.
 - No merge conflicts. No other session has touched these files.
