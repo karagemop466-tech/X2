@@ -80,6 +80,27 @@ See the <a href="decision-path.html">Decision path</a> for the exact question, t
 <li><strong>Results feed.</strong> The second transcription agrees on all 137 games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
 </ul>
+<h2>Model desk: changes on 2026-11-14 (session f25d6b55, tasks T51&ndash;T55)</h2>
+<ul class="findings">
+<li><strong>C09 correction applied (REQ-8a-1, Flag F48).</strong> The calibration row is a regression slope, so its interval and
+p-value now come from the slope's own standard error: slope 0.885, 95% CI 0.335 to
+1.435, p 0.682 against slope 1.0. The published register
+(<code>correlations_computed.csv</code>) also carries input A, input B and the owner-rule classification for every row, matching
+the audit; the model-diagnostics rows are labelled as such (DEC-09). Verified against <code>correlation_audit.csv</code> (V21).</li>
+<li><strong>Canonical verified results feed (T52, advances R38).</strong> <code>data/results_feed_2026.csv</code> publishes all
+137 official 2026 results with a per-row verification status; every grading path &mdash; backtest, bets,
+gates, correlations, snapshot store &mdash; consumes exactly this feed. ROI remains uncomputable until an authorised price source
+exists (F07). Verified against the graded ledger row by row (V22).</li>
+<li><strong>Price-snapshot store verified and documented (T53).</strong> The extended store's <code>fair_line</code> values are our
+own origin snapshots (walk-forward pre-game predictions for weeks 4&ndash;10, origination-run values for Week 11); the store
+reproduces byte for byte from those declared sources and the derived ML prices recompute from the fair probabilities (V23). The
+fair close is not yet recorded separately; a fixed cadence is proposed (S32). Market open/close cells stay blank (F07/F31/F51),
+and the fair open/close of our own lines is the store's model-side half.</li>
+<li><strong>F44 and F48 resolved; F56 records a citation misreference.</strong> F44 (constant reference total) is resolved by
+documenting the derivation (2 &times; league-average points per team per game, no look-ahead). F48 (C09 formula) is resolved by
+the correction above. F56 records that session ca1ea224's close-out cites F45/F46 for the blank price-store columns while the
+register assigns those IDs to different findings &mdash; the conditions are covered by F07/F31/F51.</li>
+</ul>
 
 </main>
 <footer>

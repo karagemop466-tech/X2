@@ -32,6 +32,16 @@ moneyline). First-party computed from official results; not a market price.</li>
 no official source confirms them (F07, F31, F45).</li>
 <li><strong>opening_verified / closing_verified</strong> — No for every row, because no value is filled.</li>
 <li><strong>status</strong> — carries the flag text on every row so the blank is never read as an omission.</li>
+<li><strong>Which half of the store this is (session f25d6b55).</strong> <code>fair_line</code> is <em>our own opening
+number</em> for every market we originate: for the out-of-sample window (weeks 4&ndash;10) it is the walk-forward pre-game
+prediction, fitted only on games played strictly before that week; for Week 11 it is the origination-run value recorded
+2026-11-14. The <em>close</em> of our own fair line is not yet recorded separately, and the market open/close cells stay blank
+until an authorised source is connected (F07; flag F51 covers the same condition on the Week 11 store). A fixed snapshot cadence
+(origin, weekly interim, close at kickoff) is proposed in suggestion S32.</li>
+<li><strong>Flag numbering note (F56).</strong> The session that built this store cited &ldquo;F45&rdquo; and
+&ldquo;F46&rdquo; for the blank opening/closing values, but those IDs belong to a different register section (depth charts and
+the signal/staking split). The conditions are covered in the register by F07, F31 and F51; F56 records the misreference so the
+Flagged page stays accurate.</li>
 </ul>
 <h2>Store contents</h2>
 <p class="note">Two complementary stores are published, both with every opening/closing value blank and
