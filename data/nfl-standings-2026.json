@@ -1,0 +1,97 @@
+{
+  "season": 2026,
+  "week": 10,
+  "type": "REG",
+  "source": "https://www.nfl.com/standings/",
+  "sourceTitle": "NFL Official Standings",
+  "verified": true,
+  "verifiedDate": "2026-11-14",
+  "verificationMethod": "Each row matched against https://www.nfl.com/standings/ (division, conference, and league views) fetched 2026-11-14.",
+  "conferences": [
+    {
+      "name": "AFC",
+      "divisions": [
+        {
+          "name": "AFC East",
+          "teams": [
+            {"team":"Buffalo Bills","abbr":"BUF","W":7,"L":1,"T":0,"pct":0.875,"PF":256,"PA":187,"net":69,"home":"3-1-0","road":"4-0-0","div":"0-1-0","divPct":0.000,"conf":"4-1-0","confPct":0.800,"nonConf":"3-0-0","strk":"4W","last5":"4-1-0","clinch":""},
+            {"team":"New England Patriots","abbr":"NE","W":5,"L":4,"T":0,"pct":0.556,"PF":211,"PA":207,"net":4,"home":"3-1-0","road":"2-3-0","div":"3-0-0","divPct":1.000,"conf":"5-1-0","confPct":0.833,"nonConf":"0-3-0","strk":"1L","last5":"3-2-0","clinch":""},
+            {"team":"New York Jets","abbr":"NYJ","W":2,"L":7,"T":0,"pct":0.222,"PF":182,"PA":223,"net":-41,"home":"1-3-0","road":"1-4-0","div":"0-2-0","divPct":0.000,"conf":"2-4-0","confPct":0.333,"nonConf":"0-3-0","strk":"4L","last5":"1-4-0","clinch":""},
+            {"team":"Miami Dolphins","abbr":"MIA","W":1,"L":7,"T":0,"pct":0.125,"PF":126,"PA":200,"net":-74,"home":"0-4-0","road":"1-3-0","div":"1-1-0","divPct":0.500,"conf":"1-4-0","confPct":0.200,"nonConf":"0-3-0","strk":"2L","last5":"1-4-0","clinch":""}
+          ]
+        },
+        {
+          "name": "AFC North",
+          "teams": [
+            {"team":"Pittsburgh Steelers","abbr":"PIT","W":6,"L":2,"T":0,"pct":0.750,"PF":180,"PA":144,"net":36,"home":"4-0-0","road":"2-2-0","div":"2-1-0","divPct":0.667,"conf":"3-2-0","confPct":0.600,"nonConf":"3-0-0","strk":"4W","last5":"4-1-0","clinch":""},
+            {"team":"Cincinnati Bengals","abbr":"CIN","W":6,"L":2,"T":0,"pct":0.750,"PF":240,"PA":175,"net":65,"home":"2-1-0","road":"4-1-0","div":"1-1-0","divPct":0.500,"conf":"4-2-0","confPct":0.667,"nonConf":"2-0-0","strk":"4W","last5":"4-1-0","clinch":""},
+            {"team":"Cleveland Browns","abbr":"CLE","W":5,"L":4,"T":0,"pct":0.556,"PF":161,"PA":196,"net":-35,"home":"3-0-0","road":"2-4-0","div":"2-1-0","divPct":0.667,"conf":"3-3-0","confPct":0.500,"nonConf":"2-1-0","strk":"2L","last5":"2-3-0","clinch":""},
+            {"team":"Baltimore Ravens","abbr":"BAL","W":4,"L":5,"T":0,"pct":0.444,"PF":189,"PA":236,"net":-47,"home":"1-3-0","road":"3-2-0","div":"0-2-0","divPct":0.000,"conf":"2-4-0","confPct":0.333,"nonConf":"2-1-0","strk":"4L","last5":"1-4-0","clinch":""}
+          ]
+        },
+        {
+          "name": "AFC South",
+          "teams": [
+            {"team":"Jacksonville Jaguars","abbr":"JAX","W":6,"L":2,"T":0,"pct":0.750,"PF":229,"PA":121,"net":108,"home":"4-1-0","road":"2-1-0","div":"1-1-0","divPct":0.500,"conf":"5-2-0","confPct":0.714,"nonConf":"1-0-0","strk":"2W","last5":"4-1-0","clinch":""},
+            {"team":"Houston Texans","abbr":"HOU","W":3,"L":5,"T":0,"pct":0.375,"PF":209,"PA":192,"net":17,"home":"0-4-0","road":"3-1-0","div":"2-1-0","divPct":0.667,"conf":"3-3-0","confPct":0.500,"nonConf":"0-2-0","strk":"1W","last5":"3-2-0","clinch":""},
+            {"team":"Indianapolis Colts","abbr":"IND","W":2,"L":7,"T":0,"pct":0.222,"PF":184,"PA":249,"net":-65,"home":"1-3-0","road":"1-4-0","div":"1-2-0","divPct":0.333,"conf":"1-5-0","confPct":0.167,"nonConf":"1-2-0","strk":"5L","last5":"0-5-0","clinch":""},
+            {"team":"Tennessee Titans","abbr":"TEN","W":1,"L":7,"T":0,"pct":0.125,"PF":144,"PA":199,"net":-55,"home":"0-4-0","road":"1-3-0","div":"1-1-0","divPct":0.500,"conf":"1-5-0","confPct":0.167,"nonConf":"0-2-0","strk":"2L","last5":"1-4-0","clinch":""}
+          ]
+        },
+        {
+          "name": "AFC West",
+          "teams": [
+            {"team":"Denver Broncos","abbr":"DEN","W":7,"L":2,"T":0,"pct":0.778,"PF":198,"PA":186,"net":12,"home":"4-0-0","road":"3-2-0","div":"2-1-0","divPct":0.667,"conf":"3-1-0","confPct":0.750,"nonConf":"4-1-0","strk":"5W","last5":"5-0-0","clinch":""},
+            {"team":"Kansas City Chiefs","abbr":"KC","W":6,"L":2,"T":0,"pct":0.750,"PF":202,"PA":143,"net":59,"home":"4-0-0","road":"2-2-0","div":"3-1-0","divPct":0.750,"conf":"6-1-0","confPct":0.857,"nonConf":"0-1-0","strk":"1W","last5":"3-2-0","clinch":""},
+            {"team":"Las Vegas Raiders","abbr":"LV","W":4,"L":5,"T":0,"pct":0.444,"PF":238,"PA":268,"net":-30,"home":"1-3-0","road":"3-2-0","div":"1-1-0","divPct":0.500,"conf":"3-3-0","confPct":0.500,"nonConf":"1-2-0","strk":"1L","last5":"1-4-0","clinch":""},
+            {"team":"Los Angeles Chargers","abbr":"LAC","W":0,"L":8,"T":0,"pct":0.000,"PF":121,"PA":219,"net":-98,"home":"0-4-0","road":"0-4-0","div":"0-3-0","divPct":0.000,"conf":"0-5-0","confPct":0.000,"nonConf":"0-3-0","strk":"8L","last5":"0-5-0","clinch":""}
+          ]
+        }
+      ]
+    },
+    {
+      "name": "NFC",
+      "divisions": [
+        {
+          "name": "NFC East",
+          "teams": [
+            {"team":"New York Giants","abbr":"NYG","W":5,"L":3,"T":1,"pct":0.611,"PF":203,"PA":196,"net":7,"home":"3-2-0","road":"2-1-1","div":"2-1-1","divPct":0.625,"conf":"3-3-1","confPct":0.500,"nonConf":"2-0-0","strk":"1L","last5":"2-2-1","clinch":""},
+            {"team":"Dallas Cowboys","abbr":"DAL","W":4,"L":5,"T":0,"pct":0.444,"PF":246,"PA":236,"net":10,"home":"1-3-0","road":"3-2-0","div":"2-1-0","divPct":0.667,"conf":"2-4-0","confPct":0.333,"nonConf":"2-1-0","strk":"1W","last5":"2-3-0","clinch":""},
+            {"team":"Washington Commanders","abbr":"WAS","W":3,"L":5,"T":1,"pct":0.389,"PF":196,"PA":223,"net":-27,"home":"2-2-1","road":"1-3-0","div":"2-2-1","divPct":0.500,"conf":"3-4-1","confPct":0.438,"nonConf":"0-1-0","strk":"1W","last5":"2-2-1","clinch":""},
+            {"team":"Philadelphia Eagles","abbr":"PHI","W":2,"L":7,"T":0,"pct":0.222,"PF":148,"PA":221,"net":-73,"home":"1-4-0","road":"1-3-0","div":"1-3-0","divPct":0.250,"conf":"1-6-0","confPct":0.143,"nonConf":"1-1-0","strk":"7L","last5":"0-5-0","clinch":""}
+          ]
+        },
+        {
+          "name": "NFC North",
+          "teams": [
+            {"team":"Chicago Bears","abbr":"CHI","W":7,"L":2,"T":0,"pct":0.778,"PF":241,"PA":184,"net":57,"home":"4-1-0","road":"3-1-0","div":"0-2-0","divPct":0.000,"conf":"5-2-0","confPct":0.714,"nonConf":"2-0-0","strk":"4W","last5":"4-1-0","clinch":""},
+            {"team":"Detroit Lions","abbr":"DET","W":6,"L":2,"T":0,"pct":0.750,"PF":222,"PA":189,"net":33,"home":"4-0-0","road":"2-2-0","div":"2-0-0","divPct":1.000,"conf":"4-1-0","confPct":0.800,"nonConf":"2-1-0","strk":"4W","last5":"4-1-0","clinch":""},
+            {"team":"Minnesota Vikings","abbr":"MIN","W":6,"L":2,"T":0,"pct":0.750,"PF":146,"PA":116,"net":30,"home":"3-1-0","road":"3-1-0","div":"2-1-0","divPct":0.667,"conf":"4-1-0","confPct":0.800,"nonConf":"2-1-0","strk":"2L","last5":"3-2-0","clinch":""},
+            {"team":"Green Bay Packers","abbr":"GB","W":6,"L":3,"T":0,"pct":0.667,"PF":216,"PA":191,"net":25,"home":"3-1-0","road":"3-2-0","div":"1-2-0","divPct":0.333,"conf":"4-3-0","confPct":0.571,"nonConf":"2-0-0","strk":"2W","last5":"4-1-0","clinch":""}
+          ]
+        },
+        {
+          "name": "NFC South",
+          "teams": [
+            {"team":"Carolina Panthers","abbr":"CAR","W":3,"L":5,"T":0,"pct":0.375,"PF":199,"PA":219,"net":-20,"home":"1-3-0","road":"2-2-0","div":"1-1-0","divPct":0.500,"conf":"3-3-0","confPct":0.500,"nonConf":"0-2-0","strk":"3L","last5":"2-3-0","clinch":""},
+            {"team":"New Orleans Saints","abbr":"NO","W":3,"L":5,"T":0,"pct":0.375,"PF":185,"PA":216,"net":-31,"home":"1-4-0","road":"2-1-0","div":"0-1-0","divPct":0.000,"conf":"1-3-0","confPct":0.250,"nonConf":"2-2-0","strk":"1W","last5":"2-3-0","clinch":""},
+            {"team":"Tampa Bay Buccaneers","abbr":"TB","W":3,"L":6,"T":0,"pct":0.333,"PF":202,"PA":178,"net":24,"home":"1-4-0","road":"2-2-0","div":"2-0-0","divPct":1.000,"conf":"3-3-0","confPct":0.500,"nonConf":"0-3-0","strk":"1L","last5":"3-2-0","clinch":""},
+            {"team":"Atlanta Falcons","abbr":"ATL","W":3,"L":6,"T":0,"pct":0.333,"PF":188,"PA":223,"net":-35,"home":"1-4-0","road":"2-2-0","div":"1-2-0","divPct":0.333,"conf":"3-3-0","confPct":0.500,"nonConf":"0-3-0","strk":"2L","last5":"1-4-0","clinch":""}
+          ]
+        },
+        {
+          "name": "NFC West",
+          "teams": [
+            {"team":"San Francisco 49ers","abbr":"SF","W":7,"L":1,"T":0,"pct":0.875,"PF":235,"PA":156,"net":79,"home":"5-0-0","road":"2-1-0","div":"3-0-0","divPct":1.000,"conf":"4-1-0","confPct":0.800,"nonConf":"3-0-0","strk":"1W","last5":"4-1-0","clinch":""},
+            {"team":"Seattle Seahawks","abbr":"SEA","W":5,"L":4,"T":0,"pct":0.556,"PF":202,"PA":162,"net":40,"home":"4-2-0","road":"1-2-0","div":"2-1-0","divPct":0.667,"conf":"2-3-0","confPct":0.400,"nonConf":"3-1-0","strk":"1W","last5":"2-3-0","clinch":""},
+            {"team":"Los Angeles Rams","abbr":"LA","W":5,"L":4,"T":0,"pct":0.556,"PF":214,"PA":181,"net":33,"home":"2-3-0","road":"3-1-0","div":"0-2-0","divPct":0.000,"conf":"3-2-0","confPct":0.600,"nonConf":"2-2-0","strk":"3W","last5":"3-2-0","clinch":""},
+            {"team":"Arizona Cardinals","abbr":"ARI","W":3,"L":6,"T":0,"pct":0.333,"PF":178,"PA":255,"net":-77,"home":"0-3-0","road":"3-3-0","div":"1-3-0","divPct":0.250,"conf":"2-5-0","confPct":0.286,"nonConf":"1-1-0","strk":"1L","last5":"2-3-0","clinch":""}
+          ]
+        }
+      ]
+    }
+  ],
+  "legend": {
+    "W":"Wins","L":"Losses","T":"Ties","PCT":"Winning percentage","PF":"Points for","PA":"Points against","NET":"Net points","HOME":"Home record","ROAD":"Road record","DIV":"Division record","CONF":"Conference record","NON-CONF":"Non-conference record","STRK":"Streak","LAST 5":"Last 5 games"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "season": 2026,
+  "week": 10,
+  "source": "https://www.nfl.com/injuries/league/2026/REG10",
+  "sourceTitle": "Official NFL Injury Report — Week 10 of the 2026 Season",
+  "verified": true,
+  "verifiedDate": "2026-11-14",
+  "verificationMethod": "Each row matched against the official NFL.com injury report page fetched 2026-11-14. Coverage below is a sample of games on the page; the page continues beyond the fetched portion.",
+  "coverage": "Partial sample (games fetched: Commanders@Giants, Patriots@Lions, Chiefs@Falcons partial). Not all 32 teams are represented. Missing rows are left blank and flagged unverified on the Flagged for Review page.",
+  "games": [
+    {
+      "date": "Thursday, November 12th",
+      "time": "8:15 PM EST",
+      "network": "Prime Video",
+      "home": {"team":"Washington Commanders","abbr":"WAS","record":"3-5-1"},
+      "away": {"team":"New York Giants","abbr":"NYG","record":"5-3-1"},
+      "homeInjuries": [
+        {"player":"John Bates","pos":"TE","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Treylon Burks","pos":"WR","injury":"","practice":"Did Not Participate In Practice","gameStatus":""},
+        {"player":"Jayden Daniels","pos":"QB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Matt Gulbin","pos":"C","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Chigoziem Okonkwo","pos":"TE","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Lucas Patrick","pos":"C","injury":"Concussion","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"Amik Robertson","pos":"CB","injury":"","practice":"Limited Participation in Practice","gameStatus":""},
+        {"player":"Shy Tuttle","pos":"DT","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Colson Yankoff","pos":"TE","injury":"Knee","practice":"Did Not Participate In Practice","gameStatus":"Out"}
+      ],
+      "awayInjuries": [
+        {"player":"Abdul Carter","pos":"LB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Jermaine Eluemunor","pos":"T","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Malik Harrison","pos":"LB","injury":"Groin","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Colton Hood","pos":"CB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Theo Johnson","pos":"TE","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Charlie Jones","pos":"WR","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"J.J. McCarthy","pos":"QB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Darnell Mooney","pos":"WR","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Malik Nabers","pos":"WR","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Cam Skattebo","pos":"RB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Andrew Thomas","pos":"T","injury":"","practice":"Full Participation in Practice","gameStatus":""}
+      ]
+    },
+    {
+      "date": "Sunday, November 15th",
+      "time": "9:30 AM EST",
+      "network": "FOX, FOX DEPORTES",
+      "home": {"team":"New England Patriots","abbr":"NE","record":"5-4"},
+      "away": {"team":"Detroit Lions","abbr":"DET","record":"6-2"},
+      "homeInjuries": [
+        {"player":"Ben Brown","pos":"C","injury":"Knee","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"A.J. Brown","pos":"WR","injury":"Ankle, Knee","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Kevin Byard","pos":"S","injury":"Chest","practice":"Full Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Carlton Davis III","pos":"CB","injury":"Knee","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"Reggie Gilliam","pos":"FB","injury":"Knee","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"TreVeyon Henderson","pos":"RB","injury":"Illness","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"Hunter Henry","pos":"TE","injury":"","practice":"Limited Participation in Practice","gameStatus":""},
+        {"player":"Cameron Latu","pos":"TE","injury":"Back","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Drake Maye","pos":"QB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Morgan Moses","pos":"T","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Walter Rouse","pos":"T","injury":"Concussion","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Brenden Schooler","pos":"S","injury":"Hamstring","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Rhamondre Stevenson","pos":"RB","injury":"Knee","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Greg Van Roten","pos":"G","injury":"Hamstring","practice":"Full Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Charles Woods","pos":"CB","injury":"Hamstring","practice":"Full Participation in Practice","gameStatus":"Questionable"}
+      ],
+      "awayInjuries": [
+        {"player":"Brian Branch","pos":"S","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Jared Goff","pos":"QB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Kerby Joseph","pos":"S","injury":"Knee","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"Cade Mays","pos":"C","injury":"Ankle","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"D.J. Reed","pos":"CB","injury":"Hip","practice":"Did Not Participate In Practice","gameStatus":"Out"},
+        {"player":"Jacob Saylors","pos":"RB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Amon-Ra St. Brown","pos":"WR","injury":"Rib","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Sione Vaki","pos":"RB","injury":"Ankle","practice":"Limited Participation in Practice","gameStatus":"Questionable"},
+        {"player":"D.J. Wonnum","pos":"DE","injury":"","practice":"Full Participation in Practice","gameStatus":""}
+      ]
+    },
+    {
+      "date": "Sunday, November 15th",
+      "time": "1:00 PM EST",
+      "network": "CBS",
+      "home": {"team":"Kansas City Chiefs","abbr":"KC","record":"6-2"},
+      "away": {"team":"Atlanta Falcons","abbr":"ATL","record":"3-6"},
+      "homeInjuries": [
+        {"player":"Jeffrey Bassa","pos":"LB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Mansoor Delane","pos":"CB","injury":"Shoulder","practice":"Full Participation in Practice","gameStatus":"Questionable"},
+        {"player":"Justin Fields","pos":"QB","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Jaden Hicks","pos":"S","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Travis Kelce","pos":"TE","injury":"","practice":"Full Participation in Practice","gameStatus":""},
+        {"player":"Patrick Mahomes","pos":"QB","injury":"","practice":"Full Participation in Practice","gameStatus":""}
+      ],
+      "awayInjuries": [],
+      "note": "Chiefs injury list truncated at fetch boundary; Falcons rows not captured. Remaining rows left blank and flagged unverified."
+    }
+  ]
+}
