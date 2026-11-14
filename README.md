@@ -31,7 +31,7 @@ Unconfirmed prices, forecast values, player-depth ranks, replacement impacts, pe
 
 - Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 345 manually transcribed rows across 28 teams and 14 listed games. Manual spot-check remains flagged.
 - The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
-- No licensed odds archive, historical forecast/outcome ledger, confirmed depth chart, player-level participation feed, computed parlay correlation, or tested strategy is available in the Python dashboard.
+- No licensed odds archive, historical forecast/outcome ledger, confirmed official depth chart, player-level participation feed, computed parlay correlation, or tested strategy is available in the Python dashboard. A separate Node research data file cites third-party Ourlads depth charts; those entries are flagged as non-official and must not be presented as official NFL facts (F18).
 - [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) prohibit systematic retrieval to compile a collection/database absent express prior written consent. No written permission is recorded here for the published injury snapshot; see **F16** on Flagged for Review. Do not expand or automate that data use without written authorization or qualified review.
 
 ## Important

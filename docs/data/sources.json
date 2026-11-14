@@ -228,5 +228,15 @@
   "accessed_date": "2026-11-14",
   "used_for": "Official defensive-stat categories; context for a proposed unit-level analysis only.",
   "verification_note": "Team totals do not establish a player-specific backup effect or a validated defensive deficiency signal; public access does not establish bulk-retrieval/model-use rights."
+ },
+ {
+  "source_id": "SRC-24",
+  "title": "Node dashboard depth-deficiency input (first-party project record)",
+  "publisher": "GitHub project repository",
+  "url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
+  "type": "First-party project record",
+  "accessed_date": "2026-11-14",
+  "used_for": "T12 review of the separate Node depth-deficiency data file only.",
+  "verification_note": "This file cites Ourlads third-party charts; the repository link verifies project contents, not official NFL depth-chart facts. Values remain flagged for official-source-only review."
  }
 ]

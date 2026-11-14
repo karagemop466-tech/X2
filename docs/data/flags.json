@@ -151,5 +151,14 @@
   "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
   "status": "Open — no project-specific cutoff approved",
   "action_requested": "Keep numeric cutoffs blank until a rights-cleared dataset and pre-registered statistical plan are reviewed."
+ },
+ {
+  "flag_id": "F18",
+  "category": "Source-scope review",
+  "item": "Separate Node depth-deficiency entries cite third-party Ourlads charts, not an official NFL depth chart",
+  "detail": "The separate Node dashboard data/depth-deficiencies.json contains six player/backup rows sourced from the official NFL injury report plus Ourlads, which the Node source register labels as reputable third-party. The official-only Python Pages dashboard does not publish these entries. Under the current official-source requirement, these third-party depth values are not verified official facts and must not be represented as such. T12 did not edit the Node data owned by session-09d7cc77.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth-deficiencies.json",
+  "status": "Review request — third-party values not official",
+  "action_requested": "Node-dashboard owner: replace the depth evidence with an official primary source or blank/suppress the player/backup values before promoting that output as official-source research."
  }
 ]
