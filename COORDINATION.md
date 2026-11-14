@@ -2138,8 +2138,22 @@ and reward tiers) · F36 (re-run the model when Week 10 is final) · F81/F82 (re
 | ~~T53~~ | Compute gate G1 instead of asserting a constant True (F50) | **superseded — done by e208ba6d, status confirmed by 20e6161b**; adopted, no files written for it by this session | e208ba6d | `scripts/model.py` `lookahead_audit()` / `G1_PASSED` | F50/F63 resolved on `main` |
 | ~~T92~~ | Restate C06 on a basis that does not double-count each game (F55) | **superseded — descriptive option adopted from d2915d86**; my parallel recompute (n = 113) verified then withdrawn in the merge; Q22/RV10 aligned to the descriptive policy | d2915d86 | `data/correlations_computed.csv` C06 row, `scripts/model.py`, `scripts/desk.py`, `data/flags.csv` (F55), `data/questions.csv` (Q22), `data/repo_review_2026-11-14.csv` (RV10) | Descriptive publish: r = 0.087, n = 228, interval and p blank by design |
 | ~~T93~~ | Complete the A08–A11 replacement-depth club-chart check (F53) | **superseded — done richer by 20e6161b (T79–T83), adopted verbatim**; my parallel fetch of the same four charts discarded in an earlier merge | 20e6161b | `data/replacement_depth_week10_2026.csv` (main's A08–A11), `data/flags.csv` (F53) | Article-body replacement groups plus club-chart ranks |
-| T94 | Verify the three Hidden-Score games against the official by-week schedule pages (F47, RF11–RF13) | **done — F47 resolved 2026-11-14** | 34c42a11 | `scripts/desk.py` (RF11–RF13), `data/results_feed_checks.csv`, `data/flags.csv` (F47, F41 evidence), `data/repo_review_2026-11-14.csv` (RV03), regenerated `docs/` | by-week pages weeks 5/6/9 fetched live; all three scores equal the ledger |
-| T95 | Final integration: merge `main` (union, four times), rebuild both sites, full verification, PR to main, merge, confirm GitHub Pages | in progress | 34c42a11 | `COORDINATION.md`, merged `scripts/**` + `data/**`, generated `docs/**`, PR | Union merges of `fb9078e`, `d4af927` and `61f3419`; `.gitattributes` kept from main; nothing discarded |
+| T94 | Verify the three Hidden-Score games against the official by-week schedule pages (F47, RF11–RF13) | **done — F47 resolved 2026-11-14; live-verified on the deployed site** | 34c42a11 | `scripts/desk.py` (RF11–RF13), `data/results_feed_checks.csv`, `data/flags.csv` (F47, F41 evidence), `data/repo_review_2026-11-14.csv` (RV03), regenerated `docs/` | by-week pages weeks 5/6/9 fetched live; all three scores equal the ledger |
+| T95 | Final integration: merge `main` (union, four times), rebuild both sites, full verification, PR to main, merge, confirm GitHub Pages | **done — PR #52 merged as `3cee8fe`; Pages build status `built` for that commit** | 34c42a11 | `COORDINATION.md`, merged `scripts/**` + `data/**`, generated `docs/**`, PR | Union merges of `fb9078e`, `d4af927` and `61f3419`; `.gitattributes` kept from main; nothing discarded |
 
 **Not claimed (owner-owned, unchanged by this session):** DEC-01…DEC-10, F17, F16, F19, F09, F42/F43/F44
 (ccd9ab30 T51, closed), F49/DEC-09, F51, F54/DEC-04, F36 (re-run after Week 10 completes), F64–F82.
+
+## 2026-11-14 · session 34c42a11 · PR / merge / Pages record (T94, T95)
+
+| Event | Record |
+|---|---|
+| PR opened | #52 — `arena/34c42a11-x2` → `main`, four union merges in (`fb9078e`, `d4af927`, `61f3419`, `3f44fc1`), nothing discarded |
+| PR merged | #52 merged as `3cee8fe` (merge commit contains T94's F47 verification, the bookkeeping fixes, and the T92/T93 adoption records) |
+| Pages | `gh api .../pages/builds/latest` → status **built** for commit `3cee8fe` |
+| Live check | Cache-busted fetch of `/X2/docs/verification.html?v=3cee8fe`: RF11–RF13 published with the by-week headline matches and status **pass**; C06 shows coefficient 0.087 / n 228 with CI and p blank (F55 descriptive); C09 shows the t interval 0.328–1.443, p 0.6830 |
+| Post-merge suite | 41 pages; check_links 1,823 internal / 4,221 external, no problems; verify_results 32/32; verify_live 75/75 (0 discrepancies); npm ALL CHECKS PASSED; `git diff --check` clean; generators byte-identical on re-run |
+
+**Task IDs closed by this session: T94 (F47) and T95 (integration). T92/T93 were adopted from d2915d86 and
+20e6161b respectively (no files written for them here); T52/T53 were adopted from f25d6b55/e208ba6d at claim
+time. Final free IDs after this session: T96+.**
