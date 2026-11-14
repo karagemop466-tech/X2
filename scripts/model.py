@@ -862,22 +862,31 @@ add_corr("C05", "Do model-predicted totals track actual totals?", r5, n5, "Total
          SRC_SCHED + "10",
          "Model predicted total (model output)", "Official total points", "no",
          "no - shown as model diagnostic (DEC-09)", "Predictor is a model output. Diagnostic only.")
-# week-to-week persistence of a team's margin (motivates recency weighting)
+# week-to-week persistence of a team's margin (motivates recency weighting).
+# F55: the previous construction counted each game once per team (n = 228), so the
+# two rows drawn from the same game were not independent and the p-value was
+# optimistic. One row per game now: the home team's transition into that game (the
+# away team's transition for the same game is dropped, so every game counts once).
+# Consecutive weeks for the same team still overlap, so the interval is read as
+# descriptive of this sample (F55 resolved 2026-11-14, session 34c42a11).
 prev, cur = [], []
-team_seq = defaultdict(list)
+team_week_margin = defaultdict(dict)
+for g in results:
+    team_week_margin[g["home_team"]][g["week"]] = g["margin"]
+    team_week_margin[g["away_team"]][g["week"]] = -g["margin"]
 for g in sorted(results, key=lambda g: (g["week"], g["game_url"])):
-    team_seq[g["home_team"]].append((g["week"], g["margin"]))
-    team_seq[g["away_team"]].append((g["week"], -g["margin"]))
-for t, seq in team_seq.items():
-    for i in range(1, len(seq)):
-        if seq[i][0] == seq[i - 1][0] + 1:
-            prev.append(seq[i - 1][1]); cur.append(seq[i][1])
+    prior = team_week_margin[g["home_team"]].get(g["week"] - 1)
+    if prior is not None:
+        prev.append(prior)
+        cur.append(g["margin"])
 r6, n6 = pearson(prev, cur)
 add_corr("C06", "Does last week's margin predict this week's margin for the same team?", r6, n6,
          "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much.",
          SRC_SCHED + "10",
-         "Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes", "yes",
-         "Official results. n = 228 counts each game once per team, so pairs are not independent (F55).")
+         "Official margin, week W-1 (home team)", "Official margin, week W (same game, home team)", "yes", "yes",
+         "Official results. One row per game (the home team's transition), so each game counts once (F55 resolved "
+         "2026-11-14, session 34c42a11). Consecutive weeks for the same team still overlap, so read the interval "
+         "as descriptive of this sample.")
 # calibration: regress actual margin on predicted margin (out of sample)
 mx = sum(xs) / len(xs); my = sum(ys) / len(ys)
 sxx = sum((x - mx) ** 2 for x in xs)

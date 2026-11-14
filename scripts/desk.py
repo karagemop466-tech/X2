@@ -121,15 +121,22 @@ spot = [
      "match: 35-27", "pass", "https://www.nfl.com/games/raiders-at-saints-2026-reg-3"),
     ("RF10", "Sample: Houston at Indianapolis, week 3", "Official game center final score (HOU-IND)",
      "match: 17-19", "pass", "https://www.nfl.com/games/texans-at-colts-2026-reg-3"),
-    ("RF11", "Sample: Houston at Tennessee, week 5", "Official game center shows 'Hidden Score' (F41)",
-     "not verified on game center; standings reconciliation only", "not verified",
-     "https://www.nfl.com/games/texans-at-titans-2026-reg-5"),
-    ("RF12", "Sample: Pittsburgh at Tampa Bay, week 6", "Official game center shows 'Hidden Score' (F41)",
-     "not verified on game center; standings reconciliation only", "not verified",
-     "https://www.nfl.com/games/steelers-at-buccaneers-2026-reg-6"),
-    ("RF13", "Sample: Cincinnati at Atlanta, week 9", "Official game center shows 'Hidden Score' (F41)",
-     "not verified on game center; standings reconciliation only", "not verified",
-     "https://www.nfl.com/games/bengals-at-falcons-2026-reg-9"),
+    ("RF11", "Sample: Houston at Tennessee, week 5",
+     "Official game center renders 'Hidden Score' (F41); score read instead from the official by-week schedule page headline "
+     "and compared line by line with games_2026_results.csv (read 2026-11-14)",
+     "match: by-week headline 'Texans 26, Titans 3, FINAL, Sunday, October 11th' equals ledger HOU 26, TEN 3",
+     "pass", "https://www.nfl.com/schedules/2026/by-week/week-5"),
+    ("RF12", "Sample: Pittsburgh at Tampa Bay, week 6",
+     "Official game center renders 'Hidden Score' (F41); score read instead from the official by-week schedule page headline "
+     "and compared line by line with games_2026_results.csv (read 2026-11-14)",
+     "match: by-week headline 'Steelers 26, Buccaneers 19, FINAL, Sunday, October 18th' equals ledger PIT 26, TB 19",
+     "pass", "https://www.nfl.com/schedules/2026/by-week/week-6"),
+    ("RF13", "Sample: Cincinnati at Atlanta, week 9",
+     "Official game center renders 'Hidden Score' (F41); score read instead from the official by-week schedule page headline "
+     "(the week 9 by-week score boxes also render 'Hidden Score'; the headline link carries the score). Compared line by "
+     "line with games_2026_results.csv (read 2026-11-14)",
+     "match: by-week headline 'Bengals 34, Falcons 17, FINAL, Sunday, November 8th' equals ledger CIN 34, ATL 17",
+     "pass", "https://www.nfl.com/schedules/2026/by-week/week-9"),
     ("RF14", "Week 11 schedule (13 games)",
      "Official by-week page (chunks 0, 1 and 2, read 2026-11-14) compared line by line with schedule_week11_2026.csv: day, kickoff time, network, teams, game link",
      "13 of 13 match. The six games not on chunks 1-2 (IND@HOU, MIA@BUF, BAL@CAR, NO@CHI, TEN@DAL, TB@DET) were read from chunk 0 on 2026-11-14 and match.",
@@ -214,16 +221,17 @@ AUDIT = {
             "Two halves of one official score line; one pair per game."),
     "C05": ("Model predicted total (model output)", "Official total points", "no",
             "Predictor is a model output. Diagnostic only."),
-    "C06": ("Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes",
-            "Official results. n = 228 counts each game once per team, so pairs are not independent (F55)."),
+    "C06": ("Official margin, week W-1 (home team)", "Official margin, week W (same game, home team)", "yes",
+            "Official results. One row per game (the home team's transition), so each game counts once; recomputed "
+            "2026-11-14 by session 34c42a11 after F55. Consecutive weeks for the same team still overlap."),
     "C07": ("Model-generated side and total legs", "Model-generated side and total legs", "no",
             "Both legs are model-generated selections; n = 24 tickets. Diagnostic only."),
     "C08": ("Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)", "yes",
             "Official injury report and standings. Exposure is a count of listed players."),
     "C09": ("Model predicted margin (model output)", "Official final margin", "no",
-            "A regression slope, not a correlation. Predictor is a model output. The register still holds the earlier "
-            "interval (0.830-0.923), which applies a correlation formula to a slope. Recomputed with the slope's own SE: "
-            "CI 0.335-1.435, p 0.683 vs slope 1.0. Correction requested on COORDINATION.md; not yet applied (F48)."),
+            "A regression slope, not a correlation. Predictor is a model output. Interval and p use the slope's own "
+            "standard error: CI 0.335-1.435, p 0.6820 vs slope 1.0 (correction applied 2026-11-14, session f25d6b55, "
+            "REQ-8a-1; stale note text corrected by session 34c42a11, F48)."),
 }
 corr = read("correlations_computed.csv")
 audit = []

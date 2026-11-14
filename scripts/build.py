@@ -26,6 +26,7 @@ OFFICIAL_HOSTS = {
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
+    "www.packers.com", "www.therams.com", "www.chiefs.com", "www.colts.com",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -1030,8 +1031,9 @@ so than the naive reference line (r = 0.274, p = 0.009). That gap is the skill t
 (p = 0.39) with actual totals, and the totals strategy shows no accuracy gain at all.</li>
 <li>Within a game, the two teams' scores do not co-move (r = 0.042) and blowouts are not associated with higher
 totals (r = 0.021). Both matter for parlay pricing, and both are essentially zero in this sample.</li>
-<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19, n = 228 team-game pairs that are not
-independent, Flag F55), which is why recency weighting did not help and why short hot streaks should not be trusted.</li>
+<li>Last week's margin is at best a weak predictor of this week's: r = 0.164, p = 0.084, n = 113, one row per game
+after the F55 correction (95% interval -0.022 to 0.338 crosses zero), which is why recency weighting did not help and
+why short hot streaks should not be trusted.</li>
 <li>The calibration slope is 0.885 with a 95% interval of 0.335 to 1.435 (p = 0.68 against slope 1.0, corrected
 2026-11-14): the interval is wide and includes both over-shy and over-confident readings &mdash; the model's scale is
 not yet pinned down (C09, model diagnostic).</li>
@@ -1362,12 +1364,12 @@ _d50_pos = sum(1 for r in _d50 if r["negative_point_estimate"] == "no")
 
 pages["verification.html"] = (pages["verification.html"][0], pages["verification.html"][1] + f"""
 <h2>Results feed checks (T49)</h2>
-<p class="note">Checks on the {len(read_csv('games_2026_results.csv'))}-game official results feed. The second transcription is compared after one stated normalisation: the official page writes the Rams as LAR, this register writes LA (Flag F46). Three sampled game pages show a hidden score (Flag F47) and are not verified on the game center.</p>
+<p class="note">Checks on the {len(read_csv('games_2026_results.csv'))}-game official results feed. The second transcription is compared after one stated normalisation: the official page writes the Rams as LAR, this register writes LA (Flag F46). Three sampled game pages show a hidden score; each of those three scores was verified line by line against the official by-week schedule page on 2026-11-14 (Flag F47 resolved).</p>
 {table(rf_checks, ['check_id','check','method','result','status','source_url'],
        {'check_id':'ID','check':'Check','method':'Method','result':'Result','status':'Status','source_url':'Source'},
        table_id='rf-table', filterable=True)}
 <h2>Correlation audit: owner rule and sample size (T44)</h2>
-<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row shows the register's earlier interval; the corrected interval is requested, not applied (Flag F48).</p>
+<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 calibration row carries its corrected interval (0.335 to 1.435, p = 0.6820 against slope 1.0), computed from the slope's own standard error (correction applied 2026-11-14, session f25d6b55; Flag F48 resolved).</p>
 {table(corr_audit, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','audit_note','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only?','qualifies_under_owner_rule':'Qualifies?','audit_note':'Audit note','source_url':'Source'},
        table_id='corr-audit-table', filterable=True)}
@@ -1385,7 +1387,7 @@ pages["verification.html"] = (pages["verification.html"][0], pages["verification
 
 pages["depth-deficiency.html"] = (pages["depth-deficiency.html"][0], pages["depth-deficiency.html"][1] + f"""
 <h2>Replacement depth: where the replacement sits, not only that one exists (T42)</h2>
-<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts are undated and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. {_depth_checked} of {len(rep_depth)} rows are checked against a club chart; A08 to A11 are open (Flag F53).</p>
+<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts are undated except Green Bay's (dated 2026-11-10) and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. {_depth_checked} of {len(rep_depth)} rows are checked against a club chart; A08 to A11 were checked on 2026-11-14 (Flag F53 resolved).</p>
 {table(rep_depth, ['item_id','team_abbr','position_group','player_affected','replacement_named_by_official_source','club_chart_order_as_fetched','replacement_depth_rank','depth_status','irregularity','source_url','depth_chart_url'],
        {'item_id':'ID','team_abbr':'Team','position_group':'Pos','player_affected':'Player affected','replacement_named_by_official_source':'Replacement named by official source','club_chart_order_as_fetched':'Club chart order (fetched)','replacement_depth_rank':'Replacement depth','depth_status':'Status','irregularity':'Irregularity','source_url':'Official source','depth_chart_url':'Club depth chart'},
        table_id='repdepth-table', filterable=True)}
@@ -1410,10 +1412,10 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <h2>Decision desk: changes on 2026-11-14 (session 8a0bf37e)</h2>
 <ul class="findings">
 <li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
-<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
-<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row is wrong in the register: its corrected interval is 0.335 to 1.435, p = 0.683 against slope 1.0. The correction is requested, not applied (Flag F48).</li>
+<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. Nine of the ten charts are undated; the Packers chart is dated 2026-11-10 (Flag F45). Two rows do not name the replaced player (Flag F46). The last four rows (A08 to A11) were checked against their club charts on 2026-11-14 (Flag F53 resolved).</li>
+<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row carries its corrected interval 0.335 to 1.435, p = 0.6820 against slope 1.0 (correction applied 2026-11-14, session f25d6b55; Flag F48 resolved).</li>
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
-<li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
+<li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score; each score was verified against the official by-week schedule page on 2026-11-14 (Flag F47 resolved).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
 </ul>
 <h2>Model desk: changes on 2026-11-14 (session f25d6b55, tasks T51&ndash;T55)</h2>
