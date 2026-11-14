@@ -10,14 +10,17 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
-  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="correlations.html">Correlations</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="starters.html">Starters &amp; depth</a><a href="depth-analysis.html">Unit exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="strategy-lab.html">Strategy lab</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation</a><a href="leaderboard.html">Leaderboard</a><a href="decisions.html">Decision gates</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="cross-check.html">Independent cross-check</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
 <section class="hero">
   <h1>NFL Research Dashboard</h1>
-  <p>A source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
-  Every table row links to an official NFL, government or statistical source; repository and deployment claims link to first-party project records. Unconfirmed NFL/model values remain blank and flagged.</p>
+  <p>A source-linked research dashboard for NFL availability, starter identity, independent-line signals, validation
+  gates, anti-luck testing, correlation planning and the decisions still standing in the way.
+  Every table row links to an official NFL, government or statistical source. Unconfirmed values are blank, never estimated.</p>
+  <p class="note"><strong>What this site will not tell you:</strong> it will not give you a pick, a line or a price.
+  No strategy here has been validated, and no reward is enabled. The evidence for both statements is on every page.</p>
   <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (read 2026-11-14).</p>
   <p class="note"><strong>Verification status:</strong> all 345 injury rows and all 14 Week 10 games were independently re-verified row by row against the official NFL.com pages on 2026-11-14, with no discrepancies found. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
@@ -27,24 +30,40 @@
 <div class="cards">
 <a class="card" href="executive-summary.html"><h3>Executive summary</h3><p>The key findings, what is verified, and what is not yet known.</p></a>
 <a class="card" href="decision-path.html"><h3>Decision path</h3><p>The ten questions that must be answered, in order, before any dependent choice is made. Start here.</p></a>
+<a class="card" href="decisions.html"><h3>Decision gates</h3><p>Every question that must be answered before a path is chosen, with the choice you will face.</p></a>
+<a class="card" href="suggestions.html"><h3>Suggestions</h3><p>Recommendations with options; nothing is implemented without your choice.</p></a>
+</div>
+<h2>Data and evidence</h2>
+<div class="cards">
+<a class="card" href="injuries.html"><h3>Injuries</h3><p>All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.</p></a>
+<a class="card" href="games.html"><h3>Games</h3><p>The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.</p></a>
+<a class="card" href="starters.html"><h3>Starters and depth</h3><p>Official gamebook starter identity, and why a 1st/2nd/3rd string rank cannot be official.</p></a>
+<a class="card" href="depth-analysis.html"><h3>Unit exposure</h3><p>Out and Doubtful players by unit, with replacement depth left blank.</p></a>
+<a class="card" href="verification.html"><h3>Verification</h3><p>The line-by-line re-check: 345 of 345 rows match, one official conflict flagged.</p></a>
+<a class="card" href="repo-review.html"><h3>Repo review</h3><p>Every file reviewed against a source; irregularities flagged, not hidden.</p></a>
+<a class="card" href="results.html"><h3>Season results</h3><p>All 137 transcribed 2026 games, each reconciled against the official standings.</p></a>
+</div>
+<h2>Lines, markets and skill</h2>
+<div class="cards">
 <a class="card" href="model-lines.html"><h3>Model &amp; Week 11 lines</h3><p>Our own originated spreads, totals and moneylines for Week 11 — originated side first, then total, then moneyline — with the fair line, market line and difference as separate columns.</p></a>
 <a class="card" href="price-snapshots.html"><h3>Price snapshots</h3><p>The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F51).</p></a>
+<a class="card" href="markets.html"><h3>Market tables</h3><p>Price-snapshot store (opening and closing, blank until a source exists), fair vs market lines, signal vs staking, and the demotion gate.</p></a>
 <a class="card" href="backtest.html"><h3>Backtest</h3><p>All 89 walk-forward out-of-sample predictions against what actually happened, game by game.</p></a>
 <a class="card" href="leaderboard.html"><h3>Leaderboard</h3><p>Seven strategies ranked on forecast skill, with signal separated from staking, gates, uncertainty and required sample sizes.</p></a>
 <a class="card" href="validation-gates.html"><h3>Validation gates</h3><p>Nine gates, what each one tests, and which strategies pass — including the demotion gate that sends a live strategy back to paper.</p></a>
+<a class="card" href="validation.html"><h3>Skill engine</h3><p>The validation gates a strategy must pass before it can be called valid.</p></a>
+<a class="card" href="signals.html"><h3>Signals</h3><p>Signal definitions for single bets, parlays and player-prop combos.</p></a>
+<a class="card" href="anti-luck.html"><h3>Anti-luck</h3><p>Bootstrap intervals, multiplicity control and held-out blocks: how a lucky run is kept off the board.</p></a>
+<a class="card" href="correlation.html"><h3>Correlation plan</h3><p>The measurement plan for every dependent leg pair, with all values blank.</p></a>
 <a class="card" href="correlations.html"><h3>Correlations</h3><p>Nine correlation values computed from official results, with intervals and p-values.</p></a>
 <a class="card" href="parlays.html"><h3>Parlays</h3><p>Same-game two-leg tickets: observed joint hit rate against the independence shortcut.</p></a>
-<a class="card" href="markets.html"><h3>Market tables</h3><p>Price-snapshot store (opening and closing, blank until a source exists), fair vs market lines, signal vs staking, and the demotion gate.</p></a>
-<a class="card" href="results.html"><h3>Season results</h3><p>All 137 transcribed 2026 games, each reconciled against the official standings.</p></a>
-<a class="card" href="injuries.html"><h3>Injuries</h3><p>All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.</p></a>
-<a class="card" href="games.html"><h3>Games</h3><p>The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.</p></a>
-<a class="card" href="depth-analysis.html"><h3>Depth exposure</h3><p>Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.</p></a>
-<a class="card" href="strategy-lab.html"><h3>Strategy lab</h3><p>The hypotheses, the eight gates and the reward framework. Four of seven strategies now qualify; the tiers are proposed, nothing is paid.</p></a>
+</div>
+<h2>Reference</h2>
+<div class="cards">
+<a class="card" href="strategy-lab.html"><h3>Strategy lab</h3><p>The original framework: hypotheses, gates and market families.</p></a>
 <a class="card" href="questions.html"><h3>Questions</h3><p>What we know, what we do not, and how to find the missing information.</p></a>
-<a class="card" href="requirements.html"><h3>Requirements</h3><p>Each requirement from the brief with its current status.</p></a>
-<a class="card" href="suggestions.html"><h3>Suggestions</h3><p>Review proposals before future implementation, with a recommended path and the gate that blocks each one.</p></a>
-<a class="card" href="verification.html"><h3>Verification</h3><p>What was checked line by line, against which official page, and what the result was.</p></a>
-<a class="card" href="flagged.html"><h3>Flagged for review</h3><p>Irregularities, unverified items and missing official data, each with a source link.</p></a>
+<a class="card" href="requirements.html"><h3>Requirements</h3><p>Each line of the brief with its current status.</p></a>
+<a class="card" href="flagged.html"><h3>Flagged for review</h3><p>Irregularities, unverified items and missing official data.</p></a>
 <a class="card" href="sources.html"><h3>Sources</h3><p>Every official source used, with what it supports.</p></a>
 <a class="card" href="cross-check.html"><h3>Independent cross-check</h3><p>A second independent transcription and model compared against the first: what agrees, and the one thing that does not.</p></a>
 <a class="card" href="depth-deficiency.html"><h3>Deficiency tracking</h3><p>Unit exposure by side of ball, and officially named starters and replacements.</p></a>

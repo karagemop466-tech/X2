@@ -42,13 +42,14 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `30beeb55` | `arena/30beeb55-x2` | Session 30beeb55: claimed T13, T14, T15 on 2026-11-14. Branch from `main` @ `cf2d454`. Merged to `main` via PR #8 (merge commit e33a7f5). |
 | `7c9eb69a` | `arena/7c9eb69a-x2` | Independent row-by-row re-verification of the Week 10 snapshot, plus the Decision path, Verification record and suggestion review matrix (T17). Resolved flag/task ID collisions with 30beeb55 without discarding work. **Merged to `main` via PRs #9–#11.** |
 | `45a0ec8c` | `arena/45a0ec8c-x2` | Session 45a0ec8c. Claimed T18/T19 on 2026-11-14 after finding T13–T15 already done on `main` (30beeb55, PR #8). Adds designation/identity cross-check evidence (SRC-25–SRC-29) and new flags F23–F29 only; does not redo T13–T15. **Merged to `main` via PRs #12–#13.** |
-| `52ca9f77` | `arena/52ca9f77-x2` | **Current session — final integration.** Claimed T13 (superseded by 30beeb55's merged PR #8; no duplication — see merge log). Located the official club depth charts both prior passes missed, and as final integration supplemented the merged T13 state with club-chart evidence (Node F-05 update, new Node F-08), reconciled Python F18/SRC-24/README, applied 45a0ec8c's cross-scope requests, and will deliver the final PR/merge/Pages confirmation. Task recorded as **T20** (the IDs T18/T19 were taken by 45a0ec8c). |
-| `324b0cd2` | `arena/324b0cd2-x2` | **Current session.** Claimed T13 before `main` advanced; T13 was completed in parallel by 30beeb55 (PR #8), so this session adopts main's remediation and instead performs the final integration as **T21** (renumbered from locally drafted T20 after 52ca9f77 claimed it): fixes the Node table-token render bug (F30), adds the Node F-09 audit trail, resolves handed-off F21 (stale news rows) and F22 (verified Thursday result), and records the integration. Identifiers renumbered across four main advances: T18 (taken by 45a0ec8c), T20 (taken by 52ca9f77), F23 to F30, SRC-25 to SRC-30, F-08 to F-09. |
+| `52ca9f77` | `arena/52ca9f77-x2` | **Session — final integration.** Claimed T13 (superseded by 30beeb55's merged PR #8; no duplication — see merge log). Located the official club depth charts both prior passes missed, and as final integration supplemented the merged T13 state with club-chart evidence (Node F-05 update, new Node F-08), reconciled Python F18/SRC-24/README, applied 45a0ec8c's cross-scope requests, and delivered the final PR/merge/Pages confirmation. Task recorded as **T20** (the IDs T18/T19 were taken by 45a0ec8c). |
+| `324b0cd2` | `arena/324b0cd2-x2` | **Session.** Claimed T13 before `main` advanced; T13 was completed in parallel by 30beeb55 (PR #8), so this session adopts main's remediation and instead performs the final integration as **T21** (renumbered from locally drafted T20 after 52ca9f77 claimed it): fixes the Node table-token render bug (F30), adds the Node F-09 audit trail, resolves handed-off F21 (stale news rows) and F22 (verified Thursday result), and records the integration. Identifiers renumbered across four main advances: T18 (taken by 45a0ec8c), T20 (taken by 52ca9f77), F23 to F30, SRC-25 to SRC-30, F-08 to F-09. |
 | `c125b2f7` | `arena/c125b2f7-x2` | Session c125b2f7 (2026-11-14): claimed T39 and T40 (T37 was taken by 4c5bc504 after my claim; renumbered, see log) on the brief for the price-snapshot store, fair/market/difference view, signal-vs-staking split and demotion gate. Integration of its own work is recorded in the log below. |
-| `3988bdab` | `arena/3988bdab-x2` | **Current session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
+| `3988bdab` | `arena/3988bdab-x2` | **Session (closing).** Arrived claiming T13/T14, dropped the stale claim twice as `main` advanced (PRs #8–#18 landed mid-work), and re-scoped to the one gap no other session covered: **T22** honesty consistency across the Node dashboard (unrank the leaderboard, remove the unapproved "50+" cutoff, align the Node exec summary / correlation docs with the current evidence state) plus a third targeted live verification pass and the closing PR/merge/Pages record. Renumbered after collisions with 45a0ec8c (T18/T19), 52ca9f77 (T20) and 324b0cd2 (T21). |
 | `4c5bc504` | `arena/4c5bc504-x2` | **Session 4c5bc504 (claimed T37, 2026-11-14).** Post-merge re-verification of `main` @ `9e90dd3` (all checks re-run, live Pages build confirmed, Week 10 calendar checked against the official schedule) and board reconciliation. Touches `COORDINATION.md` only. |
 | `ca1ea224` | `arena/ca1ea224-x2` | **Session — final integration.** Arrived on `main` @ `9e90dd3` (PR #26 merged). Reviewed the whole tree against the original brief, found four structural gaps no prior session covered, and claimed **T37–T41**: the price-snapshot store, the fair/market/difference columns with side→total→moneyline origination order, the signal-vs-staking leaderboard split plus the demotion gate, a fourth independent live verification pass, and the closing PR/merge/Pages record. Worked in parallel with c125b2f7 on the same four requirements; the two implementations were reconciled by ID union in the final integration (nothing discarded). IDs renumbered after collisions (T18/T20/T21/T22 taken; F37–F42, SRC-44–60, Q31–Q42, S26–S28 taken). Merged to `main` as PR #34 (d22bbd3). |
 | `ccd9ab30` | `arena/ccd9ab30-x2` | Session `ccd9ab30`; adopted integrated T39/T40 work and claimed **T51** to resolve the remaining F43/F44 irregularities. Merged via the final integration session (a47ccbb1). |
+| `25d6114f` | `arena/25d6114f-x2` | Session `25d6114f`. Tasks **T14–T20**: reproducible line-by-line re-verification of the Week 10 snapshot, official gamebook starter evidence, signal/skill/correlation registers, anti-luck tests, decision-gate Q&A, and the skill-engine page set. Owns the live Python Pages pipeline (`scripts/build.py`, `data/*.csv`, `docs/`); does **not** edit Node-owned files (`src/**`, `data/*.json`, `docs/*.md`). Merged via the final integration session (a47ccbb1). |
 
 ## Task board (combined — all sessions)
 
@@ -73,7 +74,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | T17 | Independent second-pass re-verification of the Week 10 snapshot; Decision path, Verification record and suggestion review matrix | done | 7c9eb69a | data/decision-chain.csv, data/suggestion_review.csv, data/flags.csv (F20–F22), data/requirements.csv, scripts/build.py, generated `docs/*.html` and `docs/data/*.json`, COORDINATION.md | NFL.com injury report, Week 10 schedule, game center, standings, team roster page (404 depth-chart test); NIST and Government of Japan sources via suggestion_review evidence | **Second independent pass**: all 345 injury rows and all 14 game headers matched the live page on 2026-11-14, performed separately from 30beeb55's T15 check. Flags F20 (verification pass), F21 (news snapshot drift), F22 (verified Thursday score not published). Python build 13 pages; Node build/verify passing. |
 | T18 | Designation and identity cross-check against NFL.com official status article and roundups (F04/F11/F12 evidence; new F23–F29) | done (evidence); status changes requested to integration | 45a0ec8c | data/flags.csv (F23–F29 appended), data/sources.csv (SRC-25–SRC-29 appended), generated docs/flagged.html, docs/data/flags.json, docs/sources.html, docs/data/sources.json | NFL.com injury report and status article (SRC-27), roundups (SRC-28, SRC-29), policy release (SRC-25), player page (SRC-26) | 157 of 160 designations match. Four conflicts (Walker, Mallory, Freiermuth, Key) logged as F26; Jackson absent (F27); blank injuries (F28); label mismatch (F29). Table values NOT changed. F04/F11/F12 status changes requested to integration. |
 | T19 | Integration: PR from arena/45a0ec8c-x2 to main for T18 additive outputs; merge; confirm Pages | done (PR #12 merged; PR #13 records result) | 45a0ec8c | COORDINATION.md, data/flags.csv, data/sources.csv, docs/ (generated) | — | Merge result and PR link to be recorded here after merge |
-
+| T20 | Integration: validate combined data, rebuild, broken-link check, executive summary refresh, PR to `main`, merge, confirm Pages live | done | 25d6114f | `COORDINATION.md`, `README.md`, PR, live site | all of the above | Merged `main` (PRs #8-#13) into this branch; resolved flag-ID collision (my four flags renumbered F30-F33), source and requirement duplicates, and the build.py page/nav merge. 21 pages, 0 link errors, 0 failing verification rows. |
 | T1 | Scaffold repo, coordination board, static-site build system | done | session-09d7cc77 | COORDINATION.md, package.json, .gitignore, src/**, README.md | Build verified: `npm run build` emits 12 pages; `npm run verify` passes | Node generator foundation |
 | T2 | Requirements, executive summary, questions & answers, suggestions | done | session-09d7cc77 | docs/00-*.md … docs/03-*.md, data/requirements.json, data/questions.json, data/suggestions.json | Official NFL sources + methodology | 28 requirements, 14 questions, 13 suggestions |
 | T3 | Strategy research, validation gates, correlation values, leaderboard | done | session-09d7cc77 | docs/04-*.md … docs/07-*.md, data/strategies.json, data/validation-gates.json, data/correlations.json, data/leaderboard.json | CLV/market-efficiency methodology | Correlation values blank + flagged |
@@ -1076,3 +1077,95 @@ The branch was created from `9e90dd3` before sessions `4c5bc504` and `c125b2f7` 
 - `python3 scripts/verify_results.py`: all 32 teams reconcile with official standings. Python site: 24 pages; source/link checks passed, 644 internal and 2,531 external HTTPS allowlisted links. Node build: 12 pages; `npm run verify` passed 194 internal links and all source-resolution checks.
 - Additional assertions: 7 strategies carry no assigned reward tier; summary values are 4 / 3 / 0; all 13 comparison rows equal 45.9; 137 game rows total 6,291 points; F43/F44, Q43 and V18 identifiers are unique.
 - F42 remains open and F17 thresholds remain unapproved. No reward or strategy is active; market prices remain blank without an authorized feed.
+
+## Session 25d6114f — verification report (T14–T19)
+
+**Branch:** `arena/25d6114f-x2`. **Scope files (all new, non-overlapping):**
+`data/verification/official_batch1.txt`, `data/verification/official_batch2.txt`,
+`data/verification_week10_2026.csv`, `data/starters_gamebook_2026_reg_10.csv`,
+`data/depth_deficiency.csv`, `data/line_signals.csv`, `data/skill_engine_gates.csv`,
+`data/luck_tests.csv`, `data/correlation_framework.csv`, `data/leaderboard_rules.csv`,
+`data/decision_questions.csv`, `data/suggestions_register.csv`, `data/repo_review.csv`,
+`scripts/verify_snapshot.py`. **Shared files edited (integration role, session is the
+final integration session for this round):** `scripts/build.py`, `docs/**`,
+`data/sources.csv`, `data/flags.csv`, `data/requirements.csv`, `README.md`,
+`COORDINATION.md`. Not edited: `src/**`, `data/*.json`, `docs/*.md` (Node session scope).
+
+### Sources used (all read 2026-11-14, all official or first-party)
+
+| ID | Source | URL |
+|---|---|---|
+| T14-S1 | NFL Week 10 2026 injury report | https://www.nfl.com/injuries/ |
+| T14-S2 | NFL Week 10 2026 schedule | https://www.nfl.com/schedules/2026/by-week/week-10 |
+| T14-S3 | NFL official gamebook, Commanders at Giants, 2026 reg. Week 10 | https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf |
+| T14-S4 | NFL player page, Ben Brown | https://www.nfl.com/players/ben-brown-2/ |
+| T14-S5 | NFL player page, Josh Jacobs | https://www.nfl.com/players/josh-jacobs-x3315/ |
+| T14-S6 | NFL player page, Matt Gulbin | https://www.nfl.com/players/matt-gulbin/ |
+| T14-S7 | NFL player page, John Bates | https://www.nfl.com/players/john-bates/ |
+| T14-S8 | Buffalo Bills 2026 roster | https://www.nfl.com/teams/buffalo-bills/roster |
+| T14-S9 | NFL.com Terms and Conditions, section 1.3 | https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions |
+| T14-S10 | Cabinet Public Relations Office, online casino article | https://www.gov-online.go.jp/article/202411/entry-6786.html |
+| T14-S11 | National Police Agency, online casino warning | https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html |
+| T14-S12 | Penal Code, e-Gov Law Search | https://laws.e-gov.go.jp/law/140AC0000000045 |
+| T14-S13 | NIST bootstrap plot | https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm |
+| T14-S14 | NIST multiple comparisons | https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm |
+| T14-S15 | NIST model validation | https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm |
+| T14-S16 | NFL news, Malik Willis to injured reserve | https://www.nfl.com/news/dolphins-place-qb-malik-willis-groin-on-injured-reserve-kyle-mccord-in-line-for-first-start |
+
+### Verification performed (reproducible)
+
+`python3 scripts/verify_snapshot.py` → **90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL.**
+
+- **Injury rows:** 345 committed rows compared with a fresh transcription of the official page. 0 players missing,
+  0 extra players, **1380 field comparisons (position, injury, practice status, game status) with 0 mismatches**.
+- **Per team:** all 28 teams, row counts and field agreement confirmed individually.
+- **Games:** all 14 games checked on teams, records, day, kickoff time and broadcast against the official schedule.
+  Away and home were resolved from the official "X at Y" order; the earlier ambiguity in the `first_listed_team`
+  field is therefore resolved as away/home and is documented on the Games page.
+- **Byes:** CHI (7-2), DEN (7-2), PHI (2-7) and TB (3-6) confirmed under "Teams on Bye" on the official schedule.
+- **Player links:** all 345 use the official `nfl.com/players/` route; the 48 slugs that are not derivable from the
+  display name were each confirmed verbatim on the official page.
+- **Player pages sampled:** John Bates (TE, WAS), Matt Gulbin (C, WAS), J.J. McCarthy (QB, NYG), Josh Jacobs (RB, GB)
+  all match the injury-report position. **Ben Brown does not** — see F19.
+- **Gamebook:** 19 starter-identity rows verified for WAS at NYG, including J.J. McCarthy listed as the starting QB and
+  Matt Gulbin (a full practice participant) listed under Did Not Play.
+- **Roster/depth claim:** the Bills roster page confirmed to have no depth-order column.
+
+### Irregularities and new flags recorded
+
+- **F19 — official source conflict.** The injury report lists Ben Brown (NE) at C; his official player page lists G.
+  The snapshot keeps the declared-source value and flags the conflict. No value was silently changed.
+- **F20 — correction to F06.** F06 claimed no official starter data existed. That is only part-correct: no pregame
+  depth chart exists, but the official gamebook publishes the starting lineup, substitutions and inactive list.
+- **F21 — gamebook use restriction.** The gamebook limits use to assisting media coverage absent written permission.
+  The starter values are published as source-linked research only and are inside the F16 permission request.
+- **F22 — verification independence.** The verification transcription and the snapshot were produced in the same
+  session, so a shared misreading would not be detected. Suggestion SR-13 records the fix.
+
+### Notes for the next session (nothing here is blocking)
+
+1. `data/depth-deficiency.json` (Node, third-party Ourlads values, F18) is still unclaimed under T13 and still
+   contradicts the official-source-only rule. The official alternative now exists: the gamebook.
+2. Only one Week 10 gamebook has been verified. Extending to all 14 games would give starter identity for the full
+   week, and would be the highest-value next data step after the rights question.
+3. The build now rejects ragged CSV rows (`read_csv` raises on an extra or missing cell) after a mis-quoted source row
+   was found during this session.
+
+
+---
+
+### Integration note — flag and task ID collision (session 25d6114f, 2026-11-14)
+
+Two sessions ran T13–T19 in parallel and both allocated IDs from the same ranges. This is now resolved, and the
+resolution is recorded here so no future session renumbers again:
+
+| Range | Owner on `main` | Resolution |
+|---|---|---|
+| `F19`–`F29` | Sessions 30beeb55, 7c9eb69a, 45a0ec8c (NL jurisdiction, verification pass, news drift, Thursday result, designation evidence) | **Kept unchanged.** Nothing was renumbered on `main`. |
+| `F30`–`F33` | Session 25d6114f (Ben Brown source conflict, F06 correction, gamebook restriction, verification independence) | Mine were renumbered **into** this free range. `action_requested` records the old ID for each. |
+| `T14`–`T19` | Claimed by both | Both rows are kept in the task board above; `main`'s claim rows are authoritative for the earlier sessions, and the "Session 25d6114f — verification report" appendix records what this session actually delivered under those task numbers. |
+| `SRC-30`–`SRC-34` | Free on `main` (it stopped at `SRC-29`) | Appended unchanged. |
+
+**Lesson for the next session:** claim your ID ranges in this file *before* writing them into data, and re-read
+`main` immediately before allocating. `scripts/build.py` now fails the build if a table row has no citation and if a
+CSV row is ragged, but it cannot detect a duplicate ID across branches.
