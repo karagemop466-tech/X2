@@ -759,6 +759,17 @@
   "source_url": "https://www.nfl.com/players/josh-jacobs-x3315/"
  },
  {
+  "check_id": "V-PLAYER-d-j-reed",
+  "scope": "Independent player-page check",
+  "what_was_checked": "D.J. Reed: injury-report position vs official player page",
+  "committed_value": "CB (injury report)",
+  "official_value": "CB — Detroit Lions",
+  "result": "PASS",
+  "method": "Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py)",
+  "note": "Positions agree",
+  "source_url": "https://www.nfl.com/players/d-j-reed/"
+ },
+ {
   "check_id": "V007",
   "scope": "Depth chart",
   "what_was_checked": "Does the official team roster page publish depth-chart order?",
@@ -779,6 +790,17 @@
   "method": "Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py)",
   "note": "A pregame depth chart is still not published, but post-game starter identity is official and verifiable. See data/starters_gamebook_2026_reg_10.csv",
   "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf"
+ },
+ {
+  "check_id": "V009",
+  "scope": "Gamebook coverage",
+  "what_was_checked": "How many Week 10 games have an official gamebook available",
+  "committed_value": "1 of 14 games (one gamebook collected)",
+  "official_value": "Only the Thursday game (WAS at NYG, played 11/12/2026) has been played; the page states the game is final. The other 13 games kick off 11/15 to 11/16, so their gamebooks do not exist yet",
+  "result": "CONFIRMED",
+  "method": "Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py)",
+  "note": "This is a timing limit, not a missing source. Starter identity for the remaining 13 games can be collected after those games are played",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
   "check_id": "V-GB-WAS-john-bates",

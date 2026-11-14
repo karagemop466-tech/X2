@@ -64,6 +64,7 @@ PLAYER_PAGE_CHECKS = [
     ("Malik Nabers", "WR", "WR", "New York Giants"),
     ("Ben Brown", "C", "G", "New England Patriots"),
     ("Josh Jacobs", "RB", "RB", "Green Bay Packers"),
+    ("D.J. Reed", "CB", "CB", "Detroit Lions"),
 ]
 
 # Official gamebook starting lineup, Washington at New York Giants, 11/12/2026.
@@ -298,6 +299,14 @@ def main():
         "NEW EVIDENCE — Flag F06 part-refuted",
         "A pregame depth chart is still not published, but post-game starter identity is "
         "official and verifiable. See data/starters_gamebook_2026_reg_10.csv", GAMEBOOK_WAS_NYG)
+
+    add("V009", "Gamebook coverage", "How many Week 10 games have an official gamebook available",
+        "1 of 14 games (one gamebook collected)",
+        "Only the Thursday game (WAS at NYG, played 11/12/2026) has been played; the page states the game is final. "
+        "The other 13 games kick off 11/15 to 11/16, so their gamebooks do not exist yet",
+        "CONFIRMED",
+        "This is a timing limit, not a missing source. Starter identity for the remaining 13 games can be collected "
+        "after those games are played", SCHEDULE_URL)
 
     # ---- gamebook starters ----
     for team, player, status, detail in GAMEBOOK_STARTERS:
