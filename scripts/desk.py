@@ -130,10 +130,10 @@ spot = [
     ("RF13", "Sample: Cincinnati at Atlanta, week 9", "Official game center shows 'Hidden Score' (F41)",
      "not verified on game center; standings reconciliation only", "not verified",
      "https://www.nfl.com/games/bengals-at-falcons-2026-reg-9"),
-    ("RF14", "Week 11 schedule (13 games)", "Official by-week page compared with schedule_week11_2026.csv",
-     "7 of 13 confirmed on the fetched chunks (Cardinals@Chiefs, Steelers@Eagles, Jets@Chargers, Jaguars@Giants, "
-     "Raiders@Broncos, Vikings@49ers, Bengals@Commanders). 6 pending: chunk 0 not fetched (IND@HOU, MIA@BUF, "
-     "BAL@CAR, NO@CHI, TEN@DAL, TB@DET).", "partly verified", SRC_SCHED_W11),
+    ("RF14", "Week 11 schedule (13 games)",
+     "Official by-week page (chunks 0, 1 and 2, read 2026-11-14) compared line by line with schedule_week11_2026.csv: day, kickoff time, network, teams, game link",
+     "13 of 13 match. The six games not on chunks 1-2 (IND@HOU, MIA@BUF, BAL@CAR, NO@CHI, TEN@DAL, TB@DET) were read from chunk 0 on 2026-11-14 and match.",
+     "pass", SRC_SCHED_W11),
 ]
 for s in spot:
     add(*s)
