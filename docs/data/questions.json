@@ -646,5 +646,101 @@
   "decision_owner": "Integration session",
   "row_type": "fact",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "question_id": "Q55",
+  "area": "Performance",
+  "question": "What is the return on investment of any strategy here?",
+  "status": "Missing - blocked",
+  "known_facts_verified": "No ROI, closing-line value or staking result can be computed. Every market cell across the four market-bearing files is blank (919 of 919 cells checked).",
+  "missing_information": "A licensed odds archive with timestamped opening and closing prices.",
+  "how_to_discover_official_first": "Approve a provider, then compute ROI on settled rows from data/results_feed.csv.",
+  "decision_owner": "Project owner",
+  "row_type": "gap",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "question_id": "Q56",
+  "area": "Depth",
+  "question": "Which string is the replacement, and how deep is the bench behind him?",
+  "status": "Partially answered",
+  "known_facts_verified": "For six clubs the official club depth chart gives the ordinal: 33 rows, 19 naming a replacement, 14 blank and flagged. Examples: Detroit's Cade Mays (1st string) is replaced by Juice Scruggs (2nd) with nobody behind him; D.J. Reed (1st) by Rock Ya-Sin (2nd) with two more behind him.",
+  "missing_information": "The other 26 clubs. Four were tried and could not be read (Houston publishes an image; Seattle returned a consent interstitial; Indianapolis and Minnesota could not be retrieved).",
+  "how_to_discover_official_first": "Request each club's depth-chart page individually and transcribe it; do not substitute a third-party chart.",
+  "decision_owner": "Project",
+  "row_type": "gap",
+  "evidence_url": "https://www.detroitlions.com/team/depth-chart"
+ },
+ {
+  "question_id": "Q57",
+  "area": "Depth",
+  "question": "How much does a 2nd-string replacement change a team's expected performance, versus a 4th-string one?",
+  "status": "Missing - blocked",
+  "known_facts_verified": "Nothing. This repository holds no official performance measure by string rank, and the string rank itself is only available for six clubs.",
+  "missing_information": "A performance measure tied to depth: participation counts, snap counts or a graded performance source, all rights-cleared.",
+  "how_to_discover_official_first": "Settle the data-rights question (F16) first, then seek a licensed participation feed.",
+  "decision_owner": "Project owner",
+  "row_type": "gap",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "question_id": "Q58",
+  "area": "Correlation",
+  "question": "Within one game, do the side leg and the total leg move together?",
+  "status": "Answered",
+  "known_facts_verified": "C10: correlation of the side error with the total error over 89 out-of-sample games is -0.220 (95% interval -0.412 to -0.010, p = 0.040). The two legs' errors move in opposite directions, so the independence shortcut misprices a same-game ticket in a consistent direction.",
+  "missing_information": "A larger ticket sample: the two-leg study covers only 24 selected tickets.",
+  "how_to_discover_official_first": "No external source needed; recompute from the official ledger once more weeks are played.",
+  "decision_owner": "Project",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "question_id": "Q59",
+  "area": "Correlation",
+  "question": "Is the model getting more or less accurate as the season goes on?",
+  "status": "Answered",
+  "known_facts_verified": "C12: correlation of calendar week with the absolute error of the model's home margin over 89 out-of-sample games is 0.122 (95% interval -0.089 to 0.324, p = 0.256). No drift is detectable.",
+  "missing_information": "A longer season to detect slow drift.",
+  "how_to_discover_official_first": "Recompute after each week from the official ledger.",
+  "decision_owner": "Project",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "question_id": "Q60",
+  "area": "Prices",
+  "question": "What was the opening and closing market price for every market we originate?",
+  "status": "Missing - blocked",
+  "known_facts_verified": "The store exists and holds one row per market (39 rows: 13 games x side, total, moneyline) with opening and closing fields. Our own opening and current number is recorded for each.",
+  "missing_information": "Any market price at all. No licensed, timestamped odds source is connected.",
+  "how_to_discover_official_first": "Decide whether a licensed odds provider may be used, then record opening and closing exactly as published with a capture timestamp.",
+  "decision_owner": "Project owner",
+  "row_type": "gap",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "question_id": "Q61",
+  "area": "Prices",
+  "question": "When is a closing snapshot defined, and who records it?",
+  "status": "Answered by definition",
+  "known_facts_verified": "Defined in this session: the closing value is the last number published before kickoff. The store keeps that column reserved and blank until the games are played.",
+  "missing_information": "Nothing. The definition is now written down.",
+  "how_to_discover_official_first": "No external source needed; the definition is a project rule and is stated on the Originated lines page.",
+  "decision_owner": "Project",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "question_id": "Q62",
+  "area": "Results",
+  "question": "How did each originated market actually settle?",
+  "status": "Answered",
+  "known_facts_verified": "data/results_feed.csv settles the side, the total and the moneyline for all 137 games in the ledger, 89 of which carry an originated line: side 36 cover / 52 lose / 1 push, totals 46 over / 43 under, moneyline 39 home wins / 49 home losses / 1 tie.",
+  "missing_information": "The price attached to each settlement, so a return cannot be computed.",
+  "how_to_discover_official_first": "Official scores are already reconciled against the standings; only a price source is missing.",
+  "decision_owner": "Project",
+  "row_type": "fact",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  }
 ]

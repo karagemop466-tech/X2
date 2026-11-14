@@ -45,6 +45,21 @@ where a source verifies it).
   agreement and a per-week sign test. The finding is negative and published anyway: M1 is positive in 5 of 7 weeks
   (p = 0.45), so its rank describes 89 games rather than predicting the next one.
 
+### Also new: settlement, replacement depth, correlation provenance, audit
+
+Five pages added by session `d0d9d19f`, each covering a requirement the earlier passes left open:
+
+- **Originated lines** (`docs/originated-lines.html`) — side → total → moneyline with our own opening and current
+  number per market held in the snapshot store. `scripts/originate.py` re-fits the ratings independently and refuses
+  to publish if any spread or total disagrees with `scripts/model.py` by more than 0.05 points.
+- **Results feed** (`docs/results-feed.html`) — the settlement view: the official final score for all 137 games plus
+  how the side, the total and the moneyline we originated actually settled.
+- **Depth of replacement** (`docs/depth-replacement.html`) — 2nd/3rd/4th-string ordinals read from official club depth
+  charts for DET, NE, DAL, GB, TEN and NO; 33 rows, 19 with a named replacement, 14 blank and flagged.
+- **Correlation provenance** (`docs/correlation-provenance.html`) — inputs, official source and `n` for every
+  published correlation, with each previously published value recomputed from the ledger.
+- **Repository audit** (`docs/repo-audit.html`) — 22 checks against live official pages and recomputations, 0 failing.
+
 ## The model, briefly
 
 `scripts/model.py` fits one ridge-regularised least-squares system on points scored:
@@ -99,9 +114,9 @@ rewards stay disabled (F09, F16, F19).
 - `data/replacement_depth.csv` — depth-of-replacement tracking (RD01–RD07), curated from verified official statements and club depth charts; blank where unverified. `data/replacement_depth_week10_2026.csv` (session 8a0bf37e) is the companion availability register.
 - `scripts/model.py` — the line model, backtest, gates, correlations, parlay study and leaderboard (standard library only, fixed random seed).
 - `scripts/verify_results.py` — reconciles the transcribed games against the official standings, team by team.
-- `scripts/verify_snapshot.py` — reproducible line-by-line re-check of the Week 10 snapshot (T52 takeover from session 25d6114f).
+- `scripts/verify_snapshot.py` — reproducible line-by-line re-check of the Week 10 snapshot (T84 takeover from session 25d6114f).
 - `data/verification/official_batch1.txt`, `data/verification/official_batch2.txt` — a complete independent transcription of the official Week 10 injury page (every row, every field); input to the verification ledger.
-- `data/verification_week10_2026.csv`, `data/starters_gamebook_2026_reg_10.csv`, `data/depth_deficiency.csv`, `data/line_signals.csv`, `data/skill_engine_gates.csv`, `data/luck_tests.csv`, `data/correlation_framework.csv`, `data/leaderboard_rules.csv`, `data/decision_questions.csv`, `data/suggestions_register.csv`, `data/repo_review.csv` — research registers taken over from session 25d6114f (T52); row counts and contents are listed under “Research registers” below.
+- `data/verification_week10_2026.csv`, `data/starters_gamebook_2026_reg_10.csv`, `data/depth_deficiency.csv`, `data/line_signals.csv`, `data/skill_engine_gates.csv`, `data/luck_tests.csv`, `data/correlation_framework.csv`, `data/leaderboard_rules.csv`, `data/decision_questions.csv`, `data/suggestions_register.csv`, `data/repo_review.csv` — research registers taken over from session 25d6114f (T84); row counts and contents are listed under “Research registers” below.
 - `scripts/build.py` — standard-library builder for the current GitHub Pages content in `docs/` and `docs/data/`.
 - `docs/` — current static site. GitHub Pages is configured from the repository root; root `index.html` forwards to `docs/index.html`.
 - `src/` — Node static-site generator and verifier. `npm run build` writes a separate `site/` output; it is not the current Pages source.
@@ -123,6 +138,11 @@ python3 scripts/desk_v2.py          # market sheet, correlation matrix, props, e
 python3 scripts/markets.py          # regenerate the market tables (price store, fair/market view,
                                     # signal-vs-staking) from the model outputs
 python3 scripts/review.py           # decision console (reads data/decision_choices.json)
+python3 scripts/results_feed.py     # settled results feed (137 games, all three markets)
+python3 scripts/originate.py        # side -> total -> moneyline, our opening/current number per market
+python3 scripts/depth_chain.py      # depth of the replacement from official club depth charts
+python3 scripts/correlation_provenance.py   # recompute every correlation, publish inputs and n
+python3 scripts/repo_audit.py       # line-by-line audit against live official pages
 python3 scripts/build.py            # rebuild docs/ and check every row has a source
 npm run build && npm run verify     # the separate Node dashboard (12 pages)
 ```
@@ -139,6 +159,18 @@ Football variance cannot be removed. Out-of-sample testing, permutation tests, b
 multiple-comparison control stop variance from being mistaken for skill; they do not eliminate it and they
 guarantee no result. Every leaderboard row publishes the sample size it would need for a decisive test.
 
+## Two independent implementations, compared
+
+Two sessions built overlapping artefacts in parallel. Both are kept, and the comparisons are recorded rather than
+reconciled by picking a winner.
+
+| Artefact | This session (`d0d9d19f`) | Parallel session | Comparison |
+|---|---|---|---|
+| Results feed | `data/results_feed.csv` — 137 games plus the settlement of all three originated markets | `data/results_feed_2026.csv` — 137 games with a per-row verification chain | **137 of 137 scores agree, 0 disagreements.** Different columns; neither carries a price. |
+| Replacement depth | `data/depth_replacement.csv` — DET, NE, DAL, GB, TEN, NO; every Out/Doubtful player on those charts | `data/replacement_depth_week10_2026.csv` — SEA, MIA, BAL, CLE, AZ, NYG; quarterback-centred | Different clubs, so **twelve clubs covered in total**. One disagreement: Seattle's chart was retrievable at `www.seahawks.com` but not at the address this session used. |
+| Correlation register | `data/correlation_provenance.csv` — inputs, official source, `n`, recomputation | `data/correlation_audit.csv` — same rows plus the owner-rule classification (F49) | The owner rule treats a correlation whose predictor is a model output as a diagnostic, not an officially sourced correlation. The provenance page states which inputs are official, so the rule can be applied row by row. |
+| Neutral-site handling | `scripts/originate.py` drops the home-field term where the schedule says `neutral_site = Y` | `scripts/model.py` does the same, and F71 records the defect | Both agree. The open half is unchanged: all 137 completed rows still carry a blank `neutral_site` value. |
+
 ## Data snapshot and rights gate
 
 - Results: the verified results feed — all 137 games of 2026 (weeks 1–9 complete, plus the Week 10 Thursday
@@ -149,8 +181,8 @@ guarantee no result. Every leaderboard row publishes the sample size it would ne
   `scripts/verify_results.py`.
 - The Week 11 lines were fitted before Week 10's Sunday games were played; re-run `scripts/model.py` afterwards (F36).
 - Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 345 rows across 28 teams and 14 listed games.
-- **Snapshot verification ledger (T52 takeover):** `python3 scripts/verify_snapshot.py` re-compares the committed snapshot with a stored field-by-field transcription of the official page: 345 of 345 rows match on position, injury, practice status and game status (1,380 comparisons, 0 mismatches), plus all 14 games, the 4 bye teams and all 345 player links (90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL). Residual limitation: that transcription was produced in the same session as the snapshot, so a shared misreading would not be detected — logged as **F59**; two further independent passes against the live page (sessions 30beeb55 and 7c9eb69a) reached the same result. Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`.
-- **Starter identity is officially verifiable after the game (T52 takeover).** The NFL publishes no pregame depth chart and the official roster page has no depth column, so a “1st/2nd/3rd/4th string” rank cannot be sourced (F06). The official NFL gamebook does publish the starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen such rows from the Week 10 Commanders at Giants gamebook are recorded in `data/starters_gamebook_2026_reg_10.csv` and on `docs/starters.html` — logged as **F57**; the gamebook carries its own use restriction (**F58**). A single gamebook does not establish pregame depth order. Every row and every game header was independently re-verified against the live page on 2026-11-14 with no discrepancies found (Flag F20). A separate session (30beeb55, T15) reached the same result independently; the manual-transcription limitation is retained (F10).
+- **Snapshot verification ledger (T84 takeover):** `python3 scripts/verify_snapshot.py` re-compares the committed snapshot with a stored field-by-field transcription of the official page: 345 of 345 rows match on position, injury, practice status and game status (1,380 comparisons, 0 mismatches), plus all 14 games, the 4 bye teams and all 345 player links (90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL). Residual limitation: that transcription was produced in the same session as the snapshot, so a shared misreading would not be detected — logged as **F80**; two further independent passes against the live page (sessions 30beeb55 and 7c9eb69a) reached the same result. Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`.
+- **Starter identity is officially verifiable after the game (T84 takeover).** The NFL publishes no pregame depth chart and the official roster page has no depth column, so a “1st/2nd/3rd/4th string” rank cannot be sourced (F06). The official NFL gamebook does publish the starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen such rows from the Week 10 Commanders at Giants gamebook are recorded in `data/starters_gamebook_2026_reg_10.csv` and on `docs/starters.html` — logged as **F78**; the gamebook carries its own use restriction (**F79**). A single gamebook does not establish pregame depth order. Every row and every game header was independently re-verified against the live page on 2026-11-14 with no discrepancies found (Flag F20). A separate session (30beeb55, T15) reached the same result independently; the manual-transcription limitation is retained (F10).
 - The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
 - No licensed odds archive, historical forecast/outcome ledger, league-published depth chart, player-level participation feed, computed parlay correlation, or tested strategy is available in the Python dashboard. The separate Node research data file was resolved in two steps: T13 (session 30beeb55) blanked all third-party Ourlads ordering values, then the integration supplement (session 52ca9f77, 2026-11-14) located the club-published depth charts on the official club websites ([detroitlions.com](https://www.detroitlions.com/team/depth-chart), [patriots.com](https://www.patriots.com/team/depth-chart)) and restored club-chart-confirmed values with per-row citations. One contradicted third-party value was corrected (Node flag F-08); both club charts self-label "unofficial" (Node flag F-05, Python flag F18).
 - No league-level official NFL depth chart exists: the conventional team depth-chart URLs return HTTP 404, and roster pages expose position and status only (F06). The official club depth-chart pages are the best available official-domain depth evidence and carry the self-labeled "unofficial" caveat (F-05).
@@ -178,7 +210,7 @@ and keep wagering, referrals, and rewards disabled pending qualified review. The
 Netherlands; Dutch law (Wet op de kansspelen, Kansspelautoriteit) is flagged as **F19** and has not been reviewed.
 See `research/nl-legal-review.md`.
 
-## Research registers (T52 takeover from session 25d6114f)
+## Research registers (T84 takeover from session 25d6114f)
 
 | Register | File | Rows | What it holds |
 |---|---|---|---|

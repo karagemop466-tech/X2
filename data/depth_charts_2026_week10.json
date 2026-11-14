@@ -1,0 +1,1326 @@
+{
+ "read_utc": "2026-11-14",
+ "note": "Transcribed position by position from the official club depth-chart page. Charts are published by club football-communications staff and self-label as unofficial. Column 1 = first string, column 2 = second string, and so on.",
+ "charts": {
+  "DET": {
+   "club": "Detroit Lions",
+   "url": "https://www.detroitlions.com/team/depth-chart",
+   "chart_title_as_published": "2026 Unofficial Depth Chart Compiled by Lions Football Communications",
+   "offense": [
+    {
+     "pos": "WR",
+     "players": [
+      "Jameson Williams"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Amon-Ra St. Brown",
+      "DeAndre Carter"
+     ]
+    },
+    {
+     "pos": "LT",
+     "players": [
+      "Penei Sewell"
+     ]
+    },
+    {
+     "pos": "LG",
+     "players": [
+      "Christian Mahogany",
+      "Miles Frazier"
+     ]
+    },
+    {
+     "pos": "C",
+     "players": [
+      "Cade Mays",
+      "Juice Scruggs"
+     ]
+    },
+    {
+     "pos": "RG",
+     "players": [
+      "Tate Ratledge",
+      "Seth McLaughlin"
+     ]
+    },
+    {
+     "pos": "RT",
+     "players": [
+      "Blake Miller",
+      "Larry Borom"
+     ]
+    },
+    {
+     "pos": "TE",
+     "players": [
+      "Sam LaPorta",
+      "Brock Wright",
+      "Tyler Conklin",
+      "Jackson Meeks"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Isaac TeSlaa",
+      "Tay Martin"
+     ]
+    },
+    {
+     "pos": "QB",
+     "players": [
+      "Jared Goff",
+      "Joshua Dobbs"
+     ]
+    },
+    {
+     "pos": "RB",
+     "players": [
+      "Jahmyr Gibbs",
+      "Sione Vaki",
+      "Jacob Saylors"
+     ]
+    }
+   ],
+   "defense": [
+    {
+     "pos": "EDGE",
+     "players": [
+      "Aidan Hutchinson",
+      "Derrick Moore",
+      "Eric O'Neill"
+     ]
+    },
+    {
+     "pos": "DL",
+     "players": [
+      "Alim McNeill",
+      "Skyler Gill-Howard",
+      "Mekhi Wingo"
+     ]
+    },
+    {
+     "pos": "DL",
+     "players": [
+      "Tyleik Williams",
+      "Levi Onwuzurike"
+     ]
+    },
+    {
+     "pos": "EDGE",
+     "players": [
+      "DJ Wonnum",
+      "Tyler Lacy",
+      "Ahmed Hassanein"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Derrick Barnes",
+      "Joe Bachie"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Malcolm Rodriguez",
+      "K.J. Britt"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Trevor Nowaske",
+      "Amen Ogbongbemiga"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "D.J. Reed",
+      "Rock Ya-Sin",
+      "Khalil Dorsey",
+      "Nick Whiteside"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Roger McCreary",
+      "Ennis Rakestraw Jr.",
+      "Keith Abney II"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Chuck Clark"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Brian Branch",
+      "Christian Izien"
+     ]
+    }
+   ],
+   "special_teams": [
+    {
+     "pos": "K",
+     "players": [
+      "Jake Bates"
+     ]
+    },
+    {
+     "pos": "H",
+     "players": [
+      "Jack Fox"
+     ]
+    },
+    {
+     "pos": "P",
+     "players": [
+      "Jack Fox"
+     ]
+    },
+    {
+     "pos": "LS",
+     "players": [
+      "Hogan Hatten"
+     ]
+    },
+    {
+     "pos": "PR",
+     "players": [
+      "DeAndre Carter"
+     ]
+    },
+    {
+     "pos": "KR",
+     "players": [
+      "Jacob Saylors",
+      "DeAndre Carter"
+     ]
+    }
+   ]
+  },
+  "NE": {
+   "club": "New England Patriots",
+   "url": "https://www.patriots.com/team/depth-chart",
+   "chart_title_as_published": "PATRIOTS UNOFFICIAL DEPTH CHART - The 2026 depth chart is unofficial and is published by the writers of Patriots.com. The depth chart reflects the opinions of the Patriots.com writers and don't necessarily reflect those of the organization.",
+   "offense": [
+    {
+     "pos": "WR",
+     "players": [
+      "A.J. Brown",
+      "Efton Chism III"
+     ]
+    },
+    {
+     "pos": "LT",
+     "players": [
+      "Will Campbell",
+      "Dametrious Crownover",
+      "Marcus Bryant"
+     ]
+    },
+    {
+     "pos": "LG",
+     "players": [
+      "Ben Brown",
+      "Walter Rouse"
+     ]
+    },
+    {
+     "pos": "C",
+     "players": [
+      "Jared Wilson",
+      "Ben Brown"
+     ]
+    },
+    {
+     "pos": "RG",
+     "players": [
+      "Matt Pryor",
+      "Walter Rouse"
+     ]
+    },
+    {
+     "pos": "RT",
+     "players": [
+      "Morgan Moses",
+      "Caleb Lomu"
+     ]
+    },
+    {
+     "pos": "TE",
+     "players": [
+      "Hunter Henry",
+      "Eli Raridon",
+      "Cameron Latu"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "DeMario Douglas",
+      "Kyle Williams"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Efton Chism III",
+      "Kyle Williams"
+     ]
+    },
+    {
+     "pos": "RB",
+     "players": [
+      "Rhamondre Stevenson",
+      "TreVeyon Henderson",
+      "Corey Kiner",
+      "Lan Larison"
+     ]
+    },
+    {
+     "pos": "QB",
+     "players": [
+      "Drake Maye",
+      "Tommy DeVito",
+      "Behren Morton"
+     ]
+    }
+   ],
+   "defense": [
+    {
+     "pos": "OLB",
+     "players": [
+      "Dre'Mont Jones",
+      "Gabe Jacas"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Christian Barmore",
+      "Leonard Taylor III"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Cory Durden",
+      "DaQuan Jones"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Milton Williams",
+      "Joshua Farmer"
+     ]
+    },
+    {
+     "pos": "OLB",
+     "players": [
+      "Elijah Ponder",
+      "Gabe Jacas"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Robert Spillane",
+      "Darius Muasau",
+      "Erick Hunter"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Christian Elliss",
+      "Namdi Obiazor"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Carlton Davis III",
+      "Channing Canada"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Craig Woodson",
+      "Mike Brown"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Kevin Byard III",
+      "Jaylen Reed",
+      "Brenden Schooler"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Marcus Jones",
+      "Charles Woods"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Christian Gonzalez",
+      "Karon Prunty"
+     ]
+    }
+   ],
+   "special_teams": [
+    {
+     "pos": "K",
+     "players": [
+      "Andy Borregales"
+     ]
+    },
+    {
+     "pos": "P",
+     "players": [
+      "Mitch Wishnowsky"
+     ]
+    },
+    {
+     "pos": "H",
+     "players": [
+      "Mitch Wishnowsky"
+     ]
+    },
+    {
+     "pos": "LS",
+     "players": [
+      "Julian Ashby"
+     ]
+    },
+    {
+     "pos": "PR",
+     "players": [
+      "Marcus Jones",
+      "DeMario Douglas"
+     ]
+    },
+    {
+     "pos": "KR",
+     "players": [
+      "Kyle Williams",
+      "Corey Kiner",
+      "Lan Larison"
+     ]
+    }
+   ]
+  },
+  "DAL": {
+   "club": "Dallas Cowboys",
+   "url": "https://www.dallascowboys.com/team/depth-chart",
+   "chart_title_as_published": "Unofficial 2026 Dallas Cowboys Depth Chart",
+   "as_of_as_published": "",
+   "offense": [
+    {
+     "pos": "WR",
+     "players": [
+      "George Pickens",
+      "Camden Brown"
+     ]
+    },
+    {
+     "pos": "LT",
+     "players": [
+      "Tyler Guyton",
+      "Drew Shelton"
+     ]
+    },
+    {
+     "pos": "LG",
+     "players": [
+      "Tyler Smith",
+      "T.J. Bass"
+     ]
+    },
+    {
+     "pos": "C",
+     "players": [
+      "Cooper Beebe",
+      "T.J. Bass"
+     ]
+    },
+    {
+     "pos": "RG",
+     "players": [
+      "Tyler Booker",
+      "Ajani Cornelius"
+     ]
+    },
+    {
+     "pos": "RT",
+     "players": [
+      "Terence Steele",
+      "Broderick Jones"
+     ]
+    },
+    {
+     "pos": "TE",
+     "players": [
+      "Jake Ferguson|Brevyn Spann-Ford (listed together in the first column)",
+      "Luke Schoonmaker"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Ryan Flournoy",
+      "KaVontae Turpin"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "CeeDee Lamb",
+      "Jonathan Mingo"
+     ]
+    },
+    {
+     "pos": "QB",
+     "players": [
+      "Dak Prescott",
+      "Sam Howell"
+     ]
+    },
+    {
+     "pos": "RB",
+     "players": [
+      "Javonte Williams",
+      "Tyler Goodson"
+     ]
+    },
+    {
+     "pos": "FB",
+     "players": [
+      "Hunter Luepke"
+     ]
+    }
+   ],
+   "defense": [
+    {
+     "pos": "DT",
+     "players": [
+      "Otito Ogbonnia",
+      "Elijah Garcia"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Kenny Clark"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Quinnen Williams",
+      "LT Overton"
+     ]
+    },
+    {
+     "pos": "OLB",
+     "players": [
+      "Donovan Ezeiruaku",
+      "James Houston",
+      "Tyrus Wheat"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "DeMarvion Overshown",
+      "Dee Winters",
+      "Justin Barron"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Shemar James|Jaishawn Barham (listed together in the first column)"
+     ]
+    },
+    {
+     "pos": "OLB",
+     "players": [
+      "Rashan Gary",
+      "Von Miller",
+      "Marist Liufau"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Joey Porter Jr.",
+      "Shavon Revel Jr.",
+      "Ameer Speed"
+     ]
+    },
+    {
+     "pos": "DB",
+     "players": [
+      "Caleb Downs"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "DaRon Bland",
+      "Cobie Durant"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "P.J. Locke|Markquese Bell (listed together in the first column)",
+      "Juanyeh Thomas"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Malik Hooker",
+      "Alijah Clark"
+     ]
+    }
+   ],
+   "special_teams": [
+    {
+     "pos": "K",
+     "players": [
+      "Brandon Aubrey"
+     ]
+    },
+    {
+     "pos": "P",
+     "players": [
+      "Bryan Anger"
+     ]
+    },
+    {
+     "pos": "LS",
+     "players": [
+      "Trent Sieg"
+     ]
+    },
+    {
+     "pos": "H",
+     "players": [
+      "Bryan Anger"
+     ]
+    },
+    {
+     "pos": "KR",
+     "players": [
+      "KaVontae Turpin",
+      "Tyler Goodson",
+      "Jonathan Mingo"
+     ]
+    },
+    {
+     "pos": "PR",
+     "players": [
+      "KaVontae Turpin",
+      "Jonathan Mingo",
+      "Caleb Downs"
+     ]
+    }
+   ]
+  },
+  "GB": {
+   "club": "Green Bay Packers",
+   "url": "https://www.packers.com/team/depth-chart",
+   "chart_title_as_published": "Green Bay Packers Depth Chart",
+   "as_of_as_published": "Unofficial, Nov. 10, 2026",
+   "offense": [
+    {
+     "pos": "WR",
+     "players": [
+      "Christian Watson",
+      "Bo Melton"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Matthew Golden",
+      "J. Michael Sturdivant"
+     ]
+    },
+    {
+     "pos": "LT",
+     "players": [
+      "Jordan Morgan",
+      "John Williams"
+     ]
+    },
+    {
+     "pos": "LG",
+     "players": [
+      "Aaron Banks",
+      "Travis Glover",
+      "Donovan Jennings"
+     ]
+    },
+    {
+     "pos": "C",
+     "players": [
+      "Sean Rhyan",
+      "Jager Burton"
+     ]
+    },
+    {
+     "pos": "RG",
+     "players": [
+      "Laken Tomlinson",
+      "Kevin Zeitler"
+     ]
+    },
+    {
+     "pos": "RT",
+     "players": [
+      "Anthony Belton",
+      "Mekhi Becton Sr."
+     ]
+    },
+    {
+     "pos": "TE",
+     "players": [
+      "Tucker Kraft",
+      "Jonnu Smith",
+      "Mark Redman",
+      "Josh Whyle"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Savion Williams",
+      "Coleman Owen"
+     ]
+    },
+    {
+     "pos": "QB",
+     "players": [
+      "Jordan Love",
+      "Tyrod Taylor"
+     ]
+    },
+    {
+     "pos": "RB",
+     "players": [
+      "Josh Jacobs",
+      "MarShawn Lloyd",
+      "Pierre Strong Jr.",
+      "Kaleb Johnson"
+     ]
+    }
+   ],
+   "defense": [
+    {
+     "pos": "DT",
+     "players": [
+      "Karl Brooks",
+      "Jordon Riley",
+      "Anthony Campbell"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Devonte Wyatt",
+      "Chris McClellan"
+     ]
+    },
+    {
+     "pos": "EDGE",
+     "players": [
+      "Lukas Van Ness",
+      "Brenton Cox Jr"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Zaire Franklin",
+      "Ty'Ron Hopper",
+      "Kristian Welch"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Isaiah McDuffie",
+      "Nick Niemann"
+     ]
+    },
+    {
+     "pos": "EDGE",
+     "players": [
+      "Barryn Sorrell",
+      "Dani Dennis-Sutton"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Keisean Nixon",
+      "Carrington Valentine"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Brandon Cisse",
+      "Benjamin St-Juste"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Xavier McKinney",
+      "Kitan Oladapo"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Evan Williams",
+      "Kitan Oladapo"
+     ]
+    },
+    {
+     "pos": "NB",
+     "players": [
+      "Javon Bullard",
+      "Kamal Hadden"
+     ]
+    }
+   ],
+   "special_teams": [
+    {
+     "pos": "K",
+     "players": [
+      "Trey Smack"
+     ]
+    },
+    {
+     "pos": "P",
+     "players": [
+      "Daniel Whelan"
+     ]
+    },
+    {
+     "pos": "H",
+     "players": [
+      "Daniel Whelan"
+     ]
+    },
+    {
+     "pos": "PR",
+     "players": [
+      "Coleman Owen",
+      "Matthew Golden"
+     ]
+    },
+    {
+     "pos": "KR",
+     "players": [
+      "Bo Melton",
+      "Coleman Owen"
+     ]
+    },
+    {
+     "pos": "LS",
+     "players": [
+      "Matt Orzech"
+     ]
+    }
+   ]
+  },
+  "TEN": {
+   "club": "Tennessee Titans",
+   "url": "https://www.tennesseetitans.com/team/depth-chart",
+   "chart_title_as_published": "UNOFFICIAL DEPTH CHART (as of 11/10/26)",
+   "offense": [
+    {
+     "pos": "WR",
+     "players": [
+      "Calvin Ridley",
+      "Chimere Dike"
+     ]
+    },
+    {
+     "pos": "TE",
+     "players": [
+      "Gunnar Helm",
+      "Daniel Bellinger",
+      "David Martin-Robinson|Kylen Granson (listed together in the third column)"
+     ]
+    },
+    {
+     "pos": "LT",
+     "players": [
+      "Dan Moore Jr.",
+      "James Hudson III"
+     ]
+    },
+    {
+     "pos": "LG",
+     "players": [
+      "Peter Skoronski"
+     ]
+    },
+    {
+     "pos": "C",
+     "players": [
+      "Austin Schlottmann",
+      "Pat Coogan"
+     ]
+    },
+    {
+     "pos": "RG",
+     "players": [
+      "Atonio Mafi",
+      "Garrett Dellinger"
+     ]
+    },
+    {
+     "pos": "RT",
+     "players": [
+      "JC Latham",
+      "Brandon Crenshaw-Dickson"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Wan'Dale Robinson"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Carnell Tate",
+      "Elic Ayomanor"
+     ]
+    },
+    {
+     "pos": "QB",
+     "players": [
+      "Cam Ward",
+      "Mitchell Trubisky"
+     ]
+    },
+    {
+     "pos": "RB",
+     "players": [
+      "Tony Pollard",
+      "Tyjae Spears|Nick Singleton (listed together in the second column)",
+      "Julius Chestnut|Michael Carter (listed together in the third column)"
+     ]
+    }
+   ],
+   "defense": [
+    {
+     "pos": "DE",
+     "players": [
+      "Jermaine Johnson II",
+      "Oluwafemi Oladejo"
+     ]
+    },
+    {
+     "pos": "DT",
+     "players": [
+      "Solomon Thomas",
+      "Jonah Laulu",
+      "Jackie Marshall"
+     ]
+    },
+    {
+     "pos": "DL",
+     "players": [
+      "John Franklin-Myers",
+      "Nazir Stackhouse",
+      "Timmy Horne"
+     ]
+    },
+    {
+     "pos": "DE",
+     "players": [
+      "Jacob Martin",
+      "Keldric Faulk",
+      "Truman Jones"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Cody Barton"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Cedric Gray"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Anthony Hill Jr.",
+      "Dorian Mausi"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Joshua Williams",
+      "Alontae Taylor"
+     ]
+    },
+    {
+     "pos": "NCB",
+     "players": [
+      "Marcus Harris",
+      "Alontae Taylor",
+      "Micah Robinson"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Tony Adams"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Kevin Winston Jr.",
+      "Terrell Burgess"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Cor'Dale Flott",
+      "Jaylon Jones"
+     ]
+    }
+   ],
+   "special_teams": [
+    {
+     "pos": "K",
+     "players": [
+      "Joey Slye",
+      "Tommy Townsend"
+     ]
+    },
+    {
+     "pos": "KO",
+     "players": [
+      "Joey Slye",
+      "Tommy Townsend"
+     ]
+    },
+    {
+     "pos": "P",
+     "players": [
+      "Tommy Townsend",
+      "Joey Slye"
+     ]
+    },
+    {
+     "pos": "H",
+     "players": [
+      "Tommy Townsend",
+      "Mitchell Trubisky"
+     ]
+    },
+    {
+     "pos": "PR",
+     "players": [
+      "Chimere Dike",
+      "Micah Robinson"
+     ]
+    },
+    {
+     "pos": "KOR",
+     "players": [
+      "Chimere Dike",
+      "Michael Carter",
+      "Julius Chestnut"
+     ]
+    },
+    {
+     "pos": "LS",
+     "players": [
+      "Morgan Cox",
+      "Austin Schlottmann"
+     ]
+    }
+   ]
+  },
+  "NO": {
+   "club": "New Orleans Saints",
+   "url": "https://www.neworleanssaints.com/team/depth-chart",
+   "chart_title_as_published": "New Orleans Saints Unofficial Depth Chart",
+   "offense": [
+    {
+     "pos": "WR",
+     "players": [
+      "Chris Olave",
+      "Barion Brown"
+     ]
+    },
+    {
+     "pos": "LT",
+     "players": [
+      "Kelvin Banks Jr.",
+      "Asim Richards"
+     ]
+    },
+    {
+     "pos": "LG",
+     "players": [
+      "David Edwards",
+      "Jeremiah Wright"
+     ]
+    },
+    {
+     "pos": "C",
+     "players": [
+      "Erik McCoy",
+      "William Sherman"
+     ]
+    },
+    {
+     "pos": "RG",
+     "players": [
+      "Cesar Ruiz",
+      "Jeremiah Wright"
+     ]
+    },
+    {
+     "pos": "RT",
+     "players": [
+      "Taliese Fuaga",
+      "Mason Murphy"
+     ]
+    },
+    {
+     "pos": "TE",
+     "players": [
+      "Juwan Johnson",
+      "Noah Fant",
+      "Oscar Delp"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Devaughn Vele",
+      "Bryce Lance"
+     ]
+    },
+    {
+     "pos": "WR",
+     "players": [
+      "Jordyn Tyson",
+      "Barion Brown"
+     ]
+    },
+    {
+     "pos": "QB",
+     "players": [
+      "Tyler Shough",
+      "Spencer Rattler",
+      "Zach Wilson"
+     ]
+    },
+    {
+     "pos": "RB",
+     "players": [
+      "Alvin Kamara",
+      "Audric Estime",
+      "CJ Donaldson"
+     ]
+    }
+   ],
+   "defense": [
+    {
+     "pos": "EDGE",
+     "players": [
+      "Chase Young|Carl Granderson (listed together in the first column)",
+      "Anfernee Jennings"
+     ]
+    },
+    {
+     "pos": "DL",
+     "players": [
+      "Vernon Broughton",
+      "John Ridgeway III"
+     ]
+    },
+    {
+     "pos": "DL",
+     "players": [
+      "Khristian Boyd",
+      "Christen Miller"
+     ]
+    },
+    {
+     "pos": "DL",
+     "players": [
+      "Nathan Shepherd",
+      "Colby Wooden"
+     ]
+    },
+    {
+     "pos": "EDGE",
+     "players": [
+      "Cameron Jordan",
+      "Tyree Wilson"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Pete Werner",
+      "Chris Rumph II",
+      "Isaiah Stalbird"
+     ]
+    },
+    {
+     "pos": "LB",
+     "players": [
+      "Kaden Elliss",
+      "Danny Stutsman",
+      "Jaylan Ford"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Martin Emerson Jr.",
+      "Quincy Riley"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Julian Blackmon",
+      "Jordan Howden"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Justin Reid",
+      "Mike Reid"
+     ]
+    },
+    {
+     "pos": "CB",
+     "players": [
+      "Kool-Aid McKinstry",
+      "Decamerion Richardson"
+     ]
+    },
+    {
+     "pos": "S",
+     "players": [
+      "Jonas Sanker",
+      "Lorenzo Styles"
+     ]
+    }
+   ],
+   "special_teams": [
+    {
+     "pos": "P",
+     "players": [
+      "Ryan Wright"
+     ]
+    },
+    {
+     "pos": "K",
+     "players": [
+      "Charlie Smyth"
+     ]
+    },
+    {
+     "pos": "KO",
+     "players": [
+      "Charlie Smyth"
+     ]
+    },
+    {
+     "pos": "LS",
+     "players": [
+      "Zach Wood"
+     ]
+    },
+    {
+     "pos": "H",
+     "players": [
+      "Ryan Wright"
+     ]
+    },
+    {
+     "pos": "PR",
+     "players": [
+      "Barion Brown",
+      "Bryce Lance"
+     ]
+    },
+    {
+     "pos": "KR",
+     "players": [
+      "Barion Brown",
+      "Bryce Lance"
+     ]
+    }
+   ]
+  }
+ },
+ "coverage_notes": {
+  "clubs_with_machine_readable_chart_this_session": [
+   "DET",
+   "NE",
+   "DAL",
+   "GB",
+   "TEN",
+   "NO"
+  ],
+  "club_chart_retrieved_but_not_machine_readable": {
+   "HOU": "https://www.houstontexans.com/team/depth-chart publishes the depth chart as an image (page heading 'Unofficial Depth Chart', no position/name table in the page text), so no ordinal value can be transcribed from text."
+  },
+  "club_chart_not_retrieved_this_session": {
+   "IND": "https://www.indianapoliscolts.com/team/depth-chart - fetch failed this session; not transcribed.",
+   "MIN": "https://www.minnesotavikings.com/team/depth-chart - HTTP 500 this session; not transcribed.",
+   "SEA": "https://www.seattleseahawks.com/team/depth-chart - returned a consent/advertising interstitial, not the chart; not transcribed."
+  },
+  "not_checked_this_session": "The remaining 22 clubs were not requested this session. Their depth columns stay blank rather than being inferred."
+ }
+}

@@ -444,10 +444,10 @@
   "flag_id": "F50",
   "category": "Gate integrity",
   "item": "Gate G1 (no look-ahead) is a constant True",
-  "detail": "scripts/model.py gate_eval() sets G1 to True. The no-look-ahead property holds by construction in the walk-forward loop but is not computed as a gate.",
+  "detail": "scripts/model.py gate_eval() set G1 to a constant True. The no-look-ahead property holds by construction in the walk-forward loop but was not computed as a gate. Fixed 2026-11-14 by two independent passes: sessions f25d6b55/e208ba6d added the lookahead_audit() computation (G1_PASSED) now in scripts/model.py, and session 20e6161b independently added a measured max(training week) < W check (superseded by the merged audit).",
   "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm",
-  "status": "Open",
-  "action_requested": "Add a computed test (for example, assert every training row precedes the prediction week) or label G1 a design property."
+  "status": "Resolved 2026-11-14 (main: lookahead_audit in scripts/model.py; session 20e6161b T52 applied the same fix independently and re-derived it)",
+  "action_requested": "G1 is a measured gate; no action remains. If the audit ever fails the build output shows it in gate_results.csv."
  },
  {
   "flag_id": "F51",
@@ -471,10 +471,10 @@
   "flag_id": "F53",
   "category": "Coverage gap",
   "item": "Four availability rows have no depth check",
-  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) are shown without a club-chart check. replacement_depth_week10_2026.csv marks them not verified.",
+  "detail": "A08 (GB RB Josh Jacobs), A09 (LAR WR Puka Nacua), A10 (KC RB Kenneth Walker III) and A11 (IND DE Arden Key) were shown without a club-chart check. Closed 2026-11-14 (session 20e6161b, T53): all four rows are now checked against the club charts (packers.com, therams.com, chiefs.com, colts.com) and their NFL.com source articles were re-read. A10's source was upgraded to the Saturday downgrade article, which names the replacements (Emmett Johnson, named lead, 2nd string RB2 on the chart). A08/A09 name groups only, so their rank cells stay blank with the chart order recorded; A11 is an IR activation (no replacement) and Key is absent from the Week 10 chart (released before the Saturday activation).",
   "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
-  "status": "Open",
-  "action_requested": "Fetch the four club charts in a later pass."
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53)",
+  "action_requested": "None remaining. Chart caveats (self-labelled unofficial, pre-injury order) stay under F45."
  },
  {
   "flag_id": "F54",
@@ -604,42 +604,69 @@
  },
  {
   "flag_id": "F74",
+  "category": "Register accuracy (line-by-line review)",
+  "item": "Availability register rows contradicted or superseded by their own cited sources",
+  "detail": "A session 20e6161b line-by-line pass (T53/T54) re-read the body of every source cited by confirmed_availability_week10_2026.csv rows A08-A11. A08 (GB) claimed \"no replacement is named in the official sources checked\" while the body of its own cited NFL.com article names the replacement group (Kaleb Johnson, MarShawn Lloyd, Pierre Strong, Chris Brooks); corrected with the article quote. A10 (KC) carried a Friday snapshot (Walker Questionable) that the Saturday official update supersedes (downgraded to Out, replacement group named); a dated update was added and the snapshot text preserved per the F26 convention. A09 and A11 checked and left unchanged.",
+  "source_url": "https://www.nfl.com/news/packers-rb-josh-jacobs-to-undergo-surgery-on-finger-this-week",
+  "status": "Resolved 2026-11-14 (session 20e6161b, T53/T54) — corrections applied and labelled",
+  "action_requested": "Reviewer to confirm the dated-update style for superseded snapshots (same mechanism as the F26 owner decision)."
+ },
+ {
+  "flag_id": "F75",
+  "category": "Register consistency",
+  "item": "Two registers share the A01-A11 ID scheme for different rows",
+  "detail": "data/confirmed_availability_week10_2026.csv (session 10a76288, T34) and data/replacement_depth_week10_2026.csv (session 8a0bf37e, T42) both number their rows A01-A11, but the rows do not correspond one to one and the columns differ. On the published pages the context is always shown, but a bare \"A08\" citation is ambiguous between the two registers.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open — needs review",
+  "action_requested": "Owner to choose one ID scheme (e.g. AV01- vs RD01-) in a later integration pass; renaming ripples through scripts/build.py and flag text, so it is not done unilaterally here."
+ },
+ {
+  "flag_id": "F76",
+  "category": "Irregularity - model behaviour",
+  "item": "Originated side carries a home-team bias against the number the model itself published",
+  "detail": "Graded every out-of-sample game against the walk-forward line scripts/model.py published for it: home side 36 cover / 52 lose / 1 push over 89 games; mean signed error (actual minus predicted) -0.83 points, SE 1.30, t = -0.64. The direction favours the away side but is not statistically distinguishable from zero, so the line is published as computed. Raised by session d0d9d19f (check A09 in data/repo_line_audit.csv). Monitor: re-check after each week is settled.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Open - monitoring",
+  "action_requested": "Re-run scripts/repo_audit.py after each week is added; escalate only if the interval excludes zero."
+ },
+ {
+  "flag_id": "F77",
   "category": "Official source conflict",
   "item": "Injury report and player page disagree on one player's position (Ben Brown, NE)",
   "detail": "The Week 10 injury report lists Ben Brown as C. His official NFL player page lists G (No. 77, New England Patriots). Both are nfl.com pages, so the snapshot cannot be treated as internally consistent for this row. The snapshot keeps the value from the declared source for the row (the injury report).",
   "source_url": "https://www.nfl.com/players/ben-brown-2/",
   "status": "Irregularity - open",
-  "action_requested": "Decide the source-precedence rule for conflicting official pages (decision gate DQ-18). [Renumbered from F19 during integration: parallel sessions had already used the lower IDs.] [Renumbered F30->F74 during T52 takeover: session 25d6114f used F30, main later assigned F30-F73 to other findings, renumbered again from F56-F59 to F74-F77 when main advanced to F73.]"
+  "action_requested": "Decide the source-precedence rule for conflicting official pages (decision gate DQ-18). [Renumbered from F19 during integration: parallel sessions had already used the lower IDs.] [Renumbered F30->F77 across three takeover passes: 25d6114f F30 -> F56-F59 -> F74-F77 -> F77 (main assigned F74-F76 while this branch was open). Session cbb6c2f3, T84.]"
  },
  {
-  "flag_id": "F75",
+  "flag_id": "F78",
   "category": "Flag correction",
   "item": "Flag F06 was only part-correct about official starter data",
   "detail": "F06 said no official depth-chart data was found. The official team roster page does lack a depth column, but the official NFL gamebook publishes the complete starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen starter-identity rows from the Week 10 Commanders at Giants gamebook are recorded on the Starters page. A pregame depth chart is still not published by the NFL.",
   "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
   "status": "Irregularity - partially resolved",
-  "action_requested": "Review the Starters page and decide whether the gamebook is the accepted starter-identity source (decision gate DQ-05). [Renumbered from F20 during integration: parallel sessions had already used the lower IDs.] [Renumbered F31->F75 during T52 takeover (F31, then F57, both collided as main advanced).]"
+  "action_requested": "Review the Starters page and decide whether the gamebook is the accepted starter-identity source (decision gate DQ-05). [Renumbered from F20 during integration: parallel sessions had already used the lower IDs.] [Renumbered F31->F78 across three takeover passes (F31 -> F57 -> F75 -> F78; main assigned F75 while this branch was open). Session cbb6c2f3, T84.]"
  },
  {
-  "flag_id": "F76",
+  "flag_id": "F79",
   "category": "Rights limitation",
   "item": "Official gamebook use is restricted by its own notice",
   "detail": "The gamebook states that the summary and play-by-play are provided for the express purpose of assisting media in their coverage of the game and that any other use is prohibited without the written permission of the National Football League. Starter-identity values are published here as source-linked research only.",
   "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
   "status": "Irregularity - open",
-  "action_requested": "Include the gamebook in the permission request described in Flag F16 (decision gate DQ-01). [Renumbered from F21 during integration: parallel sessions had already used the lower IDs.] [Renumbered F32->F76 during T52 takeover (F32, then F57 family, both collided as main advanced).]"
+  "action_requested": "Include the gamebook in the permission request described in Flag F16 (decision gate DQ-01). [Renumbered from F21 during integration: parallel sessions had already used the lower IDs.] [Renumbered F32->F79 across three takeover passes (F32 -> F58 -> F76 -> F79; main assigned F76 while this branch was open). Session cbb6c2f3, T84.]"
  },
  {
-  "flag_id": "F77",
+  "flag_id": "F80",
   "category": "Verification limitation",
   "item": "The verification ledger is not independent of the transcription",
   "detail": "The line-by-line comparison in data/verification_week10_2026.csv was produced in the same session that transcribed the snapshot, so a repeated misreading of the official page would not be detected. The comparison does confirm internal consistency and field-level agreement with the transcription as read.",
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Known limitation",
-  "action_requested": "Commission an independent second transcription and publish the disagreement rate (suggestion SR-13, decision gate DQ-19). [Renumbered from F22 during integration: parallel sessions had already used the lower IDs.] [Renumbered F33->F77 during T52 takeover (F33, then F59, both collided as main advanced).]"
+  "action_requested": "Commission an independent second transcription and publish the disagreement rate (suggestion SR-13, decision gate DQ-19). [Renumbered from F22 during integration: parallel sessions had already used the lower IDs.] [Renumbered F33->F80 across three takeover passes (F33 -> F59 -> F77 -> F80; main advanced past F77 while this branch was open). Session cbb6c2f3, T84.]"
  },
  {
-  "flag_id": "F78",
+  "flag_id": "F81",
   "category": "Register irregularity",
   "item": "Flag numbering has a gap at F57-F62",
   "detail": "The flag register runs F01-F56 then F63-F77: F57-F62 do not exist. The gap is collision-renumbering churn (session f25d6b55 drafted F56-F62, session e208ba6d renumbered its own F56-F62 to F63-F69 when the IDs collided, and later sessions renumbered again up to F73). No flag content was lost: f25d6b55 seven items are present as F56 and F63-F69, verified item-by-item during the T79 takeover. The gap is cosmetic.",
@@ -648,7 +675,7 @@
   "action_requested": "No action needed for correctness; a future register pass may close the numbering gap, which would require updating every cross-reference."
  },
  {
-  "flag_id": "F79",
+  "flag_id": "F82",
   "category": "Register inconsistency",
   "item": "F48 status text cites different C09 numbers than the canonical register",
   "detail": "F48 is marked Resolved and its status text quotes 95% CI 0.335-1.435, p 0.6820 (session f25d6b55 execution), while the canonical data/correlations_computed.csv and the regenerated data/correlation_audit.csv hold the t-interval 95% CI 0.328-1.443, p 0.6830 (kept as the merged execution in PR #44). Both use the slope own standard error; they differ only in interval method and rounding. Documentation mismatch only - no value differs beyond that.",
