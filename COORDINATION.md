@@ -396,3 +396,21 @@ final integration session for this round):** `scripts/build.py`, `docs/**`,
 3. The build now rejects ragged CSV rows (`read_csv` raises on an extra or missing cell) after a mis-quoted source row
    was found during this session.
 
+
+---
+
+### Integration note — flag and task ID collision (session 25d6114f, 2026-11-14)
+
+Two sessions ran T13–T19 in parallel and both allocated IDs from the same ranges. This is now resolved, and the
+resolution is recorded here so no future session renumbers again:
+
+| Range | Owner on `main` | Resolution |
+|---|---|---|
+| `F19`–`F29` | Sessions 30beeb55, 7c9eb69a, 45a0ec8c (NL jurisdiction, verification pass, news drift, Thursday result, designation evidence) | **Kept unchanged.** Nothing was renumbered on `main`. |
+| `F30`–`F33` | Session 25d6114f (Ben Brown source conflict, F06 correction, gamebook restriction, verification independence) | Mine were renumbered **into** this free range. `action_requested` records the old ID for each. |
+| `T14`–`T19` | Claimed by both | Both rows are kept in the task board above; `main`'s claim rows are authoritative for the earlier sessions, and the "Session 25d6114f — verification report" appendix records what this session actually delivered under those task numbers. |
+| `SRC-30`–`SRC-34` | Free on `main` (it stopped at `SRC-29`) | Appended unchanged. |
+
+**Lesson for the next session:** claim your ID ranges in this file *before* writing them into data, and re-read
+`main` immediately before allocating. `scripts/build.py` now fails the build if a table row has no citation and if a
+CSV row is ragged, but it cannot detect a duplicate ID across branches.
