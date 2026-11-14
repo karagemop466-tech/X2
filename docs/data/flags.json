@@ -124,5 +124,14 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Known limitation",
   "action_requested": "Approve an automated refresh job (Suggestion S07)."
+ },
+ {
+  "flag_id": "F15",
+  "category": "Publishing",
+  "item": "GitHub Pages serves the repo root, not docs/",
+  "detail": "Pages was already enabled on main with source / (root). This session could not change the source to /docs (the API returned HTTP 403 for that change). The site is therefore published from the root: index.html forwards to docs/index.html, and docs/ holds the site. Relative links inside docs/ keep working.",
+  "source_url": "https://github.com/karagemop466-tech/X2/settings/pages",
+  "status": "Irregularity - open",
+  "action_requested": "Switch the Pages source to main /docs, or approve the root-forwarder approach."
  }
 ]

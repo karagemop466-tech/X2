@@ -50,6 +50,7 @@ See `data/flags.csv` (F01–F14), also published at `docs/flagged.html` under "F
 - F09: Japan wagering law needs legal advice.
 - F11: NFL.com roster link slug for "Dee Alford" does not match the name.
 - F12: two different official headlines for the Lamar Jackson timeline.
+- F15: GitHub Pages source is main / (root), not /docs. The token returned HTTP 403 when changing it. Root index.html forwards to docs/index.html.
 
 ## Log
 
@@ -58,4 +59,5 @@ See `data/flags.csv` (F01–F14), also published at `docs/flagged.html` under "F
 - 2026-11-14 · e98c7ba0 · Data-file repair: four CSV files had unquoted commas (questions, suggestions, news, flags). Rewritten or repaired. Nothing else affected.
 - 2026-11-14 · e98c7ba0 · Integration check: `python3 scripts/build.py` passes (345 injury rows, 14 games, 11 pages, all links resolve, all row links official).
 - 2026-11-14 · e98c7ba0 · Pull request opened: https://github.com/karagemop466-tech/X2/pull/1 (base `main`, head `arena/e98c7ba0-x2`). Merge with `--merge` next, without waiting for approval, per the brief.
+- 2026-11-14 · e98c7ba0 · PR #1 merged into main (merge commit 0563aab). Enabling Pages from main /docs returned HTTP 403, and the existing Pages config is main /. Workaround in PR #2: root index.html forwards to docs/ (Flag F15).
 - No merge conflicts. No other session has touched these files.

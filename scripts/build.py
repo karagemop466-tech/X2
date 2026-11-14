@@ -461,6 +461,16 @@ for slug, (title, body) in pages.items():
     with open(os.path.join(DOCS, slug), "w", encoding="utf-8") as f:
         f.write(page(slug, title, body, slug))
 open(os.path.join(DOCS, ".nojekyll"), "w").close()
+# GitHub Pages is configured to publish the repository root (main / ). The root index forwards to docs/.
+with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
+    f.write("""<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta http-equiv="refresh" content="0; url=docs/index.html">
+<link rel="canonical" href="docs/index.html">
+<title>NFL Research Dashboard</title></head>
+<body><p>Opening the <a href="docs/index.html">NFL Research Dashboard</a>…</p>
+<script>location.replace("docs/index.html");</script></body></html>
+""")
 
 # ---------- checks on generated HTML ----------
 problems = []
