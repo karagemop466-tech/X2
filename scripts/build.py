@@ -437,7 +437,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
 {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
-{card('strategy-lab.html', 'Strategy lab', 'Validation gates, hypotheses and the leaderboard framework. No strategy has passed yet.')}
+{card('strategy-lab.html', 'Strategy lab', 'The hypotheses, the eight gates and the reward framework. Four of seven strategies now qualify; the tiers are proposed, nothing is paid.')}
 {card('questions.html', 'Questions', 'What we know, what we do not, and how to find the missing information.')}
 {card('requirements.html', 'Requirements', 'Each requirement from the brief with its current status.')}
 {card('suggestions.html', 'Suggestions', 'Review proposals before future implementation, with a recommended path and the gate that blocks each one.')}
@@ -462,7 +462,7 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
-<li><strong>Strategy research.</strong> No strategy has been tested. Odds, historical results and correlation data have not been obtained through a verified, authorized source, so every performance gate is open (Strategy lab).</li>
+<li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
 <li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), so the lines are neither over-shy nor over-confident.</li>
 <li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
 <li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
@@ -473,13 +473,16 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <h2>What is verified</h2>
 <ul>
 <li>The Week 10 injury rows, game list, records, and news headlines (NFL.com, read {AS_OF}).</li>
+<li>All 137 completed 2026 games and the standings they reconcile against (NFL.com, read {AS_OF}).</li>
+<li>The model outputs: team ratings, Week 11 lines, backtest, gates, correlations and the parlay study; each is recomputed from the games above by <code>scripts/model.py</code>.</li>
 <li>Penal Code Chapter 23 gambling articles (e-Gov Law Search); Japan Sport Council state lottery products.</li>
 </ul>
 <h2>What is not verified (left blank)</h2>
 <ul>
 <li>Starter vs backup order at every position (no official depth chart collected).</li>
 <li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
-<li>Historical results, player stats and correlation values (not yet collected).</li>
+<li>Player statistics, player-prop outcomes and prop prices (no official source collected; Flag F31).</li>
+<li>Market prices, closing lines, closing-line value and any return on investment (no licensed odds feed; Flags F07, F32).</li>
 <li>Injury-designation probabilities (NFL.com publishes labels, not probabilities).</li>
 </ul>
 <h2>Team exposure (Week 10, from the report)</h2>
