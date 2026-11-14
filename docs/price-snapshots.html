@@ -20,7 +20,7 @@ the moneyline, for the Week 11 slate and for the out-of-sample backtest window �
 <em>opening number</em> and the <em>closing number</em> that the market published for it. <strong>Every opening and
 closing value is blank and flagged.</strong> This project has no licensed odds feed, and no official free source
 publishes opening or closing NFL market numbers, so no value can be confirmed from an official source and none is
-inferred (Flags F07, F31, F45). The store is built so that, the moment a rights-cleared official odds source is
+inferred (Flags F07, F51). The store is built so that, the moment a rights-cleared official odds source is
 connected, the numbers drop straight into the existing columns. The <em>fair line</em> column is the model's own
 originated number and is first-party computed; it is not a market price.</p>
 <div class="tiles"><div class="tile"><div class="num">306</div><div class="lbl">snapshot rows (extended store)</div></div><div class="tile"><div class="num">39</div><div class="lbl">Week 11 rows (c125b2f7 store)</div></div><div class="tile"><div class="num">13</div><div class="lbl">Week 11 games</div></div><div class="tile"><div class="num">89</div><div class="lbl">out-of-sample games</div></div></div>
@@ -29,7 +29,7 @@ originated number and is first-party computed; it is not a market price.</p>
 <li><strong>fair_line</strong> — the model's originated number for that market (side spread, total, or fair
 moneyline). First-party computed from official results; not a market price.</li>
 <li><strong>opening_number / closing_number</strong> — the market's opening and closing numbers. Blank by design:
-no official source confirms them (F07, F31, F45).</li>
+no official source confirms them (F07, F51).</li>
 <li><strong>opening_verified / closing_verified</strong> — No for every row, because no value is filled.</li>
 <li><strong>status</strong> — carries the flag text on every row so the blank is never read as an omission.</li>
 </ul>

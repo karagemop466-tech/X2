@@ -506,7 +506,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
 {card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made. Start here.')}
 {card('model-lines.html', 'Model & Week 11 lines', 'Our own originated spreads, totals and moneylines for Week 11 — originated side first, then total, then moneyline — with the fair line, market line and difference as separate columns.')}
-{card('price-snapshots.html', 'Price snapshots', 'The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F45).')}
+{card('price-snapshots.html', 'Price snapshots', 'The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F51).')}
 {card('backtest.html', 'Backtest', 'All 89 walk-forward out-of-sample predictions against what actually happened, game by game.')}
 {card('leaderboard.html', 'Leaderboard', 'Seven strategies ranked on forecast skill, with signal separated from staking, gates, uncertainty and required sample sizes.')}
 {card('validation-gates.html', 'Validation gates', 'Nine gates, what each one tests, and which strategies pass — including the demotion gate that sends a live strategy back to paper.')}
@@ -544,13 +544,13 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
-<li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
+<li><strong>Strategy research.</strong> Seven pre-registered strategies have been graded walk-forward on official 2026 results. Two independent implementations disagree on qualification (F42), so <strong>no reward tier is assigned</strong>. Rankings describe forecast signal, not profit; no odds feed or staking result is available (Flags F32, F33, F43).</li>
 <li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), so the lines are neither over-shy nor over-confident.</li>
 <li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
-<li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F45). The schema is in place for a rights-cleared odds feed to fill it.</li>
-<li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32, F46).</li>
+<li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F51). The schema is in place for a rights-cleared odds feed to fill it.</li>
+<li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32).</li>
 <li><strong>Demotion gate (new).</strong> A demotion gate (G9) is defined and armed: a live strategy is sent back to paper the moment any of G1–G8 fails, the skill interval includes zero, or the mean edge turns negative. No strategy is live today — the qualification is disputed by the independent cross-check (F42) and wagering and rewards stay disabled — so every strategy is Paper (Flags F17, F42).</li>
-<li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
+<li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were graded walk-forward. The base model's gate counts are shown as evidence, but independent validation disagrees on qualification (F42); no leaderboard row receives a reward tier, and no reward is enabled (F43). The totals strategy shows no measured skill and the parlay strategy fails on sample size. None has enough observations for a decisive test (F33).</li>
 <li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
 <li><strong>Results verified line by line.</strong> Every one of the {ms['games_transcribed']} transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
@@ -660,7 +660,7 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
 {table(correlation_plan, ['question','method','required_alignment','current_value','sample_n','source_url'],
        {'question':'Question','method':'Proposed measurement','required_alignment':'Data alignment','current_value':'Current value','sample_n':'Sample size','source_url':'Statistical reference'})}
 <h2>Leaderboard — now graded, on the Leaderboard page</h2>
-<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample and {ms['qualified_strategies']} qualify. Full figures, uncertainty intervals and gate results are on the <a href="leaderboard.html">Leaderboard</a> page. The intended competition still ranks performance only after preregistered, out-of-sample validation. The requested top-performer reward is not defined or enabled: eligibility, jurisdiction, data rights and legal review remain unresolved. No monetary value, score, sample size or uncertainty interval is reported.</p>
+<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample. One implementation reports {ms['measured_gate_qualified_strategies']} passing its core gates; the independent cross-check disagrees after multiple-comparison adjustment (F42). Per-gate results remain visible, but no reward tier is assigned or enabled. Full figures and uncertainty intervals are on the <a href="leaderboard.html">Leaderboard</a> page. Jurisdiction, data rights and legal review also remain unresolved.</p>
 {table(leaderboard_status, ['rank','strategy','skill_score','eligible_sample','uncertainty','validation_status','top_performance_reward','source_url'],
        {'rank':'Rank','strategy':'Strategy','skill_score':'Performance score','eligible_sample':'Eligible sample','uncertainty':'Uncertainty','validation_status':'Validation status','top_performance_reward':'Top-performance reward','source_url':'Project record'})}
 """)
@@ -789,7 +789,7 @@ the moneyline, for the Week 11 slate and for the out-of-sample backtest window �
 <em>opening number</em> and the <em>closing number</em> that the market published for it. <strong>Every opening and
 closing value is blank and flagged.</strong> This project has no licensed odds feed, and no official free source
 publishes opening or closing NFL market numbers, so no value can be confirmed from an official source and none is
-inferred (Flags F07, F31, F45). The store is built so that, the moment a rights-cleared official odds source is
+inferred (Flags F07, F51). The store is built so that, the moment a rights-cleared official odds source is
 connected, the numbers drop straight into the existing columns. The <em>fair line</em> column is the model's own
 originated number and is first-party computed; it is not a market price.</p>
 {tiles([(len(price_snapshots_extended), 'snapshot rows (extended store)'), (len(price_snapshots), 'Week 11 rows (c125b2f7 store)'),
@@ -799,7 +799,7 @@ originated number and is first-party computed; it is not a market price.</p>
 <li><strong>fair_line</strong> — the model's originated number for that market (side spread, total, or fair
 moneyline). First-party computed from official results; not a market price.</li>
 <li><strong>opening_number / closing_number</strong> — the market's opening and closing numbers. Blank by design:
-no official source confirms them (F07, F31, F45).</li>
+no official source confirms them (F07, F51).</li>
 <li><strong>opening_verified / closing_verified</strong> — No for every row, because no value is filled.</li>
 <li><strong>status</strong> — carries the flag text on every row so the blank is never read as an omission.</li>
 </ul>
@@ -848,15 +848,17 @@ The <em>signal</em> block ranks strategies on forecast skill: how many points pe
 forecast landed to the actual result than the naive reference line, across all {ms['out_of_sample_games']}
 out-of-sample games. It is a forecast-accuracy measure, not profit. The <em>staking</em> block records the staking
 plan and its return — which is blank, because no licensed odds feed exists, so no staking return can be computed
-(Flags F07, F32, F46). A lucky staking run therefore cannot mask a weak signal: the two are read separately. The
+(Flags F07, F32). A lucky staking run therefore cannot mask a weak signal: the two are read separately. The
 hit rate and edge columns describe a paper record against the naive reference line and <strong>must not be read
 as a market result</strong> (Flag F32). Required sample size is how many bets the strategy would need, at the
-effect size it observed, for an 80%-power test; every strategy on this board is currently short.</p>
-{tiles([(ms['strategies_tested'], 'strategies tested'), (ms['qualified_strategies'], 'qualified'),
+effect size it observed, for an 80%-power test; every strategy on this board is currently short. <strong>No reward
+tier is assigned to any row:</strong> independent validation disagrees on qualification (F42), so ranks describe
+forecast signal only (F43).</p>
+{tiles([(ms['strategies_tested'], 'strategies tested'), (ms['measured_gate_qualified_strategies'], 'gate-qualified'),
         (ms['live_strategies'], 'live strategies'), (ms['out_of_sample_games'], 'out-of-sample games')])}
 <h2>Signal — ranked by forecast skill</h2>
 {table(leaderboard, ['rank','strategy_id','strategy','market','status','demotion_safe','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','mae_model','mae_reference','oos_games','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url'],
-       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','status':'Status','demotion_safe':'Demotion-safe','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier','source_url':'Source'})}
+       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','status':'Status','demotion_safe':'Demotion-safe','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Tier (none assigned)','source_url':'Source'})}
 <h2>Staking — separate from signal</h2>
 <p class="note">Staking returns depend on prices, which this project does not hold. The plan is published for
 completeness; the return columns are blank and flagged, not estimated.</p>
@@ -874,12 +876,13 @@ mean edge turns negative. <strong>No strategy is live today:</strong> the qualif
 independent cross-check (Flag F42), the gate cut-offs await owner approval (F17) and wagering and rewards stay
 disabled (F09, F16, F19). Every strategy is therefore <em>Paper</em>; the demotion-safe column shows which ones
 would keep (or earn) live status once the gates are approved and the disagreement resolved.</p>
-<h2>Reward structure — proposed, not approved, nothing paid</h2>
+<h2>Reward structure — proposal only; no current tier assignments</h2>
+<p class="note"><strong>F42 blocks assigning any reward tier:</strong> the independent qualification analysis disagrees, and thresholds remain unapproved (F17). The labels below are only a historical design proposal, not current outcomes.</p>
 <ul class="findings">
-<li><strong>Tier 1 (gold)</strong> — passes all eight gates. Proposed: top leaderboard recognition.</li>
-<li><strong>Tier 2 (silver)</strong> — passes G1, G2, G3, G4, G5 and G6. Proposed: mid-tier recognition.</li>
-<li><strong>Tier 3 (bronze)</strong> — passes G1, G2, G3 and G5. Proposed: tracking only, no promotion.</li>
-<li><strong>Not qualified</strong> — fails any of G1, G2, G3 or G5. No tier, no promotion.</li>
+<li><strong>Tier 1 concept</strong> — would require all eight gates and a resolved independent qualification test.</li>
+<li><strong>Tier 2 concept</strong> — proposed gate subset only; not assigned or enabled.</li>
+<li><strong>Tier 3 concept</strong> — proposed tracking only; not assigned or enabled.</li>
+<li><strong>Current state</strong> — zero active reward tiers; no reward is offered or paid.</li>
 </ul>
 <p class="note">The competition is between strategies inside this repository, not between people, and no reward
 has monetary value. Any reward, entry fee, referral or wager mechanic stays disabled pending jurisdiction
@@ -1091,7 +1094,7 @@ xc_rows = [
      "source_url": "https://github.com/karagemop466-tech/X2"},
     {"check": "Strategies clearing every gate",
      "ours": f'{n_qualified} of {n_competing}',
-     "theirs": f'{ms.get("qualified_strategies", "")} of {ms.get("strategies_tested", "")} (with {ms.get("tier1_strategies", "")} at tier 1)',
+     "theirs": f'{ms.get("measured_gate_qualified_strategies", "")} of {ms.get("strategies_tested", "")} pass its core gate rule (with {ms.get("measured_all_gate_passes_single_implementation", "")} meeting all 8 gates)',
      "agreement": "DISAGREEMENT — see the note",
      "note": "The other implementation does not charge for testing several rules at once. Adjusting for multiple comparisons removes the apparent significance here, so no rule is qualified and the reward stays off.",
      "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"},
@@ -1115,9 +1118,9 @@ being smoothed over.</p>
 {table(xc_rows, ['check','ours','theirs','agreement','note','source_url'],
        {'check':'Check','ours':'This session implementation','theirs':'The other implementation','agreement':'Agreement','note':'Note','source_url':'Source'})}
 <h2>The one material disagreement</h2>
-<p class="note">The other implementation reports
-{ms.get('qualified_strategies', '')} of {ms.get('strategies_tested', '')} strategies as qualified and
-proposes reward tiers. This session's independent scoring of {n_competing} competing rules on
+<p class="note">The base implementation's unadjusted core-gate count is
+{ms.get('measured_gate_qualified_strategies', '')} of {ms.get('strategies_tested', '')};
+{ms.get('measured_all_gate_passes_single_implementation', '')} meet all eight of its gates. Reward-tier labels have since been disabled pending review (F43). This session's independent scoring of {n_competing} competing rules on
 {best['eligible_games']} unseen games finds <strong>{n_qualified} qualified</strong> once the multiple-comparison adjustment is
 applied: testing several rules and keeping the best one manufactures significance, and the leading rules' intervals no longer
 clear zero once that is charged for. <strong>The recommendation on this page is that no reward tier be offered or paid until
