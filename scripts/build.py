@@ -117,8 +117,39 @@ price_snapshots = read_csv("price_snapshots.csv")
 line_comparison = read_csv("line_comparison_week11.csv")
 signal_staking = read_csv("strategy_signal_staking.csv")
 demotion_gate = read_csv("demotion_gate.csv")
+# ---- session ef971991: depth of the replacement (not just the fact of a replacement) ----
+replacement_depth = read_csv("replacement_depth.csv")
+# ---- session ca1ea224: the extended price-snapshot store (Week 11 + out-of-sample) ----
+price_snapshots_extended = read_csv("price_snapshots_extended.csv")
+# ---- session f25d6b55 (T52): canonical verified results feed ----
+results_feed = read_csv("results_feed_2026.csv")
 with open(os.path.join(DATA, "model_summary.json"), encoding="utf-8") as f:
     ms = json.load(f)
+# ---- session e208ba6d: decision console, market sheet, live re-verification ----
+market_sheet = read_csv("market_sheet_week11.csv")
+corr_matrix = read_csv("correlation_matrix_same_game.csv")
+prop_markets = read_csv("prop_markets_week11.csv")
+prop_combos = read_csv("prop_combinations_week11.csv")
+event_risk = read_csv("event_risk_week11.csv")
+event_risk_summary = read_csv("event_risk_summary_week11.csv")
+injury_impact = read_csv("injury_impact_2026.csv")
+live_reverification = read_csv("live_reverification_2026-11-14.csv")
+decision_console = read_csv("decision_console.csv")
+# The console is generated from data/decision_choices.json.  If the CSV was built
+# from a different JSON state than the one on disk, the page would show a decision
+# that was never actually recorded.  Refuse to publish that.
+with open(os.path.join(DATA, "decision_choices.json"), encoding="utf-8") as f:
+    _dc = json.load(f).get("choices", {})
+for _row in decision_console:
+    _want = _dc.get(_row["proposal_id"], {}).get("choice", "")
+    if (_row["recorded_choice"] or "") != _want:
+        errors.append(
+            "decision_console.csv is stale for %s: page would show %r but "
+            "decision_choices.json records %r - re-run scripts/review.py"
+            % (_row["proposal_id"], _row["recorded_choice"], _want))
+forecast_log = read_csv("prospective_forecast_log.csv")
+with open(os.path.join(DATA, "prospective_forecast_log.sha256"), encoding="utf-8") as f:
+    SEAL = f.read().split()[0]
 # ---- session 10a76288: a second, independent implementation used to cross-check the one above ----
 season_games = read_csv("season_games_2026.csv")
 standings = read_csv("standings_2026_week10.csv")
@@ -131,12 +162,12 @@ sugg_review = read_csv("suggestion_review.csv")
 # Empty-state row only: do not imply a strategy has results or an approved reward.
 leaderboard_status = [{
     "rank": "—",
-    "strategy": "No qualified strategy",
+    "strategy": "See the Leaderboard page (7 strategies graded)",
     "skill_score": "",
     "eligible_sample": "",
     "uncertainty": "",
-    "validation_status": "Not tested — no strategy has passed the gates",
-    "top_performance_reward": "Not defined; disabled pending legal, rights and validation review",
+    "validation_status": "Graded on the Leaderboard page; whether any strategy 'passes' is disputed (F42: 4 of 7 vs 0 of 8) and the cut-offs are unapproved (F17)",
+    "top_performance_reward": "Not offered — blocked by R36 pending the F42 resolution; disabled pending legal, rights and validation review",
     "source_url": "https://github.com/karagemop466-tech/X2",
 }]
 line_blueprint = [
@@ -232,6 +263,61 @@ for label, rows, id_field in (
             errors.append(f"{label} {row.get(id_field, '?')}: row without an official source link")
         else:
             check_official(val, f"{label}.source_url")
+
+# ---- market-table integrity (price store, fair/market/difference, signal/staking, demotion gate) ----
+for row in price_snapshots:
+    for val_key, src_key in (("opening_line", "opening_source"), ("opening_price", "opening_source"),
+                             ("closing_line", "closing_source"), ("closing_price", "closing_source")):
+        if (row.get(val_key) or "").strip() and not (row.get(src_key) or "").strip():
+            errors.append(f"price_snapshots {row['snapshot_id']}: {val_key} recorded without {src_key}")
+    for key in ("opening_source", "closing_source"):
+        if (row.get(key) or "").strip():
+            check_official(row[key], f"price_snapshots.{row['snapshot_id']}.{key}")
+for label, rows, id_field in (
+    ("price_snapshots", price_snapshots, "snapshot_id"),
+    ("line_comparison", line_comparison, "game_no"),
+    ("signal_staking", signal_staking, "strategy_id"),
+    ("demotion_gate", demotion_gate, "rule_id"),
+):
+    for row in rows:
+        val = (row.get("source_url") or "").strip()
+        if not val:
+            errors.append(f"{label} {row.get(id_field, '?')}: row without a source link")
+        else:
+            check_official(val, f"{label}.source_url")
+
+# ---- replacement depth: a depth value may never appear without a verified basis (no inferred string order) ----
+for row in replacement_depth:
+    rid = row["rd_id"]
+    val = (row.get("source_url") or "").strip()
+    if not val:
+        errors.append(f"replacement-depth {rid}: row without a source link")
+    else:
+        check_official(val, f"replacement-depth.{rid}.source_url")
+    ev = (row.get("evidence_url") or "").strip()
+    if ev:
+        check_official(ev, f"replacement-depth.{rid}.evidence_url")
+    if (row.get("replacement_depth") or "").strip() and not (row.get("depth_verified") or "").startswith("yes"):
+        errors.append(f"replacement-depth {rid}: depth value without a verified basis")
+    if (row.get("next_in_line_depth") or "").strip() and not (row.get("depth_verified") or "").startswith("yes"):
+        errors.append(f"replacement-depth {rid}: next-in-line depth without a verified basis")
+
+# ---- correlations: every value must publish its sample n, computed from officially sourced numbers only ----
+for row in correlations:
+    cid = row.get("corr_id", "?")
+    if not (row.get("sample_n") or "").strip():
+        errors.append(f"correlations {cid}: sample_n (n) must be published with every value")
+    if (row.get("value") or "").strip() and not (row.get("sample_n") or "").strip():
+        errors.append(f"correlations {cid}: value published without n")
+
+# ---- price store: a price value may never appear without a recorded source ----
+for row in price_snapshots:
+    pid = row.get("snapshot_id") or row.get("game_id", "?")
+    for col, scol in (("opening_line", "opening_source"), ("opening_price", "opening_source"),
+                      ("closing_line", "closing_source"), ("closing_price", "closing_source")):
+        if (row.get(col) or "").strip():
+            if not (row.get(scol) or "").strip():
+                errors.append(f"price_snapshots {pid}: {col} present but has no source of that price")
 
 # Independent cross-check: this session's transcribed ledger must reproduce the official standings.
 _ledger = defaultdict(lambda: [0, 0, 0, 0, 0])   # team -> [W, L, T, PF, PA]
@@ -353,6 +439,10 @@ exports = {
     "model_backtest": model_backtest, "model_bets": model_bets,
     "strategy_leaderboard": leaderboard, "gate_results": gate_results,
     "correlations_computed": correlations, "parlay_analysis": parlays,
+    "price_snapshots": price_snapshots, "line_comparison_week11": line_comparison,
+    "strategy_signal_staking": signal_staking, "demotion_gate": demotion_gate,
+    "replacement_depth": replacement_depth,
+    "price_snapshots_extended": price_snapshots_extended,
     "model_summary": ms,
 }
 for name, data in exports.items():
@@ -361,7 +451,8 @@ for name, data in exports.items():
 
 # ---------- HTML helpers ----------
 LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url": "Link ↗",
-              "evidence_url": "Evidence ↗", "game_url": "Game page ↗"}
+              "evidence_url": "Evidence ↗", "game_url": "Game page ↗",
+              "depth_chart_url": "Club chart ↗", "checked_against": "Official page ↗"}
 
 
 def cell(key, val, row=None):
@@ -409,10 +500,15 @@ NAV = [
     ("index.html", "Home"),
     ("executive-summary.html", "Executive summary"),
     ("model-lines.html", "Model & Week 11 lines"),
+    ("price-snapshots.html", "Price snapshots"),
     ("backtest.html", "Backtest"),
     ("leaderboard.html", "Leaderboard"),
     ("validation-gates.html", "Validation gates"),
     ("markets.html", "Market tables"),
+    ("market-sheet.html", "Market sheet"),
+    ("props.html", "Player props"),
+    ("event-risk.html", "Event risk"),
+    ("review.html", "Review console"),
     ("correlations.html", "Correlations"),
     ("parlays.html", "Parlays"),
     ("results.html", "Season results"),
@@ -426,6 +522,7 @@ NAV = [
     ("questions.html", "Questions"),
     ("requirements.html", "Requirements"),
     ("suggestions.html", "Suggestions"),
+    ("review-path.html", "Review path"),
     ("verification.html", "Verification"),
     ("cross-check.html", "Independent cross-check"),
     ("flagged.html", "Flagged for review"),
@@ -501,19 +598,25 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 <h2>Start here</h2>
 <div class="cards">
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
-{card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made. Start here.')}
-{card('model-lines.html', 'Model & Week 11 lines', 'Our own originated spreads and totals for Week 11, the team ratings behind them, and the method.')}
+{card('review-path.html', 'Review path', 'A single ordered route through the open decisions, so one reviewer can choose a direction before anything is built. Start here to decide; use the other pages to check the evidence.')}
+{card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made.')}
+{card('model-lines.html', 'Model & Week 11 lines', 'Our own originated spreads, totals and moneylines for Week 11 — originated side first, then total, then moneyline — with the fair line, market line and difference as separate columns.')}
+{card('price-snapshots.html', 'Price snapshots', 'The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F51).')}
 {card('backtest.html', 'Backtest', 'All 89 walk-forward out-of-sample predictions against what actually happened, game by game.')}
-{card('leaderboard.html', 'Leaderboard', 'Seven strategies ranked on forecast skill, with gates, uncertainty and required sample sizes.')}
-{card('validation-gates.html', 'Validation gates', 'Eight gates, what each one tests, and which strategies pass.')}
+{card('leaderboard.html', 'Leaderboard', 'Seven strategies ranked on signal (forecast skill) only — staking is kept separate so luck cannot mask a bad signal — with gates and required sample sizes.')}
+{card('validation-gates.html', 'Validation gates', 'Nine gates, what each one tests, and which strategies pass — including the demotion gate that sends a live strategy back to paper.')}
 {card('correlations.html', 'Correlations', 'Nine correlation values computed from official results, with intervals and p-values.')}
 {card('parlays.html', 'Parlays', 'Same-game two-leg tickets: observed joint hit rate against the independence shortcut.')}
 {card('markets.html', 'Market tables', 'Price-snapshot store (opening and closing, blank until a source exists), fair vs market lines, signal vs staking, and the demotion gate.')}
-{card('results.html', 'Season results', 'All 137 transcribed 2026 games, each reconciled against the official standings.')}
+{card('market-sheet.html', 'Market sheet', 'Every Week 11 market in origination order, with the fair line, the market line and the difference kept in three separate columns, plus the sealed pre-kickoff forecast log.')}
+{card('props.html', 'Player props', 'Which prop outcomes are officially obtainable, which are not held here, and the same-game correlation matrix with n on every value.')}
+{card('event-risk.html', 'Event risk', 'Named players, official status words and the exact market each one can invalidate, plus the count of risks whose role is not officially confirmed.')}
+{card('review.html', 'Review console', 'The decision section: eight proposals, three options each, a recommendation, the file each would change, and a recorded-choice mechanism that ships empty.')}
+{card('results.html', 'Season results', 'The verified results feed: all 137 transcribed 2026 games, each reconciled against the official standings — what backtests run on, and why ROI still cannot be computed.')}
 {card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
 {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
-{card('strategy-lab.html', 'Strategy lab', 'The hypotheses, the eight gates and the reward framework. Four of seven strategies now qualify; the tiers are proposed, nothing is paid.')}
+{card('strategy-lab.html', 'Strategy lab', 'The hypotheses, the gates and the reward framework. Strategies are graded on signal; the reward tiers are proposed and not offered (R36), and nothing is paid.')}
 {card('questions.html', 'Questions', 'What we know, what we do not, and how to find the missing information.')}
 {card('requirements.html', 'Requirements', 'Each requirement from the brief with its current status.')}
 {card('suggestions.html', 'Suggestions', 'Review proposals before future implementation, with a recommended path and the gate that blocks each one.')}
@@ -521,7 +624,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('flagged.html', 'Flagged for review', 'Irregularities, unverified items and missing official data, each with a source link.')}
 {card('sources.html', 'Sources', 'Every official source used, with what it supports.')}
 {card('cross-check.html', 'Independent cross-check', 'A second independent transcription and model compared against the first: what agrees, and the one thing that does not.')}
-{card('depth-deficiency.html', 'Deficiency tracking', 'Unit exposure by side of ball, and officially named starters and replacements.')}
+{card('depth-deficiency.html', 'Deficiency tracking', 'Unit exposure by side of ball, officially named starters and replacements, and the depth of each replacement (2nd/3rd/4th string where a chart verifies it).')}
 </div>
 """)
 
@@ -541,9 +644,17 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their situations are tracked row by row in the <a href="depth-deficiency.html">replacement-depth table</a>: Darnold's replacement (Drew Lock) is named by NFL.com news with a club-chart rank (A01); Willis's successor is only "in line for first start" (A02, hedged); no replacement is named for Jackson (A03), so those ranks stay blank.</li>
 <li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
-<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), 95% t interval {ms['calibration_ci95'][0]} to {ms['calibration_ci95'][1]} with p = {ms['calibration_p_vs_slope_1']} against the target slope 1.0, so at this sample size the lines are neither over-shy nor over-confident (Flag F48 correction applied).</li>
+<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), 95% t interval {ms['calibration_slope_ci'][0]} to {ms['calibration_slope_ci'][1]} with p = {ms['calibration_slope_p_vs_1']} against the target slope 1.0, so at this sample size the lines are neither over-shy nor over-confident (Flags F48/F72 corrected).</li>
+<li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
+<li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F51). The schema is in place for a rights-cleared odds feed to fill it.</li>
+<li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32, F51).</li>
+<li><strong>Demotion gate (new).</strong> A demotion gate (G9) is defined and armed: a live strategy is sent back to paper the moment any of G1–G8 fails, the skill interval includes zero, or the mean edge turns negative. No strategy is live today — the qualification is disputed by the independent cross-check (F42) and wagering and rewards stay disabled — so every strategy is Paper (Flags F17, F42).</li>
 <li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
 <li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
+<li><strong>Signal and staking are separated (new).</strong> The leaderboard ranks on signal only — forecast skill with its interval and multiplicity-adjusted q-value. The bet record (wins, hit rate, edge) is a staking record shown for transparency and can never change a rank, so a lucky staking run cannot mask a bad signal. See the <a href="markets.html">Market tables</a> page.</li>
+<li><strong>Price-snapshot store (new).</strong> All {len(price_snapshots)} originated Week 11 markets — side first, then total, then moneyline — are tracked in a store with opening and closing fields. Every price cell is blank and marked unverified: no authorised, timestamped price source exists (Flags F07, F43). The store is the piece that makes closing-line value and ROI computable the moment real prices land; until then, no ROI is estimated.</li>
+<li><strong>Demotion gate defined (new).</strong> Seven rules (D1-D7, gate G9) define how a live strategy returns to paper: signal-interval collapse, multiplicity failure, sample loss, source revision, lost clearance, and a CLV test once prices exist. Staking results can neither promote nor rescue a strategy. The rules are proposals — thresholds await the owner's statistical plan (Flag F17) — and no strategy is live, so the gate is inert today.</li>
+<li><strong>Depth of the replacement (new).</strong> Replacement events are now tracked with an explicit string depth, not just the fact of a replacement — across two tables: RD01–RD07 (Detroit and New England, where club-published charts verify order: the Patriots' backfield is already down to its 3rd/4th string, the Lions' cornerback room to its 2nd/3rd) and the T42 availability table (session 8a0bf37e), which adds fetched club-chart checks for all eleven availability rows — SEA, MIA, BAL, CLE, AZ and NYG with ranks where an official statement names the replacement, plus GB, LAR, KC and IND (session d2915d86, Flag F53 resolved) where the chart order is recorded but the rank stays blank because no official source names a replacement. Where no chart confirms the order the depth cell is blank and flagged (F06).</li>
 <li><strong>Results verified line by line.</strong> Every one of the {ms['games_transcribed']} transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
 <li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
@@ -557,8 +668,9 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 </ul>
 <h2>What is not verified (left blank)</h2>
 <ul>
-<li>Starter vs backup order at every position. No league-level official depth chart exists (the conventional NFL.com URL returns 404, Flag F06); club charts are collected only for the eleven availability rows, are self-labelled unofficial (Flag F45), and show pre-injury order.</li>
+<li>Starter vs backup order at every position. No league-level official depth chart exists (the conventional NFL.com URL returns 404, Flag F06). Club charts &mdash; self-labelled unofficial (Flag F45) &mdash; are collected for all eleven availability rows (every row checked, Flag F53 resolved) and for Detroit and New England (RD01&ndash;RD07); they show pre-injury order.</li>
 <li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
+<li>Opening and closing market numbers in the price-snapshot store (the store exists; the values are blank pending an authorised source; Flags F07, F43).</li>
 <li>Player statistics, player-prop outcomes and prop prices (no official source collected; Flag F31).</li>
 <li>Market prices, closing lines, closing-line value and any return on investment (no licensed odds feed; Flags F07, F32).</li>
 <li>Injury-designation probabilities (NFL.com publishes labels, not probabilities).</li>
@@ -652,7 +764,14 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
 {table(correlation_plan, ['question','method','required_alignment','current_value','sample_n','source_url'],
        {'question':'Question','method':'Proposed measurement','required_alignment':'Data alignment','current_value':'Current value','sample_n':'Sample size','source_url':'Statistical reference'})}
 <h2>Leaderboard — now graded, on the Leaderboard page</h2>
-<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample and {ms['qualified_strategies']} qualify. Full figures, uncertainty intervals and gate results are on the <a href="leaderboard.html">Leaderboard</a> page. The intended competition still ranks performance only after preregistered, out-of-sample validation. The requested top-performer reward is not defined or enabled: eligibility, jurisdiction, data rights and legal review remain unresolved. No monetary value, score, sample size or uncertainty interval is reported.</p>
+<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample; under the proposed gate
+set {ms['qualified_strategies']} would qualify, but the independent cross-check reaches the opposite conclusion under a
+multiple-comparison adjustment (Flag F42), and the numeric cut-offs are unapproved (Flag F17). Full figures and
+uncertainty intervals are on the <a href="leaderboard.html">Leaderboard</a> page. The intended competition ranks
+performance only after preregistered, out-of-sample validation. <strong>No reward tier is offered</strong> (requirement
+R36): eligibility, jurisdiction, data rights and legal review remain unresolved. Signal and staking are kept apart on
+the <a href="markets.html">Market tables</a> page, and a live strategy can be returned to paper by the proposed
+demotion gate (D1-D7).</p>
 {table(leaderboard_status, ['rank','strategy','skill_score','eligible_sample','uncertainty','validation_status','top_performance_reward','source_url'],
        {'rank':'Rank','strategy':'Strategy','skill_score':'Performance score','eligible_sample':'Eligible sample','uncertainty':'Uncertainty','validation_status':'Validation status','top_performance_reward':'Top-performance reward','source_url':'Project record'})}
 """)
@@ -716,6 +835,20 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left 
 Each row names the check, how it was run, its population and its result.</p>
 {table(verification_rows, ['check_id','what_was_checked','how_it_was_checked','population','result','status','source_url'],
        {'check_id':'Check','what_was_checked':'What was checked','how_it_was_checked':'How','population':'Population','result':'Result','status':'Status','source_url':'Source'})}
+<h2>Live re-verification pass (session ef971991, {AS_OF})</h2>
+<p class="note">A fourth independent live pass, run against the official pages at the time this build was published.
+It covers the Week 11 slate the originated markets and price store refer to, the Week 10 state that determines the
+feed's size, and a random-ish spot check of the verified results feed.</p>
+<div class="tablewrap"><table class="data"><thead><tr>
+<th>Check</th><th>Method</th><th>Result</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Week 11 slate (13 games)</td><td>Read the official Week 11 by-week schedule in full and compared every matchup, day, kickoff time and broadcaster with <code>data/schedule_week11_2026.csv</code> and the Week 11 lines/price store.</td><td class="ok">All 13 games match exactly (IND at HOU TNF 8:15 PM PRIME through CIN at WAS MNF 8:15 PM ESPN).</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-11" target="_blank" rel="noopener">Week 11 schedule</a></td></tr>
+<tr><td>Week 11 byes</td><td>Read the Teams on Bye section of the official Week 11 schedule.</td><td class="ok">ATL, CLE, GB, LA, NE, SEA — matches the results page and the model inputs.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-11" target="_blank" rel="noopener">Week 11 schedule</a></td></tr>
+<tr><td>Week 10 state (feed size)</td><td>Read the official Week 10 schedule: Thursday final, remaining games and their dates.</td><td class="ok">Commanders 24, Giants 21 FINAL (Thu Nov 12) matches the games table. The remaining Week 10 games are dated Sunday Nov 15th (including Patriots at Lions, 9:30 AM ET, Munich) and Monday Nov 16th (Chargers at Ravens, 8:15 PM ET) — so 137 games is correct as of {AS_OF}, and F36 (re-run after Week 10 completes) correctly stays open.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
+<tr><td>Week 10 byes</td><td>Read the Teams on Bye section of the official Week 10 schedule.</td><td class="ok">CHI, DEN, PHI, TB — consistent with F05's resolution.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
+<tr><td>Results feed spot check</td><td>Compared 24 feed rows (all of weeks 5 and 9 that appear in the read chunks) field by field with the live official by-week schedule pages.</td><td class="ok">23 of 24 match exactly on score; the 24th (Rams at Commanders, week 9) matches under the documented LAR/LA key alias used by the official game URL itself. 0 mismatches.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-9" target="_blank" rel="noopener">Week 9 schedule</a> · <a href="https://www.nfl.com/schedules/2026/by-week/week-5" target="_blank" rel="noopener">Week 5 schedule</a></td></tr>
+<tr><td>Reference-total derivation (F44)</td><td>Recomputed the constant 45.9 from the verified results feed: 6,291 total points over 137 games.</td><td class="ok">22.96 points per team per game; 2 × 22.96 = 45.92 → 45.9. Derivation now documented on the Model lines page; F44 resolved.</td><td><a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL standings</a></td></tr>
+<tr><td>Replacement-depth blanks</td><td>Checked that no string-rank value is published in the new depth table without a club-chart basis, and that the build rejects any such row.</td><td class="ok">RD01–RD07 carry club-chart-verified depth with the self-labelled-'unofficial' caveat; RD08–RD12 are blank and flagged. The builder refuses to render a depth value without a verified basis (negative-tested).</td><td><a href="https://www.detroitlions.com/team/depth-chart" target="_blank" rel="noopener">Lions depth chart</a></td></tr>
+</tbody></table></div>
 <h2>Standing limitations</h2>
 <ul>
 <li><strong>Single reviewer.</strong> This pass was performed independently of session 30beeb55's separate T15 check, and both found no discrepancies. Two independent passes are the strongest control the manual-transcription limitation allows, but neither is an automated diff (F10, F20).</li>
@@ -736,16 +869,29 @@ this project has no licensed odds feed, so no market price, closing line or retu
 (Flags F07, F32).</p>
 {tiles([(ms['games_transcribed'], 'games used to fit'), (ms['out_of_sample_games'], 'games graded out of sample'),
         (ms['mae_m1'], 'model MAE (points)'), (ms['mae_reference'], 'reference MAE (points)')])}
-<h2>Week 11 lines</h2>
-<p class="note">Spread is from the home team's perspective: a positive number favours the home team, a negative
-number favours the visitor. P(home) uses the model's out-of-sample residual spread of {ms['sd_margin_residual']} points
+<h2>Week 11 lines — originated in order: side, then total, then moneyline</h2>
+<p class="note">Each market is originated in a fixed order: the <strong>side</strong> (spread) first, then the
+<strong>total</strong>, then the <strong>moneyline</strong>. For every market the model's <em>fair line</em>, the
+<em>market line</em> and the <em>difference</em> are published as separate columns. The market columns are
+deliberately blank: this project has no licensed odds feed, so no market price can be confirmed from an official
+source and the difference against the market cannot be computed (Flags F07, F31). The fair moneyline is the
+no-vig American price implied by the model's win probability, not a sportsbook price. Spread is from the home
+team's perspective; P(home) uses the model's out-of-sample residual spread of {ms['sd_margin_residual']} points
 and treats a tie as half a win. Calibration: actual margin on predicted margin has slope {ms['calibration_slope']}
-(SE {ms['calibration_slope_se']}), 95% t interval {ms['calibration_ci95'][0]} to {ms['calibration_ci95'][1]},
-p = {ms['calibration_p_vs_slope_1']} against the target slope 1.0 (Flag F48 correction applied). The reference
-total is 2 × league points per game before week 11 ({ms['reference_total_league_ppg_before_week11']} × 2 = {2 * ms['reference_total_league_ppg_before_week11']:.1f}),
-so it is identical for every game by construction (Flag F44 resolved).</p>
-{table(model_lines, ['matchup','kickoff_et','model_spread_home','model_total','model_home_points','model_away_points','home_win_prob','reference_spread_home','reference_total','model_minus_reference','market_spread','market_total','game_url','source_url'],
-       {'matchup':'Matchup','kickoff_et':'Kickoff (ET)','model_spread_home':'Model spread (home)','model_total':'Model total','model_home_points':'Model points (home)','model_away_points':'Model points (away)','home_win_prob':'P(home win)','reference_spread_home':'Reference spread','reference_total':'Reference total','model_minus_reference':'Model − reference','market_spread':'Market spread','market_total':'Market total','game_url':'Game','source_url':'Schedule'})}
+(SE {ms['calibration_slope_se']}; corrected 95% CI {ms['calibration_slope_ci'][0]} to {ms['calibration_slope_ci'][1]},
+p {ms['calibration_slope_p_vs_1']} against slope 1.0 &mdash; C09 correction, F48, session f25d6b55). The reference total is the
+same constant for every Week 11 game by construction: 2 &times; the league-average points per team per game over games strictly
+before the reference week (F44 resolved by documentation, session f25d6b55).</p>
+<strong>Reference total derivation (Flag F44, resolved).</strong> The reference total is 45.9 in every row by
+construction: <code>scripts/model.py</code> computes it as 2 × the league average points per team per game from the
+games strictly before the week — here all {ms['games_transcribed']} games of the
+<a href="results.html">verified results feed</a>. Recomputed from that official dataset on {AS_OF}:
+6,291 total points over 137 games = 22.96 points per team per game; 2 × 22.96 = 45.92, which rounds to 45.9. It is
+the naive league-average-total benchmark the totals strategy is graded against, not a per-game forecast. The
+reference <em>spread</em> is not constant — it is 2.5 (fixed home field) plus each team's season scoring
+differential per game.</p>
+{table(model_lines, ['matchup','kickoff_et','fair_spread','market_spread','fair_minus_market_spread','fair_total','market_total','fair_minus_market_total','fair_moneyline_home','fair_moneyline_away','market_moneyline_home','market_moneyline_away','home_win_prob','reference_spread_home','reference_total','model_minus_reference','game_url','source_url'],
+       {'matchup':'Matchup','kickoff_et':'Kickoff (ET)','fair_spread':'Fair spread (side)','market_spread':'Market spread','fair_minus_market_spread':'Fair − market (side)','fair_total':'Fair total','market_total':'Market total','fair_minus_market_total':'Fair − market (total)','fair_moneyline_home':'Fair ML (home)','fair_moneyline_away':'Fair ML (away)','market_moneyline_home':'Market ML (home)','market_moneyline_away':'Market ML (away)','home_win_prob':'P(home win)','reference_spread_home':'Reference spread','reference_total':'Reference total','model_minus_reference':'Fair − reference (side)','game_url':'Game','source_url':'Schedule'})}
 <h2>Team ratings</h2>
 <p class="note">Ratings are in points per game relative to a league-average team. Attack: positive means the team
 scores more than average. Defence: positive means it allows fewer than average. Net rating is attack plus defence,
@@ -760,8 +906,8 @@ which is what drives the spread. Ratings are shrunk toward zero, so extreme reco
 − opponent defence rating + home-field term, fitted on every team-game to date. Spread = (attack + defence) difference
 plus home field; total = both attacks minus both defences plus home field.</li>
 <li><strong>No look-ahead.</strong> Every out-of-sample prediction was fitted only on games played strictly before
-that week. This is enforced in code and now computed as gate G1: all {ms['lookahead_fits_checked']} fits recorded a max
-training week before their prediction week, with {ms['lookahead_violations']} violations (Flag F50 resolved).</li>
+that week. This is enforced in code and computed as gate G1: all {ms['lookahead_tests']} no-look-ahead tests passed
+across {ms['lookahead_audit_weeks']} weeks, with the audit recorded in <code>data/gate_results.csv</code> (Flag F50 resolved).</li>
 <li><strong>Not included:</strong> play-by-play, yards per play, turnovers, personnel, participation, weather,
 travel, rest, coaching, and injuries. One injury snapshot cannot be backtested, so no injury adjustment is applied
 (Flags F06, F34).</li>
@@ -770,6 +916,52 @@ from <code>data/games_2026_results.csv</code>. Fixed random seed {ms['seed']} fo
 <li><strong>Staleness.</strong> These lines were fitted before Week 10's Sunday games were played. Re-run the model
 script once Week 10 finishes (Flag F36).</li>
 </ul>
+""")
+
+# ---------- price snapshots ----------
+pages["price-snapshots.html"] = ("Price snapshots", f"""
+<h1>Price-snapshot store</h1>
+<p class="note"><strong>What this store is.</strong> Every market this project originates — the side, the total and
+the moneyline, for the Week 11 slate and for the out-of-sample backtest window — has one row here, recording the
+<em>opening number</em> and the <em>closing number</em> that the market published for it. <strong>Every opening and
+closing value is blank and flagged.</strong> This project has no licensed odds feed, and no official free source
+publishes opening or closing NFL market numbers, so no value can be confirmed from an official source and none is
+inferred (Flags F07, F31, F51). The store is built so that, the moment a rights-cleared official odds source is
+connected, the numbers drop straight into the existing columns. The <em>fair line</em> column is the model's own
+originated number and is first-party computed; it is not a market price.</p>
+{tiles([(len(price_snapshots_extended), 'snapshot rows (extended store)'), (len(price_snapshots), 'Week 11 rows (c125b2f7 store)'),
+        (ms['week11_games'], 'Week 11 games'), (ms['out_of_sample_games'], 'out-of-sample games')])}
+<h2>How to read the columns</h2>
+<ul class="findings">
+<li><strong>fair_line</strong> — the model's originated number for that market (side spread, total, or fair
+moneyline). First-party computed from official results; not a market price.</li>
+<li><strong>opening_number / closing_number</strong> — the market's opening and closing numbers. Blank by design:
+no official source confirms them (F07, F31, F51).</li>
+<li><strong>opening_verified / closing_verified</strong> — No for every row, because no value is filled.</li>
+<li><strong>status</strong> — carries the flag text on every row so the blank is never read as an omission.</li>
+<li><strong>Which half of the store this is (session f25d6b55).</strong> <code>fair_line</code> is <em>our own opening
+number</em> for every market we originate: for the out-of-sample window (weeks 4&ndash;10) it is the walk-forward pre-game
+prediction, fitted only on games played strictly before that week; for Week 11 it is the origination-run value recorded
+2026-11-14. The <em>close</em> of our own fair line is not yet recorded separately, and the market open/close cells stay blank
+until an authorised source is connected (F07; flag F51 covers the same condition on the Week 11 store). A fixed snapshot cadence
+(origin, weekly interim, close at kickoff) is proposed in suggestion S32.</li>
+<li><strong>Flag numbering note (F63).</strong> The session that built this store cited &ldquo;F45&rdquo; and
+&ldquo;F46&rdquo; for the blank opening/closing values, but those IDs belong to a different register section (depth charts and
+the signal/staking split). The conditions are covered in the register by F07, F31 and F51; F63 records the misreference so the
+Flagged page stays accurate.</li>
+</ul>
+<h2>Store contents</h2>
+<p class="note">Two complementary stores are published, both with every opening/closing value blank and
+flagged. The <strong>extended store</strong> (below) covers every originated market: Week 11 (13 games × 3
+markets) plus the out-of-sample window ({ms['out_of_sample_games']} games × 3 markets). A second, independently
+built store from session c125b2f7 covers the Week 11 slate with a richer per-market schema and is published on
+the <a href="markets.html">Markets</a> page. The table below is filterable by week, matchup and market.</p>
+{search_box('snap-table')}
+{table(price_snapshots_extended, ['snapshot_id','week','matchup','market','fair_line','opening_number','opening_verified','closing_number','closing_verified','captured_at','status','source_url'],
+       {'snapshot_id':'ID','week':'Wk','matchup':'Matchup','market':'Market','fair_line':'Fair line','opening_number':'Opening number','opening_verified':'Opening verified','closing_number':'Closing number','closing_verified':'Closing verified','captured_at':'Captured','status':'Status','source_url':'Source'},
+       table_id='snap-table', filterable=True)}
+<p class="note">Connecting a licensed, rights-cleared odds feed is the only way these columns can ever be filled.
+Until then the blanks stay blank and the flags stay visible — see <a href="flagged.html">Flagged for review</a>.</p>
 """)
 
 # ---------- backtest ----------
@@ -796,28 +988,92 @@ happened, so smaller is better. A bet is only placed when the model and the refe
 """)
 
 # ---------- leaderboard ----------
+
+# F43 display mitigation (session ef971991, T43): reward tiers are shown only as proposals that are
+# not offered. R36 blocks offering them until the F42 measurement disagreement is resolved. The CSV
+# values are unchanged; only the rendered labels are qualified.
+_lb_disp = []
+for _r in leaderboard:
+    _d = dict(_r)
+    if _d.get("reward_tier"):
+        _d["reward_tier"] = f"Proposed {_d['reward_tier']} — not offered (blocked by R36, under review F43)"
+    _lb_disp.append(_d)
+_m1 = next(r for r in leaderboard if r["strategy_id"] == "M1")
+_p_wk = _m1.get("week_sign_test_p") or ""
+p_week_note = (f"about {_p_wk} of the time (sign test, p = {_p_wk})" if _p_wk
+               else "at a rate indistinguishable from chance")
 pages["leaderboard.html"] = ("Leaderboard", f"""
 <h1>Strategy leaderboard</h1>
-<p class="note"><strong>How to read this.</strong> The ranking column is <em>skill</em>: how many points per game
-closer the strategy's forecast landed to the actual result than the naive reference line, across all
-{ms['out_of_sample_games']} out-of-sample games. It is a forecast-accuracy measure, not profit. The hit rate and
-edge columns describe a paper record against the naive reference line and <strong>must not be read as a market
-result</strong> (Flag F32). Required sample size is how many bets the strategy would need, at the effect size it
-observed, for an 80%-power test; every strategy on this board is currently short.</p>
+<p class="note"><strong>How to read this.</strong> <strong>Signal and staking are separated on purpose.</strong>
+The <em>signal</em> block ranks strategies on forecast skill: how many points per game closer the strategy's
+forecast landed to the actual result than the naive reference line, across all {ms['out_of_sample_games']}
+out-of-sample games. It is a forecast-accuracy measure, not profit. The <em>staking</em> block records the staking
+plan and its return — which is blank, because no licensed odds feed exists, so no staking return can be computed
+(Flags F07, F32, F51). A lucky staking run therefore cannot mask a weak signal: the two are read separately. The
+hit rate and edge columns describe a paper record against the naive reference line and <strong>must not be read
+as a market result</strong> (Flag F32). Required sample size is how many bets the strategy would need, at the
+effect size it observed, for an 80%-power test; every strategy on this board is currently short.</p>
 {tiles([(ms['strategies_tested'], 'strategies tested'), (ms['qualified_strategies'], 'qualified'),
-        (ms['out_of_sample_games'], 'out-of-sample games'), (ms['bet_delta_points'], 'point bet threshold')])}
-{table(leaderboard, ['rank','strategy_id','strategy','market','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','bets_vs_reference','hit_rate_vs_reference','mean_edge_points','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url'],
-       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','bets_vs_reference':'Bets','hit_rate_vs_reference':'Hit rate','mean_edge_points':'Mean edge (pts)','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier','source_url':'Source'})}
+        (ms['live_strategies'], 'live strategies'), (ms['out_of_sample_games'], 'out-of-sample games')])}
+<h2>Signal — ranked by forecast skill</h2>
+{table(_lb_disp, ['rank','strategy_id','strategy','market','status','demotion_safe','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','mae_model','mae_reference','oos_games','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url'],
+       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','status':'Status','demotion_safe':'Demotion-safe','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier (not offered — R36)','source_url':'Source'})}
+<h2>Staking — separate from signal</h2>
+<p class="note">Staking returns depend on prices, which this project does not hold. The plan is published for
+completeness; the return columns are blank and flagged, not estimated.</p>
+{table(leaderboard, ['strategy_id','strategy','status','staking_plan','staking_units_wagered','staking_roi_pct','staking_note','source_url'],
+       {'strategy_id':'ID','strategy':'Strategy','status':'Status','staking_plan':'Staking plan','staking_units_wagered':'Units wagered','staking_roi_pct':'Staking ROI %','staking_note':'Staking note','source_url':'Source'})}
+<h2>Skill versus luck — the columns that answer a different question</h2>
+<p class="note">A rank answers "who finished first". It does not answer "who is better". The columns below
+separate the two. <strong>Weeks positive</strong> re-measures each strategy's skill inside every week of the
+window: a rule that only looks good because of one hot stretch shows up immediately. <strong>Week sign-test
+p</strong> asks whether that per-week split is better than a coin flip. A row that is positive but not
+repeatable across weeks is a row that has not yet earned a rank.</p>
+{table(leaderboard, ['rank','strategy_id','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high',
+                     'luck_share_of_record','skill_share_of_record','halves_agree','interval_excludes_zero',
+                     'weeks_positive_skill','week_sign_test_p','worst_week_skill','best_week_skill',
+                     'skill_or_luck_verdict','source_url'],
+       {'rank':'#','strategy_id':'ID','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low',
+        'skill_ci_high':'CI high','luck_share_of_record':'Luck share','skill_share_of_record':'Skill share',
+        'halves_agree':'Halves agree','interval_excludes_zero':'CI excludes 0',
+        'weeks_positive_skill':'Weeks positive','week_sign_test_p':'Week sign-test p',
+        'worst_week_skill':'Worst week','best_week_skill':'Best week','skill_or_luck_verdict':'Verdict'},
+       table_id='luck-table', filterable=True)}
+<h2>What this table actually shows</h2>
+<ul class="findings">
+<li><strong>The best rule is positive but not yet repeatable.</strong> M1 gains
+{ms['mae_improvement']} points per game on average, its 95% bootstrap interval excludes zero, and both halves
+of the window agree — yet its per-week skill is positive in only 5 of 7 weeks, which a coin flip produces
+{p_week_note}. That is the honest state of the evidence: promising, unproven.</li>
+<li><strong>Luck share is not a measure of any single bet.</strong> It is the fraction of the interval that
+lies on the wrong side of zero, i.e. how much of the observed record a chance process could reproduce.</li>
+<li><strong>Nothing here rescues a strategy that fails the gates.</strong> The luck columns are an additional
+filter, not a substitute for the nine validation gates (G1-G9).</li>
+</ul>
+
 <h2>Full detail</h2>
 {search_box('lb-table')}
-{table(leaderboard, ['strategy_id','strategy','mae_model','mae_reference','oos_games','wins','losses','edge_ci_low','edge_ci_high','sd_edge_points','p_binomial','p_permutation_bets','reward_status','source_url'],
-       {'strategy_id':'ID','strategy':'Strategy','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','wins':'Wins','losses':'Losses','edge_ci_low':'Edge CI low','edge_ci_high':'Edge CI high','sd_edge_points':'Edge SD','p_binomial':'Binomial p','p_permutation_bets':'Permutation p (bets)','reward_status':'Reward status','source_url':'Source'},
+{table(_lb_disp, ['strategy_id','strategy','mae_model','mae_reference','oos_games','wins','losses','hit_rate_vs_reference','mean_edge_points','edge_ci_low','edge_ci_high','sd_edge_points','p_binomial','p_permutation_bets','reward_status','source_url'],
+       {'strategy_id':'ID','strategy':'Strategy','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','wins':'Wins','losses':'Losses','hit_rate_vs_reference':'Hit rate','mean_edge_points':'Mean edge (pts)','edge_ci_low':'Edge CI low','edge_ci_high':'Edge CI high','sd_edge_points':'Edge SD','p_binomial':'Binomial p','p_permutation_bets':'Permutation p (bets)','reward_status':'Reward status','source_url':'Source'},
        table_id='lb-table', filterable=True)}
+<h2>Demotion gate — live back to paper</h2>
+<p class="note">The demotion gate (G9) is armed. A strategy that is <em>live</em> is demoted back to
+<em>paper</em> the moment any of G1–G8 fails on the latest window, or its skill 95% interval includes zero, or its
+mean edge turns negative. <strong>No strategy is live today:</strong> the qualification is disputed by the
+independent cross-check (Flag F42), the gate cut-offs await owner approval (F17) and wagering and rewards stay
+disabled (F09, F16, F19). Every strategy is therefore <em>Paper</em>; the demotion-safe column shows which ones
+would keep (or earn) live status once the gates are approved and the disagreement resolved.</p>
 <h2>Reward structure — proposed, not approved, nothing paid</h2>
+<p class="note"><strong>None of the tiers is offered.</strong> Requirement R36 blocks offering or paying any
+reward tier until the qualification disagreement between the two independent implementations (Flag F42) is resolved,
+and the numeric cut-offs behind every gate are still unapproved (Flag F17). The labels are shown only so the owner
+can approve, amend or reject the design; they are displayed on every row as “proposed — not offered”
+(Flag F43).</p>
 <ul class="findings">
-<li><strong>Tier 1 (gold)</strong> — passes all eight gates. Proposed: top leaderboard recognition.</li>
-<li><strong>Tier 2 (silver)</strong> — passes G1, G2, G3, G4, G5 and G6. Proposed: mid-tier recognition.</li>
-<li><strong>Tier 3 (bronze)</strong> — passes G1, G2, G3 and G5. Proposed: tracking only, no promotion.</li>
+
+<li><strong>Tier 1 (gold)</strong> — would require passing all eight gates. Proposed design: top leaderboard recognition.</li>
+<li><strong>Tier 2 (silver)</strong> — would require passing G1, G2, G3, G4, G5 and G6. Proposed design: mid-tier recognition.</li>
+<li><strong>Tier 3 (bronze)</strong> — would require passing G1, G2, G3 and G5. Proposed design: tracking only, no promotion.</li>
 <li><strong>Not qualified</strong> — fails any of G1, G2, G3 or G5. No tier, no promotion.</li>
 </ul>
 <p class="note">The competition is between strategies inside this repository, not between people, and no reward
@@ -832,10 +1088,21 @@ pages["validation-gates.html"] = ("Validation gates", f"""
 <h1>Validation gates</h1>
 <p class="note">A strategy may only be promoted if it clears every gate. The gates exist to separate skill from
 luck: no look-ahead, enough sample, a significant and stable accuracy gain, uncertainty that excludes zero,
-control for testing many strategies at once, and a record that a sign-shuffle cannot reproduce. <strong>The numeric
-cut-offs below are proposed by this session and are not yet approved by the project owner (Flag F17).</strong></p>
+control for testing many strategies at once, a record that a sign-shuffle cannot reproduce, and — new here — a
+<strong>demotion gate (G9)</strong> that sends a live strategy back to paper when its edge degrades.
+<strong>The numeric cut-offs below are proposed by this session and are not yet approved by the project owner
+(Flag F17).</strong></p>
 {table(gate_results, ['gate_id','gate','meaning','rule','status','strategies_passing','source_url'],
        {'gate_id':'Gate','gate':'Name','meaning':'What it tests','rule':'Rule','status':'Approval status','strategies_passing':'Strategies passing','source_url':'Method reference'})}
+<h2>The demotion gate (G9)</h2>
+<p class="note">G9 is the gate that keeps the leaderboard honest after promotion. A strategy that is live is
+demoted back to paper when <strong>any</strong> of the following happens on the latest window: a core gate
+(G1–G5) fails, the skill 95% interval includes zero, or the mean edge turns negative. The rule is
+<code>status = Live only if G1–G8 all pass and skill boot_lo &gt; 0; otherwise Paper (demoted)</code>. Because
+live operation is not enabled and the qualification is disputed by the independent cross-check (Flag F42), no
+strategy is live today and every strategy on the board is Paper; the demotion-safe column on the
+<a href="leaderboard.html">Leaderboard</a> shows which ones would keep or earn live status once the gates are
+approved and the disagreement resolved.</p>
 <h2>How luck is removed</h2>
 <ul class="findings">
 <li><strong>Walk-forward only (G1).</strong> Ratings for a week never see that week's results, so hindsight cannot
@@ -859,14 +1126,17 @@ on multiple-comparison risk ↗</a> · <a href="https://www.itl.nist.gov/div898/
 pages["correlations.html"] = ("Correlations", f"""
 <h1>Correlation values</h1>
 <p class="note">Values are computed from the {ms['games_transcribed']} official 2026 results in this repository, or from model
-outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals with two-sided p-values, except C09
-(a 95% t interval on the regression slope's own standard error, with p against the target slope 1.0 — Flag F48 correction applied)
-and C06 (published as descriptive: the pairs are not independent, so its interval and p-value are blank by design — Flag F55).
-Under the owner rule only correlations with official inputs qualify: C03, C04, C06 and C08 (see the correlation audit on the
-<a href="verification.html">Verification</a> page). C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49).
-No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
-{table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','interpretation','source_url'],
-       {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','interpretation':'What it means','source_url':'Source'})}
+outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Every row
+publishes its exact inputs (input A, input B), the sample size n, an interval and a p-value. A build check fails the
+site if any correlation row omits n (requirement R26). <strong>Owner rule</strong> (the brief:
+compute correlations only from officially sourced numbers): only rows whose two inputs are both officially sourced qualify as
+evidence &mdash; C03, C04, C06 and C08. Rows whose predictor is a model output (C01, C02, C05, C07, C09) are labelled
+<strong>model diagnostics (DEC-09)</strong>, not evidence; the classification matches <code>data/correlation_audit.csv</code>
+(session 8a0bf37e). <strong>C09 correction applied</strong> (2026-11-14, session f25d6b55, per REQ-8a-1 and Flag F48): the row is a
+regression slope, so its interval and p-value now use the slope's own standard error &mdash; slope 0.885, 95% CI 0.328 to 1.443 using the exact t quantile at df = 87,
+p = 0.68 against slope 1.0 (Flag F72; a second session published 0.335-1.435 with the normal quantile, same conclusion). <strong>C06 published as descriptive</strong> (Flag F55 resolved, session d2915d86): the interval and p-value are blank because the n = 228 pairs are not independent. No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+{table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','interpretation','source_url'],
+       {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only','qualifies_under_owner_rule':'Owner rule','interpretation':'What it means','source_url':'Source'})}
 <h2>What the values say</h2>
 <ul class="findings">
 <li>The model's margin forecast is genuinely associated with the actual margin (r = 0.321, p = 0.002), and more
@@ -875,8 +1145,11 @@ so than the naive reference line (r = 0.274, p = 0.009). That gap is the skill t
 (p = 0.39) with actual totals, and the totals strategy shows no accuracy gain at all.</li>
 <li>Within a game, the two teams' scores do not co-move (r = 0.042) and blowouts are not associated with higher
 totals (r = 0.021). Both matter for parlay pricing, and both are essentially zero in this sample.</li>
-<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19), which is why recency weighting did not
-help and why short hot streaks should not be trusted.</li>
+<li>Last week's margin barely predicts this week's (r = 0.087, p = 0.19, n = 228 team-game pairs that are not
+independent, Flag F55), which is why recency weighting did not help and why short hot streaks should not be trusted.</li>
+<li>The calibration slope is 0.885 with a 95% interval of 0.328 to 1.443 (p = 0.68 against slope 1.0, corrected
+2026-11-14): the interval is wide and includes both over-shy and over-confident readings &mdash; the model's scale is
+not yet pinned down (C09, model diagnostic).</li>
 <li>The parlay leg correlation is negative but uncertain (phi = -0.299 on 24 tickets, p = 0.16). It is a warning
 not to price parlays as if legs were independent, not a usable estimate.</li>
 </ul>
@@ -906,16 +1179,35 @@ cells are blank by design (Flag F31).</li>
 
 # ---------- season results ----------
 pages["results.html"] = ("Season results", f"""
-<h1>Season results — 2026, weeks 1 to 10</h1>
-<p class="note">All {ms['games_transcribed']} games transcribed from the official NFL.com by-week schedule pages and
-read {AS_OF}. <strong>Verification:</strong> the wins, losses, ties, points for and points against implied by this
-table were compared with the <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">official 2026
-standings</a> for all 32 teams and match exactly on every column. Week 10 contains only the Thursday game; the rest
-of that week had not been played when this page was built.</p>
+<h1>Season results — the verified results feed</h1>
+<p class="note"><strong>This table is the project's verified results feed</strong> (requirement R38):
+<code>data/games_2026_results.csv</code>, all {ms['games_transcribed']} games of 2026 played through the Week 10
+Thursday game (weeks 1-9 complete, plus the Week 10 Thursday game), transcribed from the official NFL.com by-week
+schedule pages and read {AS_OF}. Every row links to the official schedule and the official game page.
+<strong>Verification:</strong> the wins, losses, ties, points for and points against implied by this feed were
+compared with the <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">official 2026
+standings</a> for all 32 teams and match exactly on every column; a second, independent transcription of the same
+season agrees on every score (<a href="cross-check.html">cross-check</a>).</p>
+<p class="note"><strong>What the feed makes computable, and what it does not.</strong> Backtests and forecast-skill
+scores are computed from this feed — that is what the <a href="backtest.html">Backtest</a> and
+<a href="leaderboard.html">Leaderboard</a> pages show. <strong>Return on investment cannot be computed at all</strong>
+until the <a href="markets.html">price-snapshot store</a> holds real market numbers: ROI needs a price, and no
+licensed price source is connected (Flags F07, F32; requirement R37). No ROI value is ever estimated here.</p>
 {search_box('res-table')}
 {table(results_games, ['week','date_as_shown','away_team','away_points','home_team','home_points','game_url','source_url'],
        {'week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','game_url':'Game','source_url':'Schedule'},
        table_id='res-table', filterable=True)}
+<h2>Canonical verified results feed</h2>
+<p class="note"><code>data/results_feed_2026.csv</code> (session f25d6b55, task T52, advances requirement R38) is the single
+canonical feed this project grades everything against: the backtest, the bets, the gates, the correlations and the price-snapshot
+store all consume exactly these {len(results_feed)} rows and nothing else. Every row carries its verification status (aggregates
+reproduce the official standings exactly &mdash; V01 and RF07), the date verified, the check register it was validated against, and
+links to the official game page and schedule page. ROI itself is still not computed anywhere, because no authorised price source
+exists (Flag F07); the feed makes ROI computable the moment a permitted price is connected.</p>
+{search_box('feed-table')}
+{table(results_feed, ['feed_id','week','date_as_shown','away_team','away_points','home_team','home_points','verification_status','verified_date','checks','game_url','source_url'],
+       {'feed_id':'Feed ID','week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','verification_status':'Verification','verified_date':'Verified','checks':'Checks','game_url':'Game','source_url':'Schedule'},
+       table_id='feed-table', filterable=True)}
 <h2>Week 11 — the games the lines cover</h2>
 <p class="note">Scheduled but unplayed: no results exist yet, so no prediction on this page is graded. Six teams are
 on bye (ATL, CLE, GB, LA, NE, SEA).</p>
@@ -1111,6 +1403,21 @@ unconfirmed and must not be treated as a known absence. Players on injured reser
 injury report at all, so for some teams this is the only place a deficiency shows up.</p>
 {table(availability, ['item_id','team_abbr','position_group','player_affected','official_statement','officially_named_replacement','appears_on_week10_injury_report','why_it_matters','confidence','source_url'],
        {'item_id':'ID','team_abbr':'Team','position_group':'Group','player_affected':'Player','official_statement':'Official statement','officially_named_replacement':'Named replacement','appears_on_week10_injury_report':'On injury report','why_it_matters':'Why it matters','confidence':'Confidence','source_url':'Source'})}
+<h2>Depth of the replacement — not just the fact of a replacement</h2>
+<p class="note">Requirement R43. Each row tracks <em>how deep</em> the replacement is on the depth chart — 2nd, 3rd or
+4th string — not only that a replacement exists. This table (RD01–RD07) covers the Detroit and New England
+replacement events, where the club-published depth charts
+(<a href="https://www.detroitlions.com/team/depth-chart" target="_blank" rel="noopener">detroitlions.com</a>,
+<a href="https://www.patriots.com/team/depth-chart" target="_blank" rel="noopener">patriots.com</a>) verify the
+string order; each chart self-labels "unofficial" (Flags F-05/F18). The officially named replacements for the other
+clubs, with club-chart depth ranks fetched for SEA, MIA, BAL, CLE, AZ and NYG, are tracked in the T42 table lower on
+this page (session 8a0bf37e); its A08–A11 rows were completed in session d2915d86 against the four club charts (Flag F53 resolved). String values are entered only where
+an official-domain source confirms them — elsewhere the depth cell is <strong>blank and flagged</strong>, never
+inferred (F06). The build refuses to publish any depth value whose row does not carry a verified basis.</p>
+{search_box('rd-table')}
+{table(replacement_depth, ['rd_id','team','position','player_affected','player_status','replacement_named','replacement_depth','depth_basis','next_in_line','next_in_line_depth','depth_verified','flag_ref','source_url','evidence_url'],
+       {'rd_id':'ID','team':'Team','position':'Pos','player_affected':'Player affected','player_status':'Status','replacement_named':'Named replacement','replacement_depth':'Depth of replacement','depth_basis':'Depth basis / caveat','next_in_line':'Next in line','next_in_line_depth':'Next depth','depth_verified':'Depth verified','flag_ref':'Flags','source_url':'Status source','evidence_url':'Depth source'},
+       table_id='rd-table', filterable=True)}
 <h2>Unit exposure — where a replacement is needed</h2>
 <p class="note">Grouped by side of ball and unit for every team on the Week 10 report that has at least one Out or Doubtful
 player. "Side" is a project classification of position groups, not an NFL field. String rank is blank in every row: no
@@ -1140,13 +1447,16 @@ timestamped source is recorded. Flag F07.</p>
        {'snapshot_id':'ID','matchup':'Game','kickoff_et':'Kickoff (ET)','origination_order':'Order','market':'Market','selection':'Selection','model_value':'Fair (model)','opening_line':'Opening line','opening_price':'Opening price','closing_line':'Closing line','closing_price':'Closing price','status':'Status','source_url':'Source'},
        table_id='ps-table', filterable=True)}
 <h2>2. Fair line, market line and difference</h2>
-<p class="note">Difference is defined as market minus fair. It stays blank until a market value exists. The reference total is constant by construction: 2 × league points per game before week 11 (Flag F44 resolved, derivation recorded in <code>model_summary.json</code>).</p>
+<p class="note">Difference is defined as market minus fair. It stays blank until a market value exists. The constant
+reference total used in the naive benchmark is derived and documented on the <a href="model-lines.html">Model lines</a>
+page (Flag F44 — resolved: 2 × league average points per team per game from the verified results feed).</p>
 {table(line_comparison, ['game_no','matchup','side_fair_home_spread','side_market_home_spread','side_difference_market_minus_fair','total_fair','total_market','total_difference_market_minus_fair','moneyline_fair_home_win_prob','moneyline_market_home_win_prob','moneyline_difference_market_minus_fair','source_url'],
        {'game_no':'#','matchup':'Game','side_fair_home_spread':'Side: fair (home)','side_market_home_spread':'Side: market (home)','side_difference_market_minus_fair':'Side: diff','total_fair':'Total: fair','total_market':'Total: market','total_difference_market_minus_fair':'Total: diff','moneyline_fair_home_win_prob':'Moneyline: fair P(home)','moneyline_market_home_win_prob':'Moneyline: market P(home)','moneyline_difference_market_minus_fair':'Moneyline: diff','source_url':'Source'})}
 <h2>3. Signal and staking, kept apart</h2>
 <p class="note"><strong>The rank uses signal only.</strong> Signal is forecast skill against the naive reference line, with a
 95% bootstrap interval. No staking result has been measured, because there are no prices. A staking result therefore cannot
-raise or lower a strategy's rank. The tier labels on the leaderboard are under review (Flag F43).</p>
+raise or lower a strategy's rank — a lucky staking run can never mask a bad signal. The reward-tier labels on the
+leaderboard are displayed only as proposals that are not offered, blocked by requirement R36 and under review (Flag F43).</p>
 {table(signal_staking, ['signal_rank','strategy_id','strategy','signal_skill_points','signal_ci_low','signal_ci_high','signal_q_bh_fdr','signal_oos_games','signal_gates_passed','staking_status','ranking_basis','source_url'],
        {'signal_rank':'Signal rank','strategy_id':'ID','strategy':'Strategy','signal_skill_points':'Skill (pts)','signal_ci_low':'CI low','signal_ci_high':'CI high','signal_q_bh_fdr':'BH q','signal_oos_games':'OOS games','signal_gates_passed':'Gates passed (under review)','staking_status':'Staking','ranking_basis':'Ranking basis','source_url':'Source'})}
 <h2>4. Demotion gate (live to paper), proposed</h2>
@@ -1198,7 +1508,7 @@ pages["verification.html"] = (pages["verification.html"][0], pages["verification
        {'check_id':'ID','check':'Check','method':'Method','result':'Result','status':'Status','source_url':'Source'},
        table_id='rf-table', filterable=True)}
 <h2>Correlation audit: owner rule and sample size (T44)</h2>
-<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row now carries the applied correction (session d2915d86, T51): a 95% t interval on the slope's own standard error and p = 0.6830 against the target slope 1.0, replacing the withdrawn Fisher-correlation interval (0.830-0.923, p 0.0000). C06 publishes its coefficient and n as descriptive with the interval and p blank (Flag F55 resolved).</p>
+<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 correction (slope-based interval) has been applied to the register by session ef971991 (REQ-8a-1, Flag F48 resolved). C06 publishes its coefficient and n as descriptive, with the interval and p-value blank (Flag F55 resolved).</p>
 {table(corr_audit, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','audit_note','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only?','qualifies_under_owner_rule':'Qualifies?','audit_note':'Audit note','source_url':'Source'},
        table_id='corr-audit-table', filterable=True)}
@@ -1242,16 +1552,474 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <ul class="findings">
 <li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
 <li><strong>Replacement depth.</strong> All {_depth_checked} of {len(rep_depth)} availability rows are now checked against a club chart (Flag F53 resolved). A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter; the rest stay blank by rule. The charts are self-labelled unofficial (Flag F45). Two rows do not name the replaced player (Flag F46).</li>
-<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row now carries the applied correction (Flag F48 resolved): a 95% t interval on the slope's own standard error (0.328 to 1.443, df 87) with p = 0.6830 against slope 1.0 — the interval includes 1.0, so the slope is not distinguishable from perfectly calibrated. C06 is published as descriptive with no interval or p-value (Flag F55 resolved).</li>
+
+<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row was wrong in the register and has now been corrected: it is a regression slope, so it carries its own t interval (0.328 to 1.443) and a p-value of 0.683 against a slope of 1.0, not a Pearson-r interval and p = 0.0000 (Flag F71). The practical reading flipped: the data do not show miscalibration, and they do not demonstrate calibration either. C06 is published as descriptive with no interval or p-value (Flag F55 resolved).</li>
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
 <li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
 </ul>
+<h2>Model desk: changes on 2026-11-14 (session f25d6b55, tasks T51&ndash;T55)</h2>
+<ul class="findings">
+<li><strong>C09 correction applied (REQ-8a-1, Flag F48).</strong> The calibration row is a regression slope, so its interval and
+p-value now come from the slope's own standard error: slope {ms['calibration_slope']}, 95% CI {ms['calibration_slope_ci'][0]} to
+{ms['calibration_slope_ci'][1]}, p {ms['calibration_slope_p_vs_1']} against slope 1.0. The published register
+(<code>correlations_computed.csv</code>) also carries input A, input B and the owner-rule classification for every row, matching
+the audit; the model-diagnostics rows are labelled as such (DEC-09). Verified against <code>correlation_audit.csv</code> (V21).</li>
+<li><strong>Canonical verified results feed (T52, advances R38).</strong> <code>data/results_feed_2026.csv</code> publishes all
+{ms['results_feed_rows']} official 2026 results with a per-row verification status; every grading path &mdash; backtest, bets,
+gates, correlations, snapshot store &mdash; consumes exactly this feed. ROI remains uncomputable until an authorised price source
+exists (F07). Verified against the graded ledger row by row (V22).</li>
+<li><strong>Price-snapshot store verified and documented (T53).</strong> The extended store's <code>fair_line</code> values are our
+own origin snapshots (walk-forward pre-game predictions for weeks 4&ndash;10, origination-run values for Week 11); the store
+reproduces byte for byte from those declared sources and the derived ML prices recompute from the fair probabilities (V23). The
+fair close is not yet recorded separately; a fixed cadence is proposed (S32). Market open/close cells stay blank (F07/F31/F51),
+and the fair open/close of our own lines is the store's model-side half.</li>
+<li><strong>F44 and F48 resolved; F63 records a citation misreference.</strong> F44 (constant reference total) is resolved by
+documenting the derivation (2 &times; league-average points per team per game, no look-ahead). F48 (C09 formula) is resolved by
+the correction above. F63 records that session ca1ea224's close-out cites F45/F46 for the blank price-store columns while the
+register assigns those IDs to different findings &mdash; the conditions are covered by F07/F31/F51.</li>
+</ul>
 """)
 
 
+# ---------- review path ----------
+# A single page whose job is to let a reviewer choose a path before any change is
+# built. It is deliberately ordered: earlier rows unblock later ones, and every row
+# states what evidence exists today and what is still missing.
+REVIEW_PATH = [
+    {"step": "1", "theme": "Data rights and legal position",
+     "why_first": "Almost every other row depends on it. Building a feature on data the project may not hold is wasted work, and a reward mechanic built before a legal review is the one mistake that is expensive to undo.",
+     "recommended": "Record a written answer on NFL data use (DEC-03) and on the owner's jurisdiction (DEC-02) before any expansion.",
+     "have_now": "NFL Terms are published and are linked; the Dutch and Japanese positions are recorded as flags only (F19, F09). No permission is on file.",
+     "still_missing": "Any written permission, and any qualified legal opinion.",
+     "reversible": "Yes — nothing is built yet.",
+     "blocks_row": "Steps 2, 4, 6, 7", "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-Terms-and-Conditions"},
+    {"step": "2", "theme": "A price source, so ROI can exist at all",
+     "why_first": "A price-snapshot store that records opening and closing numbers already exists in structure (39 rows) but holds no prices. Without a licensed, timestamped source, every ROI, staking and closing-line-value column must stay blank. Filling them from a public page would break the project's own sourcing rule.",
+     "recommended": "Keep every market column blank and run forecast-only research until a licensed source is under contract (DEC-01).",
+     "have_now": "The store, the fair/market/difference columns and the schema exist and are verified blank.",
+     "still_missing": "Any licensed odds source; any defined opening and closing timestamp.",
+     "reversible": "Yes — the columns are empty, so nothing has to be unwound.",
+     "blocks_row": "Steps 5, 6", "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"},
+    {"step": "3", "theme": "Finish the results feed before measuring anything more",
+     "why_first": "Skill, correlation and ROI all rest on the results ledger. The ledger reconciles for all 32 teams, but a handful of game-center pages do not display a score, so those rows are verified against the standings rather than game by game.",
+     "recommended": "Get the official Game Book PDFs for the rows that cannot be read on the game center, and store the PDF link per game (DEC-06).",
+     "have_now": "137 games; every team's W-L-T and points reconcile exactly with the official standings.",
+     "still_missing": "A per-game official artifact for the rows whose game-center page hides the score (F47).",
+     "reversible": "Yes — it adds evidence, it does not change numbers.",
+     "blocks_row": "Step 4", "evidence_url": "https://www.nfl.com/standings/"},
+    {"step": "4", "theme": "Player-level data, before any prop or combo claim",
+     "why_first": "Player props and prop combos are a stated goal. Today there is no player outcome, snap count or participation record, so no prop correlation can be computed. Publishing a combo number without them would be invention.",
+     "recommended": "Use the Game Book participation data for role, and license a provider for outcomes and prop prices; keep every prop cell blank until then (DEC-06).",
+     "have_now": "Week 10 availability rows naming starters and replacements, each with a club or news link; a parlay study on model-generated side and total legs only.",
+     "still_missing": "Player outcomes, participation, and prop prices.",
+     "reversible": "Yes — blank cells stay blank.",
+     "blocks_row": "Step 6", "evidence_url": "https://www.nfl.com/games/texans-at-titans-2026-reg-5"},
+    {"step": "5", "theme": "A demotion rule that does not fire on a good strategy",
+     "why_first": "The leaderboard can only promote today. The drafted demotion rule returns a strategy to paper when the lower bound of its signal reaches zero over the last 50 forecasts — as drafted it demotes all four side models, all of which have positive point estimates. A gate that always fires is not a test.",
+     "recommended": "Set the demotion threshold from the interval width at the sample actually available, and require a minimum number of forecasts before the rule can act (DEC-04).",
+     "have_now": "A window check that shows exactly how the drafted rule behaves, and the NIST interval reference it should be built on.",
+     "still_missing": "An approved threshold; and any live strategy for the rule to act on.",
+     "reversible": "Yes — no strategy is live.",
+     "blocks_row": "Step 6", "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm"},
+    {"step": "6", "theme": "Signal before staking, and never the other way round",
+     "why_first": "A staking run can look profitable while the forecast underneath it is worthless. The signal column is what the project can defend today; staking cannot be measured at all without prices.",
+     "recommended": "Rank on signal only, keep staking explicitly 'not measured', and refuse any leaderboard that ranks on return (DEC-01, DEC-04).",
+     "have_now": "A leaderboard split into signal and staking, with staking marked not measured; per-strategy sample sizes and the n each test would need.",
+     "still_missing": "Prices, so staking cannot be computed; and an approved reward tier definition.",
+     "reversible": "Yes — it is a presentation rule.",
+     "blocks_row": "Step 7", "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"},
+    {"step": "7", "theme": "Publish only what the sample can support",
+     "why_first": "The honest state today is that a line model beats a naive reference line by 1.74 points of mean absolute error on 89 games, and that this is not yet a decisive sample against a real market. Reward tiers and 'top strategy' language outrun the evidence.",
+     "recommended": "Keep the caveats on the same page as the ranking, publish the sample size each claim would need, and keep every reward mechanic inert.",
+     "have_now": "Confidence intervals, permutation tests, multiple-comparison control, and a published required-sample-size figure per strategy.",
+     "still_missing": "A decisive sample, and any market comparison.",
+     "reversible": "Yes.", "blocks_row": "—", "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"},
+]
+
+_rev_head = "".join(f"<th>{html.escape(h)}</th>" for h in
+    ("Step", "Theme", "Why it comes here", "Recommended path", "What we have now",
+     "What is still missing", "Reversible?", "Next", "Source"))
+_rev_body = "".join(
+    "<tr>"
+    f"<td>{r['step']}</td><td><strong>{html.escape(r['theme'])}</strong></td>"
+    f"<td>{html.escape(r['why_first'])}</td><td>{html.escape(r['recommended'])}</td>"
+    f"<td>{html.escape(r['have_now'])}</td><td>{html.escape(r['still_missing'])}</td>"
+    f"<td>{html.escape(r['reversible'])}</td><td>{html.escape(r['blocks_row'])}</td>"
+    f'<td><a href="{r["evidence_url"]}" target="_blank" rel="noopener">Source ↗</a></td>'
+    "</tr>" for r in REVIEW_PATH)
+
+_missing_counts = defaultdict(int)
+for _r in REVIEW_PATH:
+    _missing_counts["blank" if _r["still_missing"] else "known"] += 1
+
+pages["review-path.html"] = ("Review path", f"""
+<h1>Review path — pick a direction before anything is built</h1>
+<p class="note">This page exists so one reviewer can choose a route through the project's open items, in order, with the
+evidence for each step in front of them. <strong>Nothing on this page is implemented, enabled or approved.</strong>
+It is a reading order, not a plan of record. The registers behind it are the
+<a href="suggestions.html">Suggestions</a> matrix, the <a href="decisions.html">Decisions</a> register, the
+<a href="questions.html">Questions</a> page and the <a href="flagged.html">Flagged for review</a> page.</p>
+
+<h2>The short version</h2>
+<ul class="findings">
+<li><strong>What the project can defend today:</strong> an independently originated spread and total for each Week 11 game, a
+walk-forward out-of-sample record against a naive reference line, correlations with intervals and sample sizes, and a
+line-by-line verification record.</li>
+<li><strong>What it cannot do yet:</strong> any market comparison, return on investment, staking result, player-prop number or
+strategy reward. Every one of those needs a licensed price source or player-level data that the project does not hold.</li>
+<li><strong>The one thing to decide first:</strong> step 1. Rights and legal position gate more rows than any other choice, and
+they are the least reversible if ignored.</li>
+<li><strong>The one number to read carefully:</strong> the model beats its naive reference line, but the naive reference line is
+not a sportsbook. Beating it is not evidence of beating a market.</li>
+</ul>
+
+<h2>Ordered review path</h2>
+<p class="note">Read down, not across. A step lower in the table inherits the risk of a step above it being skipped.</p>
+<div class="tablewrap"><table id="review-path" class="data"><thead><tr>{_rev_head}</tr></thead><tbody>{_rev_body}</tbody></table></div>
+
+<h2>Questions to settle before choosing</h2>
+<p class="note">Every open question below is one the project cannot currently answer from the information it holds —
+it is listed here with the information still needed and the official source to try first. The full register is on the
+<a href="questions.html">Questions</a> page, and the same gaps are mirrored as G01–G16 on the
+<a href="decisions.html">Decisions</a> page. A question is not a task: several are unanswerable in this project by design,
+and say so in the status column.</p>
+{table([q for q in questions
+        if not q['status'].startswith(('Answered', 'Proposed'))],
+       ['question_id','area','question','status','missing_information','evidence_url'],
+       {'question_id':'ID','area':'Area','question':'Question','status':'Status',
+        'missing_information':'Information still needed','evidence_url':'Evidence'},
+       table_id='review-questions', filterable=True)}
+
+<h2>How to use this page</h2>
+<ol class="findings">
+<li><strong>Do not choose a later step while an earlier one is open.</strong> Step 2 has no meaning without step 1, and step 6
+cannot be measured without step 2.</li>
+<li><strong>Prefer the option that can be undone.</strong> Blank columns and inert gates cost nothing to keep; a published
+return or an enabled reward does.</li>
+<li><strong>Ask for the sample size, not the result.</strong> Every ranking on the site states the number of forecasts it needs
+for a decisive test. If that number is far above the games played, the ranking is provisional no matter how it reads.</li>
+<li><strong>Treat a blank as a finding.</strong> Where a value is blank, the source did not support it. That is the intended
+state, not an omission to be filled in by inference.</li>
+<li><strong>Record the choice and the date.</strong> A decision without a recorded date cannot be re-checked later, because the
+evidence underneath it will have moved.</li>
+</ol>
+""")
+
 # ---------- write ----------
 os.makedirs(os.path.join(DOCS, "assets"), exist_ok=True)
+# =====================================================================
+# Session e208ba6d: market sheet, player props, event risk, review console
+# =====================================================================
+_risks_with_evidence = sum(1 for r in event_risk if "official statement" in r["role_evidence"])
+_risks_total = len(event_risk)
+_verif_ok = sum(1 for r in live_reverification if r["result"] == "match")
+_decided = sum(1 for r in decision_console if r["recorded_choice"])
+_mkt_loaded = sum(1 for r in market_sheet if r["market_line"])
+
+pages["market-sheet.html"] = ("Market sheet", f"""
+<h1>Market sheet — Week 11, all three markets, in origination order</h1>
+<p class="note">Side first, then total, then moneyline, for all {len(lines_week11) if 'lines_week11' in dir() else ms['week11_games']} games.
+Each row publishes the model's <strong>fair line</strong>, the <strong>market line</strong>, and the
+<strong>difference</strong> as three separate columns. The fair line is computed; the market columns are
+<strong>blank</strong> and marked UNVERIFIED, because no licensed odds feed is connected (F07). A blank cell here
+is the correct output, not a missing value.</p>
+
+<h2>Fair line, fair price, and the market columns</h2>
+<p class="note">The <em>fair price</em> is the American price implied by the model — the price at which a
+break-even book would offer the bet (prices are derived as 1/p; see <code>scripts/desk_v2.py</code>).
+It is <strong>not</strong> a market price and must never be read as one. The model's probability of covering
+its own originated number is one half by construction, so side and total show +100.</p>
+{table(market_sheet, ['game_no','matchup','origination_order','market_type','selection','model_fair_line',
+                     'fair_probability_implied','fair_american_price','market_line','market_price',
+                     'edge_points_or_prob','status','source_url'],
+       {'game_no':'Game','matchup':'Matchup','origination_order':'Order','market_type':'Market',
+        'selection':'Selection','model_fair_line':'Fair line (model)','fair_probability_implied':'Fair prob.',
+        'fair_american_price':'Fair price','market_line':'Market line','market_price':'Market price',
+        'edge_points_or_prob':'Difference (market − fair)','status':'Status'},
+       table_id='market-sheet', filterable=True)}
+
+<h2>Why the market column stays blank</h2>
+<div class="twocol">
+<div><h3>What would fill it</h3><ul>
+<li>A licensed historical odds archive with written model-use rights (DEC-01 / P01).</li>
+<li>A timestamped opening number and a timestamped closing number for the same market.</li>
+<li>A settlement rule for each market, so a push can be told from a win.</li>
+</ul></div>
+<div><h3>What will not fill it</h3><ul>
+<li>A public sportsbook page: not an official source, and its terms are unreviewed.</li>
+<li>An NFL.com odds widget: it displays partner prices live, but it is not an archive and
+the FAQ does not grant reuse rights (F07).</li>
+<li>Any estimate, midpoint or "typical" number. Nothing is inferred here.</li>
+</ul></div>
+</div>
+
+<h2>Sealed prospective forecast log</h2>
+<p class="note">Every Week 11 number in this table is frozen in
+<code>data/prospective_forecast_log.csv</code> before kickoff, with a SHA-256 digest so a later edit is
+detectable. Digest: <code>{SEAL}</code>. The log is the only honest way to prove a record was not fitted
+after the fact.</p>
+{table(forecast_log, ['log_id','matchup','kickoff_et','frozen_spread_home','frozen_total',
+                      'frozen_home_win_prob','fit_games_used','fit_weeks_used','frozen_before_kickoff',
+                      'result_recorded','source_url'],
+       {'log_id':'Seal','matchup':'Matchup','kickoff_et':'Kickoff (ET)','frozen_spread_home':'Frozen spread (home)',
+        'frozen_total':'Frozen total','frozen_home_win_prob':'Home win prob.','fit_games_used':'Fit games',
+        'fit_weeks_used':'Fit weeks','frozen_before_kickoff':'Frozen before kickoff',
+        'result_recorded':'Result recorded'},
+       table_id='sealed-log', filterable=True)}
+""")
+
+pages["props.html"] = ("Player props", f"""
+<h1>Player props and prop combinations</h1>
+<p class="note">The brief asks for player prop bet combos. This page separates two questions that are usually
+conflated: <strong>are prop outcomes available from an official source?</strong> and
+<strong>are prop prices available?</strong> The answers differ, and that difference decides what can be built.</p>
+
+<div class="twocol">
+<div><h3>Outcomes: available officially</h3><ul>
+<li>NFL.com publishes per-player, per-game logs (passing, rushing, receiving, scoring) on each player's
+<code>/stats/logs/</code> page. That is an official source for the outcome of any prop.</li>
+<li>This repository holds <strong>no</strong> player-level game series (F31), so no prop has been graded.</li>
+</ul></div>
+<div><h3>Prices: not available</h3><ul>
+<li>A prop bet is a contract between a bettor and a book. The league does not publish prop lines.</li>
+<li>Without a licensed price feed there is no prop market line, no prop edge and no prop ROI (F07).</li>
+<li>So a prop can be <em>originated and graded</em> but would still not be <em>priced</em>.</li>
+</ul></div>
+</div>
+
+<h2>Prop market families — status and honest basis</h2>
+{table(prop_markets, ['prop_id','market_family','position_group','origination_order','official_outcome_source',
+                      'outcome_held_in_repo','model_fair_line','market_line','market_price','graded_out_of_sample',
+                      'status','next_step','source_url'],
+       {'prop_id':'ID','market_family':'Market family','position_group':'Positions','origination_order':'Order',
+        'official_outcome_source':'Official outcome source','outcome_held_in_repo':'Outcome held here?',
+        'model_fair_line':'Fair line','market_line':'Market line','market_price':'Market price',
+        'graded_out_of_sample':'Graded out of sample?','status':'Status','next_step':'What would unblock it'},
+       table_id='prop-markets', filterable=True)}
+
+<h2>Prop combinations — the dependency problem</h2>
+<p class="note">A prop combo is two or more props on the same game. Its price depends on the correlation
+between the legs, and that correlation is exactly what nobody has measured in this repository. Positive
+correlation makes the true joint probability <em>higher</em> than the product of the legs, so the naive price
+is too long; negative correlation makes it too short. Until the correlation exists, a combo price would be
+a guess dressed as arithmetic.</p>
+{table(prop_combos, ['combo_id','combo','legs','correlation_known','correlation_value','sample_n',
+                     'why_it_matters','what_is_needed','status','source_url'],
+       {'combo_id':'ID','combo':'Combination','legs':'Legs','correlation_known':'Correlation known?',
+        'correlation_value':'Value','sample_n':'n','why_it_matters':'Why it matters',
+        'what_is_needed':'What is needed','status':'Status'},
+       table_id='prop-combos')}
+
+<h2>Same-game correlation matrix</h2>
+<p class="note">Every value below is published with its sample size <code>n</code>, as the brief requires.
+Rows marked <em>definitional</em> or <em>assumption</em> are labelled, so a reader can tell an estimate from a
+convention. Rows marked <em>unverified</em> carry no number at all.</p>
+{table(corr_matrix, ['corr_id','leg_pair','question','value','sample_n','basis','sign_convention','status','source_url'],
+       {'corr_id':'ID','leg_pair':'Leg pair','question':'Question','value':'Value','sample_n':'n',
+        'basis':'Basis','sign_convention':'Reading','status':'Status'},
+       table_id='corr-matrix', filterable=True)}
+
+<h2>What a reader should conclude</h2>
+<ul class="findings">
+<li>The side/total phi of <strong>-0.30 on 24 tickets</strong> is the only measured same-game dependence in this
+repository, and 24 tickets is far too few to price anything (F33).</li>
+<li>The model's own side and total <em>errors</em> correlate at a small negative value, which means the
+independence shortcut is at least not obviously wrong for this model — not that it is right.</li>
+<li>Prop-vs-prop correlation cannot be measured until a player game series is transcribed (P02).</li>
+</ul>
+""")
+
+pages["event-risk.html"] = ("Event risk", f"""
+<h1>Named event risk — Week 11</h1>
+<p class="note">A number is only useful if you know what can invalidate it. This page names the specific
+players, the specific official status words, and the specific markets at risk, drawn from the verified Week 10
+injury report and cross-referenced to the Week 11 slate. It deliberately does <strong>not</strong> apply an
+adjustment, because the size of the effect is not quantified anywhere in this repository.</p>
+
+{tiles([(len(lines_week11) if 'lines_week11' in dir() else ms['week11_games'], 'Week 11 games'),
+        (_risks_total, 'named risks published'),
+        (_risks_with_evidence, 'risks where an official source names the player'),
+        (_risks_total - _risks_with_evidence, 'risks where the role is NOT official'),
+        (1, 'week of injury data held')])}
+
+<h2>Coverage summary</h2>
+{table(event_risk_summary, ['metric','value','basis','source_url'],
+       {'metric':'Measure','value':'Value','basis':'Basis'}, table_id='risk-summary')}
+
+<h2>The blind spot, stated as a number</h2>
+<p class="note"><strong>{_risks_total - _risks_with_evidence} of {_risks_total} named risks have no official
+source establishing the player's role</strong>, and therefore no replacement depth rank. That is not a
+presentation problem: it means an injury adjustment cannot currently be priced, and any page that claims
+otherwise is guessing. The cause is F06 — the NFL publishes no league-level depth chart, and the club charts
+that do exist self-label "unofficial" (F45).</p>
+
+<h2>Risks with official role evidence</h2>
+{table([r for r in event_risk if 'official statement' in r['role_evidence']],
+       ['risk_id','matchup','team','player','position','official_status','role_evidence','replacement_depth','source_url'],
+       {'risk_id':'ID','matchup':'Matchup','team':'Team','player':'Player','position':'Pos.',
+        'official_status':'Official status','role_evidence':'Official role evidence',
+        'replacement_depth':'Replacement'}, table_id='risk-evidence', filterable=True)}
+
+<h2>All named risks (Out / Doubtful on a Week 11 team)</h2>
+{table(event_risk, ['risk_id','matchup','team','player','position','official_status','official_injury','role_evidence','market_at_risk','replacement_depth','risk_is_quantified','source_url'],
+       {'risk_id':'ID','matchup':'Matchup','team':'Team','player':'Player','position':'Pos.',
+        'official_status':'Status','official_injury':'Injury','role_evidence':'Official role evidence',
+        'market_at_risk':'Market at risk','replacement_depth':'Replacement depth',
+        'risk_is_quantified':'Quantified?'}, table_id='event-risk', filterable=True)}
+""")
+
+pages["review.html"] = ("Review console", f"""
+<h1>Review console — choose a path before anything is built</h1>
+<p class="note">This is the section the brief asks for: a place to review proposals and
+<strong>choose</strong> a path before any change is implemented. Each row below is a real decision with three
+options, the recommended option, the exact file a session would change, what the choice unblocks, and what
+stays blocked while it is undecided.</p>
+
+<div class="hero">
+<p><strong>How to record a choice.</strong> Edit <code>data/decision_choices.json</code> and add, for example:</p>
+<pre>{{"P04": {{"choice": "B", "decided_by": "owner", "decided_on": "2026-11-15",
+  "reason": "a rule that demotes everything carries no information"}}}}</pre>
+<p>Then run <code>python3 scripts/review.py &amp;&amp; python3 scripts/build.py</code>. The row changes to
+<strong>DECIDED</strong> and keeps your reason and date. Nothing is implemented by recording a choice — it only
+authorises a later session to do the work.</p>
+<p class="note"><strong>No choice is pre-filled.</strong> {_decided} of {len(decision_console)} proposals have a
+recorded choice. The site does not know the owner's mind and does not pretend to.</p>
+</div>
+
+<h2>Proposals awaiting a decision</h2>
+{table(decision_console, ['proposal_id','area','question','option_a','option_b','option_c','recommended_now',
+                          'why_recommended','status','decided_by','decided_on','files_a_session_would_change',
+                          'unblocks','blocks','cost','source_url'],
+       {'proposal_id':'ID','area':'Area','question':'Decision','option_a':'Option A','option_b':'Option B',
+        'option_c':'Option C','recommended_now':'Recommended now','why_recommended':'Why',
+        'status':'Status','decided_by':'Decided by','decided_on':'On',
+        'files_a_session_would_change':'Files a session would change','unblocks':'Unblocks','blocks':'Stays blocked',
+        'cost':'Cost'}, table_id='decisions', filterable=True)}
+
+<h2>How to read this table</h2>
+<div class="twocol">
+<div><h3>Do this</h3><ul>
+<li>Read the <em>Stays blocked</em> column first. It tells you the cost of not deciding.</li>
+<li>Prefer the option whose failure mode is visible. A blank cell is visible; a guessed number is not.</li>
+<li>Record a choice even when it is "defer". An explicit defer is a decision; silence is not.</li>
+</ul></div>
+<div><h3>Avoid this</h3><ul>
+<li>Choosing Option C anywhere it means scraping a non-official page. That breaks the rule the whole
+repository is built on.</li>
+<li>Treating the recommendation as a decision. It is one session's judgement, offered for review.</li>
+<li>Implementing first and recording afterwards. The point of the console is order.</li>
+</ul></div>
+</div>
+""")
+
+
+
+# ---------- session e208ba6d: appends to existing pages ----------
+_lr_ok = sum(1 for r in live_reverification if r["result"] == "match")
+_lr_bad = len(live_reverification) - _lr_ok
+
+pages["verification.html"] = (pages["verification.html"][0], pages["verification.html"][1] + f"""
+<h2>Independent live re-verification, read again on {AS_OF}</h2>
+<p class="note">A second, independent transcription of the same official pages was made this session and
+compared row by row against the registers in this repository. It does not reuse the first transcription:
+<code>data/verification_inputs/</code> holds the fresh read, and <code>scripts/verify_live.py</code> performs the
+comparison. <strong>{_lr_ok} of {len(live_reverification)} checked units match exactly; {_lr_bad} discrepancies.</strong>
+A "unit" is one team's injury block, one team's standings line, one Week 11 game, or the bye list.</p>
+{tiles([(len(live_reverification), 'units checked'), (_lr_ok, 'matched exactly'), (_lr_bad, 'discrepancies'),
+        (tot['rows'], 'injury rows compared')])}
+{table(live_reverification, ['check_id','unit','repo_rows','live_rows','missing_from_repo','extra_in_repo',
+                           'field_differences','result','read_utc','checked_against'],
+       {'check_id':'ID','unit':'Unit checked','repo_rows':'Rows here','live_rows':'Rows live',
+        'missing_from_repo':'Missing here','extra_in_repo':'Extra here','field_differences':'Field differences',
+        'result':'Result','read_utc':'Read (UTC)','checked_against':'Official page'},
+       table_id='live-reverif', filterable=True)}
+<p class="note"><strong>What this does and does not prove.</strong> It proves the transcription in this
+repository matches the page as served on {AS_OF}. It does not prove the page is right about a player, and it
+is not permission to re-print the page (F16).</p>
+""")
+
+pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
+<h2>Added this session: what changed in the evidence, in one place</h2>
+<div class="twocol">
+<div><h3>Things that got stronger</h3><ul>
+<li><strong>The official data was re-read from scratch and matched.</strong> {_lr_ok} of
+{len(live_reverification)} units - every team's injury block, every standings line, every Week 11 game and the
+bye list - agree with an independent transcript made this session.</li>
+<li><strong>Gate G1 is now computed, not asserted.</strong> It passes {ms['lookahead_tests']} tests: training
+weeks strictly earlier, refit reproduces archived predictions exactly, and an early-window fit differs from a
+full-sample fit (Flag F50 resolved).</li>
+<li><strong>Forecasts are now sealed before kickoff.</strong> All {ms['week11_games']} Week 11 numbers carry a
+SHA-256 digest, so a later edit is detectable.</li>
+</ul></div>
+<div><h3>Things that got worse - and are now visible</h3><ul>
+<li><strong>The best strategy is not yet repeatable.</strong> M1's skill is positive in 5 of 7 weeks, which
+chance produces about half the time (p = {_m1.get('week_sign_test_p') or 'n/a'}). Its rank is a description of
+89 games, not a forecast.</li>
+<li><strong>{_risks_total - _risks_with_evidence} of {_risks_total} named injury risks cannot have their role
+confirmed officially</strong>, so no injury adjustment can be priced (F06).</li>
+<li><strong>Player props are blocked on data the repository does not hold</strong>, though the outcomes
+themselves are obtainable from NFL.com (F31, P02).</li>
+</ul></div>
+</div>
+<h2>Decisions actually waiting on you</h2>
+<p class="note">{len(decision_console)} decisions are recorded on the <a href="review.html">Review console</a>,
+{_decided} of them decided. Each has three options, a recommendation, the file it would change, and what stays
+blocked until it is chosen. No option is pre-selected.</p>
+{table(decision_console, ['proposal_id','area','question','recommended_now','status','blocks','source_url'],
+       {'proposal_id':'ID','area':'Area','question':'Decision','recommended_now':'Recommended',
+        'status':'Status','blocks':'Stays blocked'}, table_id='exec-decisions')}
+""")
+
+_new_intro = (
+    '<section class="hero">\n'
+    '  <h2>New this session</h2>\n'
+    '  <p class="note"><strong>A review console where a path can be chosen</strong> - '
+    f'{len(decision_console)} decisions, {_decided} recorded, no option pre-filled. '
+    '<strong>A market sheet</strong> that keeps the fair line, the market line and the difference in three separate '
+    'columns. <strong>A skill-versus-luck split</strong> on the leaderboard, because a rank alone cannot tell the '
+    'two apart. <strong>A named event-risk register</strong> for Week 11. And a fresh, independent live '
+    f're-read of the official pages: {_lr_ok} of {len(live_reverification)} units matched, {_lr_bad} discrepancies.</p>\n'
+    '  <p class="note">Start at the <a href="review.html">Review console</a> if you want to decide something, or the '
+    '  <a href="market-sheet.html">Market sheet</a> if you want a number.</p>\n'
+    '</section>\n'
+    '<h2>Start here</h2>'
+)
+pages["index.html"] = (pages["index.html"][0],
+                       pages["index.html"][1].replace('<h2>Start here</h2>', _new_intro, 1))
+
+
+# ---------- collision guards ----------
+# Two parallel sessions can register the same page slug, or add two NAV entries
+# pointing at one file. Either silently loses a page (the later dict assignment
+# wins) or renders a duplicate menu item. Both must fail the build instead.
+# Written after session e208ba6d and session cf6709c0 both registered
+# "review.html" on 2026-11-14: the console page overwrote the path page and the
+# navigation showed two "review" links to one file.
+# An intentional append reuses the existing value, e.g.
+#   pages["x.html"] = (pages["x.html"][0], pages["x.html"][1] + f"""...""")
+# An accidental overwrite assigns a fresh literal and silently discards the
+# earlier page. Only the second form is a collision.
+_src = open(__file__, encoding="utf-8").read()
+_slug_assignments = re.findall(r'^pages\["([^"]+)"\]\s*=\s*(.{0,40})', _src, re.M)
+_overwrites = sorted({
+    slug for slug, rhs in _slug_assignments
+    if sum(1 for sl, _r in _slug_assignments if sl == slug) > 1
+    and sum(1 for sl, r in _slug_assignments if sl == slug and not r.startswith('(pages[')) > 1
+})
+if _overwrites:
+    raise SystemExit(
+        "BUILD FAILED: page slug assigned more than once without appending, so an "
+        f"earlier page would be silently lost: {_overwrites}")
+_nav_hrefs = [h for h, _l in NAV]
+_dupe_nav = sorted({h for h in _nav_hrefs if _nav_hrefs.count(h) > 1})
+if _dupe_nav:
+    raise SystemExit(f"BUILD FAILED: NAV has more than one entry for: {_dupe_nav}")
+
+_missing_nav = [h for h, _l in NAV if h not in pages]
+if _missing_nav:
+    raise SystemExit(f"BUILD FAILED: NAV links to pages that are never generated: {_missing_nav}")
+
 for slug, (title, body) in pages.items():
     with open(os.path.join(DOCS, slug), "w", encoding="utf-8") as f:
         f.write(page(slug, title, body, slug))

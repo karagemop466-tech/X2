@@ -711,6 +711,26 @@
  },
  {
   "source_id": "SRC-72",
+  "title": "2026 International Games slate (NFL Football Operations)",
+  "publisher": "NFL Football Operations (operations.nfl.com)",
+  "url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games",
+  "type": "Official league operations page",
+  "accessed_date": "2026-11-14",
+  "used_for": "Authoritative list of all nine 2026 neutral-site international games (week, matchup, venue, city); basis for the neutral_site column (F57)",
+  "verification_note": "Opened and read with fetch_page on 2026-11-14. Lists 9 games: wk1 Melbourne Cricket Ground, wk3 Maracana, wk4+wk5 Tottenham, wk6 Wembley, wk7 Stade de France, wk9 Bernabeu, wk10 FC Bayern Munich Arena, wk11 Estadio Banorte."
+ },
+ {
+  "source_id": "SRC-73",
+  "title": "NFL game center: Ravens at Cowboys, week 3 (Game Info: Location Rio de Janeiro, Stadium Maracana Stadium)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/ravens-at-cowboys-2026-reg-3",
+  "type": "Official league site",
+  "accessed_date": "2026-11-14",
+  "used_for": "Per-game confirmation that the designated home team (Dallas) was not at home; corroborates SRC-72 at game level",
+  "verification_note": "Opened and read with fetch_page on 2026-11-14. Game Info block reads Location RIO DE JANEIRO / Stadium MARACANA STADIUM."
+ },
+ {
+  "source_id": "SRC-74",
   "title": "Green Bay Packers unofficial depth chart",
   "publisher": "Green Bay Packers (club website)",
   "url": "https://www.packers.com/team/depth-chart",
@@ -720,7 +740,7 @@
   "verification_note": "Opened and read on 2026-11-14 with fetch_page. Page self-labels \"Unofficial, Nov. 10, 2026\". RB order: Jacobs, Lloyd, Strong, Johnson."
  },
  {
-  "source_id": "SRC-73",
+  "source_id": "SRC-75",
   "title": "Los Angeles Rams unofficial depth chart",
   "publisher": "Los Angeles Rams (club website)",
   "url": "https://www.therams.com/team/depth-chart",
@@ -730,7 +750,7 @@
   "verification_note": "Opened and read on 2026-11-14 with fetch_page. Heading self-labels \"UNOFFICIAL DEPTH CHART\"; undated. Nacua WR row: Nacua, Whittington, Atwell."
  },
  {
-  "source_id": "SRC-74",
+  "source_id": "SRC-76",
   "title": "Kansas City Chiefs unofficial depth chart",
   "publisher": "Kansas City Chiefs (club website)",
   "url": "https://www.chiefs.com/team/depth-chart",
@@ -740,7 +760,7 @@
   "verification_note": "Opened and read on 2026-11-14 with fetch_page. Heading self-labels \"Unofficial Depth Chart\"; undated. RB order: Walker, Johnson, Ott."
  },
  {
-  "source_id": "SRC-75",
+  "source_id": "SRC-77",
   "title": "Indianapolis Colts unofficial depth chart (Week 10 edition)",
   "publisher": "Indianapolis Colts (club website)",
   "url": "https://www.colts.com/team/depth-chart",
