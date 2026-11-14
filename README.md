@@ -36,4 +36,4 @@ Unconfirmed prices, forecast values, player-depth ranks, replacement impacts, pe
 
 ## Important
 
-This is a research-only project, not betting advice. Official Japan-specific guidance says online sports betting accessed from Japan is prohibited. That guidance does not determine the legality of a particular skill contest/reward or the rules in any other jurisdiction; see **F09** and keep wagering, referrals, and rewards disabled pending qualified review.
+This is a research-only project, not betting advice. Official Japan-specific guidance says online sports betting accessed from Japan is prohibited. That guidance does not determine the legality of a particular skill contest/reward or the rules in any other jurisdiction; see **F09** and keep wagering, referrals, and rewards disabled pending qualified review. The project owner is located in the Netherlands; Dutch law (Wet op de kansspelen, Kansspelautoriteit) is flagged as **F19** and has not been reviewed. See `research/nl-legal-review.md`.
