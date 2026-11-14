@@ -24,6 +24,8 @@ OFFICIAL_HOSTS = {
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
+    "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
+    "www.azcardinals.com", "www.giants.com",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -419,6 +421,7 @@ NAV = [
     ("depth-deficiency.html", "Deficiency tracking"),
     ("strategy-lab.html", "Strategy lab"),
     ("decision-path.html", "Decision path"),
+    ("decisions.html", "Decisions"),
     ("questions.html", "Questions"),
     ("requirements.html", "Requirements"),
     ("suggestions.html", "Suggestions"),
@@ -850,10 +853,11 @@ on multiple-comparison risk ↗</a> · <a href="https://www.itl.nist.gov/div898/
 # ---------- correlations ----------
 pages["correlations.html"] = ("Correlations", f"""
 <h1>Correlation values</h1>
-<p class="note">Every value below is computed from the {ms['games_transcribed']} official 2026 results in this
-repository — none is assumed or copied. Intervals are Fisher z confidence intervals; p-values are two-sided.
-These are correlations of forecasts and outcomes, which is all the official data supports: no player-prop
-correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+<p class="note">Values are computed from the {ms['games_transcribed']} official 2026 results in this repository, or from model
+outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Under the owner
+rule only correlations with official inputs qualify: C03, C04, C06 and C08 (see the correlation audit on the <a href="verification.html">Verification</a> page).
+C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49). The C09 row still shows the earlier interval; the corrected interval
+(0.335 to 1.435) is requested and not yet applied (Flag F48). No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
 {table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','interpretation','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','interpretation':'What it means','source_url':'Source'})}
 <h2>What the values say</h2>
@@ -985,8 +989,8 @@ xc_only_a = sorted(set(ledger_a) - set(ledger_b))
 xc_only_b = sorted(set(ledger_b) - set(ledger_a))
 xc_rows = [
     {"check": "Game results ledger",
-     "ours": f'{len(season_games)} games, weeks 1-10, transcribed from the official schedule by week',
-     "theirs": f'{len(results_games)} games, weeks 1-10, transcribed independently',
+     "ours": f'{len(season_games)} games, weeks 1-9 complete plus the Week 10 Thursday game, transcribed from the official schedule by week',
+     "theirs": f'{len(results_games)} games, weeks 1-9 complete plus the Week 10 Thursday game, transcribed independently',
      "agreement": f'{len(xc_shared)} games matched on both teams and week; {len(xc_score_diff)} score disagreements',
      "note": "Team keys were normalised before comparing (this implementation uses LAR for the Rams, the other uses LA).",
      "source_url": "https://www.nfl.com/schedules/2026/by-week/week-1"},
@@ -1144,6 +1148,99 @@ owner approval and are not official values (Flag F17). Gate G9 in the Validation
 {table(demotion_gate, ['rule_id','trigger','proposed_condition','numeric_proposal','action','approval_status','source_url'],
        {'rule_id':'Rule','trigger':'Trigger','proposed_condition':'Proposed condition','numeric_proposal':'Numeric proposal','action':'Action','approval_status':'Approval','source_url':'Source'})}
 """)
+
+# ---------- session 8a0bf37e: decision desk additions (T42, T44-T50) ----------
+rep_depth = read_csv("replacement_depth_week10_2026.csv")
+dec_opts = read_csv("decision_options.csv")
+gap_rows = read_csv("information_gaps.csv")
+repo_review = read_csv("repo_review_2026-11-14.csv")
+rf_checks = read_csv("results_feed_checks.csv")
+demo_window = read_csv("demotion_window_check.csv")
+corr_audit = read_csv("correlation_audit.csv")
+
+for _label, _rows in (("replacement_depth", rep_depth), ("decision_options", dec_opts), ("information_gaps", gap_rows),
+                      ("repo_review", repo_review), ("results_feed_checks", rf_checks),
+                      ("demotion_window_check", demo_window), ("correlation_audit", corr_audit)):
+    for _r in _rows:
+        _u = (_r.get("source_url") or "").strip()
+        if not _u:
+            errors.append(f"{_label}: row without source_url")
+        else:
+            check_official(_u, f"{_label}.source_url")
+for _r in rep_depth:
+    if _r.get("depth_chart_url"):
+        check_official(_r["depth_chart_url"], "replacement_depth.depth_chart_url")
+if errors:
+    print("ERRORS:")
+    for e in errors:
+        print("  -", e)
+    sys.exit(1)
+
+_n_qual = sum(1 for r in corr_audit if r["officially_sourced_inputs_only"] == "yes")
+_n_diag = len(corr_audit) - _n_qual
+_depth_checked = sum(1 for r in rep_depth if not r["depth_status"].startswith("Not verified"))
+_d50 = [r for r in demo_window if "last 50" in r["window"]]
+_d50_trig = sum(1 for r in _d50 if r["D1_triggered"].startswith("yes"))
+_d50_pos = sum(1 for r in _d50 if r["negative_point_estimate"] == "no")
+
+pages["verification.html"] = (pages["verification.html"][0], pages["verification.html"][1] + f"""
+<h2>Results feed checks (T49)</h2>
+<p class="note">Checks on the {len(read_csv('games_2026_results.csv'))}-game official results feed. The second transcription is compared after one stated normalisation: the official page writes the Rams as LAR, this register writes LA (Flag F46). Three sampled game pages show a hidden score (Flag F47) and are not verified on the game center.</p>
+{table(rf_checks, ['check_id','check','method','result','status','source_url'],
+       {'check_id':'ID','check':'Check','method':'Method','result':'Result','status':'Status','source_url':'Source'},
+       table_id='rf-table', filterable=True)}
+<h2>Correlation audit: owner rule and sample size (T44)</h2>
+<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row shows the register's earlier interval; the corrected interval is requested, not applied (Flag F48).</p>
+{table(corr_audit, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','audit_note','source_url'],
+       {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only?','qualifies_under_owner_rule':'Qualifies?','audit_note':'Audit note','source_url':'Source'},
+       table_id='corr-audit-table', filterable=True)}
+<h2>Demotion rule D1: window check (T50)</h2>
+<p class="note">D1 as drafted on the project's gate register (Flag F54): a strategy returns to paper when the lower 95% bound of its signal is at or below 0 over the last 50 forecasts. The check uses the walk-forward backtest for the four side models; 5,000 bootstrap resamples, fixed seed. Over the last 50 games D1 triggers for {_d50_trig} of {len(_d50)} models, although {_d50_pos} of {len(_d50)} have a positive point estimate. No strategy is live, so nothing is demoted.</p>
+{table(demo_window, ['strategy_id','window','games','mean_mae_gain_pts','ci95_low','ci95_high','D1_triggered','negative_point_estimate','D2_integrity','live_status','source_url'],
+       {'strategy_id':'ID','window':'Window','games':'Games','mean_mae_gain_pts':'Mean gain (pts)','ci95_low':'CI low','ci95_high':'CI high','D1_triggered':'D1 triggers?','negative_point_estimate':'Negative estimate?','D2_integrity':'D2 integrity','live_status':'Status','source_url':'Source'},
+       table_id='demo-window-table', filterable=True)}
+<h2>Repo review, sampled line by line (T47)</h2>
+<p class="note">Spot re-verification on 2026-11-14 against official NFL pages, with the irregularities found. This is a sample, not a full re-read of every row; the injury rows were verified in earlier sessions.</p>
+{table(repo_review, ['review_id','item','method','result','status','irregularity_or_action','source_url'],
+       {'review_id':'ID','item':'Item','method':'Method','result':'Result','status':'Status','irregularity_or_action':'Irregularity or action','source_url':'Source'},
+       table_id='repo-review-table', filterable=True)}
+""")
+
+pages["depth-deficiency.html"] = (pages["depth-deficiency.html"][0], pages["depth-deficiency.html"][1] + f"""
+<h2>Replacement depth: where the replacement sits, not only that one exists (T42)</h2>
+<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts are undated and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. {_depth_checked} of {len(rep_depth)} rows are checked against a club chart; A08 to A11 are open (Flag F53).</p>
+{table(rep_depth, ['item_id','team_abbr','position_group','player_affected','replacement_named_by_official_source','club_chart_order_as_fetched','replacement_depth_rank','depth_status','irregularity','source_url','depth_chart_url'],
+       {'item_id':'ID','team_abbr':'Team','position_group':'Pos','player_affected':'Player affected','replacement_named_by_official_source':'Replacement named by official source','club_chart_order_as_fetched':'Club chart order (fetched)','replacement_depth_rank':'Replacement depth','depth_status':'Status','irregularity':'Irregularity','source_url':'Official source','depth_chart_url':'Club depth chart'},
+       table_id='repdepth-table', filterable=True)}
+""")
+
+pages["decisions.html"] = ("Decisions for the owner", f"""
+<h1>Decisions for the owner</h1>
+<p class="note">Each row is a choice to make before related work is built. <strong>Nothing here has been implemented.</strong> Each row gives three options, the one recommended now, and the reason. The owner completes the decision; no session acts on a row until the decision is recorded on <code>COORDINATION.md</code>.</p>
+<h2>Decision register (T45)</h2>
+{table(dec_opts, ['decision_id','decision_to_make','option_A','option_B','option_C','recommended_now','why_this_path','what_unlocks_the_choice','blocked_items','status','source_url'],
+       {'decision_id':'ID','decision_to_make':'Decision','option_A':'Option A','option_B':'Option B','option_C':'Option C','recommended_now':'Recommended now','why_this_path':'Why','what_unlocks_the_choice':'What unlocks it','blocked_items':'Blocks','status':'Status','source_url':'Source'},
+       table_id='dec-table', filterable=True)}
+<h2>What we have and what is missing (T46)</h2>
+<p class="note">What the project can and cannot answer today, and the official source to try first. A blank cell means the item is not held.</p>
+{table(gap_rows, ['gap_id','area','what_we_have','what_is_missing','why_it_matters','how_to_find_it_officially_first','blocks','source_url'],
+       {'gap_id':'ID','area':'Area','what_we_have':'What we have','what_is_missing':'What is missing','why_it_matters':'Why it matters','how_to_find_it_officially_first':'How to find it (official first)','blocks':'Blocks','source_url':'Source'},
+       table_id='gap-table', filterable=True)}
+<p class="note">Suggestions with their own options are on the <a href="suggestions.html">Suggestions</a> page. Open questions are on the <a href="questions.html">Questions</a> page. Flagged items are on the <a href="flagged.html">Flagged for review</a> page.</p>
+""")
+
+pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
+<h2>Decision desk: changes on 2026-11-14 (session 8a0bf37e)</h2>
+<ul class="findings">
+<li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
+<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows carry a depth rank from a club chart, where an official statement names the replacement. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
+<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row is wrong in the register: its corrected interval is 0.335 to 1.435, p = 0.683 against slope 1.0. The correction is requested, not applied (Flag F48).</li>
+<li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
+<li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
+<li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>
+</ul>
+""")
+
 
 # ---------- write ----------
 os.makedirs(os.path.join(DOCS, "assets"), exist_ok=True)
