@@ -1421,6 +1421,7 @@ for _d, _r in zip(lb_view, lb_rows):
     _d["matchup"] = "%s at %s" % (_r["away_team"], _r["home_team"])
     _d["week_label"] = "W" + _r["week"]
 
+canon_feed = read_csv("results_feed_2026.csv")
 rf_view = []
 for _r in rf_feed:
     rf_view.append({"feed_id": _r["feed_id"], "week": "W" + _r["week"],
@@ -1549,7 +1550,16 @@ page it was read from, and the <em>how recorded</em> column says whether a row i
 <em>result</em> columns stay blank until the fixture is settled; nothing here is graded on a forecast, and no payout is
 computed because no price exists (Flag F07).</p>
 %s
-<h2>4. What this feed does not do</h2>
+<h2>4. Two feeds of the same season, reconciled</h2>
+<p class="note">Session f25d6b55 published a canonical results feed (<code>data/results_feed_2026.csv</code>, requirement
+R38) from a second transcription of the same by-week pages. It is not the same file and it is not redundant: that feed is
+a settled-results ledger, this one additionally carries the %s fixtures that have <em>no</em> score yet and the join to
+the markets this project has originated, which is what makes "pending, because unplayed" a stated state rather than a
+missing row. The two are compared game by game by <code>scripts/verify_stores.py</code> check L11: <strong>%s settled games
+agree on both scores, with 0 differences and 0 games present in one and absent from the other</strong>. A disagreement
+between two feeds built from the same official pages would be a transcription finding, so it is checked rather than
+assumed.</p>
+<h2>5. What this feed does not do</h2>
 <ul class="findings">
 <li><strong>It publishes no return.</strong> It records outcomes, not prices, so it makes outcome grading computable and
 leaves monetary ROI blocked (Flags F07, F16); the summary file states this in the field
@@ -1580,7 +1590,8 @@ than absorbed into a side; the consequence for the originated moneyline is recor
               "actual_total": "Actual total", "side_result": "Side result", "total_result": "Total result",
               "moneyline_result": "Moneyline result", "grade_status": "Grade status", "source_url": "Source"},
              table_id="rf-grade-table", filterable=True),
-       str(rf_summary["roi_computable_against_market"]), rf_summary["tie_games_in_feed"]))
+       str(rf_summary["roi_computable_against_market"]), rf_summary["tie_games_in_feed"],
+       rf_unsett, rf_settled))
 
 pages["origination.html"] = ("Origination", """
 <h1>Origination</h1>
@@ -1728,8 +1739,8 @@ starter problem.</li>
 %s
 <p class="note">Where a player on the league's availability report appears on <strong>no row at all</strong> of his club's
 chart, the depth fields are left blank with that stated as the reason, rather than filled from a third-party chart the
-official-source rule excludes. A chart omission means "this source cannot place him", not "he is fine" (F62, suggestion
-S33). Rows RD-13 and RD-14 are blank for a different reason again — no chart captured for that club this week, and a
+official-source rule excludes. A chart omission means "this source cannot place him", not "he is fine" (F63, suggestion
+S39). Rows RD-13 and RD-14 are blank for a different reason again — no chart captured for that club this week, and a
 player on the chart who is not on the league report — which is recorded rather than guessed.</p>
 """ % (tiles([(len(depth_detail), "slot records"), (depth_ok_count, "with a verified depth position"),
              (len(depth_blank_view), "blank by rule"), (len(clubs_read), "clubs read directly")]),
@@ -1850,7 +1861,7 @@ rhetorical. The best run in the family (+%s units) is reached by chance alone in
 staking order and the signal order do not coincide. <a href="staking-ledger.html">Staking ledger</a></li>
 <li><strong>Replacement depth.</strong> %s slot records, %s carrying a depth position verified against a club chart read
 the same day and %s left blank with the reason. Two club charts omit a player the league report lists as Out or
-Questionable entirely, which is recorded as a source inconsistency (F62) rather than filled in.
+Questionable entirely, which is recorded as a source inconsistency (F63) rather than filled in.
 <a href="replacement-depth.html">Replacement depth</a></li>
 <li><strong>Correlations and gates.</strong> %s correlation rows with n, interval and the smallest detectable |r|
 published beside every value; %s demotion trigger evaluations against measured numbers, of which %s would fire today and

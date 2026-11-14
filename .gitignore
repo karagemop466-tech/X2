@@ -11,3 +11,6 @@ __pycache__/
 # os / editor
 .DS_Store
 *.log
+
+# scratch pads written by the agent during a session; not project outputs
+.wip/

@@ -92,15 +92,24 @@ def main():
     for name, cols in (("line_book_snapshots.csv", ["market_line", "fair_minus_market"]),
                        ("originated_markets_week11.csv", ["market_line", "fair_minus_market"]),
                        ("results_feed_grades.csv", ["market_line"]),
-                       ("staking_book.csv", ["roi_against_market"])):
+                       ("price_snapshots.csv", ["opening_line", "opening_price", "closing_line", "closing_price"]),
+                       ("price_snapshots_extended.csv", ["opening_number", "closing_number"])):
         if not os.path.exists(os.path.join(DATA, name)):
             continue
         for r in read(name):
             for c in cols:
                 if c in r and (r[c] or "").strip():
                     offenders.append(f"{name}:{c}")
-    (bad if offenders else ok)("L3", "No market price or price difference is recorded in any new file",
-                              f"{len(offenders)} populated market cells (must be 0)")
+    # The two staking columns are allowed to be populated ONLY because the payout is declared
+    # in the file; the check asserts that declaration is present on every row, so a units number
+    # can never appear without its assumption attached.
+    unstated = [r["strategy_id"] for r in read("staking_book.csv")
+                if "flat 1 unit" not in (r.get("payout_assumption") or "")]
+    (bad if offenders or unstated else ok)(
+        "L3", "No market price is recorded in any new file, and every units figure carries its payout assumption",
+        f"{len(offenders)} populated market cells (must be 0); {len(unstated)} staking rows without a stated "
+        f"payout assumption. Market cells are blank by rule (F07, F16): an opening number for a line we publish "
+        f"is a first-party fact, a bookmaker price is not something this project holds")
 
     # L4 — feed reconciliation and empty-score rule
     feed = read("results_feed.csv")
@@ -241,6 +250,34 @@ def main():
     (bad if nolink else ok)("L10", "Every row in the new files links to an official or first-party source",
                             f"{len(nolink)} rows without an allow-listed link"
                             + ("" if not nolink else "; " + ", ".join(nolink[:5])))
+
+    # L11 — two independent feeds of the same season must agree, game for game
+    canon_path = os.path.join(DATA, "results_feed_2026.csv")
+    if os.path.exists(canon_path):
+        canon = {}
+        for r in read("results_feed_2026.csv"):
+            aw = "LAR" if r["away_team"] in ("LA", "LAR") else r["away_team"]
+            hw = "LAR" if r["home_team"] in ("LA", "LAR") else r["home_team"]
+            canon[(r["week"], aw, hw)] = r
+        diffs = []
+        for r in settled:
+            aw = "LAR" if r["away_team"] in ("LA", "LAR") else r["away_team"]
+            hw = "LAR" if r["home_team"] in ("LA", "LAR") else r["home_team"]
+            c = canon.get((r["week"], aw, hw))
+            if c is None:
+                diffs.append(f"{r['feed_id']}: absent from the canonical feed")
+            elif (c["away_points"], c["home_points"]) != (r["away_points"], r["home_points"]):
+                diffs.append(f"{r['feed_id']}: {c['away_points']}-{c['home_points']} vs {r['away_points']}-{r['home_points']}")
+        extra = [k for k in canon if k not in
+                 {(r["week"], "LAR" if r["away_team"] in ("LA", "LAR") else r["away_team"],
+                   "LAR" if r["home_team"] in ("LA", "LAR") else r["home_team"]) for r in settled}]
+        (bad if diffs or extra else ok)(
+            "L11", "This session's feed agrees with the canonical results feed published by session f25d6b55",
+            f"{len(settled)} settled games compared against {len(canon)} canonical rows; {len(diffs)} score "
+            f"differences, {len(extra)} canonical games absent from this feed"
+            + ("" if not (diffs or extra) else "; " + ", ".join(diffs[:3] + [str(e) for e in extra[:3]])))
+    else:
+        ok("L11", "Canonical results feed not present in this checkout", "cross-check skipped (file absent)")
 
     for cid, desc, detail, status in checks:
         print(f"{status}  {cid}  {desc}\n        {detail}")
