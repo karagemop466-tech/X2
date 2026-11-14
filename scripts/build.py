@@ -19,7 +19,9 @@ DATA = os.path.join(ROOT, "data")
 DOCS = os.path.join(ROOT, "docs")
 AS_OF = "2026-11-14"
 OFFICIAL_HOSTS = {
-    "www.nfl.com", "support.nfl.com", "operations.nfl.com",
+    # static.www.nfl.com serves official NFL gamebook PDFs linked from the NFL game
+    # centers (T52 takeover). It is a first-party NFL host, not a third-party provider.
+    "www.nfl.com", "static.www.nfl.com", "support.nfl.com", "operations.nfl.com",
     "www.detroitlions.com", "www.patriots.com",
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
@@ -163,6 +165,23 @@ verification_rows = read_csv("verification_report.csv")
 decisions = read_csv("decision-chain.csv")
 sugg_review = read_csv("suggestion_review.csv")
 
+# Research registers taken over from session 25d6114f (T52). Variable names are
+# chosen not to collide with this builder's own bindings (decisions, repo_review).
+verification_ledger = read_csv("verification_week10_2026.csv")
+starters = read_csv("starters_gamebook_2026_reg_10.csv")
+starters_good = [r for r in starters if r["gamebook_status"] == "Starter"]
+starters_bad = [r for r in starters if r["gamebook_status"] != "Starter"]
+line_signals = read_csv("line_signals.csv")
+engine_gates = read_csv("skill_engine_gates.csv")
+luck_tests = read_csv("luck_tests.csv")
+corr_framework = read_csv("correlation_framework.csv")
+lb_rules = read_csv("leaderboard_rules.csv")
+depth_def = read_csv("depth_deficiency.csv")
+dq_rows = read_csv("decision_questions.csv")
+sug_register = read_csv("suggestions_register.csv")
+repo_review_rows = read_csv("repo_review.csv")
+repo_review_counts = Counter(r["result"] for r in repo_review_rows)
+verification_ledger_counts = Counter(r["result"].split(" — ")[0] for r in verification_ledger)
 # ---------- session d0d9d19f: settlement feed, origination order, replacement ----------
 # ---------- depth, correlation provenance, repository audit ----------
 feed_settled = read_csv("results_feed.csv")
@@ -189,7 +208,6 @@ _union_names = sorted(set(_covered_names) | set(_other_names))
 _shared_names = sorted(set(_covered_names) & set(_other_names))
 _audit_pass = sum(1 for r in repo_audit if r["status"].startswith("pass"))
 _recomputed = sum(1 for r in corr_prov if r["recomputation_check"].startswith("recomputed"))
-
 # Empty-state row only: do not imply a strategy has results or an approved reward.
 leaderboard_status = [{
     "rank": "—",
@@ -475,6 +493,14 @@ exports = {
     "replacement_depth": replacement_depth,
     "price_snapshots_extended": price_snapshots_extended,
     "model_summary": ms,
+    # registers taken over from session 25d6114f (T52)
+    "verification_week10_2026": verification_ledger,
+    "starters_gamebook_2026_reg_10": starters,
+    "line_signals": line_signals, "skill_engine_gates": engine_gates,
+    "luck_tests": luck_tests, "correlation_framework": corr_framework,
+    "leaderboard_rules": lb_rules, "depth_deficiency": depth_def,
+    "decision_questions": dq_rows, "suggestions_register": sug_register,
+    "repo_review": repo_review_rows,
 }
 for name, data in exports.items():
     with open(os.path.join(DOCS, "data", name + ".json"), "w", encoding="utf-8") as f:
@@ -555,6 +581,11 @@ NAV = [
     ("depth-deficiency.html", "Deficiency tracking"),
     ("depth-replacement.html", "Depth of replacement"),
     ("strategy-lab.html", "Strategy lab"),
+    ("starters.html", "Starters &amp; depth"),
+    ("signals.html", "Signals"),
+    ("validation.html", "Skill engine"),
+    ("anti-luck.html", "Anti-luck"),
+    ("correlation.html", "Correlation plan"),
     ("decision-path.html", "Decision path"),
     ("decisions.html", "Decisions"),
     ("questions.html", "Questions"),
@@ -562,6 +593,7 @@ NAV = [
     ("suggestions.html", "Suggestions"),
     ("review-path.html", "Review path"),
     ("verification.html", "Verification"),
+    ("repo-review.html", "Repo review"),
     ("cross-check.html", "Independent cross-check"),
     ("repo-audit.html", "Repository audit"),
     ("flagged.html", "Flagged for review"),
@@ -818,7 +850,7 @@ Units: QB, RB (incl. FB), WR/TE, OL, DL, LB, DB, ST. This grouping is a project 
 # ---------- strategy lab ----------
 pages["strategy-lab.html"] = ("Strategy lab", f"""
 <h1>Strategy lab</h1>
-<p class="note">This page holds the qualitative framework. <strong>The quantitative results now live on their own pages:</strong> <a href="leaderboard.html">Leaderboard</a>, <a href="validation-gates.html">Validation gates</a>, <a href="correlations.html">Correlations</a>, <a href="parlays.html">Parlays</a> and <a href="backtest.html">Backtest</a>, all graded walk-forward on {ms['out_of_sample_games']} out-of-sample games.
+<p class="note">This page holds the qualitative framework. <strong>The quantitative results now live on their own pages:</strong> <a href="leaderboard.html">Leaderboard</a>, <a href="validation-gates.html">Validation gates</a>, <a href="correlations.html">Correlations</a>, <a href="parlays.html">Parlays</a> and <a href="backtest.html">Backtest</a>, all graded walk-forward on {ms['out_of_sample_games']} out-of-sample games. The research framework taken over in T52 lives on <a href="signals.html">Signals</a>, <a href="validation.html">Skill engine</a>, <a href="anti-luck.html">Anti-luck</a>, <a href="correlation.html">Correlation plan</a>, <a href="starters.html">Starters &amp; depth</a> and <a href="repo-review.html">Repo review</a>.
 The inputs needed (licensed odds, historical outcomes, verified role evidence and paired correlation data) are not available here. No validation can eliminate football randomness or guarantee a result; out-of-sample testing can reduce hindsight and quantify uncertainty, not remove variance. This is a research plan, not betting advice. Numeric thresholds are intentionally blank: general statistical guidance does not supply an NFL-specific sample size, return cutoff, significance level or paper-trading duration. <a href="https://www.itl.nist.gov/div898/handbook/glossary.htm" target="_blank" rel="noopener">NIST cross-validation reference ↗</a></p>
 <h2>Independent line framework (proposed; no values estimated)</h2>
 <p class="note">Originate the forecast from pregame NFL performance and verified availability, not by copying a sportsbook price. Any market line is a separately sourced benchmark; <a href="https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL" target="_blank" rel="noopener">NFL Support says its odds widgets are partner-provided</a>. All fair lines, probabilities and coefficients remain blank until rights-cleared data and validation are available.</p>
@@ -927,6 +959,20 @@ feed's size, and a random-ish spot check of the verified results feed.</p>
 <li><strong>Rights are not verification.</strong> Confirming a value matches NFL.com does not grant permission to republish it in bulk (F16).</li>
 <li><strong>Blank is deliberate.</strong> A dash means the official source did not supply a value, or no official source was found. It is never an inferred estimate.</li>
 </ul>
+
+<h2>Snapshot check register — {len(verification_ledger)} checks (taken over from session 25d6114f, T88)</h2>
+<p class="note">A reproducible field-by-field ledger: every committed value beside the official value, with the
+result and a source link. Reproduce with <code>python3 scripts/verify_snapshot.py</code>. Residual limitation: the
+ledger's transcription and the snapshot were made in the same session, so a shared misreading would not be detected
+(<a href="flagged.html">Flag F80</a>); two further independent passes (sessions 30beeb55 and 7c9eb69a) reached the
+same result. {verification_ledger_counts.get('PASS', 0)} PASS,
+{sum(v for k, v in verification_ledger_counts.items() if k.startswith('NEW EVIDENCE'))} new evidence,
+{sum(1 for r in verification_ledger if 'REVIEW' in r['result'])} needs review,
+{sum(1 for r in verification_ledger if r['result'].startswith('FAIL'))} FAIL.</p>
+{search_box('vledger-table')}
+{table(verification_ledger, ['check_id','scope','what_was_checked','committed_value','official_value','result','note','source_url'],
+       {'check_id':'ID','scope':'Scope','what_was_checked':'What was checked','committed_value':'Committed value','official_value':'Official value','result':'Result','note':'Note','source_url':'Source'},
+       table_id='vledger-table', filterable=True)}
 """)
 
 # ---------- model & Week 11 lines ----------
@@ -1152,6 +1198,13 @@ has monetary value. Any reward, entry fee, referral or wager mechanic stays disa
 confirmation and qualified legal review (Flags F09, F19) and data-rights clearance (F16). Approve, amend or reject
 these tiers on the <a href="suggestions.html">Suggestions</a> page; nothing here has been implemented on the
 basis of a suggestion.</p>
+
+<h2>Leaderboard rules — LB01 to LB12 (taken over from session 25d6114f, T88)</h2>
+<p class="note">Pre-declared ranking rules written before any entry exists, so that when entries do arrive they
+cannot quietly reward luck. <strong>No entry is eligible and no reward is enabled</strong>: eligibility, jurisdiction,
+data rights and legal review remain unresolved (F17, F42, F09, F19, F16).</p>
+{table(lb_rules, ['rule_id','topic','rule','why_this_rule','what_is_intentionally_left_blank','evidence_url'],
+       {'rule_id':'Rule','topic':'Topic','rule':'Rule','why_this_rule':'Why','what_is_intentionally_left_blank':'Intentionally blank','evidence_url':'Evidence'})}
 """)
 
 # ---------- validation gates ----------
@@ -1324,6 +1377,15 @@ Choose per row; a suggestion with no recommendation strength of "Recommended" is
 <li><strong>Prefer the reversible option while a gate is open.</strong> Filtering and blank fields can be undone; publishing bulk data or defining a prize cannot.</li>
 <li><strong>Log the choice.</strong> Record which option was chosen and why, so a later reviewer can see whether the decision still holds.</li>
 </ol>
+
+<h2>Suggestion register — SR-01 to SR-18 (taken over from session 25d6114f, T88)</h2>
+<p class="note">A second, finer-grained recommendation register: each row names the decision it improves, the options
+available, the effort, the risk and the gate it depends on. <strong>Nothing here is implemented</strong>; the
+<em>Review status</em> column records what is blocked and by which gate.</p>
+{search_box('sr-table')}
+{table(sug_register, ['sug_id','category','recommendation','improves_which_decision','evidence_that_it_helps','options','recommended_option','effort','risk','depends_on_gate','review_status','evidence_url'],
+       {'sug_id':'ID','category':'Category','recommendation':'Recommendation','improves_which_decision':'Decision it improves','evidence_that_it_helps':'Evidence','options':'Options','recommended_option':'Recommended','effort':'Effort','risk':'Risk','depends_on_gate':'Depends on','review_status':'Review status','evidence_url':'Evidence'},
+       table_id='sr-table', filterable=True)}
 """)
 
 # ---------- flagged ----------
@@ -1640,6 +1702,16 @@ pages["decisions.html"] = ("Decisions for the owner", f"""
        {'gap_id':'ID','area':'Area','what_we_have':'What we have','what_is_missing':'What is missing','why_it_matters':'Why it matters','how_to_find_it_officially_first':'How to find it (official first)','blocks':'Blocks','source_url':'Source'},
        table_id='gap-table', filterable=True)}
 <p class="note">Suggestions with their own options are on the <a href="suggestions.html">Suggestions</a> page. Open questions are on the <a href="questions.html">Questions</a> page. Flagged items are on the <a href="flagged.html">Flagged for review</a> page.</p>
+
+<h2>Decision gates register — DQ-01 to DQ-20 (taken over from session 25d6114f, T88)</h2>
+<p class="note">The DQ register is the finer-grained funnel: each row is a question that must be answered before a
+route can sensibly be chosen, what is known now with a source, how to find the missing answer, and the choice the
+owner will face. <strong>DQ-01 (data rights)</strong> and <strong>DQ-02 (jurisdiction and contest design)</strong>
+block everything downstream. Nothing is chosen automatically.</p>
+{search_box('dq-table')}
+{table(dq_rows, ['q_id','stage','decision_topic','question_that_must_be_answered','why_it_blocks_a_decision','known_now_source_backed','how_to_discover','the_choice_you_will_face','owner','evidence_url'],
+       {'q_id':'ID','stage':'Stage','decision_topic':'Topic','question_that_must_be_answered':'Question to answer','why_it_blocks_a_decision':'Why it blocks a decision','known_now_source_backed':'Known now (sourced)','how_to_discover':'How to find out','the_choice_you_will_face':'The choice you will face','owner':'Owner','evidence_url':'Source'},
+       table_id='dq-table', filterable=True)}
 """)
 
 pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
@@ -1677,6 +1749,181 @@ register assigns those IDs to different findings &mdash; the conditions are cove
 """)
 
 
+
+# ---------- pages taken over from session 25d6114f (T88) ----------
+pages["starters.html"] = ("Starters and depth", f"""
+<h1>Starters and depth — what is officially verifiable</h1>
+<p class="note"><strong>The shortest honest answer:</strong> the NFL does not publish a pregame depth chart, so a
+"1st / 2nd / 3rd / 4th string" rank cannot be verified from an official source. What <em>is</em> official is the
+<a href="https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf" target="_blank" rel="noopener">NFL gamebook</a>,
+which lists the complete starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list.
+That gives post-game starter identity, not a pregame depth order.</p>
+{tiles([(len(starters), 'starter-identity rows verified'), (len(starters_good), 'confirmed starters'),
+        (len(starters_bad), 'confirmed non-starters (inactive, did not play or substitution)'),
+        (len(depth_def), 'team-unit rows with availability exposure'),
+        (len({r['team_abbr'] for r in depth_def}), 'teams with at least one exposed unit')])}
+<h2>Why the string rank is blank</h2>
+<ul>
+<li><strong>Roster page:</strong> the official team roster lists name, number, position, status, height, weight,
+experience and college. There is no depth-order column. Verified on the
+<a href="https://www.nfl.com/teams/buffalo-bills/roster" target="_blank" rel="noopener">Bills roster page</a>.</li>
+<li><strong>Depth charts on other sites:</strong> third-party charts exist, but they are not official NFL publications,
+so they cannot be presented here as official facts (Flag F18).</li>
+<li><strong>Gamebook:</strong> official, but it tells you who played, after the game. Using it as a pregame expectation
+(the previous week's lineup) is a modelling choice, not a published depth chart. See suggestion SR-04.</li>
+</ul>
+<h2>Confirmed starter identity — Week 10, Commanders at Giants</h2>
+<p class="note">Every row was read from the official gamebook for the Week 10 Thursday game. The injury-report game
+status is shown beside it so you can see both records at once. A player can be a full practice participant and still
+appear in the Did Not Play list: that is a real finding, not a data error.</p>
+{table(starters, ['team_abbr','player','position','injury_report_game_status','gamebook_status','gamebook_lineup_detail','went_on_to_play','source_url'],
+       {'team_abbr':'Team','player':'Player','position':'Pos','injury_report_game_status':'Injury report','gamebook_status':'Gamebook status','gamebook_lineup_detail':'Gamebook detail','went_on_to_play':'Played','source_url':'Gamebook'})}
+<h2>Depth deficiency by team and unit — verified absence, not a measured weakness</h2>
+<p class="note">This table answers a narrower question than "is the second string playing?": it shows, for every team
+and unit, exactly which players are unavailable and what is still missing before a replacement effect could be
+estimated. The string rank and the replacement impact are deliberately blank. See Flag F78 for the correction to the
+earlier claim that no official starter data exists.</p>
+{search_box('depthdef-table')}
+{table(depth_def, ['team_abbr','unit','side','out_count','doubtful_count','questionable_count','players_out_or_doubtful','starter_absent_verified','deficiency_status','what_is_missing','best_official_source','source_url'],
+       {'team_abbr':'Team','unit':'Unit','side':'Side','out_count':'Out','doubtful_count':'Doubtful','questionable_count':'Questionable','players_out_or_doubtful':'Players unavailable','starter_absent_verified':'Starter evidence','deficiency_status':'Deficiency status','what_is_missing':'What is still missing','best_official_source':'Best official source','source_url':'Source'},
+       table_id='depthdef-table', filterable=True)}
+<h2>Offense and defense, separately</h2>
+<p>The requirement asks about defenses losing starters to second, third or fourth string, and about offenses playing
+starters or backups. Both sides are counted in the unit table above: <em>Side</em> separates Offense, Defense and
+Special teams, and the unit column separates QB, RB, WR/TE, OL, DL, LB, DB and ST. What cannot yet be said is who the
+starter was for each of those units in each game, because only one week of gamebooks has been verified.</p>
+""")
+
+pages["signals.html"] = ("Signals", f"""
+<h1>Signals — where an original line could come from</h1>
+<p class="note"><strong>No signal below has been tested, scored or priced.</strong> Each row defines what the signal is,
+why it could carry information, what data it needs, and the specific way it could leak the answer. The
+<em>Current value</em> column is blank on every row, by design: a number there would be a claim this project cannot
+support. This is the research plan for originating your own line, not a line.</p>
+{tiles([(len(line_signals), 'signal definitions'), (len({r['bet_family'] for r in line_signals}), 'bet families'),
+        (len(line_signals) - sum(1 for r in line_signals if r['current_value'].strip()), 'signals with no measured value'),
+        (len({r['hypothesis_id'] for r in line_signals}), 'linked hypotheses')])}
+<h2>How a signal becomes a line</h2>
+<ol>
+<li><strong>Define it before you look.</strong> The definition, the cutoff and the metric are written down first (gate EG1).</li>
+<li><strong>Prove it is knowable at the cutoff.</strong> Every input must have been visible before the bet (gate EG2).</li>
+<li><strong>Beat a declared baseline.</strong> A league mean and the availability signal alone are the two baselines (EG3).</li>
+<li><strong>Check calibration, not just accuracy.</strong> A probability that says 60 percent should happen about 60 percent of the time (EG4).</li>
+<li><strong>Survive the anti-luck suite.</strong> Bootstrap interval, multiplicity control and a held-out block (see Anti-luck).</li>
+<li><strong>Only then price it.</strong> The price is the market's number; your number is the forecast. The gap is the only thing worth betting.</li>
+</ol>
+{search_box('sig-table')}
+{table(line_signals, ['signal_id','bet_family','signal_name','signal_definition','why_it_could_matter','verification_now','data_needed','leakage_risk','time_available','test_statistic','current_value','eligibility_gate','source_url'],
+       {'signal_id':'ID','bet_family':'Bet family','signal_name':'Signal','signal_definition':'Definition','why_it_could_matter':'Why it could matter','verification_now':'Verified now','data_needed':'Data needed','leakage_risk':'Leakage risk','time_available':'Time available','test_statistic':'Test statistic','current_value':'Current value (blank = unmeasured)','eligibility_gate':'Gate','source_url':'Source'},
+       table_id='sig-table', filterable=True)}
+<h2>Single bet, parlays and player-prop combos</h2>
+<p>Three families are separated because they fail differently. A <strong>single bet</strong> fails when the forecast is
+wrong. A <strong>same-game combo</strong> fails when the joint probability is wrong even though every single leg is
+right, which is a correlation problem. A <strong>cross-game parlay</strong> fails when costs and settlement are ignored.
+The <a href="correlation.html">Correlation plan</a> page holds the dependence plan; nothing has been measured.</p>
+""")
+
+pages["validation.html"] = ("Skill engine", f"""
+<h1>Skill engine — the gates every strategy must pass</h1>
+<p class="note"><strong>Eighteen gates (EG0–EG17), zero passed.</strong> The point of this page is to make a claim impossible
+until the evidence exists. Each gate has a pass rule that is checkable without inventing a number: if a rule needs a
+threshold, the threshold is left blank rather than guessed (Flag F17).
+<a href="https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm" target="_blank" rel="noopener">NIST model-validation guidance ↗</a></p>
+{tiles([(len(engine_gates), 'gates'), (sum(1 for r in engine_gates if r['current_status'].startswith('Open')), 'open'),
+        (sum(1 for r in engine_gates if r['current_status'].startswith('Blocked')), 'blocked'),
+        (sum(1 for r in engine_gates if r['current_status'].startswith('Partially')), 'partially met')])}
+<h2>Gate ledger</h2>
+{search_box('gate-table')}
+{table(engine_gates, ['gate_id','gate_stage','gate_name','question_answered','pass_rule','data_needed','current_status','applies_to','source_url'],
+       {'gate_id':'Gate','gate_stage':'Stage','gate_name':'Gate name','question_answered':'Question it answers','pass_rule':'Pass rule (no invented numbers)','data_needed':'Data needed','current_status':'Current status','applies_to':'Applies to','source_url':'Evidence'},
+       table_id='gate-table', filterable=True)}
+<h2>The user's requirements, mapped to gates</h2>
+<ul>
+<li><strong>"Each strategy must pass validation gates."</strong> That is EG0 through EG9 for every strategy, plus one family gate.</li>
+<li><strong>"Determine correlation values."</strong> Correlation is gated by EG12 and EG13, which cannot pass without paired settled data. See <a href="correlation.html">Correlation plan</a>.</li>
+<li><strong>"Remove luck from the equation."</strong> Luck cannot be removed. It can be bounded and disclosed: a bootstrap interval, a search log and a held-out block. See <a href="anti-luck.html">Anti-luck</a> for why "remove" is the wrong target and what replaces it.</li>
+<li><strong>"Build strategies that are selectively skill based."</strong> A strategy is selectively applied only where the gate ledger shows measured skill; until then the correct selective rule is to apply nothing.</li>
+<li><strong>"Rewards for top performing strategies."</strong> EG16 blocks any reward until a qualified legal review covers the jurisdiction and the contest design.</li>
+</ul>
+""")
+
+pages["anti-luck.html"] = ("Anti-luck", f"""
+<h1>Anti-luck — how a lucky result is kept off the leaderboard</h1>
+<p class="note"><strong>Honest framing:</strong> luck cannot be removed from a football result. A single game is
+mostly variance, and a short run of wins is not evidence of skill. What can be done is to make a lucky result
+<em>unable to pass</em>: bound the uncertainty, count the number of attempts, and test on data that has never been
+seen. Every test below has a blank current value because no evaluation dataset exists yet.</p>
+{tiles([(len(luck_tests), 'luck sources addressed'), (sum(1 for r in luck_tests if r['status'].startswith('Open')), 'open'),
+        (sum(1 for r in luck_tests if r['status'].startswith('Blocked')), 'blocked'), (0, 'tests with a computed value')])}
+<h2>Method sources</h2>
+<ul>
+<li><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm" target="_blank" rel="noopener">NIST 1.3.3.4 Bootstrap Plot</a> — the bootstrap estimates the uncertainty of a statistic, typically with 500 to 1000 resamples, and is not appropriate for every distribution.</li>
+<li><a href="https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm" target="_blank" rel="noopener">NIST 7.4.7 Multiple comparisons</a> — repeating pairwise comparisons inflates the overall significance level.</li>
+<li><a href="https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm" target="_blank" rel="noopener">NIST 4.4.4 Model validation</a> — a high R-squared does not mean the model fits, and residual analysis is the primary tool.</li>
+</ul>
+<h2>Test register</h2>
+{search_box('luck-table')}
+{table(luck_tests, ['test_id','target_luck_source','test_name','what_the_test_answers','method','pre_declared_metric','what_would_count_as_skill','what_is_NOT_evidence_of_skill','current_value','status','source_url'],
+       {'test_id':'ID','target_luck_source':'Luck source','test_name':'Test','what_the_test_answers':'Question answered','method':'Method','pre_declared_metric':'Metric','what_would_count_as_skill':'Counts as skill','what_is_NOT_evidence_of_skill':'Not evidence of skill','current_value':'Current value (blank = unmeasured)','status':'Status','source_url':'Method source'},
+       table_id='luck-table', filterable=True)}
+<h2>What would make me trust a strategy</h2>
+<ol>
+<li>A preregistration committed before any result existed.</li>
+<li>A bootstrap interval that excludes the luck-only benchmark, with the resample count stated.</li>
+<li>An interval that stays outside the benchmark after the number of tried strategies is accounted for.</li>
+<li>The same result in a later block that was never used to choose the strategy.</li>
+<li>Errors that do not show structure the model ignored.</li>
+<li>A result that holds after real costs, pushes and voids.</li>
+</ol>
+""")
+
+pages["correlation.html"] = ("Correlation", f"""
+<h1>Correlation — the plan, with every value blank</h1>
+<p class="note"><strong>No correlation value is published here, and none is guessed.</strong> A correlation number
+without paired, settled, point-in-time data would be fabricated. What is published is the exact measurement each pair
+needs, so the work is ready the moment the data is licensed. The one thing this page insists on: a parlay is not the
+product of its legs. If the joint rate differs from the product of the marginals, the ticket is mispriced by
+construction.</p>
+{tiles([(len(corr_framework), 'pairs defined'),
+        (sum(1 for r in corr_framework if not r['value'].strip()), 'pairs with a blank value'),
+        (sum(1 for r in corr_framework if r['status'].startswith('Blocked')), 'blocked on data'),
+        (sum(1 for r in corr_framework if r['status'].startswith('Open')), 'open')])}
+<h2>Why the naive number is wrong</h2>
+<p>Multiply two independent probabilities and you get the joint probability only if the legs are independent. In the
+same game they are not: a quarterback's passing yards and his receiver's yards share the same throws; a running back's
+rushes and his receptions trade off against game script; a team total and a spread can be settled by the same scoring
+play. The correct measure is the observed joint rate minus the product of the marginals, with an interval, on paired
+settled legs. See <a href="https://www.itl.nist.gov/div898/handbook/glossary.htm" target="_blank" rel="noopener">the NIST glossary</a>
+for the underlying definitions.</p>
+<h2>Pair register</h2>
+{search_box('corr-table')}
+{table(corr_framework, ['pair_id','leg_a','leg_b','relationship_type','why_the_pair_is_not_independent','what_must_be_measured','estimator','required_sample','value','uncertainty','sample_n','status','source_url'],
+       {'pair_id':'ID','leg_a':'Leg A','leg_b':'Leg B','relationship_type':'Relationship','why_the_pair_is_not_independent':'Why not independent','what_must_be_measured':'What to measure','estimator':'Estimator','required_sample':'Required sample','value':'Value (blank = unmeasured)','uncertainty':'Uncertainty','sample_n':'Sample N','status':'Status','source_url':'Method source'},
+       table_id='corr-table', filterable=True)}
+""")
+
+pages["repo-review.html"] = ("Repo review", f"""
+<h1>Repo review — line by line, with sources</h1>
+<p class="note">Every file this session owns was reviewed against a source, and any irregularity is recorded rather
+than quietly fixed. Findings that contradict an earlier claim are flagged for review; findings that are correct are
+left alone. Project-implementation claims link to first-party GitHub records and are <em>not</em> offered as evidence
+for NFL facts.</p>
+{tiles([(len(repo_review_rows), 'files or groups reviewed'), (repo_review_counts.get('PASS', 0), 'pass'),
+        (sum(v for k, v in repo_review_counts.items() if k.startswith('VERIFIED')) + repo_review_counts.get('LIVE', 0) + repo_review_counts.get('CORRECT', 0), 'verified'),
+        (repo_review_counts.get('NEW EVIDENCE', 0), 'new evidence'),
+        (repo_review_counts.get('IRREGULARITY', 0), 'irregularities')])}
+<h2>Independence and timestamps</h2>
+<ul>
+<li>The snapshot is dated <strong>2026-11-14 (UTC)</strong> because the official page publishes no last-updated time (Flag F13).</li>
+<li>The verification comparison is <strong>not fully independent</strong> of the original transcription because both were made in the same session (Flag F80). Suggestion SR-13 records the fix.</li>
+<li>The official Thursday game has been played, so the injury report still shown is the pregame report for the remaining 13 games.</li>
+</ul>
+<h2>Review register</h2>
+{search_box('rev-table')}
+{table(repo_review_rows, ['review_id','target','line_or_group','what_was_reviewed','verified_against','result','finding','action_taken','source_url'],
+       {'review_id':'ID','target':'File','line_or_group':'Lines','what_was_reviewed':'Reviewed','verified_against':'Verified against','result':'Result','finding':'Finding','action_taken':'Action taken','source_url':'Source'},
+       table_id='rev-table', filterable=True)}
+""")
 # ---------- review path ----------
 # A single page whose job is to let a reviewer choose a path before any change is
 # built. It is deliberately ordered: earlier rows unblock later ones, and every row

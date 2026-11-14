@@ -83,9 +83,9 @@
  {
   "req_id": "R10",
   "requirement (from brief)": "Deficiency analysis (starter vs backup replacement)",
-  "status": "Partially done — unit exposure measured; string rank still unverified",
-  "where_addressed": "Depth Analysis page",
-  "blocker_or_note": "Exposure is grouped by side of ball and unit. NFL.com depth-chart pages return 404; club-published charts exist but self-label as unofficial, so starter versus backup rank stays blank (F06, F18).",
+  "status": "Partially done — unit exposure measured; official gamebook starter identity recorded for one game; string rank still unverified",
+  "where_addressed": "Depth Analysis page; Starters page (T52 takeover)",
+  "blocker_or_note": "Exposure is grouped by side of ball and unit. NFL.com depth-chart pages return 404; club-published charts exist but self-label as unofficial, so starter versus backup rank stays blank (F06, F18). T52 takeover added official gamebook starting-lineup identity for WAS at NYG (Week 10, 19 rows, data/starters_gamebook_2026_reg_10.csv); a single gamebook does not establish pregame depth order.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
  },
