@@ -37,6 +37,9 @@
  "strategies_tested": 7,
  "qualified_strategies": 4,
  "tier1_strategies": 3,
+ "live_strategies": 0,
+ "paper_strategies": 7,
+ "price_snapshot_rows": 306,
  "injury_rows": 345,
  "injury_teams": 28,
  "seed": 20261114
