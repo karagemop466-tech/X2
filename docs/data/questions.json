@@ -256,7 +256,7 @@
   "area": "Strategy",
   "question": "Does recency weighting add skill?",
   "status": "Answered — no clear gain",
-  "known_facts_verified": "Three-week half-life weighting scored +1.59 points vs +1.74 for uniform weighting; the confidence intervals overlap and week-to-week margin persistence is r=0.087 (p=0.19).",
+  "known_facts_verified": "Three-week half-life weighting scored +1.59 points vs +1.74 for uniform weighting; the confidence intervals overlap and week-to-week margin persistence is r=0.164 (p=0.084, n=113, one row per game after the F55 correction; 95% interval -0.022 to 0.338 crosses zero).",
   "missing_information": "89 games; the variants are highly correlated, so differences are poorly resolved.",
   "how_to_discover_official_first": "Re-test on several seasons with a pre-registered comparison on a held-out period.",
   "decision_owner": "Project",
