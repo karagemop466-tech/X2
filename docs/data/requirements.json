@@ -103,7 +103,7 @@
   "requirement (from brief)": "Repo review with links and irregularities",
   "status": "Done",
   "where_addressed": "Flagged for Review page; flags.csv",
-  "blocker_or_note": "See F01–F17; unresolved data rights, source-link coverage and validation cutoffs are recorded in the flagged register.",
+  "blocker_or_note": "See the flagged registers (Python F01–F30 and Node F-01–F-09 are separate ID spaces); unresolved data rights, designation conflicts and validation cutoffs are recorded there.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
  },
@@ -146,9 +146,9 @@
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "PRs #1-#11 merged; final integration PR (T18: Node build fix, F21/F22 resolution) opened by session 324b0cd2",
+  "status": "Merged through PRs #1-#18; closing honesty-consistency PR from session 3988bdab open (see the COORDINATION.md merge log)",
   "where_addressed": "Final step",
-  "blocker_or_note": "PRs #1-#11 merged through session 7c9eb69a. Session 324b0cd2 re-verified the combined data, fixed the Node table-token bug (F23) and resolved the handed-off F21/F22 items before opening the final integration PR described in COORDINATION.md.",
+  "blocker_or_note": "Integration PRs #1-#18 are merged and the live site is confirmed. The closing session (3988bdab) delivers the last honesty-consistency fixes (T22) and records its merge result in COORDINATION.md.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/pull/11"
  },

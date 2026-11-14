@@ -23,9 +23,11 @@ everything on a clean GitHub Pages dashboard. No manual input is required.
   reward structure. See [Strategy Research](../strategy-research/),
   [Validation Gates](../validation-gates/), [Correlation Values](../correlation/),
   and [Strategy Leaderboard](../leaderboard/).
-- An **injury & depth system** that cross-references the official injury report with
-  depth charts to name the backup elevating to starter and quantify the deficiency.
-  See [Injuries & Depth](../injuries-and-depth/).
+- An **injury & depth system** that records the official NFL.com injury status for
+  every listed player and verifies starter/backup ordering against the clubs'
+  official depth-chart pages where available (detroitlions.com, patriots.com —
+  which self-label their charts "unofficial", flag F-05). Fields no official
+  source confirms stay blank and flagged. See [Injuries & Depth](../injuries-and-depth/).
 - A **source registry and verification method**, and a **Flagged for Review**
   register for irregularities and unverified items. See
   [Data Sources & Verification](../data-sources/) and
@@ -34,23 +36,30 @@ everything on a clean GitHub Pages dashboard. No manual input is required.
 ## Key findings
 
 1. **Skill is measured with Closing Line Value (CLV).** CLV — the difference between
-   the price taken and the price at kickoff — is the cleanest available proxy for
-   betting skill and is the basis for removing luck from the ranking. Win rate is
-   treated as a secondary, variance-dominated metric. Source:
+   the price taken and the price at kickoff — is a widely used proxy for
+   price-finding skill and is the basis for removing luck from the ranking; it is
+   proposed by methodology references, not by the NFL. Win rate is treated as a
+   secondary, variance-dominated metric. No method removes football variance or
+   guarantees a result. Methodology references:
    [Squawka — NFL Betting Strategy](https://www.squawka.com/us/nfl/strategy/).
 2. **Correlation must be computed, not assumed.** Multi-leg parlay and prop-combo
    strategies are only valid where leg correlations are bounded; correlation values
    are **not yet computed** and are therefore left blank and flagged, never inferred.
-3. **Injuries create verifiable depth deficiencies.** Real, current official data
-   (NFL.com Week 10 injury report + depth charts) shows concrete cases: a Lions
-   starting center out (2nd-string center elevated), a Lions starting cornerback out
-   (2nd-string cornerback elevated), and a Patriots two-deep running-back depletion
-   forcing a 3rd-string RB to become the primary carry. These are documented with
-   per-row source links.
-4. **No single official odds source exists.** Odds are set by individual regulated
-   sportsbooks. Aggregators (VegasInsider, Covers, FOX Sports) are confirmed
-   references but are not official; live line values are therefore left blank and
-   flagged until a specific feed is connected.
+3. **Injuries are verified; depth replacements are partially sourced.** The official
+   NFL.com Week 10 injury report verifies the availability statuses (for example,
+   the Lions' center Cade Mays and cornerback D.J. Reed are ruled out; the Patriots
+   list Rhamondre Stevenson Questionable and TreVeyon Henderson Out). Starter/
+   backup ordering for those rows is verified against the clubs' official
+   depth-chart pages, which self-label their charts "unofficial" (flag F-05);
+   where no official chart confirms a value, the field stays blank and flagged.
+   Any effect on a game (for example a third-string back becoming the primary
+   carry) is a conditional scenario drawn from those charts, not a verified
+   outcome. All rows carry per-row source links.
+4. **No official odds feed is connected to this repository.** The NFL's own odds
+   widgets use bookmaker-partner odds (NFL Support FAQ); no licensed feed or
+   historical price archive is available here. Odds aggregators (VegasInsider,
+   Covers, FOX Sports) are references but are not official; live line values are
+   therefore left blank and flagged until a specific feed is connected.
 
 ## Verification status
 

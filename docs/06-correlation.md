@@ -2,8 +2,8 @@
 
 Correlation values determine whether multi-leg parlay and player-prop-combo
 strategies are genuinely diversifying or are double-counting the same underlying
-risk. Correlations are **computed from official historical data** — they are never
-assumed.
+risk. Correlations will be **computed from rights-cleared historical data** once
+that data is connected — they are never assumed. Nothing is computed yet.
 
 ## Correlations to determine
 
@@ -11,8 +11,9 @@ assumed.
 
 ## Method
 
-For each pair, the Pearson correlation is computed over the official historical
-data window from the linked sources:
+For each pair, the plan is to compute the Pearson correlation over a
+pre-declared, rights-cleared historical evaluation period (no data window exists in
+this repository yet):
 
 - **C-01** same-game side vs. total: correlates a game's spread result with its
   total result.
