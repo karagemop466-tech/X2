@@ -241,53 +241,53 @@
  },
  {
   "source_id": "SRC-25",
-  "title": "NFL Official Game Summary / Game Book: Commanders at Giants, 2026 regular season Week 10",
-  "publisher": "National Football League",
-  "url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
-  "type": "Official league game document",
+  "title": "Competition Committee approves revisions to injury report",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/competition-committee-approves-revisions-to-injury-report-0ap3000000688693",
+  "type": "Official league news",
   "accessed_date": "2026-11-14",
-  "used_for": "Starting lineups by slot for both teams, substitutions, Did Not Play and Not Active lists, scoring plays and individual statistics.",
-  "verification_note": "The document states that use beyond assisting media coverage requires the written permission of the NFL. It establishes post-game starter identity not a pregame depth chart."
+  "used_for": "Official definitions of Questionable, Doubtful and Out; practice-report codes (Did Not Participate, Limited Participation, Full Participation). Flag F04.",
+  "verification_note": "Fetched 2026-11-14. Retrieved text shows no publication date. States no probability percentages for any designation."
  },
  {
   "source_id": "SRC-26",
-  "title": "NFL player page: Ben Brown",
-  "publisher": "National Football League",
-  "url": "https://www.nfl.com/players/ben-brown-2/",
-  "type": "Official league player page",
+  "title": "Dee Alford player page (NFL.com)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/players/deaundre-ford/",
+  "type": "Official league site",
   "accessed_date": "2026-11-14",
-  "used_for": "Independent check of one injury-report row: the player page lists position G while the injury report lists C.",
-  "verification_note": "Two official pages disagree on the position. The snapshot keeps the declared source (injury report) and the conflict is flagged."
+  "used_for": "Identity check for the Bills roster link (CB #23, Buffalo Bills, Tusculum College). Flag F11.",
+  "verification_note": "Fetched 2026-11-14. Page heading reads Dee Alford. URL slug differs from displayed name; the page is the same player."
  },
  {
   "source_id": "SRC-27",
-  "title": "National Police Agency — online casino and gambling warning (Japan)",
-  "publisher": "National Police Agency (Japan)",
-  "url": "https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html",
-  "type": "Official government guidance",
+  "title": "NFL Week 10 injury report: Player statuses for all 14 games",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-week-10-injury-report-2026-season",
+  "type": "Official league news",
   "accessed_date": "2026-11-14",
-  "used_for": "Online gambling accessed from Japan is a criminal offence; advertising or guiding users to online casino sites was prohibited by the June 2025 amendment effective 25 September 2025.",
-  "verification_note": "Japan-specific. Does not decide the legality of a skill contest, a reward design, or any other jurisdiction."
+  "used_for": "Designation cross-check against the injury table (157 of 160 matched; Flags F19, F21).",
+  "verification_note": "Fetched 2026-11-14 in 3 chunks. Lists players with a game-status designation only. Retrieved text shows no timestamp."
  },
  {
   "source_id": "SRC-28",
-  "title": "Government of Japan — online casino article (Cabinet Public Relations Office)",
-  "publisher": "Government of Japan",
-  "url": "https://www.gov-online.go.jp/article/202411/entry-6786.html",
-  "type": "Official government guidance",
+  "title": "NFL news roundup: Latest league updates from Friday, Nov. 13",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-friday-nov-13",
+  "type": "Official league news",
   "accessed_date": "2026-11-14",
-  "used_for": "Plain-language statement that betting on sports online from Japan is gambling, that Penal Code Articles 185 and 186 apply, and that the advertising prohibition took effect 25 September 2025.",
-  "verification_note": "Japan-specific guidance, not a legal opinion for other jurisdictions."
+  "used_for": "Team statement on Lamar Jackson (6-10 weeks; Flag F12). Designation and blank-injury-field examples (Flags F19, F22).",
+  "verification_note": "Fetched 2026-11-14 (chunk 0 read). Statement is attributed to Ravens coach Jesse Minter. Third-party reports (ESPN, AP, CBS) were seen in search but are not used as evidence."
  },
  {
   "source_id": "SRC-29",
-  "title": "Penal Code (Meiji 40 Law No. 45) — e-Gov Law Search",
-  "publisher": "Government of Japan (e-Gov)",
-  "url": "https://laws.e-gov.go.jp/law/140AC0000000045",
-  "type": "Official statute text",
+  "title": "NFL news roundup: Colts activate DE Arden Key from IR; Steelers TE Pat Freiermuth (illness) questionable",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/news/nfl-news-roundup-latest-league-updates-from-saturday-nov-14",
+  "type": "Official league news",
   "accessed_date": "2026-11-14",
-  "used_for": "Chapter 23 on gambling and lotteries, including Articles 185 to 187.",
-  "verification_note": "Statute text only. Applying it to a specific contest or reward requires a qualified legal review."
+  "used_for": "Saturday updates not reflected in the injury table: Freiermuth added as questionable; Walker and Mallory downgraded to out; Key no game designation (Flag F19).",
+  "verification_note": "Fetched 2026-11-14 (single chunk). Items are NFL.com reporting of club and league updates."
  },
  {
   "source_id": "SRC-30",

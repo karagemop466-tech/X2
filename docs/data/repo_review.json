@@ -106,7 +106,7 @@
   "verified_against": "NFL team roster page and the official gamebook",
   "result": "NEW EVIDENCE",
   "finding": "The roster-page claim is correct because there is no depth column, but the gamebook does publish the starting lineup, substitutions, Did Not Play and Not Active",
-  "action_taken": "Flagged for review as F20: F06 is only part-correct. The Starters page and dataset now record the official starter evidence",
+  "action_taken": "Flagged for review as F31: F06 is only part-correct. The Starters page and dataset now record the official starter evidence",
   "source_url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf"
  },
  {
@@ -293,7 +293,7 @@
   "verified_against": "Official player page for Ben Brown",
   "result": "IRREGULARITY",
   "finding": "The injury report lists C while the official player page lists G and both pages are nfl.com",
-  "action_taken": "Flagged for review as F19, a source conflict; the snapshot keeps the declared source value",
+  "action_taken": "Flagged for review as F30, a source conflict; the snapshot keeps the declared source value",
   "source_url": "https://www.nfl.com/players/ben-brown-2/"
  }
 ]

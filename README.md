@@ -1,6 +1,14 @@
 # X2 — NFL Research & Lines Dashboard
 
-Source-linked NFL research covering the Week 10 injury snapshot, offense/defense availability exposure, independent-line hypotheses, parlays and player props, validation gates, correlation methods, a leaderboard empty state, questions, suggestions, and flagged items.
+Source-linked NFL research covering the Week 10 injury snapshot, offense/defense availability exposure, independent-line hypotheses, parlays and player props, validation gates, correlation methods, a leaderboard empty state, questions, an ordered decision path, a suggestion review matrix, a verification record, and flagged items.
+
+## Read in this order
+
+1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
+2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
+3. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
+4. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
+5. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
 
@@ -36,33 +44,41 @@ Unconfirmed prices, forecast values, player-depth ranks, replacement impacts, pe
 
 - Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the
   repository contains 345 manually transcribed rows across 28 teams and 14 listed games.
-- **Verification result:** 345 of 345 rows match a fresh transcription on position, injury, practice status and game
-  status (1380 field comparisons, 0 mismatches), plus 14 games, 4 bye teams, 10 news links and all 345 player links.
-  Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`. The one recorded conflict is a
-  source disagreement (Ben Brown is listed at C on the injury report and G on his official player page, Flag F19).
-- **Independence limitation:** the verification transcription was produced in the same session as the snapshot, so a
-  shared misreading would not be detected (Flag F22). An independent second transcriber is recommended (suggestion
-  SR-13).
-- The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
+- **Verification result:** 345 of 345 rows match a fresh field-by-field transcription on position, injury, practice
+  status and game status (1380 comparisons, 0 mismatches), plus 14 games, 4 bye teams, 10 news links and all 345
+  player links. Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`. Two further
+  independent passes against the live page (sessions 30beeb55 and 7c9eb69a) reached the same result.
+- **Residual limitation:** the verification transcription was produced in the same session as the snapshot, so a
+  shared misreading would not be detected (Flag F33). Suggestion SR-13 records the fix.
+- The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB
+  were on bye; this is not inferred from injury-report absence.
 - **Starter identity is officially verifiable after the game.** The NFL publishes no pregame depth chart and the
-  official roster page has no depth column, so a "1st/2nd/3rd/4th string" rank cannot be sourced. The official NFL
-  gamebook, however, publishes the starting lineup by slot, the substitutions, the Did Not Play list and the Not
-  Active list. Nineteen such rows from the Week 10 Commanders at Giants gamebook are recorded in
-  `data/starters_gamebook_2026_reg_10.csv` and on `docs/starters.html`. This corrects Flag F06 and is logged as F20.
-  The gamebook carries its own use restriction (Flag F21).
+  official roster page has no depth column (the conventional depth-chart URL returns HTTP 404), so a
+  "1st/2nd/3rd/4th string" rank cannot be sourced. The official NFL gamebook does publish the starting lineup by slot,
+  the substitutions, the Did Not Play list and the Not Active list. Nineteen such rows from the Week 10 Commanders at
+  Giants gamebook are recorded in `data/starters_gamebook_2026_reg_10.csv` and on `docs/starters.html`. This corrects
+  Flag F06 and is logged as **F31**. The gamebook carries its own use restriction (**F32**).
+- The Thursday result is verified on the official schedule (Commanders 24, Giants 21, final) but is not published,
+  because the games table has no result column (Flag F22).
 - No licensed odds archive, historical forecast/outcome ledger, pregame depth chart, player-level participation feed,
-  computed parlay correlation, or tested strategy is available in the Python dashboard. A separate Node research data file cites third-party Ourlads depth charts; those entries are flagged as non-official and must not be presented as official NFL facts (F18).
+  computed parlay correlation, or tested strategy is available in the Python dashboard. A separate Node research data
+  file cites third-party Ourlads depth charts; those entries are flagged as non-official and must not be presented as
+  official NFL facts (F18).
 - [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) prohibit systematic retrieval to compile a collection/database absent express prior written consent. No written permission is recorded here for the published injury snapshot; see **F16** on Flagged for Review. Do not expand or automate that data use without written authorization or qualified review.
 
 ## Important
 
-This is a research-only project, not betting advice. Official Japan-specific guidance says online sports betting accessed from Japan is prohibited. That guidance does not determine the legality of a particular skill contest/reward or the rules in any other jurisdiction; see **F09** and keep wagering, referrals, and rewards disabled pending qualified review.
+This is a research-only project, not betting advice. Official Japan-specific guidance says online sports betting
+accessed from Japan is prohibited. That guidance does not determine the legality of a particular skill
+contest/reward or the rules in any other jurisdiction; see **F09** and keep wagering, referrals, and rewards disabled
+pending qualified review. The project owner is located in the Netherlands; Dutch law (Wet op de kansspelen,
+Kansspelautoriteit) is flagged as **F19** and has not been reviewed. See `research/nl-legal-review.md`.
 
 ## Research registers added in this session
 
 | Register | File | Rows | What it holds |
 |---|---|---|---|
-| Verification ledger | `data/verification_week10_2026.csv` | 90 | Every check, its committed value, the official value, the result and a source link |
+| Verification ledger | `data/verification_week10_2026.csv` | 92 | Every check, its committed value, the official value, the result and a source link |
 | Starter identity | `data/starters_gamebook_2026_reg_10.csv` | 19 | Official gamebook lineup status for the Week 10 Thursday game |
 | Depth deficiency | `data/depth_deficiency.csv` | 97 | Availability exposure per team and unit, with string rank and impact deliberately blank |
 | Line signals | `data/line_signals.csv` | 20 | Signal definitions for single bets, totals, props and combos, each with its leakage risk |

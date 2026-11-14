@@ -1,0 +1,122 @@
+[
+ {
+  "gate_id": "D01",
+  "sequence": "1",
+  "decision_needed": "Do we have written permission (or a licence) to store, publish and derive aggregates from NFL.com data?",
+  "why_it_blocks": "Every downstream table, model feature and published row is derived from NFL.com data. If the right is not cleared, expanding, automating or commercialising that use is not authorised.",
+  "current_state": "No permission or licence is recorded in this repository (Flag F16). The Week 10 snapshot is already published.",
+  "answer_required": "A named rightsholder response in writing: permitted fields, retention, publication, derived aggregates, and model use.",
+  "what_it_unblocks": "S02, S04, S07; the whole validation chain (D03, D07); any expansion of the injury dataset.",
+  "owner": "Project maintainer / rights review",
+  "status": "Open - blocks all data expansion",
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+ },
+ {
+  "gate_id": "D02",
+  "sequence": "2",
+  "decision_needed": "Which licensed market (odds) feed will be used, and on what terms?",
+  "why_it_blocks": "A line cannot be compared with the market, graded, or scored for closing-line value without a timestamped, permitted price source. Correlation of legs is not measurable without offered prices.",
+  "current_state": "No authorised odds feed or price history in this repository (Flag F07). NFL Support states its widgets show partner-supplied odds; that is not a feed grant.",
+  "answer_required": "Provider name, contract terms, historical depth, market/settlement definitions, timestamp granularity, permitted derived use.",
+  "what_it_unblocks": "S03, line comparison, closing-line value, grading, gate G2 and G4, parlay and prop pricing.",
+  "owner": "Project maintainer / data-provider review",
+  "status": "Open - blocks any line or price value",
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"
+ },
+ {
+  "gate_id": "D03",
+  "sequence": "3",
+  "decision_needed": "Do we have rights-cleared historical results, box scores and player participation?",
+  "why_it_blocks": "Validation, correlation and out-of-sample skill testing all need settled historical outcomes aligned to a pregame cutoff. Without history there is no sample to test.",
+  "current_state": "No historical results or player-stat archive is imported (Flag F08). Only the Week 10 injury snapshot and a headline list exist.",
+  "answer_required": "Archive access terms plus a documented, reproducible point-in-time record of outcomes and participation.",
+  "what_it_unblocks": "S02, every validation gate, correlation values (Q11), replacement-impact analysis.",
+  "owner": "Project maintainer / data-provider review",
+  "status": "Open - blocks validation and correlation",
+  "evidence_url": "https://www.nfl.com/stats/player-stats/"
+ },
+ {
+  "gate_id": "D04",
+  "sequence": "4",
+  "decision_needed": "What is the official source of starter / 2nd / 3rd / 4th string order?",
+  "why_it_blocks": "The brief asks which backups replace starters. String rank cannot be inferred from roster order or from an injury label, so replacement analysis has no verified input.",
+  "current_state": "No official NFL depth chart located. The conventional team depth-chart URL returns a 404 and the roster page shows position and status only (Flag F06).",
+  "answer_required": "A dated team-issued chart or licensed primary feed, plus the capture date for each chart version.",
+  "what_it_unblocks": "S01, starter-vs-backup deficiency rows, position-level exposure on offense and defense.",
+  "owner": "Project maintainer / data-source review",
+  "status": "Open - rank fields stay blank and flagged",
+  "evidence_url": "https://www.nfl.com/teams/buffalo-bills/roster"
+ },
+ {
+  "gate_id": "D05",
+  "sequence": "5",
+  "decision_needed": "How much does a replacement actually play, and how is that measured?",
+  "why_it_blocks": "Naming a backup is not the same as measuring the effect of losing a starter. Snap share and participation are needed before any impact claim.",
+  "current_state": "No snap-count or participation feed is connected. Replacement-impact fields are blank.",
+  "answer_required": "An official or licensed participation source with per-game snap counts and permitted derived use.",
+  "what_it_unblocks": "Replacement-impact scoring, unit-level deficiency weighting, prop role baselines.",
+  "owner": "Project maintainer / data-source review",
+  "status": "Open - blocks impact values",
+  "evidence_url": "https://operations.nfl.com/game-operations-logistics/technology/performance-tracking-data-next-gen-stats"
+ },
+ {
+  "gate_id": "D06",
+  "sequence": "6",
+  "decision_needed": "What exact market and settlement definitions govern each bet family?",
+  "why_it_blocks": "A forecast cannot be graded against a market whose push, void, tie and suspension rules are undefined. Rule era also changes what counts as the same market across seasons.",
+  "current_state": "Rulebook located; no sportsbook settlement rules or market definitions are licensed (source verification note for SRC-07).",
+  "answer_required": "Written settlement rules per market family, plus the tied/push handling used in evaluation.",
+  "what_it_unblocks": "Grading, gate alignment, any single-bet or parlay result.",
+  "owner": "Project maintainer / methodology review",
+  "status": "Open - blocks grading",
+  "evidence_url": "https://operations.nfl.com/rules-officiating/2026-nfl-rulebook"
+ },
+ {
+  "gate_id": "D07",
+  "sequence": "7",
+  "decision_needed": "What statistical plan is pre-registered before any test is run?",
+  "why_it_blocks": "Without a pre-registered plan, any threshold or 'pass' selected after seeing results is post-hoc. NIST guidance supports separating model selection, fitting and validation, and warns about repeated comparisons.",
+  "current_state": "Numeric cutoffs are deliberately blank and unapproved (Flag F17). No sample size, interval method or multiple-comparison procedure is approved.",
+  "answer_required": "A signed-off plan fixing the event set, baseline, evaluation window, uncertainty method and pass rule before data is examined.",
+  "what_it_unblocks": "S08, S09, gate G0-G8 completion, the leaderboard ranking rule.",
+  "owner": "Statistician / project review",
+  "status": "Open - thresholds stay blank",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
+ },
+ {
+  "gate_id": "D08",
+  "sequence": "8",
+  "decision_needed": "What correlation quantity is being measured, and on what paired data?",
+  "why_it_blocks": "'Correlation' can mean leg dependence, forecast agreement, or co-movement of returns. Pairwise correlation alone does not determine joint-tail probability for a parlay or prop combo.",
+  "current_state": "No correlation value is computed. No paired same-game outcome set exists (Q11).",
+  "answer_required": "A chosen quantity, a paired aligned dataset, and a stated uncertainty method that preserves game/week clustering.",
+  "what_it_unblocks": "Same-game prop combos, cross-game parlay joint probability, gate G5.",
+  "owner": "Statistician / project review",
+  "status": "Open - correlation values stay blank",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/glossary.htm"
+ },
+ {
+  "gate_id": "D09",
+  "sequence": "9",
+  "decision_needed": "Is the intended product lawful for the actual audience and each target jurisdiction?",
+  "why_it_blocks": "Rewards and wagering features carry jurisdiction-specific legal exposure. Official Japanese guidance addresses online sports betting from Japan and does not decide an unspecified skill contest or another jurisdiction.",
+  "current_state": "Official government guidance recorded as a risk reference; no legal opinion obtained (Flag F09).",
+  "answer_required": "Qualified advice on the exact mechanics, audience location, reward treatment and each target jurisdiction.",
+  "what_it_unblocks": "S10, any reward, referral or real-money feature, leaderboard prize design (R05).",
+  "owner": "Qualified counsel",
+  "status": "Open - rewards stay disabled",
+  "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
+ },
+ {
+  "gate_id": "D10",
+  "sequence": "10",
+  "decision_needed": "What exactly is rewarded, and how is skill separated from variance?",
+  "why_it_blocks": "A reward attached to a ranking that has not separated skill from luck would pay for noise. The brief asks to remove luck, which cannot be done by deleting variance - only by uncertainty-aware, pre-registered, out-of-sample evaluation.",
+  "current_state": "No reward is defined. Leaderboard is an explicit empty state (R05).",
+  "answer_required": "Reward definition, eligibility, entry terms, dispute process and the validated ranking rule from D07 and D08.",
+  "what_it_unblocks": "S09 completion, any leaderboard rank, any prize.",
+  "owner": "Product / legal review",
+  "status": "Open - no rank or reward published",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ }
+]

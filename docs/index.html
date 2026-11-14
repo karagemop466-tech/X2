@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
-  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="starters.html">Starters &amp; depth</a><a href="depth-analysis.html">Unit exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation</a><a href="leaderboard.html">Leaderboard</a><a href="decisions.html">Decision gates</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="injuries.html">Injuries</a><a href="games.html">Games</a><a href="starters.html">Starters &amp; depth</a><a href="depth-analysis.html">Unit exposure</a><a href="strategy-lab.html">Strategy lab</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation</a><a href="leaderboard.html">Leaderboard</a><a href="decisions.html">Decision gates</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="decision-path.html">Decision path</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="verification.html">Verification</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
@@ -22,12 +22,14 @@
   <p class="note"><strong>What this site will not tell you:</strong> it will not give you a pick, a line or a price.
   No strategy here has been validated, and no reward is enabled. The evidence for both statements is on every page.</p>
   <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (read 2026-11-14).</p>
+  <p class="note"><strong>Verification status:</strong> all 345 injury rows and all 14 Week 10 games were independently re-verified row by row against the official NFL.com pages on 2026-11-14, with no discrepancies found. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
 <div class="tiles"><div class="tile"><div class="num">28</div><div class="lbl">teams on the Week 10 injury report</div></div><div class="tile"><div class="num">345</div><div class="lbl">players listed</div></div><div class="tile"><div class="num">66</div><div class="lbl">marked Out</div></div><div class="tile"><div class="num">10</div><div class="lbl">marked Doubtful</div></div><div class="tile"><div class="num">84</div><div class="lbl">marked Questionable</div></div><div class="tile"><div class="num">14</div><div class="lbl">games in Week 10 list</div></div></div>
 <h2>Start here</h2>
 <div class="cards">
 <a class="card" href="executive-summary.html"><h3>Executive summary</h3><p>The findings, what is verified, what is not, and the decisions waiting on you.</p></a>
+<a class="card" href="decision-path.html"><h3>Decision path</h3><p>The ten questions that must be answered, in order, before any dependent choice is made.</p></a>
 <a class="card" href="decisions.html"><h3>Decision gates</h3><p>Every question that must be answered before a path is chosen, with the choice you will face.</p></a>
 <a class="card" href="suggestions.html"><h3>Suggestions</h3><p>Eighteen recommendations with options; nothing is implemented without your choice.</p></a>
 </div>
@@ -43,7 +45,7 @@
 <h2>Strategy, lines and skill</h2>
 <div class="cards">
 <a class="card" href="signals.html"><h3>Signals</h3><p>Twenty original-line signal definitions for single bets, parlays and player-prop combos.</p></a>
-<a class="card" href="validation.html"><h3>Skill engine</h3><p>Seventeen gates; a strategy cannot be called valid until they pass.</p></a>
+<a class="card" href="validation.html"><h3>Skill engine</h3><p>Eighteen gates; a strategy cannot be called valid until they pass.</p></a>
 <a class="card" href="anti-luck.html"><h3>Anti-luck</h3><p>Bootstrap intervals, multiplicity control and held-out blocks: how a lucky run is kept off the board.</p></a>
 <a class="card" href="correlation.html"><h3>Correlation</h3><p>The measurement plan for every dependent leg pair, with all values blank.</p></a>
 <a class="card" href="leaderboard.html"><h3>Leaderboard</h3><p>Rules first, entries later. No reward is enabled.</p></a>
@@ -55,7 +57,6 @@
 <a class="card" href="requirements.html"><h3>Requirements</h3><p>Each line of the brief with its current status.</p></a>
 <a class="card" href="flagged.html"><h3>Flagged for review</h3><p>Irregularities, unverified items and missing official data.</p></a>
 <a class="card" href="sources.html"><h3>Sources</h3><p>Every official source used, with what it supports.</p></a>
-</div>
 </div>
 
 </main>
