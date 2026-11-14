@@ -1021,7 +1021,7 @@ evidence &mdash; C03, C04, C06 and C08. Rows whose predictor is a model output (
 <strong>model diagnostics (DEC-09)</strong>, not evidence; the classification matches <code>data/correlation_audit.csv</code>
 (session 8a0bf37e). <strong>C09 correction applied</strong> (2026-11-14, session f25d6b55, per REQ-8a-1 and Flag F48): the row is a
 regression slope, so its interval and p-value now use the slope's own standard error &mdash; slope 0.885, 95% CI 0.328 to 1.443 using the exact t quantile at df = 87,
-p = 0.68 against slope 1.0 (Flag F71; a second session published 0.335-1.435 with the normal quantile, same conclusion). No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+p = 0.68 against slope 1.0 (Flag F72; a second session published 0.335-1.435 with the normal quantile, same conclusion). No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
 {table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','interpretation','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only','qualifies_under_owner_rule':'Owner rule','interpretation':'What it means','source_url':'Source'})}
 <h2>What the values say</h2>

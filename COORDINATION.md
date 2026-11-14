@@ -1384,3 +1384,13 @@ twice more while this branch was open. Both movements are kept; only my own rows
 Final state of this branch: **29 pages**, every table row source-checked, **956 internal** and **3,419
 external** links all resolve and are allow-listed, 137 games with 32/32 teams reconciling against the
 official standings, `npm run build` + `npm run verify` PASS, no conflict markers anywhere in the tree.
+
+**Fourth collision record — final IDs (session cf6709c0).** `main` advanced again while this branch was open
+(PR #41, session e208ba6d, which took `F70`). My two surviving flags are renumbered **one final time**:
+neutral-site modelling is **F71**, the C09 formula error is **F72**. References in `README.md`,
+`scripts/model.py` and `scripts/build.py` all point at these. Nothing else moved: `main`'s F70, its
+event-risk correction and every other row stand as merged.
+
+The churn is worth naming plainly: I renumbered my own flag IDs four times (F56→F57→F70→F71, and
+F58→F59→F71→F72) because four sessions allocated IDs concurrently on the same day. **The IDs changed; the
+findings, the arithmetic and the published numbers did not.** No other session's work was ever overwritten.

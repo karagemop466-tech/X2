@@ -761,7 +761,7 @@ lines_rows = []
 for g in week11:
     home, away = g["home_team"], g["away_team"]
     # Origination order: the SIDE first, then the TOTAL, then the MONEYLINE.
-    # Neutral-site games carry no home-field term (F70).
+    # Neutral-site games carry no home-field term (F71).
     g["neutral"] = (g.get("neutral_site", "").strip().upper() == "Y")
     pr = predict(main, home, away, g["neutral"])
     # 1. Side: the spread, from the ridge margin prediction.
@@ -931,7 +931,7 @@ def add_slope(cid, question, estimate, se, df, note, src, null=1.0):
                       "interpretation": note,
                       "audit_note": "A regression slope, not a correlation. Interval and p use the "
                                     "coefficient's own standard error with the exact t quantile at "
-                                    "df = n - 2 (session cf6709c0); see F71.",
+                                    "df = n - 2 (session cf6709c0); see F72.",
                       "source_url": src})
     return lo, hi, p
 
@@ -1003,7 +1003,7 @@ c09_lo, c09_hi, c09_p = add_slope(
 # is the right reference for a coefficient whose variance is estimated from the
 # sample, and publishes 0.328-1.443. The two agree to about 0.007 at each end;
 # the point estimate and the conclusion are identical, so nothing from f25d6b55
-# is discarded. See F71.
+# is discarded. See F72.
 # parlay leg correlation (phi)
 add_corr("C07", "Are the side leg and the total leg of the same game correlated (phi)?", phi_pl, n_pl,
          "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",

@@ -62,13 +62,13 @@ plus a fixed 2.5-point home field):
 The calibration slope carries its **own t interval**, not a correlation interval: the slope is not
 distinguishable from 1.0 (p = 0.68 against a null of 1.0), so the data show neither miscalibration nor
 demonstrated calibration. An earlier build published a Pearson-r interval and p = 0.0000 here, which
-applied a correlation formula to a regression coefficient (flag F71).
+applied a correlation formula to a regression coefficient (flag F72).
 
 **Neutral sites are modelled.** Nine 2026 games are international
 ([NFL Football Operations](https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games)).
 The model adds no home-field term to the designated home team in those games. The Week 11 Mexico City game
 (MIN at SF) is corrected; the 137 historical rows carry a **blank** `neutral_site` value because every stadium
-was not re-confirmed, so nothing was inferred (flag F70).
+was not re-confirmed, so nothing was inferred (flag F71).
 
 **There is no market comparison anywhere in this project.** No licensed odds feed is connected, so no closing
 line, market price, closing-line value or return on investment can be computed. Leaderboard bets are graded

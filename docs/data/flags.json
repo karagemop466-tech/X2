@@ -568,6 +568,15 @@
  },
  {
   "flag_id": "F70",
+  "category": "Irregularity - corrected",
+  "item": "The event-risk status column published a source name instead of a status word",
+  "detail": "Found on the live site after PR #40 merged. For the 7 risks carrying official evidence, official_status showed \"NFL.com news\" - which is the register's status_source field, i.e. where the status came from, not what the status was. Publishing a provenance string in a status column is a data-quality defect even though no value was invented. Fixed in scripts/desk_v2.py: the column now says the status word is not stated in the register rather than borrowing a provenance label.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/event_risk_week11.csv",
+  "status": "Resolved - corrected and republished",
+  "action_requested": "None."
+ },
+ {
+  "flag_id": "F71",
   "category": "Methodology (partly resolved)",
   "item": "Nine 2026 games are at neutral sites but the model added home-field to all of them",
   "detail": "The 2026 season has a record nine international games (NFL Football Operations, SRC-72). The results dataset carried no neutral-site column, so the fit and the naive reference line added the home-field term for the designated home team even though the game was not in its stadium. On the 89 out-of-sample games this changed no rounded output, because only two affected games fall inside the evaluation window (wk5 PHI at JAX, wk7 PIT at NO); the measurable effect is on the Week 11 Mexico City line (fair margin 2.5 to 2.9; model-minus-reference -6.2 to -3.3). Remediated with a neutral_site column threaded through fit(), predict() and ref_line().",
@@ -576,7 +585,7 @@
   "action_requested": "Week 11 MIN at SF is modelled as neutral. All 137 completed rows carry a BLANK neutral_site value because this session did not re-open every schedule page to confirm each stadium; nothing was inferred. The historical fit therefore still treats those games as home games, so the no-op above is a reported finding, not a correction. Open item for review: confirm the nine individual games against a stadium field before the historical column is populated."
  },
  {
-  "flag_id": "F71",
+  "flag_id": "F72",
   "category": "Statistical error (resolved)",
   "item": "C09 published a Fisher correlation interval for a regression slope",
   "detail": "C09 is the slope of actual margin on predicted margin (0.885, SE 0.280, n 89). The register applied the Pearson-r interval (Fisher z, SE = 1/sqrt(n-3)) and a p-value for r, publishing 0.830-0.923 and p 0.0000. Recomputed with the coefficient's own t interval: 0.328-1.443, p = 0.683 against a slope of 1.0. Remediated by add_slope(), which uses estimate +/- t(0.975, df)*SE and tests against the null the question actually asks about. Closes handoff REQ-8a-1, logged by session 8a0bf37e.",
