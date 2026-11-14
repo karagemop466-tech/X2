@@ -1,0 +1,98 @@
+[
+ {
+  "rule_id": "LB01",
+  "topic": "Entry",
+  "rule": "A strategy enters only after every engine gate EG0-EG9 passes and at least one family gate passes",
+  "why_this_rule": "An entry that fails a gate would publish a claim the data cannot support",
+  "what_is_intentionally_left_blank": "Nothing; the gate list is fixed",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "rule_id": "LB02",
+  "topic": "Ranking metric",
+  "rule": "Rank on a pre-declared, timestamp-locked probability metric, reported with an interval, not on total winnings",
+  "why_this_rule": "Total winnings rewards stake size and variance and cannot distinguish skill from luck",
+  "what_is_intentionally_left_blank": "The metric name and its definition",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
+ },
+ {
+  "rule_id": "LB03",
+  "topic": "Ties",
+  "rule": "Report the interval with every rank; do not order entries whose intervals overlap",
+  "why_this_rule": "Ordering overlapping entries invents a difference the sample cannot support",
+  "what_is_intentionally_left_blank": "The overlap rule",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "rule_id": "LB04",
+  "topic": "Sample size",
+  "rule": "Show eligible N next to every entry and suppress entries below the pre-declared minimum",
+  "why_this_rule": "A rank built on a handful of events is noise",
+  "what_is_intentionally_left_blank": "The minimum N",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
+ },
+ {
+  "rule_id": "LB05",
+  "topic": "Search disclosure",
+  "rule": "Publish the number of strategies attempted next to the winners",
+  "why_this_rule": "The best of many attempts needs a discount",
+  "what_is_intentionally_left_blank": "The discount procedure",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ },
+ {
+  "rule_id": "LB06",
+  "topic": "Luck benchmark",
+  "rule": "Every entry is shown against an explicit no-skill benchmark computed the same way",
+  "why_this_rule": "A score means nothing without the benchmark it must beat",
+  "what_is_intentionally_left_blank": "The benchmark construction",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
+ },
+ {
+  "rule_id": "LB07",
+  "topic": "Privacy and rights",
+  "rule": "No licensed price or third-party dataset is republished on the leaderboard",
+  "why_this_rule": "Redistribution may breach the licence even when use is allowed",
+  "what_is_intentionally_left_blank": "The licence terms",
+  "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions"
+ },
+ {
+  "rule_id": "LB08",
+  "topic": "Reward",
+  "rule": "No reward is offered, promised or described until EG16 passes",
+  "why_this_rule": "A reward for a gambling-adjacent contest may be unlawful in the user's jurisdiction",
+  "what_is_intentionally_left_blank": "The reward amount and form",
+  "evidence_url": "https://www.npa.go.jp/bureau/safetylife/hoan/onlinecasino/onlinecasino.html"
+ },
+ {
+  "rule_id": "LB09",
+  "topic": "Retirement",
+  "rule": "A strategy that fails persistence twice is marked retired and keeps its history",
+  "why_this_rule": "Deleting failures would make the record selective",
+  "what_is_intentionally_left_blank": "The retirement count",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
+ },
+ {
+  "rule_id": "LB10",
+  "topic": "Publication",
+  "rule": "Public entries are lagged and labelled research; nothing on this site is a live pick",
+  "why_this_rule": "A published live pick becomes advice and inherits liability and rights problems",
+  "what_is_intentionally_left_blank": "The lag period",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
+ },
+ {
+  "rule_id": "LB11",
+  "topic": "Reproducibility",
+  "rule": "Each entry links to the committed code, inputs, seed and preregistration",
+  "why_this_rule": "An unreproducible entry cannot be audited",
+  "what_is_intentionally_left_blank": "The storage location",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "rule_id": "LB12",
+  "topic": "Change control",
+  "rule": "The ranking metric may not be changed mid-competition; a new metric starts a new season",
+  "why_this_rule": "Changing the metric after results is a way to manufacture a winner",
+  "what_is_intentionally_left_blank": "The season boundary rules",
+  "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"
+ }
+]
