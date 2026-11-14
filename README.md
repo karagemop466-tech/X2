@@ -1,6 +1,14 @@
 # X2 — NFL Research & Lines Dashboard
 
-Source-linked NFL research covering the Week 10 injury snapshot, offense/defense availability exposure, independent-line hypotheses, parlays and player props, validation gates, correlation methods, a leaderboard empty state, questions, suggestions, and flagged items.
+Source-linked NFL research covering the Week 10 injury snapshot, offense/defense availability exposure, independent-line hypotheses, parlays and player props, validation gates, correlation methods, a leaderboard empty state, questions, an ordered decision path, a suggestion review matrix, a verification record, and flagged items.
+
+## Read in this order
+
+1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
+2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
+3. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
+4. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
+5. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
 
@@ -29,9 +37,11 @@ Unconfirmed prices, forecast values, player-depth ranks, replacement impacts, pe
 
 ## Data snapshot and rights gate
 
-- Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 345 manually transcribed rows across 28 teams and 14 listed games. Manual spot-check remains flagged.
+- Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 345 rows across 28 teams and 14 listed games. Every row and every game header was independently re-verified against the live page on 2026-11-14 with no discrepancies found (Flag F20). A separate session (30beeb55, T15) reached the same result independently; the manual-transcription limitation is retained (F10).
 - The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
 - No licensed odds archive, historical forecast/outcome ledger, confirmed official depth chart, player-level participation feed, computed parlay correlation, or tested strategy is available in the Python dashboard. A separate Node research data file cites third-party Ourlads depth charts; those entries are flagged as non-official and must not be presented as official NFL facts (F18).
+- No official NFL depth chart was located: the conventional team depth-chart URL returns HTTP 404, and roster pages expose position and status only. Starter vs backup order therefore stays blank (F06).
+- The Thursday night result is verified on the official schedule (Commanders 24, Giants 21, final) but is not published, because the games table has no result column (F22).
 - [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions) prohibit systematic retrieval to compile a collection/database absent express prior written consent. No written permission is recorded here for the published injury snapshot; see **F16** on Flagged for Review. Do not expand or automate that data use without written authorization or qualified review.
 
 ## Important

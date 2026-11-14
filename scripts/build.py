@@ -86,6 +86,8 @@ suggestions = read_csv("suggestions.csv")
 gates = read_csv("strategy_gates.csv")
 hyps = read_csv("strategy_hypotheses.csv")
 reqs = read_csv("requirements.csv")
+decisions = read_csv("decision-chain.csv")
+sugg_review = read_csv("suggestion_review.csv")
 # Empty-state row only: do not imply a strategy has results or an approved reward.
 leaderboard_status = [{
     "rank": "—",
@@ -143,6 +145,8 @@ for label, rows, id_field in (
     ("gates", gates, "gate_id"),
     ("suggestions", suggestions, "suggestion_id"),
     ("requirements", reqs, "req_id"),
+    ("decisions", decisions, "gate_id"),
+    ("suggestion-review", sugg_review, "suggestion_id"),
 ):
     for row in rows:
         if not row["evidence_url"].strip():
@@ -234,6 +238,7 @@ exports = {
     "sources": sources, "flags": flags, "questions": questions, "suggestions": suggestions,
     "strategy_gates": gates, "strategy_hypotheses": hyps, "requirements": reqs,
     "team_summary": team_summary, "depth_exposure": depth_rows, "summary": tot,
+    "decision_chain": decisions, "suggestion_review": sugg_review,
 }
 for name, data in exports.items():
     with open(os.path.join(DOCS, "data", name + ".json"), "w", encoding="utf-8") as f:
@@ -289,9 +294,11 @@ NAV = [
     ("games.html", "Games"),
     ("depth-analysis.html", "Depth exposure"),
     ("strategy-lab.html", "Strategy lab"),
+    ("decision-path.html", "Decision path"),
     ("questions.html", "Questions"),
     ("requirements.html", "Requirements"),
     ("suggestions.html", "Suggestions"),
+    ("verification.html", "Verification"),
     ("flagged.html", "Flagged for review"),
     ("sources.html", "Sources"),
 ]
@@ -348,6 +355,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
   <p>A source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
   Every table row links to an official NFL, government or statistical source; repository and deployment claims link to first-party project records. Unconfirmed NFL/model values remain blank and flagged.</p>
   <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (read {AS_OF}).</p>
+  <p class="note"><strong>Verification status:</strong> all {tot['rows']} injury rows and all {tot['games']} Week 10 games were independently re-verified row by row against the official NFL.com pages on {AS_OF}, with no discrepancies found. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
 {tiles([(tot['teams'], 'teams on the Week 10 injury report'), (tot['rows'], 'players listed'),
@@ -356,13 +364,15 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 <h2>Start here</h2>
 <div class="cards">
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
+{card('decision-path.html', 'Decision path', 'The ten questions that must be answered, in order, before any dependent choice is made. Start here.')}
 {card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
 {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
 {card('strategy-lab.html', 'Strategy lab', 'Validation gates, hypotheses and the leaderboard framework. No strategy has passed yet.')}
 {card('questions.html', 'Questions', 'What we know, what we do not, and how to find the missing information.')}
 {card('requirements.html', 'Requirements', 'Each requirement from the brief with its current status.')}
-{card('suggestions.html', 'Suggestions', 'Review proposals before future implementation; no choice is required to finish this research brief.')}
+{card('suggestions.html', 'Suggestions', 'Review proposals before future implementation, with a recommended path and the gate that blocks each one.')}
+{card('verification.html', 'Verification', 'What was checked line by line, against which official page, and what the result was.')}
 {card('flagged.html', 'Flagged for review', 'Irregularities, unverified items and missing official data, each with a source link.')}
 {card('sources.html', 'Sources', 'Every official source used, with what it supports.')}
 </div>
@@ -378,6 +388,7 @@ pages["executive-summary.html"] = ("Executive summary", f"""
         (tot['def_od'], 'Defense Out or Doubtful'), (tot['st_od'], 'Special teams Out or Doubtful')])}
 <h2>Key findings</h2>
 <ul class="findings">
+<li><strong>Verification.</strong> This session re-read the official Week 10 report in full and compared it row by row with the stored data: all {tot['rows']} rows across all {tot['teams']} teams matched, and the 14 game headers matched. The spot-check request in Flag F10 is closed for one reviewer pass; see the <a href="verification.html">Verification record</a>.</li>
 <li><strong>Coverage.</strong> The Week 10 NFL.com report lists {tot['rows']} players across {tot['teams']} teams in {tot['games']} games. The official NFL schedule identifies {', '.join(tot['missing_teams'])} as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
@@ -402,7 +413,15 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 {table(team_summary, ['team','listed','out','doubtful','questionable','offense_out_or_doubtful','defense_out_or_doubtful','special_teams_out_or_doubtful','source_url'],
    {'team':'Team','listed':'Listed','out':'Out','doubtful':'Doubtful','questionable':'Questionable','offense_out_or_doubtful':'Offense Out/Doubtful','defense_out_or_doubtful':'Defense Out/Doubtful','special_teams_out_or_doubtful':'ST Out/Doubtful','source_url':'Source'})}
 <h2>Next decisions</h2>
-<p>See <a href="suggestions.html">Suggestions</a> (10 options) and <a href="questions.html">Questions</a>. Nothing has been changed on the basis of a suggestion.</p>
+<p>Ten information gates currently block progress. They are ordered: data rights first, then the licensed market, then history, then depth and participation, then the statistical plan, then correlation, then legal review, then reward design.
+See the <a href="decision-path.html">Decision path</a> for the exact question, the answer required and the owner for each one, then <a href="suggestions.html">Suggestions</a> for the recommended option per proposal. Nothing has been implemented on the basis of a suggestion.</p>
+<h2>What would change the picture fastest</h2>
+<ol class="findings">
+<li><strong>A written data-rights answer.</strong> This single reply determines whether the existing snapshot can stay published and whether any collection can expand (D01).</li>
+<li><strong>A licensed odds feed.</strong> Without prices, no independent line can be compared, graded or scored for closing-line value (D02).</li>
+<li><strong>Rights-cleared history.</strong> Without a settled-outcome archive there is no sample, so no strategy can be validated or ranked (D03).</li>
+<li><strong>An official depth source.</strong> Without string order, the brief's backup-replacement question cannot be answered from verified data (D04).</li>
+</ol>
 """)
 
 # ---------- injuries ----------
@@ -476,6 +495,69 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
        {'rank':'Rank','strategy':'Strategy','skill_score':'Performance score','eligible_sample':'Eligible sample','uncertainty':'Uncertainty','validation_status':'Validation status','top_performance_reward':'Top-performance reward','source_url':'Project record'})}
 """)
 
+# ---------- decision path ----------
+pages["decision-path.html"] = ("Decision path", f"""
+<h1>What must be answered before any decision</h1>
+<p class="note">This is the short list of information gates that block progress. <strong>Every item below is currently open.</strong>
+Each one needs a written answer from a named owner before a dependent choice can reasonably be made. Ordering matters: a later gate cannot be resolved with confidence while an earlier one is open.
+Nothing on this page is a legal or statistical conclusion; each row links to the official source that defines the constraint.</p>
+<h2>The ten gates, in order</h2>
+{table(decisions, ['gate_id','sequence','decision_needed','status','why_it_blocks','current_state','answer_required','what_it_unblocks','owner','evidence_url'],
+       {'gate_id':'Gate','sequence':'#','decision_needed':'Question that must be answered','status':'Status','why_it_blocks':'Why it blocks','current_state':'What we know now','answer_required':'Answer needed','what_it_unblocks':'Unblocks','owner':'Owner','evidence_url':'Official source'},
+       table_id='decision-table', filterable=True)}
+<h2>What we have, and what we do not have</h2>
+<div class="twocol">
+<div><h3>Verified and usable today</h3><ul>
+<li>{tot['rows']} Week 10 injury rows across {tot['teams']} teams, re-verified row by row against the official page on {AS_OF} (Flag F20).</li>
+<li>{tot['games']} Week 10 games with kickoff, broadcaster and listed records (NFL.com).</li>
+<li>The official Week 10 bye list: {', '.join(tot['missing_teams'])}.</li>
+<li>The Thursday result, Commanders 24 - Giants 21 final, is verified on the official schedule (Flag F22).</li>
+<li>Injury <em>labels</em> (Out / Doubtful / Questionable) and practice participation, exactly as published.</li>
+</ul></div>
+<div><h3>Not available, so left blank</h3><ul>
+<li>Any starter / 2nd / 3rd / 4th string order. No official NFL depth chart was located; the tested URL returns 404 (F06).</li>
+<li>Any line, price, spread, total or prop price (F07).</li>
+<li>Any historical results archive or player-participation feed (F08).</li>
+<li>Any correlation coefficient or joint probability (Q11).</li>
+<li>Any replacement-impact or snap-share value (D05).</li>
+<li>Any validation threshold, sample size or confidence interval (F17).</li>
+<li>Any reward definition or leaderboard rank (D10).</li>
+</ul></div>
+</div>
+<h2>Why luck cannot simply be removed</h2>
+<p class="note">The brief asks to remove luck and build signals that are selectively skill based. Football outcomes contain genuine randomness, and a finite sample of games contains noise that no method can delete.
+The defensible version of the request is: pre-register the test, score against an explicit noise baseline, report uncertainty, and only then rank. Those steps are gated by D07, D08 and D10 above.
+See the <a href="strategy-lab.html">Strategy lab</a> for the gate framework and the <a href="suggestions.html">Suggestions</a> page for the paths that depend on each gate.</p>
+""")
+
+# ---------- verification ----------
+pages["verification.html"] = ("Verification", f"""
+<h1>Verification record</h1>
+<p class="note">What was checked, against which official page, on which date, and what the result was.
+This page records a reviewer pass, not a guarantee. Unconfirmed values are left blank rather than filled in.</p>
+<h2>This session's checks ({AS_OF})</h2>
+<div class="tablewrap"><table class="data"><thead><tr>
+<th>Check</th><th>Method</th><th>Result</th><th>Evidence</th></tr></thead><tbody>
+<tr><td>Injury row count</td><td>Re-read the official Week 10 report in full (8 chunks) and recounted players per team section independently of the stored file.</td><td class="ok">Match: 345 rows across 28 teams, equal to the stored row count.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Injury field values</td><td>Compared every player name, position, injury text, practice status and game status for all 28 team sections against the stored CSV.</td><td class="ok">No discrepancies found in this pass. Closes the F10 spot-check request.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Game list</td><td>Compared all 14 game headers: day, kickoff time, broadcaster and both listed records.</td><td class="ok">All 14 games match the stored games file.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Bye teams</td><td>Read the Teams on Bye section of the official Week 10 schedule.</td><td class="ok">CHI, DEN, PHI and TB confirmed, as recorded (Flag F05).</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
+<tr><td>Home / away order</td><td>Compared the schedule game titles (for example "Bills at Jets") with the order NFL.com lists teams on the injury report.</td><td class="ok">The injury report lists the away team first in every Week 10 game; the site's "first listed / second listed" labels remain neutral and are now interpretable.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
+<tr><td>Official depth chart existence</td><td>Requested the conventional team depth-chart URL on the official site.</td><td class="warn">Returns HTTP 404 "Flag on the Play". No official depth chart is reachable, so starter/backup order stays blank (F06).</td><td><a href="https://www.nfl.com/teams/buffalo-bills/roster" target="_blank" rel="noopener">Bills roster</a></td></tr>
+<tr><td>Thursday result</td><td>Read the final score on the official Week 10 schedule and the game center.</td><td class="warn">Verified as Commanders 24 - Giants 21 final, but not published: the games table has no result column (F22).</td><td><a href="https://www.nfl.com/games/commanders-at-giants-2026-reg-10" target="_blank" rel="noopener">Game center</a></td></tr>
+<tr><td>News snapshot drift</td><td>Compared the stored headline list with the news section of the live injury page.</td><td class="warn">Two stored headlines are no longer shown on the live page. The injury rows are unaffected (F21).</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Standings cross-check</td><td>Compared Week 10 listed records with the official standings page.</td><td class="ok">Records match for the teams checked. The injured-reserve players named in the news (Lamar Jackson, Malik Willis) do not appear on the injury report, consistent with reserve status rather than a game designation.</td><td><a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL standings</a></td></tr>
+<tr><td>Source allow-list</td><td>Builder rejects any table row without an HTTPS link on the reviewed official-source allow-list, and any broken internal link.</td><td class="ok">Enforced in <code>scripts/build.py</code>; the build fails otherwise.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py" target="_blank" rel="noopener">build.py</a></td></tr>
+</tbody></table></div>
+<h2>Standing limitations</h2>
+<ul>
+<li><strong>Single reviewer.</strong> This pass was performed independently of session 30beeb55's separate T15 check, and both found no discrepancies. Two independent passes are the strongest control the manual-transcription limitation allows, but neither is an automated diff (F10, F20).</li>
+<li><strong>Live pages move.</strong> Every "verified" statement is true of the page as read on {AS_OF}. The injury page shows no last-updated timestamp (F13).</li>
+<li><strong>Rights are not verification.</strong> Confirming a value matches NFL.com does not grant permission to republish it in bulk (F16).</li>
+<li><strong>Blank is deliberate.</strong> A dash means the official source did not supply a value, or no official source was found. It is never an inferred estimate.</li>
+</ul>
+""")
+
 # ---------- questions ----------
 pages["questions.html"] = ("Questions", f"""
 <h1>Questions — what we know and what we still need</h1>
@@ -498,6 +580,21 @@ pages["suggestions.html"] = ("Suggestions", f"""
 <p class="note">Each option below is a proposal, not an approval or an instruction to implement. This research brief is complete without user input; no choice is required to publish it. Resolve legal, licensing and validation gates before any dependent feature is built.</p>
 {table(suggestions, ['suggestion_id','area','suggestion','benefit_for_decisions','effort','main_risk','options','status','evidence_url'],
        {'suggestion_id':'ID','area':'Area','suggestion':'Suggestion','benefit_for_decisions':'Benefit','effort':'Effort','main_risk':'Main risk','options':'Options','status':'Status','evidence_url':'Evidence'})}
+<h2>Review matrix — a recommended path for each suggestion</h2>
+<p class="note">Each suggestion is mapped to the decision gate that must close before it can be acted on, with a recommended option and the reason for it.
+<strong>These are recommendations for review, not decisions taken.</strong> No option below has been implemented except where the status says delivered.
+Choose per row; a suggestion with no recommendation strength of "Recommended" is a proposal that still needs an owner.</p>
+{table(sugg_review, ['suggestion_id','area','topic','depends_on_decision','recommended_path','recommendation_strength','why_recommended','main_trade_off','current_evidence_state','evidence_url'],
+       {'suggestion_id':'ID','area':'Area','topic':'Topic','depends_on_decision':'Blocked by','recommended_path':'Recommended option','recommendation_strength':'Recommendation','why_recommended':'Why this path','main_trade_off':'Main trade-off','current_evidence_state':'Evidence now','evidence_url':'Evidence'},
+       table_id='sugg-review', filterable=True)}
+<h2>How to choose without guesswork</h2>
+<ol class="findings">
+<li><strong>Start at gate D01.</strong> Data rights block the largest number of suggestions. A written answer there changes several rows at once.</li>
+<li><strong>Do not pick a statistics option before D02 and D03.</strong> Sample size and thresholds cannot be set responsibly before the market and the data exist.</li>
+<li><strong>Legal before features.</strong> Resolve D09 before designing anything with a prize, referral or real-money element.</li>
+<li><strong>Prefer the reversible option while a gate is open.</strong> Filtering and blank fields can be undone; publishing bulk data or defining a prize cannot.</li>
+<li><strong>Log the choice.</strong> Record which option was chosen and why, so a later reviewer can see whether the decision still holds.</li>
+</ol>
 """)
 
 # ---------- flagged ----------

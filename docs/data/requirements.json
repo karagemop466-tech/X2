@@ -76,7 +76,7 @@
   "requirement (from brief)": "Injury tracking",
   "status": "Partially done",
   "where_addressed": "Injuries page",
-  "blocker_or_note": "Single Week 10 snapshot; no authorized point-in-time history (F13/F14).",
+  "blocker_or_note": "Single Week 10 snapshot, now re-verified row by row against the live page (F19). No authorised point-in-time history (F13/F14).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
@@ -94,7 +94,7 @@
   "requirement (from brief)": "Executive summary",
   "status": "Done",
   "where_addressed": "Executive Summary page",
-  "blocker_or_note": "Uses the source-linked Week 10 snapshot; manual spot-check and data-use permission remain open (F10/F17).",
+  "blocker_or_note": "Uses the source-linked Week 10 snapshot; the row-by-row re-verification is recorded (F19/F10) and data-use permission remains open (F16).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
@@ -110,9 +110,9 @@
  {
   "req_id": "R13",
   "requirement (from brief)": "Site: clean landing page and category subpages",
-  "status": "Prior site integration deployed; source-audit follow-up in progress",
-  "where_addressed": "docs/index.html and subpages",
-  "blocker_or_note": "Public Pages site is live; the current follow-up adds stricter source-link validation.",
+  "status": "Done — live site with landing, category subpages, decision path and verification record",
+  "where_addressed": "docs/index.html plus 12 subpages",
+  "blocker_or_note": "Public Pages site is live; the builder enforces a source link on every table row and rejects broken internal links.",
   "row_type": "status",
   "evidence_url": "https://karagemop466-tech.github.io/X2/"
  },
@@ -121,7 +121,7 @@
   "requirement (from brief)": "Tables with a source link on every row",
   "status": "Done — every generated table row has an official or first-party project source link",
   "where_addressed": "All generated HTML tables; enforced in scripts/build.py",
-  "blocker_or_note": "The builder now fails if any published table row lacks an HTTPS link on the reviewed official-source allow-list.",
+  "blocker_or_note": "Enforced in scripts/build.py: the build fails if any published table row lacks an HTTPS link on the reviewed official-source allow-list.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py"
  },
@@ -146,9 +146,9 @@
  {
   "req_id": "R17",
   "requirement (from brief)": "Pull request and merge to main",
-  "status": "Prior site integration merged; follow-up PR not yet opened",
+  "status": "Merged through PR #7; this session opens the follow-up integration PR",
   "where_addressed": "Final step",
-  "blocker_or_note": "PRs #1 and #2 are merged; this branch’s source-audit follow-up is pending.",
+  "blocker_or_note": "PRs #1-#7 merged. This session re-verified the combined data line by line and opens the final integration PR described in COORDINATION.md.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2/pull/2"
  },
@@ -160,5 +160,23 @@
   "blocker_or_note": "No user input is required to publish this research brief; open choices are listed as future review items.",
   "row_type": "status",
   "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R19",
+  "requirement (from brief)": "A dedicated section to review suggestions and choose a path before implementing changes",
+  "status": "Done — review matrix with a recommended path per suggestion",
+  "where_addressed": "Suggestions page: review matrix and selection guidance",
+  "blocker_or_note": "Each recommendation is advisory and names the decision gate that blocks it; nothing is implemented on the basis of a suggestion.",
+  "row_type": "status",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md"
+ },
+ {
+  "req_id": "R20",
+  "requirement (from brief)": "Verify line by line and flag irregularities, with no inference",
+  "status": "Done — recorded reviewer pass with no discrepancies",
+  "where_addressed": "Verification page; Flagged for review F19-F21",
+  "blocker_or_note": "All 345 injury rows and 14 game headers matched the official page on 2026-11-14. Three new items were flagged, including a news snapshot drift and an unpublished verified score.",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/injuries/"
  }
 ]

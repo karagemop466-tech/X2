@@ -84,10 +84,10 @@
   "flag_id": "F10",
   "category": "Transcription check",
   "item": "345 injury rows were transcribed manually",
-  "detail": "Rows were transcribed from the NFL.com page as read. Session 30beeb55 (T15, 2026-11-14) compared all 345 CSV rows with the NFL.com Week 10 injury report across all 14 games (player, position, injury, practice status, game status; per-game counts match). No discrepancies were found. The comparison was a manual read of the page, not an automated diff, and the page is a point-in-time snapshot.",
+  "detail": "Rows were transcribed from the NFL.com page as read. Two sessions independently compared the full file against the live Week 10 report on 2026-11-14: session 30beeb55 (T15) and session 7c9eb69a (T17, recounted per-team counts from scratch). Both found no discrepancies. Both were manual reads, not an automated diff, and the snapshot is point-in-time.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Checked 2026-11-14 - no discrepancies found (manual comparison)",
-  "action_requested": "Re-check the live page if the snapshot is updated; a reviewer may still spot-check any row."
+  "status": "Resolved for two independent manual passes - no discrepancies found",
+  "action_requested": "Treat row values as verified against the live page on 2026-11-14. Re-verify on any refresh; an automated diff would need authorised data access."
  },
  {
   "flag_id": "F11",
@@ -169,5 +169,32 @@
   "source_url": "https://wetten.overheid.nl/BWBR0002469/2025-02-12",
   "status": "Legal review needed - Netherlands",
   "action_requested": "Keep wagering, referral and reward features disabled until Dutch-law review. Check the Kansspelwijzer status of any sportsbook or price source before use."
+ },
+ {
+  "flag_id": "F20",
+  "category": "Verification performed",
+  "item": "All 345 injury rows independently re-verified row by row against the live NFL.com page",
+  "detail": "Session 7c9eb69a re-read the official Week 10 injury report in full (8 chunks) on 2026-11-14 and compared every player, position, injury, practice status and game status against data/injuries_week10_2026.csv. All 28 team sections matched, and the per-team row counts independently recounted to 345, equal to the stored row count. All 14 game headers, kickoff times, broadcasters and listed records also matched. This was performed independently of session 30beeb55's separate T15 check, and both reached the same result, which satisfies the F10 spot-check request with two independent passes. Neither pass was an automated diff, and this does not resolve data rights (F16).",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Verified - no discrepancies found this pass",
+  "action_requested": "Treat row values as verified against the live page on 2026-11-14; re-verify on any refresh."
+ },
+ {
+  "flag_id": "F21",
+  "category": "Site irregularity",
+  "item": "The dashboard table reproduced an older NFL.com news list, not the current one",
+  "detail": "The stored news list in data/news_week10_2026.csv contains two headlines that no longer appear in the NFL.com injury-page news section as read on 2026-11-14: 'Deshaun Watson enters concussion protocol ahead of Browns' Week 9 game vs. Saints' and 'Report: Ravens QB Tyler Huntley out for season with turf toe injury'. The news module on the official page rotates as new items publish, so a stored snapshot can drift from the live page without the underlying injury rows changing. The injury table itself is unaffected.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Irregularity - open, snapshot drift",
+  "action_requested": "Read the news list as a dated snapshot only. Do not treat absence or presence of a headline as a fact about a player; use the linked article."
+ },
+ {
+  "flag_id": "F22",
+  "category": "Missing verified data",
+  "item": "The Thursday night result was not added to the games table",
+  "detail": "The official Week 10 schedule now shows Commanders 24, Giants 21 as FINAL for the Thursday 12 November game. data/games_week10_2026.csv has no result column, so the site cannot display any score. This session did not add scores outside the claimed file scope; the value is verified but unpublished.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Verified value available but not published",
+  "action_requested": "Decide whether final scores belong on the site. If yes, add a result column to the games data and keep the schedule page as the per-row source."
  }
 ]
