@@ -26,6 +26,7 @@ OFFICIAL_HOSTS = {
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
+    "www.packers.com", "www.therams.com", "www.chiefs.com", "www.colts.com",
 }
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -538,9 +539,9 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Coverage.</strong> The Week 10 NFL.com report lists {tot['rows']} players across {tot['teams']} teams in {tot['games']} games. The official NFL schedule identifies {', '.join(tot['missing_teams'])} as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
-<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their replacements are not verified in depth-chart data (see Flag F06).</li>
+<li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Their situations are tracked row by row in the <a href="depth-deficiency.html">replacement-depth table</a>: Darnold's replacement (Drew Lock) is named by NFL.com news with a club-chart rank (A01); Willis's successor is only "in line for first start" (A02, hedged); no replacement is named for Jackson (A03), so those ranks stay blank.</li>
 <li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
-<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), so the lines are neither over-shy nor over-confident.</li>
+<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}), 95% t interval {ms['calibration_ci95'][0]} to {ms['calibration_ci95'][1]} with p = {ms['calibration_p_vs_slope_1']} against the target slope 1.0, so at this sample size the lines are neither over-shy nor over-confident (Flag F48 correction applied).</li>
 <li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
 <li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
 <li><strong>Results verified line by line.</strong> Every one of the {ms['games_transcribed']} transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
@@ -556,7 +557,7 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 </ul>
 <h2>What is not verified (left blank)</h2>
 <ul>
-<li>Starter vs backup order at every position (no official depth chart collected).</li>
+<li>Starter vs backup order at every position. No league-level official depth chart exists (the conventional NFL.com URL returns 404, Flag F06); club charts are collected only for the eleven availability rows, are self-labelled unofficial (Flag F45), and show pre-injury order.</li>
 <li>Betting lines, odds, prop prices and parlay prices (no official odds source).</li>
 <li>Player statistics, player-prop outcomes and prop prices (no official source collected; Flag F31).</li>
 <li>Market prices, closing lines, closing-line value and any return on investment (no licensed odds feed; Flags F07, F32).</li>
@@ -739,7 +740,10 @@ this project has no licensed odds feed, so no market price, closing line or retu
 <p class="note">Spread is from the home team's perspective: a positive number favours the home team, a negative
 number favours the visitor. P(home) uses the model's out-of-sample residual spread of {ms['sd_margin_residual']} points
 and treats a tie as half a win. Calibration: actual margin on predicted margin has slope {ms['calibration_slope']}
-(SE {ms['calibration_slope_se']}).</p>
+(SE {ms['calibration_slope_se']}), 95% t interval {ms['calibration_ci95'][0]} to {ms['calibration_ci95'][1]},
+p = {ms['calibration_p_vs_slope_1']} against the target slope 1.0 (Flag F48 correction applied). The reference
+total is 2 × league points per game before week 11 ({ms['reference_total_league_ppg_before_week11']} × 2 = {2 * ms['reference_total_league_ppg_before_week11']:.1f}),
+so it is identical for every game by construction (Flag F44 resolved).</p>
 {table(model_lines, ['matchup','kickoff_et','model_spread_home','model_total','model_home_points','model_away_points','home_win_prob','reference_spread_home','reference_total','model_minus_reference','market_spread','market_total','game_url','source_url'],
        {'matchup':'Matchup','kickoff_et':'Kickoff (ET)','model_spread_home':'Model spread (home)','model_total':'Model total','model_home_points':'Model points (home)','model_away_points':'Model points (away)','home_win_prob':'P(home win)','reference_spread_home':'Reference spread','reference_total':'Reference total','model_minus_reference':'Model − reference','market_spread':'Market spread','market_total':'Market total','game_url':'Game','source_url':'Schedule'})}
 <h2>Team ratings</h2>
@@ -756,7 +760,8 @@ which is what drives the spread. Ratings are shrunk toward zero, so extreme reco
 − opponent defence rating + home-field term, fitted on every team-game to date. Spread = (attack + defence) difference
 plus home field; total = both attacks minus both defences plus home field.</li>
 <li><strong>No look-ahead.</strong> Every out-of-sample prediction was fitted only on games played strictly before
-that week. This is enforced in code, not by hand.</li>
+that week. This is enforced in code and now computed as gate G1: all {ms['lookahead_fits_checked']} fits recorded a max
+training week before their prediction week, with {ms['lookahead_violations']} violations (Flag F50 resolved).</li>
 <li><strong>Not included:</strong> play-by-play, yards per play, turnovers, personnel, participation, weather,
 travel, rest, coaching, and injuries. One injury snapshot cannot be backtested, so no injury adjustment is applied
 (Flags F06, F34).</li>
@@ -854,10 +859,12 @@ on multiple-comparison risk ↗</a> · <a href="https://www.itl.nist.gov/div898/
 pages["correlations.html"] = ("Correlations", f"""
 <h1>Correlation values</h1>
 <p class="note">Values are computed from the {ms['games_transcribed']} official 2026 results in this repository, or from model
-outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals; p-values are two-sided. Under the owner
-rule only correlations with official inputs qualify: C03, C04, C06 and C08 (see the correlation audit on the <a href="verification.html">Verification</a> page).
-C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49). The C09 row still shows the earlier interval; the corrected interval
-(0.335 to 1.435) is requested and not yet applied (Flag F48). No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
+outputs derived from them. Nothing is assumed or copied. Intervals are Fisher z intervals with two-sided p-values, except C09
+(a 95% t interval on the regression slope's own standard error, with p against the target slope 1.0 — Flag F48 correction applied)
+and C06 (published as descriptive: the pairs are not independent, so its interval and p-value are blank by design — Flag F55).
+Under the owner rule only correlations with official inputs qualify: C03, C04, C06 and C08 (see the correlation audit on the
+<a href="verification.html">Verification</a> page). C01, C02, C05, C07 and C09 are model diagnostics (Flags F48, F49).
+No player-prop correlation can be computed because no player-prop outcomes are held (Flag F31).</p>
 {table(correlations, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','interpretation','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','interpretation':'What it means','source_url':'Source'})}
 <h2>What the values say</h2>
@@ -1133,7 +1140,7 @@ timestamped source is recorded. Flag F07.</p>
        {'snapshot_id':'ID','matchup':'Game','kickoff_et':'Kickoff (ET)','origination_order':'Order','market':'Market','selection':'Selection','model_value':'Fair (model)','opening_line':'Opening line','opening_price':'Opening price','closing_line':'Closing line','closing_price':'Closing price','status':'Status','source_url':'Source'},
        table_id='ps-table', filterable=True)}
 <h2>2. Fair line, market line and difference</h2>
-<p class="note">Difference is defined as market minus fair. It stays blank until a market value exists. Flag F44 covers the constant reference total.</p>
+<p class="note">Difference is defined as market minus fair. It stays blank until a market value exists. The reference total is constant by construction: 2 × league points per game before week 11 (Flag F44 resolved, derivation recorded in <code>model_summary.json</code>).</p>
 {table(line_comparison, ['game_no','matchup','side_fair_home_spread','side_market_home_spread','side_difference_market_minus_fair','total_fair','total_market','total_difference_market_minus_fair','moneyline_fair_home_win_prob','moneyline_market_home_win_prob','moneyline_difference_market_minus_fair','source_url'],
        {'game_no':'#','matchup':'Game','side_fair_home_spread':'Side: fair (home)','side_market_home_spread':'Side: market (home)','side_difference_market_minus_fair':'Side: diff','total_fair':'Total: fair','total_market':'Total: market','total_difference_market_minus_fair':'Total: diff','moneyline_fair_home_win_prob':'Moneyline: fair P(home)','moneyline_market_home_win_prob':'Moneyline: market P(home)','moneyline_difference_market_minus_fair':'Moneyline: diff','source_url':'Source'})}
 <h2>3. Signal and staking, kept apart</h2>
@@ -1191,7 +1198,7 @@ pages["verification.html"] = (pages["verification.html"][0], pages["verification
        {'check_id':'ID','check':'Check','method':'Method','result':'Result','status':'Status','source_url':'Source'},
        table_id='rf-table', filterable=True)}
 <h2>Correlation audit: owner rule and sample size (T44)</h2>
-<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row shows the register's earlier interval; the corrected interval is requested, not applied (Flag F48).</p>
+<p class="note">Owner rule: a correlation qualifies only when both of its inputs are official numbers, with n published. {_n_qual} of {len(corr_audit)} rows qualify. {_n_diag} rows are model diagnostics (Flags F48, F49). The C09 row now carries the applied correction (session d2915d86, T51): a 95% t interval on the slope's own standard error and p = 0.6830 against the target slope 1.0, replacing the withdrawn Fisher-correlation interval (0.830-0.923, p 0.0000). C06 publishes its coefficient and n as descriptive with the interval and p blank (Flag F55 resolved).</p>
 {table(corr_audit, ['corr_id','question','value','ci_low','ci_high','p_value','sample_n','input_A','input_B','officially_sourced_inputs_only','qualifies_under_owner_rule','audit_note','source_url'],
        {'corr_id':'ID','question':'Question','value':'Value','ci_low':'CI low','ci_high':'CI high','p_value':'p','sample_n':'n','input_A':'Input A','input_B':'Input B','officially_sourced_inputs_only':'Official inputs only?','qualifies_under_owner_rule':'Qualifies?','audit_note':'Audit note','source_url':'Source'},
        table_id='corr-audit-table', filterable=True)}
@@ -1209,7 +1216,7 @@ pages["verification.html"] = (pages["verification.html"][0], pages["verification
 
 pages["depth-deficiency.html"] = (pages["depth-deficiency.html"][0], pages["depth-deficiency.html"][1] + f"""
 <h2>Replacement depth: where the replacement sits, not only that one exists (T42)</h2>
-<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts are undated and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. {_depth_checked} of {len(rep_depth)} rows are checked against a club chart; A08 to A11 are open (Flag F53).</p>
+<p class="note">For each Week 10 availability item: who replaces whom, the replacement's place on the club's depth chart as fetched on 2026-11-14, and what is still unverified. Club charts are self-labelled unofficial (the Packers edition is dated Nov. 10, 2026; the others are undated) and show pre-injury order (Flag F45). A depth rank is given only where an official statement names the replacement or starter. A blank rank means it could not be confirmed. All {_depth_checked} of {len(rep_depth)} rows are now checked against a club chart — A08 to A11 were completed in session d2915d86 (T52, Flag F53 resolved) — and every chart order carries its source link.</p>
 {table(rep_depth, ['item_id','team_abbr','position_group','player_affected','replacement_named_by_official_source','club_chart_order_as_fetched','replacement_depth_rank','depth_status','irregularity','source_url','depth_chart_url'],
        {'item_id':'ID','team_abbr':'Team','position_group':'Pos','player_affected':'Player affected','replacement_named_by_official_source':'Replacement named by official source','club_chart_order_as_fetched':'Club chart order (fetched)','replacement_depth_rank':'Replacement depth','depth_status':'Status','irregularity':'Irregularity','source_url':'Official source','depth_chart_url':'Club depth chart'},
        table_id='repdepth-table', filterable=True)}
@@ -1234,8 +1241,8 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["ex
 <h2>Decision desk: changes on 2026-11-14 (session 8a0bf37e)</h2>
 <ul class="findings">
 <li><strong>Collision with session c125b2f7.</strong> That session had already merged the price store, the Week 11 line comparison, the signal-vs-staking split and the demotion gate (PRs #29 and #30). This session did not repeat them and removed its own duplicate copies before committing (see COORDINATION.md).</li>
-<li><strong>Replacement depth.</strong> {_depth_checked} of {len(rep_depth)} availability rows are checked against a club chart. A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter. The charts are undated (Flag F45). Two rows do not name the replaced player (Flag F46). Four rows are not yet checked (Flag F53).</li>
-<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row is wrong in the register: its corrected interval is 0.335 to 1.435, p = 0.683 against slope 1.0. The correction is requested, not applied (Flag F48).</li>
+<li><strong>Replacement depth.</strong> All {_depth_checked} of {len(rep_depth)} availability rows are now checked against a club chart (Flag F53 resolved). A depth rank is given in {_depth_ranked} rows, only where an official statement names the replacement or starter; the rest stay blank by rule. The charts are self-labelled unofficial (Flag F45). Two rows do not name the replaced player (Flag F46).</li>
+<li><strong>Correlations.</strong> {_n_qual} of {len(corr_audit)} correlations meet the owner rule (official numbers only). {_n_diag} are model diagnostics (Flags F48, F49). The C09 calibration row now carries the applied correction (Flag F48 resolved): a 95% t interval on the slope's own standard error (0.328 to 1.443, df 87) with p = 0.6830 against slope 1.0 — the interval includes 1.0, so the slope is not distinguishable from perfectly calibrated. C06 is published as descriptive with no interval or p-value (Flag F55 resolved).</li>
 <li><strong>Demotion rule D1.</strong> As drafted, D1 would return a strategy to paper in {_d50_trig} of {len(_d50)} side models over the last 50 games, although {_d50_pos} of {len(_d50)} have positive point estimates. The rule needs an owner decision (Flag F54, DEC-04).</li>
 <li><strong>Results feed.</strong> The second transcription agrees on all {len(read_csv('games_2026_results.csv'))} games once LAR and LA are read as one team. Three sampled game pages show a hidden score and are not verified on the game center (Flag F47).</li>
 <li><strong>Decisions.</strong> Ten owner decisions are recorded with options and a recommendation. Nothing has been implemented from them (<a href="decisions.html">Decisions</a>).</li>

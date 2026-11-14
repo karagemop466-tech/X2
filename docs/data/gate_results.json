@@ -3,7 +3,7 @@
   "gate_id": "G1",
   "gate": "No look-ahead",
   "meaning": "Every prediction for week W is fitted only on games played before week W",
-  "rule": "Verified in code: the training set is filtered to week < W",
+  "rule": "Computed: max training week < prediction week for all 32 fits (walk-forward and Week 11); violations: 0",
   "status": "Proposed cut-off — awaiting project-owner approval (F17)",
   "strategies_passing": "M1, M2, M3, M4, T1, R1, P1",
   "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"

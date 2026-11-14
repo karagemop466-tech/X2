@@ -219,6 +219,31 @@ def pearson_p(r, n):
     return min(1.0, max(0.0, betainc(df / 2.0, 0.5, x)))
 
 
+def t_two_sided_p(t_stat, df):
+    """Two-sided p-value for a Student t statistic.
+
+    p = I_x(df/2, 1/2) with x = df / (df + t^2) -- the same regularised
+    incomplete beta used by pearson_p, applied to a t statistic directly.
+    Used for regression coefficients (e.g. the calibration slope, F48).
+    """
+    if t_stat is None or df < 1:
+        return None
+    x = df / (df + t_stat * t_stat)
+    return min(1.0, max(0.0, betainc(df / 2.0, 0.5, x)))
+
+
+def t_crit(alpha=0.05, df=1):
+    """Two-sided t critical value, found by bisection on t_two_sided_p."""
+    lo, hi = 0.0, 40.0
+    for _ in range(200):
+        mid = 0.5 * (lo + hi)
+        if t_two_sided_p(mid, df) > alpha:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+
 def betainc(a, b, x):
     if x <= 0:
         return 0.0
@@ -422,6 +447,10 @@ for g in results:
     by_week[g["week"]].append(g)
 completed_weeks = sorted(w for w in by_week if w <= 10)
 
+# F50: computed look-ahead test. Every fit records (prediction week, max
+# training week); gate G1 passes only when no fit ever saw its own week.
+FIT_WEEK_CHECKS = []
+
 oos = []            # one dict per (week, game) with all predictions
 for wk in completed_weeks:
     if wk < EVAL_FROM_WEEK:
@@ -429,10 +458,12 @@ for wk in completed_weeks:
     train = [g for g in results if g["week"] < wk]
     if len(train) < 20:
         continue
+    max_train_week = max((g["week"] for g in train), default=-1)
     preds = {}
     for sid, _label, lam, hl in STRATEGIES:
         params, _n = fit(train, lam, half_life=hl, ref_week=wk)
         preds[sid] = params
+        FIT_WEEK_CHECKS.append((wk, max_train_week))
     for g in by_week[wk]:
         row = {"week": wk, "away_team": g["away_team"], "home_team": g["home_team"],
                "away_points": g["away_points"], "home_points": g["home_points"],
@@ -619,7 +650,8 @@ for (s, _l, _k), q in zip(summaries, qvals):
 # yet approved by the project owner.
 GATE_DEFS = [
     ("G1", "No look-ahead", "Every prediction for week W is fitted only on games played before week W",
-     "Verified in code: the training set is filtered to week < W", "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"),
+     "Computed: max training week < prediction week for every fit in FIT_WEEK_CHECKS (walk-forward and Week 11 line fits); G1 passes only when no fit violates this",
+     "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"),
     ("G2", "Minimum sample", "At least 30 decided bets and at least 30 out-of-sample games",
      "n_bets >= 30", "https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm"),
     ("G3", "Skill is significant", "Sign-flip permutation test on the paired accuracy improvement, p < 0.05",
@@ -640,8 +672,10 @@ GATE_DEFS = [
 def gate_eval(s):
     acc = s["accuracy"] or {}
     sk = s["skill"] or {}
+    # G1 is computed from the recorded fits, not assumed (F50).
+    g1 = bool(FIT_WEEK_CHECKS) and all(pw > mtw for pw, mtw in FIT_WEEK_CHECKS)
     return {
-        "G1": True,
+        "G1": g1,
         "G2": (s["n_bets"] or 0) >= 30,
         "G3": sk.get("p_perm") is not None and sk["p_perm"] < 0.05,
         "G4": s["q_bh"] is not None and s["q_bh"] < 0.10,
@@ -658,9 +692,11 @@ def fmt(x, nd=3):
 
 # --------------------------------------------------------- Week 11 lines ----
 final_params = {}
+_max_results_week = max(g["week"] for g in results)
 for sid, _label, lam, hl in STRATEGIES:
     p, nfit = fit(results, lam, half_life=hl, ref_week=11)
     final_params[sid] = p
+    FIT_WEEK_CHECKS.append((11, _max_results_week))   # Week 11 line fits must not see week 11
 main = final_params["M1"]
 
 lines_rows = []
@@ -706,9 +742,14 @@ ratings_rows.sort(key=lambda r: -float(r["net_rating"]))
 
 # --------------------------------------------------------- correlations ----
 corr_rows = []
-def add_corr(cid, question, r, n, note, src):
-    lo, hi = fisher_ci(r, n) if r is not None else (None, None)
-    p = pearson_p(r, n) if r is not None else None
+def add_corr(cid, question, r, n, note, src, infer=True):
+    # infer=False publishes the coefficient with n only: no interval and no
+    # p-value, because the pairs are not independent (descriptive, F55).
+    if infer:
+        lo, hi = fisher_ci(r, n) if r is not None else (None, None)
+        p = pearson_p(r, n) if r is not None else None
+    else:
+        lo, hi, p = None, None, None
     corr_rows.append({"corr_id": cid, "question": question, "value": fmt(r),
                       "ci_low": fmt(lo), "ci_high": fmt(hi), "p_value": fmt(p, 4),
                       "sample_n": n, "interpretation": note, "source_url": src})
@@ -745,8 +786,10 @@ for t, seq in team_seq.items():
             prev.append(seq[i - 1][1]); cur.append(seq[i][1])
 r6, n6 = pearson(prev, cur)
 add_corr("C06", "Does last week's margin predict this week's margin for the same team?", r6, n6,
-         "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much.",
-         SRC_SCHED + "10")
+         "Near zero means week-to-week results are mostly noise, so recency weighting cannot add much. "
+         "Descriptive only: n counts team-game pairs and each game supplies both teams' margins, so the "
+         "pairs are not independent; no interval and no p-value are published (F55).",
+         SRC_SCHED + "10", infer=False)
 # calibration: regress actual margin on predicted margin (out of sample)
 mx = sum(xs) / len(xs); my = sum(ys) / len(ys)
 sxx = sum((x - mx) ** 2 for x in xs)
@@ -754,11 +797,32 @@ slope = sum((x - mx) * (y - my) for x, y in zip(xs, ys)) / sxx
 intercept = my - slope * mx
 resid = [y - (intercept + slope * x) for x, y in zip(xs, ys)]
 se_slope = math.sqrt(sum(e * e for e in resid) / (len(xs) - 2) / sxx)
-add_corr("C09", "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
-         slope, len(xs),
-         f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. A slope clearly below 1 "
-         "would mean the model is over-shy; clearly above 1, over-confident.",
-         SRC_SCHED + "10")
+# F48 correction (session d2915d86, T51): a slope is not a correlation, so the
+# Fisher interval and the r = 0 p-value do not apply. Use the slope's own
+# standard error: t interval for the coefficient, and a t test against the
+# calibration target slope 1.0 (not against 0).
+df_c09 = len(xs) - 2
+t_crit_c09 = t_crit(0.05, df_c09)
+c09_lo = slope - t_crit_c09 * se_slope
+c09_hi = slope + t_crit_c09 * se_slope
+t_vs_one = (slope - 1.0) / se_slope
+p_vs_one = t_two_sided_p(t_vs_one, df_c09)
+corr_rows.append({
+    "corr_id": "C09",
+    "question": "Calibration: slope of actual margin on the model's predicted margin (1.0 = perfectly scaled)",
+    "value": fmt(slope),
+    "ci_low": fmt(c09_lo),
+    "ci_high": fmt(c09_hi),
+    "p_value": fmt(p_vs_one, 4),
+    "sample_n": len(xs),
+    "interpretation": (
+        f"Slope {slope:.2f} (SE {se_slope:.2f}), intercept {intercept:.2f}. 95% t interval "
+        f"{c09_lo:.3f} to {c09_hi:.3f} (df {df_c09}); p = {p_vs_one:.4f} against the calibration target "
+        "slope 1.0, so at this sample size the slope is not distinguishable from 1. Interval and p use "
+        "the slope's own standard error, not the correlation formula (F48 correction applied, T51). "
+        "Model diagnostic only: the predictor is a model output (DEC-09)."),
+    "source_url": SRC_SCHED + "10",
+})
 # parlay leg correlation (phi)
 add_corr("C07", "Are the side leg and the total leg of the same game correlated (phi)?", phi_pl, n_pl,
          "Parlay pricing: |phi| > 0 means the independence shortcut misprices the ticket.",
@@ -862,6 +926,10 @@ for s, label, kind in order:
 gate_rows = []
 for gid, name, meaning, rule, src in GATE_DEFS:
     passing = [s["strategy_id"] for s, _l, _k in summaries if gate_eval(s).get(gid)]
+    if gid == "G1":
+        _viol = sum(1 for pw, mtw in FIT_WEEK_CHECKS if not pw > mtw)
+        rule = (f"Computed: max training week < prediction week for all {len(FIT_WEEK_CHECKS)} fits "
+                f"(walk-forward and Week 11); violations: {_viol}")
     gate_rows.append({
         "gate_id": gid, "gate": name, "meaning": meaning, "rule": rule,
         "status": "Proposed cut-off — awaiting project-owner approval (F17)",
@@ -934,6 +1002,11 @@ write("parlay_analysis.csv", parlay_rows,
        "observed_joint_hit_rate", "independence_expected_rate",
        "difference_observed_minus_independence", "phi_correlation", "two_by_two", "note", "source_url"])
 
+# F44: the naive reference total is 2 x league points per game before the week;
+# record the derivation so the constant in model_lines_week11.csv is explained.
+_lg_rows = [v for v in season_to_date(11).values() if v[2]]
+_lg_ppg = sum(v[0] for v in _lg_rows) / max(1, sum(v[2] for v in _lg_rows))
+
 summary = {
     "as_of": AS_OF,
     "games_transcribed": len(results),
@@ -945,11 +1018,20 @@ summary = {
     "calibration_slope": round(slope, 3),
     "calibration_slope_se": round(se_slope, 3),
     "calibration_intercept": round(intercept, 3),
+    "calibration_ci95": [round(c09_lo, 3), round(c09_hi, 3)],
+    "calibration_p_vs_slope_1": round(p_vs_one, 4),
+    "calibration_test": "t interval on the slope's own SE; p against the target slope 1.0 (F48 correction, T51)",
     "sd_total_residual": round(sd_total, 2),
     "mae_reference": round(mae_ref, 2),
     "mae_m1": round(mae_m1, 2),
     "mae_improvement": round(mae_ref - mae_m1, 2),
     "hfa_ref_constant": HFA_REF,
+    "reference_total_derivation": (
+        "Naive reference total = 2 x league points per game counted from games strictly before "
+        f"week 11 ({2 * _lg_ppg:.1f} points); identical for every game by construction (F44)."),
+    "reference_total_league_ppg_before_week11": round(_lg_ppg, 3),
+    "lookahead_fits_checked": len(FIT_WEEK_CHECKS),
+    "lookahead_violations": sum(1 for pw, mtw in FIT_WEEK_CHECKS if not pw > mtw),
     "week11_games": len(week11),
     "strategies_tested": len(summaries),
     "qualified_strategies": sum(1 for r in leader_rows if r["reward_tier"] != "Not qualified"),

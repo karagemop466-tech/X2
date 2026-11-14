@@ -215,15 +215,20 @@ AUDIT = {
     "C05": ("Model predicted total (model output)", "Official total points", "no",
             "Predictor is a model output. Diagnostic only."),
     "C06": ("Official margin, week W-1 (team)", "Official margin, week W (same team)", "yes",
-            "Official results. n = 228 counts each game once per team, so pairs are not independent (F55)."),
+            "Official results, published as descriptive (F55): n = 228 team-game pairs and each game "
+            "supplies both teams' margins, so the pairs are not independent; interval and p-value are "
+            "blank by design (session d2915d86, T53)."),
     "C07": ("Model-generated side and total legs", "Model-generated side and total legs", "no",
             "Both legs are model-generated selections; n = 24 tickets. Diagnostic only."),
     "C08": ("Official Week 10 injury-report exposure (team)", "Official season points allowed (standings)", "yes",
             "Official injury report and standings. Exposure is a count of listed players."),
     "C09": ("Model predicted margin (model output)", "Official final margin", "no",
-            "A regression slope, not a correlation. Predictor is a model output. The register still holds the earlier "
-            "interval (0.830-0.923), which applies a correlation formula to a slope. Recomputed with the slope's own SE: "
-            "CI 0.335-1.435, p 0.683 vs slope 1.0. Correction requested on COORDINATION.md; not yet applied (F48)."),
+            "A regression slope, not a correlation; predictor is a model output (diagnostic only, DEC-09). "
+            "F48 correction applied (session d2915d86, T51): the interval is a 95% t interval on the slope's "
+            "own standard error and p tests the calibration target slope 1.0, not zero. The earlier "
+            "Fisher-correlation interval (0.830-0.923, p 0.0000) is withdrawn. The requested hand-check CI "
+            "(0.335-1.435) used the normal approximation; the exact t critical value for df 87 (1.9876) "
+            "gives 0.328-1.443. Conclusion unchanged: the interval includes 1.0 (p = 0.683)."),
 }
 corr = read("correlations_computed.csv")
 audit = []
