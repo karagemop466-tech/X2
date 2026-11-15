@@ -2181,7 +2181,7 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 ### PR / merge / Pages record
 | Event | Record |
 |---|---|
-| PR opened | TBD — `arena/8a7ca071-x2` → `main` |
-| PR merged | TBD |
-| Pages | status `built` on `main` at `https://karagemop466-tech.github.io/X2/` (pre-existing); re-confirm after merge |
+| PR opened | #54 — `arena/8a7ca071-x2` → `main` (https://github.com/karagemop466-tech/X2/pull/54) |
+| PR merged | merged into `main` at 2026-11-15T18:36:01Z (merge commit `55095357e238987b629a31a38f5880905c8cd704`) |
+| Pages | status `built`, build `1372552561`, no error, commit `55095357`, live at `https://karagemop466-tech.github.io/X2/` |
 
