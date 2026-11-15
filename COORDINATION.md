@@ -2157,3 +2157,22 @@ and reward tiers) · F36 (re-run the model when Week 10 is final) · F81/F82 (re
 **Task IDs closed by this session: T94 (F47) and T95 (integration). T92/T93 were adopted from d2915d86 and
 20e6161b respectively (no files written for them here); T52/T53 were adopted from f25d6b55/e208ba6d at claim
 time. Final free IDs after this session: T96+.**
+
+## 2026-11-15 · session 46d43a42 · claim (T96–T103)
+
+**Branch:** `arena/46d43a42-x2` (the only branch this session may use; the brief's `session-<id>/<task>` names are not used because the session branch is fixed by Arena) · **Base:** `main` @ `a78f7bf` (PR #53) · **Owner:** `46d43a42` · **Claimed:** 2026-11-15 (before any file change).
+
+Open PR #48 (`arena/a47ccbb1-x2`, "Final integration", OPEN) is another session's and is not touched by this claim.
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T96 | One-row-per-brief-item coverage register: status, blocking gate or flag, number that would clear it, evidence link | in progress | 46d43a42 | `data/brief_coverage.csv` (new) | Built from the brief and the registers already in `data/` |
+| T97 | Decision-readiness table on the landing page (one row per requirement, blocking gate, number that clears it) | in progress | 46d43a42 | `scripts/build.py` (readiness section, index card, NAV), `docs/readiness.html` (generated) | Reads `data/brief_coverage.csv` |
+| T98 | Control baseline on the leaderboard run: seeded random picks and favourites-only, against the same out-of-sample games and reference line | in progress | 46d43a42 | `scripts/control_baseline.py` (new), `data/control_baseline.csv`, `data/control_bets.csv` (new), `scripts/build.py` (leaderboard block) | Reference line re-derived and checked against `data/model_backtest.csv` |
+| T99 | Keep backtest numbers off the leaderboard page (brief rule): leaderboard shows the pre-registered prospective record; backtest figures move to the backtest page | in progress | 46d43a42 | `scripts/build.py` (leaderboard + backtest sections), generated `docs/` | `data/strategy_leaderboard.csv` itself is unchanged |
+| T100 | Retained SHA-256 manifest for the committed captures and a drift check (fails on hash or row-count change) | in progress | 46d43a42 | `scripts/check_manifest.py` (new), `data/capture_manifest.csv` (new) | Hashes the repo's transcriptions, not the official page bytes |
+| T101 | Live re-verification of the Week 10 injury page on 2026-11-15 (per-team counts, Lions designations, Thursday result) | in progress | 46d43a42 | `data/repo_review_2026-11-15.csv` (new) | https://www.nfl.com/injuries/ ; https://www.nfl.com/schedules/2026/by-week/week-10 |
+| T102 | Flags and sources for the new irregularities | in progress | 46d43a42 | `data/flags.csv` (F83+), `data/sources.csv` (SRC-85+) | Next free IDs at claim time: F83, SRC-85, RV25 |
+| T103 | Integration: build, verify, check links, PR to `main`, merge, GitHub Pages check, record here | unclaimed (closing) | 46d43a42 | `COORDINATION.md`, generated `docs/`, `README.md` | |
+
+**Scope rule for this session:** no change to any raw official capture, no new automated collection from NFL.com (see flag F16, the open terms gate), and no value filled in that a source does not state. Anything that needs an owner decision is published on Flagged for Review, not decided here.
