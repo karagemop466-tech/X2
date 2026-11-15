@@ -110,9 +110,10 @@ for g in games:
     })
 write("line_comparison_week11.csv", comp_rows, comp_fields)
 
-# ---------- T40b: signal and staking kept apart ----------
-# Rank is by the signal metric only (skill, points). Staking has no measured value
-# because no prices exist, so a staking result can never move a strategy up the signal rank.
+# ---------- prospective leaderboard firewall ----------
+# Backtest scores are deliberately not ranked or copied to the competition-facing
+# signal/staking register. Only a completed, pre-registered prospective window can
+# populate these columns.
 sig_fields = [
     "signal_rank", "strategy_id", "strategy", "market",
     "signal_skill_points", "signal_ci_low", "signal_ci_high", "signal_q_bh_fdr", "signal_oos_games",
@@ -120,36 +121,20 @@ sig_fields = [
     "staking_rule", "staking_roi", "staking_status",
     "ranking_basis", "source_url",
 ]
-
-
-def num(x):
-    try:
-        return float(x)
-    except (TypeError, ValueError):
-        return None
-
-
-ranked = sorted(leaderboard, key=lambda r: (num(r["skill_score_mae_improvement_pts"]) is None,
-                                             -(num(r["skill_score_mae_improvement_pts"]) or 0)))
 sig_rows = []
-for i, r in enumerate(ranked, start=1):
-    has_skill = num(r["skill_score_mae_improvement_pts"]) is not None
+for r in leaderboard:
     sig_rows.append({
-        "signal_rank": str(i) if has_skill else "unranked (no measured skill)",
+        "signal_rank": "Not ranked — prospective sample pending",
         "strategy_id": r["strategy_id"],
         "strategy": r["strategy"],
         "market": r["market"],
-        "signal_skill_points": r["skill_score_mae_improvement_pts"],
-        "signal_ci_low": r["skill_ci_low"],
-        "signal_ci_high": r["skill_ci_high"],
-        "signal_q_bh_fdr": r["q_bh_fdr"],
-        "signal_oos_games": r["oos_games"],
-        "signal_gates_passed": r["gates_passed"],
-        "signal_leaderboard_rank": r["rank"],
-        "staking_rule": "None defined - flat or Kelly staking not applied; no price exists to stake against",
+        "signal_skill_points": "", "signal_ci_low": "", "signal_ci_high": "",
+        "signal_q_bh_fdr": "", "signal_oos_games": "", "signal_gates_passed": "",
+        "signal_leaderboard_rank": "",
+        "staking_rule": "Not enabled",
         "staking_roi": "",
-        "staking_status": "UNVERIFIED - no priced bets (F07)",
-        "ranking_basis": "Signal only (forecast skill vs reference). Staking cannot raise or lower this rank.",
+        "staking_status": "No prospective sample and no licensed prices",
+        "ranking_basis": "Prospective only; historical backtest results are excluded from this board.",
         "source_url": r["source_url"],
     })
 write("strategy_signal_staking.csv", sig_rows, sig_fields)

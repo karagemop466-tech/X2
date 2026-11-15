@@ -767,10 +767,19 @@
  {
   "flag_id": "F92",
   "category": "Register duplication",
-  "item": "Two decision-readiness tables and two change-our-mind fields now exist on main",
-  "detail": "The landing page carries two readiness tables: data/decision_readiness.csv (45 rows, from b03f4ba1, PR #55) and a second table generated from data/requirements.csv (PR #56, 10209425). data/strategy_leaderboard.csv gained would_change_if_better and would_change_if_worse (PR #56) while data/strategy_change_rules.csv (PR #55) holds the same concept. Both were merged without reconciling the two. Neither table was edited here: each belongs to the session that wrote it.",
+  "item": "Duplicate readiness table and duplicate change-our-mind fields on main",
+  "detail": "Two readiness tables appeared on the landing page (data/decision_readiness.csv from PR #55, and a table generated from data/requirements.csv in PR #56), and the leaderboard gained would_change_if_better and would_change_if_worse (PR #56) while data/strategy_change_rules.csv (PR #55) held the same concept. PR #57 (acfebc6e, 'Keep one authoritative readiness table') removed the PR #56 table, so the landing page now shows only the 45-row table; the would_change columns were also dropped from the leaderboard CSV. Still open: the two change-our-mind sources (data/strategy_change_rules.csv and the leaderboard column set) are not reconciled, and the landing table covers 45 of 58 requirements (F90).",
   "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
-  "status": "Open - irregularity",
-  "action_requested": "Owner chooses one readiness table and one change-our-mind source, then removes the other. Until then both are shown and both carry their own source links (F90 covers the row-count gap)."
+  "status": "Partly resolved on main (readiness table); open for change-our-mind source",
+  "action_requested": "Owner confirms data/strategy_change_rules.csv as the single source of two-sided triggers, and records that the leaderboard no longer carries trigger columns."
+ },
+ {
+  "flag_id": "F93",
+  "category": "Generator mismatch",
+  "item": "scripts/model.py regenerates strategy_leaderboard.csv without the would_change columns",
+  "detail": "scripts/model.py writes data/strategy_leaderboard.csv from a fixed column list that does not include would_change_if_better or would_change_if_worse. Those two columns were added by hand in PR #56. When PR #57 regenerated the file from the generator, they were removed from main. Confirmed in session 6ee4d13e: re-running model.py on the merged branch leaves data/strategy_leaderboard.csv identical to main; the two columns are absent on main.",
+  "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
+  "status": "Open - irregularity (confirmed on main)",
+  "action_requested": "Owner decides whether the two-sided triggers belong on the leaderboard at all; if they do, add them to the generator's column list and regenerate, rather than editing the CSV by hand."
  }
 ]

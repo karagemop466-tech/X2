@@ -21,9 +21,9 @@ where a source verifies it).
 2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
 3. **Model & Week 11 lines** (`docs/model-lines.html`) — the originated spreads, totals and moneylines, originated side first then total then moneyline, with the fair line, market line and difference as separate columns, the team ratings, and the method.
 4. **Price snapshots** (`docs/price-snapshots.html`) — the price-snapshot store recording opening and closing numbers for every originated market; values blank and flagged because no licensed odds feed exists.
-5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, the signal-only ranking, and the proposed demotion gate.
+5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, prospective signal/staking fields (blank until grading), and the proposed demotion gate.
 6. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
-7. **Leaderboard** (`docs/leaderboard.html`) — strategies ranked on signal (forecast skill) only, with gates, uncertainty and required sample sizes; staking is displayed separately and never affects rank.
+7. **Leaderboard** (`docs/leaderboard.html`) — prospective-only competition registry. It is intentionally unranked until frozen prospective forecasts have been graded; full historical outcome tables are on the Backtest page; the landing-page removal-of-luck panel is explicitly marked as research-only. Signal and staking remain separate.
 8. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
 9. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
 10. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
@@ -34,7 +34,7 @@ where a source verifies it).
 ### Also new (session 6ee4d13e): per-team view, controls for every run
 
 - **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the official injury counts, the net injury count, starters Out on a club chart and the replacements named there. Bye clubs are shown blank, never as injury-free. Starter order is available for six clubs only. The injury row count is still open (F83; see F89).
-- **Leaderboard: controls for every run** (`data/leaderboard_control_runs.csv`, computed by `scripts/baselines.py` from `scripts/model.py`): M1-M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made. Every run must reproduce its published bet count and mean edge, or the build stops. The favourite control is weak on these games (F91).
+- **Backtest page: controls for every run** (`data/leaderboard_control_runs.csv`, computed by `scripts/baselines.py` from `scripts/model.py`): M1-M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made. Every run must reproduce its published bet count and mean edge, or the build stops. The favourite control is weak on these games (F91).
 
 ### Also new (session b03f4ba1): controls, two-sided triggers, readiness table
 
@@ -61,9 +61,7 @@ where a source verifies it).
 - **Event risk** (`docs/event-risk.html`) — 65 named Week 11 risks tied to a player, an official status word and the
   specific markets each can invalidate. Of those, **58 have no official source establishing the player's role**, and
   that number is published instead of the shortfall being hidden.
-- **Skill versus luck** (`docs/leaderboard.html`) — every strategy now carries luck share, skill share, half-split
-  agreement and a per-week sign test. The finding is negative and published anyway: M1 is positive in 5 of 7 weeks
-  (p = 0.45), so its rank describes 89 games rather than predicting the next one.
+- **Skill versus luck** (`docs/backtest.html`) — historical walk-forward diagnostics are research evidence only and never populate or rank the competition leaderboard. The prospective leaderboard remains unranked until candidate strategies have immutable registrations and their forecasts are graded.
 
 ### Also new: settlement, replacement depth, correlation provenance, audit
 
@@ -118,8 +116,8 @@ against the naive reference line and must never be read as market results (flag 
 moneyline — and every market publishes the model's *fair line*, the *market line* and the *difference* as
 separate columns (market columns blank, F07). A **price-snapshot store** records the opening and closing number
 for every originated market (`data/price_snapshots.csv`, `docs/price-snapshots.html`); with no licensed odds feed
-every opening/closing value is blank and flagged rather than inferred (F07, F31, F43). The leaderboard
-**separates signal from staking** so a lucky staking run cannot mask a weak signal (F44), and a **demotion gate
+every opening/closing value is blank and flagged rather than inferred (F07, F31, F43). The prospective leaderboard
+**separates signal from staking** so a lucky staking run cannot mask a weak signal (F44), and remains unranked until forecasts are frozen and graded prospectively. Historical backtest scores are restricted to the Backtest page. A **demotion gate
 (G9)** sends a live strategy back to paper when its edge degrades. No strategy is live today: the qualification
 is disputed by the independent cross-check (F42), the gate cut-offs await owner approval (F17), and wagering and
 rewards stay disabled (F09, F16, F19).
@@ -129,7 +127,7 @@ rewards stay disabled (F09, F16, F19).
 - `data/*.csv` — inputs for the Python dashboard and source/review registers.
 - `data/games_2026_results.csv`, `data/standings_2026_snapshot.csv`, `data/schedule_week11_2026.csv` — the verified results feed, the standings used to check it, and the Week 11 slate.
 - `data/results_feed_2026.csv` — the canonical verified results feed (session f25d6b55): every official 2026 result with a per-row verification status; all grading consumes exactly these rows.
-- `data/model_*.csv`, `data/strategy_leaderboard.csv`, `data/gate_results.csv`, `data/correlations_computed.csv`, `data/parlay_analysis.csv`, `data/price_snapshots_extended.csv`, `data/model_summary.json` — model outputs, all regenerated by `scripts/model.py`. Origination order is fixed (side, then total, then moneyline; the moneyline derives from the originated side and total only). The correlation register publishes input A, input B and the owner-rule classification per row, and C09 uses the slope's own standard error (F48, REQ-8a-1).
+- `data/model_*.csv`, `data/strategy_leaderboard.csv`, `data/strategy_backtest_scores.csv`, `data/gate_results.csv`, `data/correlations_computed.csv`, `data/parlay_analysis.csv`, `data/price_snapshots_extended.csv`, `data/model_summary.json` — model outputs, all regenerated by `scripts/model.py`. The competition leaderboard is prospective-only and contains no backtest scores; the historical research comparison is kept separately in `strategy_backtest_scores.csv`. Origination order is fixed (side, then total, then moneyline; the moneyline derives from the originated side and total only). The correlation register publishes input A, input B and the owner-rule classification per row, and C09 uses the slope's own standard error (F48, REQ-8a-1).
 - `data/price_snapshots.csv`, `data/line_comparison_week11.csv`, `data/strategy_signal_staking.csv`, `data/demotion_gate.csv` — the market layer (Week 11 price store, fair/market/difference, signal vs staking, demotion rules), regenerated by `scripts/markets.py`; never writes a price value.
 - `data/replacement_depth.csv` — depth-of-replacement tracking (RD01–RD07), curated from verified official statements and club depth charts; blank where unverified. `data/replacement_depth_week10_2026.csv` (session 8a0bf37e) is the companion availability register.
 - `scripts/model.py` — the line model, backtest, gates, correlations, parlay study and leaderboard (standard library only, fixed random seed).
@@ -178,7 +176,7 @@ closing line, player-prop outcome, player-depth string order, replacement impact
 
 Football variance cannot be removed. Out-of-sample testing, permutation tests, bootstrap intervals and
 multiple-comparison control stop variance from being mistaken for skill; they do not eliminate it and they
-guarantee no result. Every leaderboard row publishes the sample size it would need for a decisive test.
+guarantee no result. The prospective leaderboard remains unranked until a frozen registration manifest and prospective forecast window have been graded; detailed historical outcomes appear on the Backtest page; the landing-page panel is explicitly research-only.
 
 ## Two independent implementations, compared
 
@@ -252,8 +250,7 @@ published anywhere in this repository, because none could be confirmed from an o
 missing it is blank and flagged, never inferred. The model's fair lines are first-party computed values and are
 labelled as such; they are not market prices.
 
-The leaderboard's three reward tiers are a proposal for review, not an implemented mechanic. Strategies compete
-inside this repository; nobody is entered, nothing is staked and nothing is paid out. Read the
-[leaderboard](docs/leaderboard.html) on the skill column, and read the flags
-[F32](docs/flagged.html) (beating the naive reference line is not beating a sportsbook) and
-[F33](docs/flagged.html) (89 games is not yet a decisive sample) before relying on any ranking.
+The reward tiers remain a proposal for review, not an implemented mechanic. No strategy is ranked on the
+prospective competition board because no prospective evaluation window has been graded. Historical walk-forward
+scores are kept on the Backtest page only; signal and staking remain separate when prospective scores are eventually
+eligible. No one is entered, nothing is staked and nothing is paid out.
