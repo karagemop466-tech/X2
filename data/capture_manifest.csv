@@ -1,0 +1,15 @@
+file,sha256,bytes,rows,captured_read_date,source_url,note
+data/injuries_week10_2026.csv,262bc50144ac0fa94fd91c3ea0fb229de38867da8beb028034ac98822cc7652e,50219,345,2026-11-15,,"Committed copy (2026-11-14 transcription, 345 rows). Live page 2026-11-15: BAL differs (10 vs 8); F83. Proposed correction is in proposals/46d43a42-integration-request.patch, not applied."
+data/games_week10_2026.csv,9c4130b137b0116ce8d1b5fcaf99638e066cb838d9acf76721ddd30d5b64dd1f,1524,14,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/news_week10_2026.csv,dfd3c5ff9559816d8dc12b7ce371cde68bfb6590953b10feb34b193bff7425fe,1805,8,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/games_2026_results.csv,95fe1e596e2cbca1e1c12ab1e1ed23b5705c081011fd7913081d43f61e1d3a18,20300,137,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/schedule_week11_2026.csv,ba1e5427ecf1d744be51a66b700a5f0665475ce148d2365b0545d7d1c1f3c189,2177,13,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/standings_2026_snapshot.csv,ecad71678458dac673623954409e14c0f122c9eb80cc1a163927913880df0766,2318,32,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/starters_gamebook_2026_reg_10.csv,b253bf630e984cf79dbd0eb622f104c1d47d12175e4eadf74ac88fde17ffff92,4439,19,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/prospective_forecast_log.csv,ec3fe1837f4958d5cbcb6c03cb098a706b6cabd817a5db6d1815fccfb91f203c,2604,13,2026-11-15,,Frozen Week 11 forecasts; results blank. Also sealed by .sha256.
+data/verification/official_batch1.txt,e10eb55d5edbc7658e80ca1488c8f196b71d3212a606987fe8ec66c13dfff77d,3872,121,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/verification/official_batch2.txt,4b7245373bc1d5c687999db124a75ec7127faa4498303df3a49ae34d8e6e8a8e,7123,224,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/verification_inputs/injuries_2026-11-14.tsv,99e6e5ee39a406c108a48c4dbaef9f94ba54d5acf41ddb2636ca019b7e1a0150,21383,345,2026-11-15,,Transcription of the 2026-11-14 injury page (345 rows); still lists BAL at 8. See F83.
+data/verification_inputs/standings_2026-11-14.tsv,8337197a7354797a52cdf1880d06c7750962741380db859b89f11904377cee21,589,32,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/verification_inputs/week11_byes_2026-11-14.tsv,72f3b2e8d25b1c2cf32e2506587961191c432a8991d11d62f45e83334d644747,30,6,2026-11-15,,Transcription or capture; re-verify against the live official page before use.
+data/verification_inputs/week11_schedule_2026-11-14.tsv,7a30ac8d763dba37a291c4a4fff8951ed9b83148f23307bd509aad65941ce5ee,629,13,2026-11-15,,Transcription or capture; re-verify against the live official page before use.

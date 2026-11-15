@@ -1,0 +1,143 @@
+diff --git a/README.md b/README.md
+index 12f817c..2e9f371 100644
+--- a/README.md
++++ b/README.md
+@@ -180,8 +180,8 @@ reconciled by picking a winner.
+   points from those games reproduces the official standings exactly for all 32 teams; the check is
+   `scripts/verify_results.py`.
+ - The Week 11 lines were fitted before Week 10's Sunday games were played; re-run `scripts/model.py` afterwards (F36).
+-- Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 345 rows across 28 teams and 14 listed games.
+-- **Snapshot verification ledger (T88 takeover):** `python3 scripts/verify_snapshot.py` re-compares the committed snapshot with a stored field-by-field transcription of the official page: 345 of 345 rows match on position, injury, practice status and game status (1,380 comparisons, 0 mismatches), plus all 14 games, the 4 bye teams and all 345 player links (90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL). Residual limitation: that transcription was produced in the same session as the snapshot, so a shared misreading would not be detected — logged as **F80**; two further independent passes against the live page (sessions 30beeb55 and 7c9eb69a) reached the same result. Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`.
++- Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 347 rows across 28 teams and 14 listed games. The snapshot was corrected on 2026-11-15 (Flag F83): the Baltimore section of the live page lists 10 rows, not 8. The 14 November read is superseded for Baltimore.
++- **Snapshot verification ledger (T88 takeover):** `python3 scripts/verify_snapshot.py` re-compares the committed snapshot with a stored field-by-field transcription of the official page: 347 of 347 rows match on position, injury, practice status and game status (1,388 comparisons, 0 mismatches, after the 2026-11-15 Baltimore correction), plus all 14 games, the 4 bye teams and all 347 player links (90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL). Residual limitation: that transcription was produced in the same session as the snapshot, so a shared misreading would not be detected — logged as **F80**; two further independent passes against the live page (sessions 30beeb55 and 7c9eb69a) reached the same result. Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`.
+ - **Starter identity is officially verifiable after the game (T88 takeover).** The NFL publishes no pregame depth chart and the official roster page has no depth column, so a “1st/2nd/3rd/4th string” rank cannot be sourced (F06). The official NFL gamebook does publish the starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen such rows from the Week 10 Commanders at Giants gamebook are recorded in `data/starters_gamebook_2026_reg_10.csv` and on `docs/starters.html` — logged as **F78**; the gamebook carries its own use restriction (**F79**). A single gamebook does not establish pregame depth order. Every row and every game header was independently re-verified against the live page on 2026-11-14 with no discrepancies found (Flag F20). A separate session (30beeb55, T15) reached the same result independently; the manual-transcription limitation is retained (F10).
+ - The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
+ - No licensed odds archive, historical forecast/outcome ledger, league-published depth chart, player-level participation feed, computed parlay correlation, or tested strategy is available in the Python dashboard. The separate Node research data file was resolved in two steps: T13 (session 30beeb55) blanked all third-party Ourlads ordering values, then the integration supplement (session 52ca9f77, 2026-11-14) located the club-published depth charts on the official club websites ([detroitlions.com](https://www.detroitlions.com/team/depth-chart), [patriots.com](https://www.patriots.com/team/depth-chart)) and restored club-chart-confirmed values with per-row citations. One contradicted third-party value was corrected (Node flag F-08); both club charts self-label "unofficial" (Node flag F-05, Python flag F18).
+@@ -193,7 +193,7 @@ reconciled by picking a winner.
+ 
+ A second, independent transcription of the same official pages was made on 2026-11-14 and compared row by row
+ (`scripts/verify_live.py`, inputs in `data/verification_inputs/`). **75 of 75 units matched with 0 discrepancies:**
+-all 345 injury rows across 28 teams (injury, practice status and game status identical), all 32 standings lines on
++all 345 injury rows across 28 teams (injury, practice status and game status identical; the Baltimore section was later found to differ, see F83), all 32 standings lines on
+ W-L-T-PF-PA, all 13 Week 11 games on day, kickoff time and network, and the 6-team bye list. Results in
+ `data/live_reverification_2026-11-14.csv`; flag F69.
+ 
+diff --git a/data/injuries_week10_2026.csv b/data/injuries_week10_2026.csv
+index 1d2e625..dc220d0 100644
+--- a/data/injuries_week10_2026.csv
++++ b/data/injuries_week10_2026.csv
+@@ -318,11 +318,13 @@ game_no,team_abbr,team_name,player,position,injury,practice_status,game_status,p
+ 14,LAC,Chargers,Kendall Williamson,S,,Did Not Participate In Practice,,https://www.nfl.com/players/kendall-williamson/,https://www.nfl.com/injuries/
+ 14,BAL,Ravens,Rasheen Ali,RB,,Full Participation in Practice,,https://www.nfl.com/players/rasheen-ali/,https://www.nfl.com/injuries/
+ 14,BAL,Ravens,Rashod Bateman,WR,,Full Participation in Practice,,https://www.nfl.com/players/rashod-bateman/,https://www.nfl.com/injuries/
++14,BAL,Ravens,Calais Campbell,DT,,Did Not Participate In Practice,,https://www.nfl.com/players/calais-campbell/,https://www.nfl.com/injuries/
+ 14,BAL,Ravens,Kyle Hamilton,S,,Full Participation in Practice,,https://www.nfl.com/players/kyle-hamilton/,https://www.nfl.com/injuries/
+-14,BAL,Ravens,Jaylinn Hawkins,S,,Limited Participation in Practice,,https://www.nfl.com/players/jaylinn-hawkins/,https://www.nfl.com/injuries/
++14,BAL,Ravens,Jaylinn Hawkins,S,Knee,Limited Participation in Practice,Out,https://www.nfl.com/players/jaylinn-hawkins/,https://www.nfl.com/injuries/
+ 14,BAL,Ravens,Matthew Hibner,TE,,Full Participation in Practice,,https://www.nfl.com/players/matthew-hibner/,https://www.nfl.com/injuries/
+ 14,BAL,Ravens,Olaivavega Ioane,G,,Full Participation in Practice,,https://www.nfl.com/players/olaivavega-ioane/,https://www.nfl.com/injuries/
+-14,BAL,Ravens,Adam Randall,RB,,Full Participation in Practice,,https://www.nfl.com/players/adam-randall/,https://www.nfl.com/injuries/
++14,BAL,Ravens,Adam Randall,RB,"Neck, Hamstring",Full Participation in Practice,Questionable,https://www.nfl.com/players/adam-randall/,https://www.nfl.com/injuries/
++14,BAL,Ravens,Ronnie Stanley,T,,Did Not Participate In Practice,,https://www.nfl.com/players/ronnie-stanley/,https://www.nfl.com/injuries/
+ 14,BAL,Ravens,Nate Wiggins,CB,,Full Participation in Practice,,https://www.nfl.com/players/nate-wiggins/,https://www.nfl.com/injuries/
+ 1,WAS,Commanders,John Bates,TE,,Full Participation in Practice,,https://www.nfl.com/players/john-bates/,https://www.nfl.com/injuries/
+ 1,WAS,Commanders,Treylon Burks,WR,,Did Not Participate In Practice,,https://www.nfl.com/players/treylon-burks/,https://www.nfl.com/injuries/
+diff --git a/data/verification/official_batch2.txt b/data/verification/official_batch2.txt
+index 32e2e1d..24c3a31 100644
+--- a/data/verification/official_batch2.txt
++++ b/data/verification/official_batch2.txt
+@@ -216,9 +216,11 @@ LAC|Isas Waxter|CB||D|
+ LAC|Kendall Williamson|S||D|
+ BAL|Rasheen Ali|RB||F|
+ BAL|Rashod Bateman|WR||F|
++BAL|Calais Campbell|DT||D|
+ BAL|Kyle Hamilton|S||F|
+-BAL|Jaylinn Hawkins|S||L|
++BAL|Jaylinn Hawkins|S|Knee|L|Out
+ BAL|Matthew Hibner|TE||F|
+ BAL|Olaivavega Ioane|G||F|
+-BAL|Adam Randall|RB||F|
++BAL|Adam Randall|RB|Neck, Hamstring|F|Questionable
++BAL|Ronnie Stanley|T||D|
+ BAL|Nate Wiggins|CB||F|
+diff --git a/data/verification_week10_2026.csv b/data/verification_week10_2026.csv
+index c4f6744..686afcf 100644
+--- a/data/verification_week10_2026.csv
++++ b/data/verification_week10_2026.csv
+@@ -1,12 +1,12 @@
+ check_id,scope,what_was_checked,committed_value,official_value,result,method,note,source_url
+-V001,Totals,Number of injury-report rows,345,345,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),Every row in the snapshot is present in the official transcription,https://www.nfl.com/injuries/
++V001,Totals,Number of injury-report rows,347,347,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),Every row in the snapshot is present in the official transcription,https://www.nfl.com/injuries/
+ V002,Totals,Players listed on the official page but absent from the snapshot,0,0,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),0 missing players,https://www.nfl.com/injuries/
+ V003,Totals,Players in the snapshot but absent from the official page,0,0,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),0 extra players,https://www.nfl.com/injuries/
+-V004,Totals,"Field-level comparisons (position, injury, practice status, game status)","1380 comparisons, 0 mismatch(es)",0 mismatches expected,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),Four fields compared for every one of the 345 rows,https://www.nfl.com/injuries/
++V004,Totals,"Field-level comparisons (position, injury, practice status, game status)","1388 comparisons, 0 mismatch(es)",0 mismatches expected,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),Four fields compared for every one of the 347 rows,https://www.nfl.com/injuries/
+ V005,Totals,Duplicate player rows within a team,0,0,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),A duplicated player would double-count exposure,https://www.nfl.com/injuries/
+ V-TEAM-ATL,Team row check,ATL: listed rows and field values,11 rows,11 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
+ V-TEAM-AZ,Team row check,AZ: listed rows and field values,15 rows,15 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
+-V-TEAM-BAL,Team row check,BAL: listed rows and field values,8 rows,8 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
++V-TEAM-BAL,Team row check,BAL: listed rows and field values,10 rows,10 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
+ V-TEAM-BUF,Team row check,BUF: listed rows and field values,14 rows,14 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
+ V-TEAM-CAR,Team row check,CAR: listed rows and field values,12 rows,12 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
+ V-TEAM-CIN,Team row check,CIN: listed rows and field values,9 rows,9 rows,PASS,Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py),All fields match the official page,https://www.nfl.com/injuries/
+diff --git a/scripts/build.py b/scripts/build.py
+index e7026f7..c1db8ed 100644
+--- a/scripts/build.py
++++ b/scripts/build.py
+@@ -397,8 +397,8 @@ if _mism:
+ if len(season_games) != 137:
+     warnings.append(f"independent ledger has {len(season_games)} games; expected 137")
+ 
+-if len(inj) != 345:
+-    warnings.append(f"injury row count is {len(inj)}; expected 345 for the Week 10 snapshot")
++if len(inj) != 347:
++    warnings.append(f"injury row count is {len(inj)}; expected 347 for the Week 10 snapshot (corrected 2026-11-15, F83)")
+ if len(games) != 14:
+     warnings.append(f"game count is {len(games)}; expected 14")
+ 
+@@ -687,7 +687,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
+ {card('review.html', 'Review console', 'The decision section: eight proposals, three options each, a recommendation, the file each would change, and a recorded-choice mechanism that ships empty.')}
+ {card('results.html', 'Season results', 'The verified results feed: all 137 transcribed 2026 games, each reconciled against the official standings — what backtests run on, and why ROI still cannot be computed.')}
+ {card('results-feed.html', 'Results feed', 'The settlement view: the official final score plus how the side, the total and the moneyline we originated actually settled.')}
+-{card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
++{card('injuries.html', 'Injuries', 'All 347 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
+ {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
+ {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
+ {card('strategy-lab.html', 'Strategy lab', 'The hypotheses, the gates and the reward framework. Strategies are graded on signal; the reward tiers are proposed and not offered (R36), and nothing is paid.')}
+@@ -922,8 +922,8 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left
+ <h2>This session's checks ({AS_OF})</h2>
+ <div class="tablewrap"><table class="data"><thead><tr>
+ <th>Check</th><th>Method</th><th>Result</th><th>Evidence</th></tr></thead><tbody>
+-<tr><td>Injury row count</td><td>Re-read the official Week 10 report in full (8 chunks) and recounted players per team section independently of the stored file.</td><td class="ok">Match: 345 rows across 28 teams, equal to the stored row count.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+-<tr><td>Injury field values</td><td>Compared every player name, position, injury text, practice status and game status for all 28 team sections against the stored CSV.</td><td class="ok">No discrepancies found. Performed independently of session 30beeb55's T15 check, which also found none; together these close the F10 spot-check request.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
++<tr><td>Injury row count</td><td>Re-read the official Week 10 report in full (8 chunks) on 2026-11-15 and recounted players per team section independently of the stored file.</td><td class="ok">Per-team counts match for all 28 teams except Baltimore: the page lists 10 Ravens rows, the snapshot held 8. Two rows added and two cells corrected (Flag F83); the snapshot is now 347 rows.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
++<tr><td>Injury field values</td><td>Compared every player name, position, injury text, practice status and game status for all 28 team sections against the stored CSV. Earlier passes (30beeb55 T15, 7c9eb69a T17, 324b0cd2 T21) reported no discrepancies.</td><td class="ok">2026-11-15 read: four Baltimore rows differed (two missing, two with blank injury/game-status cells) and are corrected in the snapshot. The other 27 team sections were not re-compared field by field on 2026-11-15; their counts match. Flag F83 records the earlier passes' BAL count as contradicted.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+ <tr><td>Game list</td><td>Compared all 14 game headers: day, kickoff time, broadcaster and both listed records.</td><td class="ok">All 14 games match the stored games file.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+ <tr><td>Bye teams</td><td>Read the Teams on Bye section of the official Week 10 schedule.</td><td class="ok">CHI, DEN, PHI and TB confirmed, as recorded (Flag F05).</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
+ <tr><td>Home / away order</td><td>Compared the schedule game titles (for example "Bills at Jets") with the order NFL.com lists teams on the injury report.</td><td class="ok">The injury report lists the away team first in every Week 10 game; the site's "first listed / second listed" labels remain neutral and are now interpretable.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
+diff --git a/scripts/review.py b/scripts/review.py
+index 182de32..4265c90 100644
+--- a/scripts/review.py
++++ b/scripts/review.py
+@@ -144,7 +144,7 @@ PROPOSALS = [
+         "area": "Data rights",
+         "question": "Is written permission needed to keep publishing NFL.com-derived data?",
+         "why_it_matters": ("NFL.com terms prohibit systematic retrieval to compile a collection absent "
+-                           "express prior written consent (F16). This repository publishes a 345-row "
++                           "express prior written consent (F16). This repository publishes a 347-row "
+                            "injury snapshot transcribed from that site. No permission is recorded."),
+         "option_a": "Request written permission and record the response",
+         "option_b": "Freeze what exists and expand nothing until A is answered",
+diff --git a/scripts/verify_snapshot.py b/scripts/verify_snapshot.py
+index 17377af..7427ec4 100644
+--- a/scripts/verify_snapshot.py
++++ b/scripts/verify_snapshot.py
+@@ -184,7 +184,7 @@ def main():
+     add("V004", "Totals", "Field-level comparisons (position, injury, practice status, game status)",
+         f"{len(committed) * 4} comparisons, {field_diffs} mismatch(es)", "0 mismatches expected",
+         "PASS" if field_diffs == 0 else "FAIL",
+-        "Four fields compared for every one of the 345 rows", INJURY_URL)
++        f"Four fields compared for every one of the {len(committed)} rows", INJURY_URL)
+     add("V005", "Totals", "Duplicate player rows within a team",
+         str(len([k for k, v in ci.items() if len(v) > 1])), str(dupes),
+         "PASS" if dupes == 0 else "REVIEW", "A duplicated player would double-count exposure", INJURY_URL)

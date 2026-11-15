@@ -317,6 +317,24 @@ confirm on the Flagged for Review page.
 
 **T14 request (30beeb55 → integration):** added F19 (Netherlands) to `data/flags.csv`; added `wetten.overheid.nl` and `www.kansspelautoriteit.nl` to the builder's official-host allow-list; added a README note.
 
+## Requests from session 46d43a42 to the integration session (2026-11-15)
+
+These requests target shared outputs (`scripts/build.py`, `docs/`, `README.md`, nav and index). This session did not edit them.
+
+**R46-0 — proposed patch (ready to apply).** `proposals/46d43a42-integration-request.patch` (143 lines) changes `README.md`, `scripts/build.py`, `scripts/review.py`, `scripts/verify_snapshot.py`, `data/verification/official_batch2.txt`, `data/verification_week10_2026.csv` and `data/injuries_week10_2026.csv`. It moves the Baltimore Week 10 injury block from 8 to 10 rows (347 total) and updates the pins that depend on it. The four added rows (Hawkins, Randall, Campbell, Stanley) are still unverified against the live page (F83). Apply with `git apply`, then re-run the checks. These edits were made in this session, reverted here so the committed data stays consistent, and saved as the patch. `git apply --check` passes against a78f7bf.
+
+**R46-1 — landing page.** Add a decision-readiness table to the index, built from `data/brief_coverage.csv` (50 rows: status, blocking gate or flag, number that would clear it, evidence link). Add the index card and NAV entry. Do not show rows without an evidence link as verified.
+
+**R46-2 — leaderboard.** (a) Rank on the pre-registered prospective record only; currently 0 resolved games, so ranks are withheld. (b) Move the walk-forward backtest figures on `data/strategy_leaderboard.csv` (skill, CI, p, gates) to the backtest page, labelled "not eligible for ranking". (c) Add the control block from `data/control_baseline.csv`. (d) Show the signal and staking blocks separately from `data/strategy_signal_staking.csv`. The leaderboard data itself is not changed in this session.
+
+**R46-3 — drift check.** Call `scripts/check_manifest.verify_manifest()` from `build.py` and fail the build on any problem. Re-run `python3 scripts/check_manifest.py --update` only after a deliberate change.
+
+**R46-4 — public repository.** The repository and Pages site are public, so the row-level raw data committed here is public too. Owner decision needed before any private data layer is considered. Not yet logged as a flag (F86 is not in `data/flags.csv`).
+
+**Files this session adds (not shared outputs):** `data/brief_coverage.csv`, `data/capture_manifest.csv`, `data/control_baseline.csv`, `data/control_bets.csv`, `scripts/check_manifest.py`, `scripts/control_baseline.py`, `proposals/46d43a42-integration-request.patch`. `data/flags.csv` gains F83 only.
+
+**Not verified in this session:** the remaining Week 10 injury sections (24 clubs and the Lions chunk), the `decision_questions`, `decision_choices`, `model_lines` and `event_risk` cross-checks, and any build or link check. The branch has not been built.
+
 ## Merge / conflict log
 
 - **2026-11-14 · session-09d7cc77 · merge conflict on PR #4 (session 1 vs 2).**
@@ -2166,13 +2184,13 @@ Open PR #48 (`arena/a47ccbb1-x2`, "Final integration", OPEN) is another session'
 
 | ID | Task | Status | Owner | Files (scope) | Sources / notes |
 |----|------|--------|-------|---------------|-----------------|
-| T96 | One-row-per-brief-item coverage register: status, blocking gate or flag, number that would clear it, evidence link | in progress | 46d43a42 | `data/brief_coverage.csv` (new) | Built from the brief and the registers already in `data/` |
-| T97 | Decision-readiness table on the landing page (one row per requirement, blocking gate, number that clears it) | in progress | 46d43a42 | `scripts/build.py` (readiness section, index card, NAV), `docs/readiness.html` (generated) | Reads `data/brief_coverage.csv` |
-| T98 | Control baseline on the leaderboard run: seeded random picks and favourites-only, against the same out-of-sample games and reference line | in progress | 46d43a42 | `scripts/control_baseline.py` (new), `data/control_baseline.csv`, `data/control_bets.csv` (new), `scripts/build.py` (leaderboard block) | Reference line re-derived and checked against `data/model_backtest.csv` |
-| T99 | Keep backtest numbers off the leaderboard page (brief rule): leaderboard shows the pre-registered prospective record; backtest figures move to the backtest page | in progress | 46d43a42 | `scripts/build.py` (leaderboard + backtest sections), generated `docs/` | `data/strategy_leaderboard.csv` itself is unchanged |
-| T100 | Retained SHA-256 manifest for the committed captures and a drift check (fails on hash or row-count change) | in progress | 46d43a42 | `scripts/check_manifest.py` (new), `data/capture_manifest.csv` (new) | Hashes the repo's transcriptions, not the official page bytes |
-| T101 | Live re-verification of the Week 10 injury page on 2026-11-15 (per-team counts, Lions designations, Thursday result) | in progress | 46d43a42 | `data/repo_review_2026-11-15.csv` (new) | https://www.nfl.com/injuries/ ; https://www.nfl.com/schedules/2026/by-week/week-10 |
-| T102 | Flags and sources for the new irregularities | in progress | 46d43a42 | `data/flags.csv` (F83+), `data/sources.csv` (SRC-85+) | Next free IDs at claim time: F83, SRC-85, RV25 |
-| T103 | Integration: build, verify, check links, PR to `main`, merge, GitHub Pages check, record here | unclaimed (closing) | 46d43a42 | `COORDINATION.md`, generated `docs/`, `README.md` | |
+| T96 | Brief coverage register: one row per brief item with status, blocking gate or flag, number that would clear it, and an evidence link | needs review | 46d43a42 | `data/brief_coverage.csv` (new, 50 rows) | First pass. Rows checked against the repo; not every row checked against an official page. Several earlier draft IDs were removed because they did not exist in the repo. |
+| T97 | Decision-readiness table on the landing page | moved to integration (Request R46-1) | 46d43a42 | none in this session | `data/brief_coverage.csv` is the source. The index card, NAV entry and `docs/readiness.html` are shared outputs and are not edited here. |
+| T98 | Control baselines (seeded random picks; favourites only) against the same 89 out-of-sample games | needs review | 46d43a42 | `scripts/control_baseline.py` (new), `data/control_baseline.csv` (new), `data/control_bets.csv` (new, 89 rows, CRLF) | Leaderboard block in `build.py` is a request to integration (R46-2). `model.py` not edited. |
+| T99 | Keep backtest numbers off the leaderboard page | moved to integration (Request R46-2) | 46d43a42 | none in this session | `data/strategy_leaderboard.csv` unchanged. Irregularity: backtest figures are published on the leaderboard (see R46-2). |
+| T100 | Retained SHA-256 manifest and drift check for committed captures | needs review | 46d43a42 | `scripts/check_manifest.py` (new), `data/capture_manifest.csv` (new, 14 files) | Hashes the repo's committed transcriptions, not official page bytes. Not yet wired into `build.py` (R46-3). |
+| T101 | Live re-verification of the Week 10 injury page | in progress (partial) | 46d43a42 | `data/brief_coverage.csv`, `data/flags.csv` (F83) | Checked against https://www.nfl.com/injuries/: SEA 15 = 15 and CIN 9 = 9 match. BAL 10 live vs 8 committed (F83). The other 24 clubs and the Lions section (chunk 0) are not yet checked. `data/repo_review_2026-11-15.csv` was not created. |
+| T102 | Flags and sources for the new irregularities | done | 46d43a42 | `data/flags.csv` (F83 added) | No new source needed: F83 cites SRC-01 (https://www.nfl.com/injuries/). Next free IDs: F84, SRC-85. |
+| T103 | Integration: build, verify, link check, PR to `main`, merge, Pages check, record here | not performed by this session (left to the integration session) | 46d43a42 | none | This session is not the final integration session (PR #48 belongs to another session). No PR is opened from this branch. |
 
 **Scope rule for this session:** no change to any raw official capture, no new automated collection from NFL.com (see flag F16, the open terms gate), and no value filled in that a source does not state. Anything that needs an owner decision is published on Flagged for Review, not decided here.
