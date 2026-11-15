@@ -2532,6 +2532,90 @@ pages["index.html"] = (pages["index.html"][0],
                        pages["index.html"][1].replace('<h2>Start here</h2>', _new_intro, 1))
 
 
+# ---------- session b03f4ba1: control baselines, change-our-mind, removal-of-luck panel, decision readiness ----------
+# Each table below is generated from a register in data/ and reads its own source link from that register.
+# Nothing here adds a number: every value is copied from control_baselines.csv, strategy_change_rules.csv,
+# strategy_leaderboard.csv or decision_readiness.csv, and the luck share is labelled as the heuristic it is (F85).
+controls_rows = read_csv("control_baselines.csv")
+mind_rows = read_csv("strategy_change_rules.csv")
+ready_rows = read_csv("decision_readiness.csv")
+_ready_status = Counter(r["status"].split(" (")[0].strip() for r in ready_rows)
+_ready_done = _ready_status.get("Done", 0)
+_ready_partial = _ready_status.get("Partial", 0)
+_ready_missing = _ready_status.get("Missing", 0)
+_ready_blocked = _ready_status.get("Blocked", 0)
+_ready_irreg = _ready_status.get("Irregular", 0)
+_luck_rows = [
+    {"strategy_id": r["strategy_id"], "strategy": r["strategy"], "rank": r["rank"],
+     "skill": r["skill_score_mae_improvement_pts"], "skill_ci": f'{r["skill_ci_low"]} to {r["skill_ci_high"]}',
+     "weeks": r["weeks_positive_skill"], "week_p": r["week_sign_test_p"], "halves": r["halves_agree"],
+     "luck_index": r["luck_share_of_record"], "verdict": r["skill_or_luck_verdict"],
+     "source_url": r.get("source_url") or "https://www.nfl.com/schedules/2026/by-week/week-4"}
+    for r in leaderboard
+]
+_ctl_html = table(controls_rows,
+    ["control_id", "control", "rule", "decided_games_n", "correct", "accuracy", "ci95_low", "ci95_high",
+     "p_vs_coin_two_sided", "basis", "source_url"],
+    {"control_id": "ID", "control": "Control", "rule": "Rule", "decided_games_n": "Decided games (n)",
+     "correct": "Correct", "accuracy": "Accuracy", "ci95_low": "Low", "ci95_high": "High",
+     "p_vs_coin_two_sided": "p vs coin", "basis": "Basis", "source_url": "Source"},
+    table_id="controls-table")
+_mind_html = table(mind_rows,
+    ["strategy_id", "strategy", "current_evidence", "what_would_move_us_toward_trusting_it",
+     "what_would_move_us_away_from_it", "pre_registration_status", "source_url"],
+    {"strategy_id": "ID", "strategy": "Strategy", "current_evidence": "Current evidence",
+     "what_would_move_us_toward_trusting_it": "Would move us TOWARD trusting it",
+     "what_would_move_us_away_from_it": "Would move us AWAY from it",
+     "pre_registration_status": "Pre-registration", "source_url": "Source"},
+    table_id="mind-table")
+_luck_html = table(_luck_rows,
+    ["rank", "strategy_id", "strategy", "skill", "skill_ci", "weeks", "week_p", "halves", "luck_index", "verdict", "source_url"],
+    {"rank": "Rank", "strategy_id": "ID", "strategy": "Strategy", "skill": "Skill (MAE pts)",
+     "skill_ci": "Skill 95% interval", "weeks": "Weeks positive", "week_p": "Sign-test p",
+     "halves": "Halves agree", "luck_index": "Luck index (heuristic, F85)", "verdict": "Verdict",
+     "source_url": "Source"},
+    table_id="luck-panel-table")
+_ready_html = table(ready_rows,
+    ["req_id", "brief_item", "status", "what_the_repo_shows_now", "blocking_gate", "number_that_clears_it", "source_url"],
+    {"req_id": "ID", "brief_item": "Requirement (from the brief)", "status": "Status",
+     "what_the_repo_shows_now": "What the repo shows now", "blocking_gate": "Gate that blocks it",
+     "number_that_clears_it": "Number that would clear it", "source_url": "Source"},
+    table_id="readiness-table", filterable=True)
+
+_lb_add = (
+    '<h2>Control baselines (every run is compared with these)</h2>'
+    '<p class="note">Controls are graded on the same decided out-of-sample games as the strategies above, '
+    f'n = {controls_rows[0]["decided_games_n"]} (one tied game is excluded). The random row is a seeded simulation, '
+    'not a model. "Favourite" means the naive reference line\'s favourite: <strong>no betting market is in this '
+    'repository</strong>, so no market favourite is measured (Flag F32). Margins in the source file are home minus '
+    'away, so a positive margin favours the home team (Flag F86). Reproduce with <code>python3 scripts/controls.py</code>.</p>'
+    + _ctl_html +
+    '<h2>Two-sided: what would change our mind, per strategy</h2>'
+    '<p class="note">Every strategy states the evidence that would move us toward trusting it and the evidence that would '
+    'move us away. None of these rules was pre-registered before the 2026 results were visible (Flag F87), so '
+    'the triggers are a plan for the next window, not a verdict on the past one.</p>'
+    + _mind_html
+)
+pages["leaderboard.html"] = (pages["leaderboard.html"][0], pages["leaderboard.html"][1] + _lb_add)
+
+_idx_add = (
+    '<h2>Removal of luck (dashboard panel)</h2>'
+    '<p class="note">Each strategy is shown with its skill, the interval around that skill, how many weeks were positive, '
+    'whether the two halves of the sample agree, and a verdict. The <strong>luck index is a heuristic</strong> built '
+    'inside the model (share of the interval below zero, Flag F85): read it as an index, not a measured share of luck. '
+    'Rank still uses the skill columns only.</p>'
+    + _luck_html +
+    '<h2>Decision readiness: one row per requirement</h2>'
+    f'<p class="note">{len(ready_rows)} requirements from the brief. '
+    f'<strong>{_ready_done} done, {_ready_partial} partial, {_ready_missing} missing, '
+    f'{_ready_blocked} blocked, {_ready_irreg} irregular.</strong> Each row names the gate that blocks it and the number '
+    'that would clear it. A number is given only where the repo has a threshold for it; otherwise the basis column '
+    'says so.</p>'
+    + _ready_html
+)
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + _idx_add)
+
+
 # ---------- collision guards ----------
 # Two parallel sessions can register the same page slug, or add two NAV entries
 # pointing at one file. Either silently loses a page (the later dict assignment

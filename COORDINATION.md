@@ -57,7 +57,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `20e6161b` | `arena/20e6161b-x2` | **Current session.** Base `main` @ `d22bbd3` (PR #34); ca1ea224 adopted by fast-forward. Claimed T51–T55 (draft IDs) before four parallel sessions merged PRs #35–#46 with overlapping IDs; after the union merge this session owns **T79–T83**, flags **F74–F75**, verification **V28–V32** and repo-review **RV14–RV23**. Scope: C09/G1 model pass (independently derived, superseded by main's merged implementations), the A08–A11 replacement-depth gap (F53) from official club charts, availability-register corrections (F74), brief-completeness audit, fifth verification pass, and integration. See the merge/conflict log and close-out at the end of this file. |
 | `25d6114f` | `arena/25d6114f-x2` | **Stale — work taken over by `cbb6c2f3` (T88).** Claimed T14–T20 on 2026-11-14; those IDs were completed by other sessions on `main` (30beeb55, 7c9eb69a, 45a0ec8c, 52ca9f77, 324b0cd2, 3988bdab). Last commit 18:21:30Z, then no commits for >60 minutes; PR #14 taken over under the stale-claim rule. Its unique verified content (official gamebook starter evidence, snapshot-verification ledger, signal/skill/luck registers, `scripts/verify_snapshot.py`) was reconciled into `main` by `cbb6c2f3` without discarding either side; see the takeover note above its verification report below. |
 | `cbb6c2f3` | `arena/cbb6c2f3-x2` | **Current session — takeover + final integration (T88).** Arrived on `main` @ `d22bbd3` (PR #34 merged). Claims **T88** (drafted T52; renumbered three times after main advanced through PRs #35–#50: T51–T60, then T79–T83 (20e6161b), then T84–T87 (d2915d86) were taken by parallel sessions with earlier claim times): (a) take over stale PR #14 (session `25d6114f`, last commit 18:21Z, >60 min with no commits — takeover rule applies), reconciling its unique verified content (official gamebook starter evidence, snapshot-verification ledger, signal/skill/luck registers) with current `main` without discarding either side; (b) reconcile the stale board statuses T41 (PR #34 merged 19:38Z but never recorded) and T48 (log says done, table says in progress); (c) handle the remaining open PR #31 (T51, session `ccd9ab30`) — closed as superseded after it passed 60 minutes with no activity; (d) final line-by-line re-verification, site rebuild, link check, PR, merge, Pages confirmation and closing record. **Done:** PR #38 merged as `61f3419` at 20:51:40Z, Pages deployment success at 20:52Z, live checks pass; PR #14 auto-merged with it, PR #31 closed as superseded, PR #48 left open with an advisory comment. File scope: `COORDINATION.md`, PR #14's unique files (`data/starters_gamebook_2026_reg_10.csv`, `data/verification_week10_2026.csv`, `data/verification/`, `scripts/verify_snapshot.py`, `data/line_signals.csv`, `data/skill_engine_gates.csv`, `data/luck_tests.csv`, `data/correlation_framework.csv`, `data/decision_questions.csv`, `data/depth_deficiency.csv`, `data/leaderboard_rules.csv`, `data/repo_review.csv`, `data/suggestions_register.csv` and their generated pages), plus integration-owned `scripts/build.py`, `README.md`, `docs/**`, `data/flags.csv`, `data/sources.csv` reconciliation. Will not edit `scripts/model.py` while PR #31 is open. |
-| `6ee4d13e` | `arena/6ee4d13e-x2` | **Current session (2026-11-15).** Claimed **T96–T100** on `main` @ `a78f7bf` (PR #53 merged; board shows no task in progress). Scope: the four brief items with no page or register on `main` (control baseline, two-sided change-my-mind field, per-team view, decision-readiness table) plus the integration. Branch is fixed by Arena as `arena/6ee4d13e-x2`; the `session-<id>/<task>` naming in the brief is not used because the session may only work on its own branch. |
+| `6ee4d13e` | `arena/6ee4d13e-x2` | **Current session (2026-11-15).** Claimed T96–T100, then withdrew its duplicates of `b03f4ba1`'s merged T96/T97/T99 (PR #55) and kept **T98** (per-team view), **T100** (integration) and added **T101** (control baselines for every leaderboard run). Branch is fixed by Arena as `arena/6ee4d13e-x2`; the `session-<id>/<task>` naming in the brief is not used. |
 
 ## Task board (combined — all sessions)
 
@@ -2159,30 +2159,102 @@ and reward tiers) · F36 (re-run the model when Week 10 is final) · F81/F82 (re
 20e6161b respectively (no files written for them here); T52/T53 were adopted from f25d6b55/e208ba6d at claim
 time. Final free IDs after this session: T96+.**
 
-## 2026-11-15 · session 6ee4d13e · claim (T96–T100)
+## 2026-11-15 · session 6ee4d13e · claim, collision record and revised scope (T98, T100, T101)
 
-**Branch:** `arena/6ee4d13e-x2` · **Base:** `main` @ `a78f7bf` (PR #53 merged) · **Status:** active · **Owner:** `6ee4d13e`
+**Branch:** `arena/6ee4d13e-x2` · **Base:** `main` @ `a78f7bf` (PR #53); `main` @ `2ab6ea5` (PRs #54 and #55) merged in · **Status:** active · **Owner:** `6ee4d13e`
 
-### Board survey before claiming (2026-11-15)
+### Collision record (read before merging)
 
-- No task on the board is `in progress` or `unclaimed` (grep of the board found only `needs review` flags and
-  owner-owned items F09, F16, F17, F19, DEC-01…DEC-10, F36).
-- Zero-hit searches on `main` for four brief requirements: a **control baseline** (random picks / favourites only) on
-  any leaderboard run; a **"what would change our mind"** field on any strategy entry; a **per-team view** (starters
-  out, replacements named, net injury count); a **decision-readiness table** on the landing page (one row per
-  requirement with the blocking gate and the number that would clear it).
-- `scripts/build.py` regenerates all 41 pages with no diff on the base commit (`python3 scripts/build.py`, 0.5 s).
+- My first claim (T96–T100, commit `c64968f`, from `a78f7bf`) overlapped with session `b03f4ba1`, which claimed **T96**
+  and merged it to `main` as PR #55 at 18:37 UTC on 2026-11-15, after my board survey and before my first
+  implementation push. I had written parallel versions of four items. Per the board rule (never start a task another
+  session has claimed), I **withdrew my duplicates and kept theirs unchanged**:
+  - **T96 control baselines** (straight-up record for M1, reference-line favourite, random picks): done by `b03f4ba1`
+    (`scripts/controls.py`, `data/control_baselines.csv`, `data/control_baselines_games.csv`). Not duplicated.
+    Its control covers **M1 only**, not every leaderboard run, so the rest is taken on as **T101** below.
+  - **T97 two-sided "what would change our mind"**: done by `b03f4ba1` (`data/strategy_change_rules.csv`, seven
+    strategies). My register is withdrawn.
+  - **T99 decision-readiness table**: done by `b03f4ba1` (`data/decision_readiness.csv`, 45 rows D01–D45). My table is
+    withdrawn. Note for the owner: `data/requirements.csv` has **58** rows, so the readiness table does not yet cover
+    every requirement row (flag F90).
+- **Flag IDs.** My drafted flags F83–F85 collided with `main` (F83–F88 already used). Renumbered to **F89–F91**.
+- **Kept, not overlapping anything on `main`:** T98 (per-team view), T100 (integration). **New:** T101.
 
-### Task claim
+### Task board (this session's final state)
 
 | ID | Task | Status | Owner | Files (scope) | Sources / notes |
 |----|------|--------|-------|---------------|-----------------|
-| T96 | Control baseline on every leaderboard run: random side and favourites-only picks on the same games each strategy bets, with a seeded random distribution | in progress | 6ee4d13e | `scripts/baselines.py` (new), `data/control_baselines.csv` (new), `scripts/build.py` (leaderboard block only), generated `docs/leaderboard.html` | First-party: `data/model_backtest.csv` (walk-forward predictions, official results); reference line as defined in `scripts/model.py` |
-| T97 | Two-sided "what would change our mind" field on every strategy entry (what would strengthen it / what would weaken it, each tied to a pre-declared gate) | in progress | 6ee4d13e | `data/strategy_change_mind.csv` (new), `scripts/build.py` (leaderboard block only), generated `docs/leaderboard.html` | First-party gate definitions in `data/validation-gates.json`, `data/gate_results.csv`, `data/leaderboard_rules.csv`; written after results were seen, so flagged as post-hoc wording, not a pre-registration |
-| T98 | Per-team view: listed players, Out/Doubtful/Questionable counts (net injury count), starters out and replacements named only where an official source confirms them | in progress | 6ee4d13e | `scripts/team_view.py` (new), `data/team_view_week10_2026.csv` (new), `scripts/build.py` (new page + nav entry), generated `docs/team-view.html` | Official NFL injury report (`https://www.nfl.com/injuries/`); replacements from `data/replacement_depth.csv` (verified rows only) |
-| T99 | Decision-readiness table on the landing page: one row per requirement in `data/requirements.csv`, the gate that blocks it, and the number that would clear it (blank and flagged where no number is defined) | in progress | 6ee4d13e | `data/decision_readiness.csv` (new), `scripts/build.py` (landing block only), generated `docs/index.html` | `data/requirements.csv`, `data/decision-chain.csv`, `data/flags.csv` |
-| T100 | Integration: rebuild, run every check, PR `arena/6ee4d13e-x2` → `main`, merge, confirm GitHub Pages, record PR and result | in progress | 6ee4d13e | `COORDINATION.md`, generated `docs/**`, PR | Runs last |
+| T96 | Control baselines (M1 record, favourite, random) | done by `b03f4ba1` (PR #55); my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | see above |
+| T97 | Two-sided change-my-mind field | done by `b03f4ba1`; my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | `data/strategy_change_rules.csv` |
+| T98 | Per-team view: listed players, Out/Doubtful/Questionable, net injury count, starters out and replacements named where a club chart verifies them | in progress | 6ee4d13e | `scripts/team_view.py` (new), `data/team_view_week10_2026.csv` (new), `scripts/build.py` (new page block, nav entry, validation), generated `docs/team-view.html` | Official NFL.com Week 10 injury report (https://www.nfl.com/injuries/); club charts from `data/depth_replacement.csv` (self-labelled unofficial, F-05/F18); Week 10 bye list from https://www.nfl.com/schedules/2026/by-week/week-10 |
+| T99 | Decision-readiness table on the landing page | done by `b03f4ba1` (45 rows); my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | coverage gap: 45 rows vs 58 requirements (F90) |
+| T100 | Integration: merge `main`, rebuild, run every check, PR `arena/6ee4d13e-x2` → `main`, merge, confirm GitHub Pages, record | in progress | 6ee4d13e | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+| T101 | Control baselines for **every** leaderboard run (M1–M4, T1, R1, P1): random picks and favourites on the exact bets each run made, with a reproduction check | in progress | 6ee4d13e | `scripts/baselines.py` (new), `data/leaderboard_control_runs.csv` (new, separate from `data/control_baselines.csv`), `scripts/model.py` (6-line hook after the leaderboard summaries), `scripts/build.py` (leaderboard block), generated `docs/leaderboard.html` | First-party: `data/model_backtest.csv` and the unrounded walk-forward rows in `scripts/model.py`. Extends T96; does not replace it |
 
-**Not claimed (owner-owned, unchanged by this session):** DEC-01…DEC-10, F09, F16, F17, F19, F36 (re-run after
-Week 10 Sunday games), F38 (historical injury reports not retrievable), F13 (no visible timestamp on the injury report),
-and every item in the `needs review` list. Nothing in this session changes a verified value.
+**Not claimed (owner-owned, unchanged):** DEC-01…DEC-10, F09, F16, F17, F19, F36, F38, F13, and every `needs review` item.
+
+## 2026-11-15 · session 8a7ca071 · final verification and closing integration (current session)
+
+**Branch:** `arena/8a7ca071-x2` · **Base:** `main` @ `a78f7bf` · **Owner:** `8a7ca071` · **Status:** active
+
+### Scope
+Every brief requirement is implemented on `main`: requirements register; decision framework; strategy catalog for single bets, parlays and player-prop combos; validation gates; correlation register with `n`; leaderboard with signal-vs-staking split and demotion gate G9; injury & depth system (2nd/3rd/4th-string replacements); price-snapshot store (opening/closing, side → total → moneyline); fair line / market line / difference as separate columns; verified results feed; walk-forward backtest; suggestions and questions sections; executive summary; Flagged for Review register; GitHub Pages dashboard. No open task IDs remained on the board, so this session performed a final independent verification and the closing PR/merge/Pages integration only — no new feature work, no data values added or inferred.
+
+### Verification performed (this session)
+- `python3 scripts/build.py` → 41 pages built into `docs/`; link and row-source checks passed; regenerated output byte-identical to committed `docs/`.
+- `python3 scripts/verify_results.py` → 137 games; all 32 teams reconcile exactly with the official standings (W-L-T-PF-PA).
+- `python3 scripts/verify_snapshot.py` → 90 checks: 86 pass, 0 fail, 1 review (Ben Brown — official source disagrees with itself; expected, left flagged).
+- `python3 scripts/verify_live.py` → 75 of 75 units matched, 0 discrepancies.
+- `npm run build && npm run verify` → 12 Node pages; ALL CHECKS PASSED (data-table source resolution, 194 internal links, no unrendered tokens).
+
+### Network limitation (honesty note)
+This sandbox's outbound network is restricted to github.com, npm and pypi. Live NFL.com pages could not be fetched in this session, so no new live official-source re-verification was performed here. All NFL values remain as committed: each table row links to an official source URL, or is left blank and flagged as unverified where no official source confirms it (the repo's standing rule — nothing inferred or filled in). Rewards, CLV and ROI stay uncomputed because no licensed odds feed is connected (F07/F51); reward tiers remain a proposal, not an implemented mechanic. No strategy is ranked on live performance.
+
+### Task claim
+No unclaimed task IDs remained. This session claims no new task ID; it performs the closing integration only.
+
+### PR / merge / Pages record
+| Event | Record |
+|---|---|
+| PR opened | TBD — `arena/8a7ca071-x2` → `main` |
+| PR merged | TBD |
+| Pages | status `built` on `main` at `https://karagemop466-tech.github.io/X2/` (pre-existing); re-confirm after merge |
+
+## 2026-11-15 · session `b03f4ba1` · claim and record (T96)
+
+**Branch note.** This session works on the single branch assigned to it, `arena/b03f4ba1-x2` (from `main` @ `a78f7bf`). The `session-<id>/<task>` branch naming in this board is superseded for this session by that single-branch rule. Nothing was pushed to any other branch.
+
+**Claim (T96, status: in progress → done in this record).** Scope: close brief items with no coverage on `main` (a grep of `docs/` and `data/` found zero hits for "removal of luck", "decision readiness", "change our mind", "control baseline", "ablation", "two-stage" and "immutable"). Files touched: `scripts/controls.py` (new), `scripts/build.py` (one appended block before the collision guards; no existing block changed), `data/control_baselines.csv` (new), `data/control_baselines_games.csv` (new), `data/strategy_change_rules.csv` (new), `data/decision_readiness.csv` (new), `data/flags.csv` (F83–F88 appended), `data/repo_line_audit.csv` (regenerated by `scripts/repo_audit.py`; the committed row counts were stale: flags 70 → 82, sources 80 → 84), `README.md` (one section), `docs/**` (generated), `COORDINATION.md`.
+
+**Delivered**
+- **Control baselines** on the leaderboard: random picks (seed 20261115, 10,000 draws), the naive reference line's favourite, and M1, on 88 decided out-of-sample games (one tie excluded). Results: random 43.99/88 mean (draw range 35–53); favourite 57/88 = 64.8% (Wilson 54.4–73.9%, p = 0.007 vs coin); M1 59/88 = 67.0% (56.7–76.0%, p = 0.002). Per-game rows in `data/control_baselines_games.csv`.
+- **Two-sided "what would change our mind"** for M1, M2, M3, M4, T1, R1, P1. Each row names the gate or rule that would move it, and states that it is not pre-registered.
+- **Landing page:** removal-of-luck panel (luck index labelled as heuristic, F85) and a decision-readiness table with 45 rows, one per requirement from the brief, each with its status, blocking gate, the number that would clear it, and a source link. Counts: 8 done, 10 partial, 13 missing, 11 blocked, 3 irregular.
+
+**Sources checked in this session (line by line where stated)**
+- NFL.com Week 10 injury page, https://www.nfl.com/injuries/ — read 2026-11-15. Still shows Week 10. 14 rows across four clubs on the first two of eight chunks match `data/injuries_week10_2026.csv` exactly on injury, practice status and game status (Commanders: Patrick, Yankoff; Giants: M. Harrison; Patriots: Brown, Davis, Henderson, Rouse, Woods; Lions: Joseph, Mays, Reed, St. Brown; Chiefs: Delane). Full recount **not** completed.
+- NFL.com Terms and Conditions, https://www.nfl.com/legal/terms/ — read 2026-11-15 (updated May 16, 2024). Section 1.3 quoted in D22.
+- GitHub commit history for `data/strategy_leaderboard.csv` and `data/games_2026_results.csv` via `gh api` — earliest commit touching both is `daf3c0d` (2026-11-14 18:47 UTC), the same commit for both (F87).
+- Local clone holds one commit (`a78f7bf`), so the git-history claim depends on the GitHub check above.
+
+**Verification performed**
+- `python3 scripts/build.py`: 41 pages; row-source check passed; 1,823 internal links resolve; 4,289 external links, all https and on the allow-list (`scripts/check_links.py`).
+- `python3 scripts/repo_audit.py`: every check either passes or stays flagged as before (A14 partial coverage); the A12 counts were updated.
+- `python3 scripts/controls.py`: reproducible from `data/model_backtest.csv`.
+- Counts in the readiness table were taken from the files named in each row (e.g., `price_snapshots_extended.csv`: 306 rows, 306 fair lines, 0 opening, 0 closing; `depth_replacement.csv`: 33 rows across 6 clubs; `model_predictions_2026.csv`: 121 rows, S0–S8 outputs, no input columns).
+
+**Irregularities (all flagged, all open; published on the Flagged for Review page)**
+- **F83** Week 10 injury row count not reconciled: repo 345; brief says 254 published / 279 live.
+- **F84** Three gate numberings with conflicting meanings (`validation-gates.json` G-01–G-07; `strategy_gates.csv` G0–G8; `validation_gates_measured_2026.csv` G1–G9).
+- **F85** "Luck share" is an internal heuristic (share of the bootstrap interval below zero), not a standard measure.
+- **F86** Columns named "spread" hold home-minus-away margins; sign is the reverse of a conventional spread.
+- **F87** Pre-registration cannot be demonstrated: the rules and the 2026 results first appear in the same commit (`daf3c0d`).
+- **F88** Brief says a 136-game log; repo holds 137 games. Not reconciled to the official schedule.
+
+**Not done in this session (recorded in `data/decision_readiness.csv` with the number that would clear each):** scheduled or immutable snapshot capture (D10–D12), off-site storage and alerts (D17), inactive lists and snap counts (D13), reserve list (D14), depth for 32 clubs (D15–D16), roster-event register (D19), designation calibration (D20–D21), personnel ablations (D24), train/validation/holdout split (D08), the two-stage escrow and CLV (D31), vig-free comparison (D32), and the public/private data split pending the terms review (D22–D23). None of these was claimed as built.
+
+**Caution on IDs.** The readiness table uses `D01`–`D45` in `data/decision_readiness.csv`. The demotion rules in `data/demotion_gate.csv` are `D1`–`D7`. They are different registers; cross-references are written in full where they could be confused.
+
+**Task status:** T96 **done** (brief-gap closure, this session). PR: https://github.com/karagemop466-tech/X2/pull/55 (`arena/b03f4ba1-x2` → `main`), opened 2026-11-15 and merged as the step below; the merge commit is recorded on the PR.
+
+**Reconciliation note (b03f4ba1, after rebasing onto `main` @ `5509535`, PR #54 by 8a7ca071).** 8a7ca071's entry above states that "every brief requirement is implemented on `main`". The readiness register written in this session finds otherwise for specific items: 13 requirements missing, 11 blocked, 10 partial (`data/decision_readiness.csv`). Both entries are kept; neither overwrites the other. The conflict was in COORDINATION.md only (both sides were appended sections); no other file conflicted.

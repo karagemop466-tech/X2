@@ -682,5 +682,59 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv",
   "status": "Irregularity - open (documentation)",
   "action_requested": "Align the F48 status text with the canonical t-interval values on the next register pass; no model output changes."
+ },
+ {
+  "flag_id": "F83",
+  "category": "Repo irregularity",
+  "item": "Week 10 injury row count does not match the brief's live figure",
+  "detail": "The repo holds 345 Week 10 injury rows (data/injuries_week10_2026.csv). The brief quotes 254 published and 279 live, with 4 and 2 no-injury sections. The live NFL.com page (read 2026-11-15) still shows Week 10. Fourteen rows from four clubs on the first two of eight page chunks (Commanders: Patrick, Yankoff; Giants: Malik Harrison; Patriots: Brown, Davis, Henderson, Rouse, Woods; Lions: Joseph, Mays, Reed, St. Brown; Chiefs: Delane) match the repo on injury, practice status and game status. A full row recount of all eight chunks was not completed, so the 279 and 254 figures are neither confirmed nor refuted.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - recount",
+  "action_requested": "Full row recount of the live Week 10 page, section by section, against the 345 repo rows."
+ },
+ {
+  "flag_id": "F84",
+  "category": "Register irregularity",
+  "item": "Three gate numberings with conflicting meanings",
+  "detail": "validation-gates.json uses G-01 to G-07 (CLV, sample size, walk-forward, correlation bound, leg independence, data integrity, selectivity). data/strategy_gates.csv uses G0 to G8 (provenance, sample size, out-of-sample...). data/validation_gates_measured_2026.csv uses G1 to G9 (sample size, look-ahead, skill, interval, accuracy, Brier, halves, multiplicity). G1 means sample size in two files and G2 means out-of-sample in one and look-ahead in another. Cross-references in the leaderboard are ambiguous as a result.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open - renumber",
+  "action_requested": "Adopt one gate numbering with a cross-reference table, then re-point each page."
+ },
+ {
+  "flag_id": "F85",
+  "category": "Method irregularity",
+  "item": "'Luck share' is a heuristic, not a standard statistic",
+  "detail": "scripts/model.py computes luck_share as the fraction of the bootstrap interval lying below zero: (0 - lower bound) / (upper bound - lower bound), capped to [0,1]. It is an internal construction, not a published method. The landing 'removal of luck' panel reports it under that name, so it must be read as a model-internal index, not as a measured share of luck.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open - define",
+  "action_requested": "Name it as an index and document the formula, or replace it with a method from a cited source (for example a permutation or split-half estimate)."
+ },
+ {
+  "flag_id": "F86",
+  "category": "Register irregularity",
+  "item": "Column names say 'spread' but hold home-minus-away margins",
+  "detail": "data/model_backtest.csv columns reference_spread_home and m1_spread_home hold the margin (home points minus away points), per scripts/model.py. A conventional spread takes the opposite sign for the favourite. Anyone who reads the column as a market spread will reverse the favourite. Control baselines (data/control_baselines.csv) use the margin sign and say so.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open - rename",
+  "action_requested": "Rename the columns to home_margin in a later build, or add the sign convention to the page header."
+ },
+ {
+  "flag_id": "F87",
+  "category": "Pre-registration irregularity",
+  "item": "Pre-registration cannot be demonstrated from the git history",
+  "detail": "Commit history on GitHub for the rule and results files begins at daf3c0d (2026-11-14 18:47 UTC). The 2026 results (data/games_2026_results.csv) and the strategy leaderboard (data/strategy_leaderboard.csv) first appear in that same commit, so no dated commit separates a rule from the results it was scored on. The commit hash cannot serve as the registration for any strategy in the 2026 leaderboard. All strategy rows are therefore post-hoc and must not be presented as pre-registered. This clone holds one commit (a78f7bf), so the GitHub history is the check (checked 2026-11-15).",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open - register next",
+  "action_requested": "Commit the rule text, sample window and gates for the next window before it opens; state these 2026 results as exploratory."
+ },
+ {
+  "flag_id": "F88",
+  "category": "Count discrepancy",
+  "item": "Brief says 136 games; repo holds 137",
+  "detail": "The brief's backtest corpus is 'the 136-game log'. The repo's games_2026_results.csv holds 137 completed games (model_summary.json games_transcribed = 137). The 137 count is consistent across files, but the brief's 136 has not been reconciled against the official schedule.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Open - reconcile",
+  "action_requested": "Compare the 137 rows with the official weekly schedule pages, week by week, and record any difference."
  }
 ]
