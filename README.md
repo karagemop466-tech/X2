@@ -23,7 +23,7 @@ where a source verifies it).
 4. **Price snapshots** (`docs/price-snapshots.html`) — the price-snapshot store recording opening and closing numbers for every originated market; values blank and flagged because no licensed odds feed exists.
 5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, prospective signal/staking fields (blank until grading), and the proposed demotion gate.
 6. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
-7. **Leaderboard** (`docs/leaderboard.html`) — prospective-only competition registry. It is intentionally unranked until frozen prospective forecasts have been graded; historical backtest statistics appear only on the Backtest page. Signal and staking remain separate.
+7. **Leaderboard** (`docs/leaderboard.html`) — prospective-only competition registry. It is intentionally unranked until frozen prospective forecasts have been graded; full historical outcome tables are on the Backtest page; the landing-page removal-of-luck panel is explicitly marked as research-only. Signal and staking remain separate.
 8. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
 9. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
 10. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
@@ -170,7 +170,7 @@ closing line, player-prop outcome, player-depth string order, replacement impact
 
 Football variance cannot be removed. Out-of-sample testing, permutation tests, bootstrap intervals and
 multiple-comparison control stop variance from being mistaken for skill; they do not eliminate it and they
-guarantee no result. The prospective leaderboard remains unranked until a frozen registration manifest and prospective forecast window have been graded; historical research results appear on the Backtest page only.
+guarantee no result. The prospective leaderboard remains unranked until a frozen registration manifest and prospective forecast window have been graded; detailed historical outcomes appear on the Backtest page; the landing-page panel is explicitly research-only.
 
 ## Two independent implementations, compared
 

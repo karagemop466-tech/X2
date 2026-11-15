@@ -872,7 +872,7 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
 {table(correlation_plan, ['question','method','required_alignment','current_value','sample_n','source_url'],
        {'question':'Question','method':'Proposed measurement','required_alignment':'Data alignment','current_value':'Current value','sample_n':'Sample size','source_url':'Statistical reference'})}
 <h2>Prospective leaderboard — not yet ranked</h2>
-<p class="note">Seven candidate strategy definitions exist, but none has an immutable pre-registration record satisfying EG1 or a completed prospective evaluation window. Historical walk-forward scores are excluded from the leaderboard and retained only on the <a href="backtest.html">Backtest</a> page. No strategy is currently eligible or live for competition, and no reward is offered (R36). Future ranking requires a frozen registration manifest, forecast log, official outcomes, pre-approved gates, rights clearance and a sufficient prospective sample. Signal and staking remain separate; the proposed demotion gate is documented on the <a href="leaderboard.html">Leaderboard</a> page.</p>
+<p class="note">Seven candidate strategy definitions exist, but none has an immutable pre-registration record satisfying EG1 or a completed prospective evaluation window. Historical walk-forward scores are excluded from the leaderboard; detailed outcomes are on the <a href="backtest.html">Backtest</a> page and the landing-page diagnostic panel is explicitly research-only. No strategy is currently eligible or live for competition, and no reward is offered (R36). Future ranking requires a frozen registration manifest, forecast log, official outcomes, pre-approved gates, rights clearance and a sufficient prospective sample. Signal and staking remain separate; the proposed demotion gate is documented on the <a href="leaderboard.html">Leaderboard</a> page.</p>
 """)
 
 # ---------- decision path ----------
@@ -1118,8 +1118,8 @@ pages["leaderboard.html"] = ("Leaderboard", f"""
 <p class="note"><strong>Competition status: no eligible entries; not ranked.</strong> Candidate strategy definitions
 exist, but the registration gate is not met: the frozen registration record, feature set, scoring rule and data cutoff
 have not all been attested in a prospective competition manifest. Historical backtests are never leaderboard entries
-and no backtest-derived score, rank, hit rate, uncertainty interval or reward tier is shown here. Historical research
-belongs only on the <a href="backtest.html">Backtest</a> page. An entry can become eligible only after an immutable
+and no backtest-derived score, rank, hit rate, uncertainty interval or reward tier is shown here. Detailed historical outcomes
+are on the <a href="backtest.html">Backtest</a> page; the landing page's luck panel is clearly labeled research-only. An entry can become eligible only after an immutable
 pre-registration and a complete prospective evaluation window with official outcomes.</p>
 {tiles([(len(leaderboard), 'candidate strategy definitions'), (0, 'prospective samples graded'),
         (0, 'eligible ranked entries'), (0, 'live strategies')])}
@@ -2472,9 +2472,10 @@ pages["index.html"] = (pages["index.html"][0],
 
 # ---------- session b03f4ba1: control baselines, change-our-mind, removal-of-luck panel, decision readiness ----------
 # Each table below is generated from a register in data/ and reads its own source link from that register.
-# Nothing here adds a number: every value is copied from control_baselines.csv, strategy_change_rules.csv,
-# strategy_leaderboard.csv or decision_readiness.csv, and the luck share is labelled as the heuristic it is (F85).
+# Backtest diagnostics are displayed only on the landing-page research panel (not the competition leaderboard).
+# Values are copied from the separately named research/control registers; the luck share remains explicitly heuristic (F85).
 controls_rows = read_csv("control_baselines.csv")
+research_rows = read_csv("strategy_backtest_scores.csv")
 mind_rows = read_csv("strategy_change_rules.csv")
 ready_rows = read_csv("decision_readiness.csv")
 _ready_status = Counter(r["status"].split(" (")[0].strip() for r in ready_rows)
@@ -2484,12 +2485,12 @@ _ready_missing = _ready_status.get("Missing", 0)
 _ready_blocked = _ready_status.get("Blocked", 0)
 _ready_irreg = _ready_status.get("Irregular", 0)
 _luck_rows = [
-    {"strategy_id": r["strategy_id"], "strategy": r["strategy"], "rank": r["rank"],
+    {"strategy_id": r["strategy_id"], "strategy": r["strategy"],
      "skill": r["skill_score_mae_improvement_pts"], "skill_ci": f'{r["skill_ci_low"]} to {r["skill_ci_high"]}',
      "weeks": r["weeks_positive_skill"], "week_p": r["week_sign_test_p"], "halves": r["halves_agree"],
      "luck_index": r["luck_share_of_record"], "verdict": r["skill_or_luck_verdict"],
      "source_url": r.get("source_url") or "https://www.nfl.com/schedules/2026/by-week/week-4"}
-    for r in leaderboard
+    for r in research_rows
 ]
 _ctl_html = table(controls_rows,
     ["control_id", "control", "rule", "decided_games_n", "correct", "accuracy", "ci95_low", "ci95_high",
@@ -2507,8 +2508,8 @@ _mind_html = table(mind_rows,
      "pre_registration_status": "Pre-registration", "source_url": "Source"},
     table_id="mind-table")
 _luck_html = table(_luck_rows,
-    ["rank", "strategy_id", "strategy", "skill", "skill_ci", "weeks", "week_p", "halves", "luck_index", "verdict", "source_url"],
-    {"rank": "Rank", "strategy_id": "ID", "strategy": "Strategy", "skill": "Skill (MAE pts)",
+    ["strategy_id", "strategy", "skill", "skill_ci", "weeks", "week_p", "halves", "luck_index", "verdict", "source_url"],
+    {"strategy_id": "ID", "strategy": "Historical strategy research", "skill": "Skill (MAE pts)",
      "skill_ci": "Skill 95% interval", "weeks": "Weeks positive", "week_p": "Sign-test p",
      "halves": "Halves agree", "luck_index": "Luck index (heuristic, F85)", "verdict": "Verdict",
      "source_url": "Source"},
@@ -2520,29 +2521,23 @@ _ready_html = table(ready_rows,
      "number_that_clears_it": "Number that would clear it", "source_url": "Source"},
     table_id="readiness-table", filterable=True)
 
-_lb_add = (
-    '<h2>Control baselines (every run is compared with these)</h2>'
-    '<p class="note">Controls are graded on the same decided out-of-sample games as the strategies above, '
-    f'n = {controls_rows[0]["decided_games_n"]} (one tied game is excluded). The random row is a seeded simulation, '
-    'not a model. "Favourite" means the naive reference line\'s favourite: <strong>no betting market is in this '
-    'repository</strong>, so no market favourite is measured (Flag F32). Margins in the source file are home minus '
-    'away, so a positive margin favours the home team (Flag F86). Reproduce with <code>python3 scripts/controls.py</code>.</p>'
-    + _ctl_html +
-    '<h2>Two-sided: what would change our mind, per strategy</h2>'
-    '<p class="note">Every strategy states the evidence that would move us toward trusting it and the evidence that would '
-    'move us away. None of these rules was pre-registered before the 2026 results were visible (Flag F87), so '
-    'the triggers are a plan for the next window, not a verdict on the past one.</p>'
+_mind_add = (
+    '<h2>Two-sided: what would change our mind, per candidate strategy</h2>'
+    '<p class="note">Each candidate states evidence that would move us toward or away from trusting it. '
+    'These are future decision rules, not historical leaderboard results; the registration gate is still open (F87).</p>'
     + _mind_html
 )
-pages["leaderboard.html"] = (pages["leaderboard.html"][0], pages["leaderboard.html"][1] + _lb_add)
+pages["strategy-lab.html"] = (pages["strategy-lab.html"][0], pages["strategy-lab.html"][1] + _mind_add)
 
 _idx_add = (
-    '<h2>Removal of luck (dashboard panel)</h2>'
-    '<p class="note">Each strategy is shown with its skill, the interval around that skill, how many weeks were positive, '
-    'whether the two halves of the sample agree, and a verdict. The <strong>luck index is a heuristic</strong> built '
-    'inside the model (share of the interval below zero, Flag F85): read it as an index, not a measured share of luck. '
-    'Rank still uses the skill columns only.</p>'
+    '<h2>Removal-of-luck research panel</h2>'
+    '<p class="note">Historical walk-forward diagnostics only — <strong>not a competition leaderboard</strong>. '
+    'The table shows skill, uncertainty, week consistency and the heuristic luck index (share of the interval below zero, F85). '
+    'This cannot remove football variance or establish prospective skill; no ranking or reward is assigned here.</p>'
     + _luck_html +
+    '<h2>Control baselines (historical research)</h2>'
+    '<p class="note">Controls use the same historical decided games; the “favourite” is from the naive reference line, not a betting market.</p>'
+    + _ctl_html +
     '<h2>Decision readiness: one row per requirement</h2>'
     f'<p class="note">{len(ready_rows)} requirements from the brief. '
     f'<strong>{_ready_done} done, {_ready_partial} partial, {_ready_missing} missing, '
@@ -2551,6 +2546,7 @@ _idx_add = (
     'says so.</p>'
     + _ready_html
 )
+
 pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + _idx_add)
 
 
