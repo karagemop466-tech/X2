@@ -31,6 +31,21 @@ where a source verifies it).
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
 
+### Also new (session b03f4ba1): controls, two-sided triggers, readiness table
+
+- **Landing page: removal-of-luck panel and decision-readiness table.** The panel shows each strategy's skill, its
+  interval, weeks positive and halves agreement. The luck index is a heuristic built inside the model (flag F85).
+  The readiness table has one row per requirement from the brief, with its status, the gate that blocks it and
+  the number that would clear it (45 rows, sourced to the official page or first-party file in each row).
+- **Leaderboard: control baselines** (`data/control_baselines.csv`, reproduced by `python3 scripts/controls.py`):
+  random picks (seeded), the naive reference line's favourite, and M1, graded on the same 88 decided out-of-sample games.
+  No betting-market favourite is measured (flag F32).
+- **Leaderboard: two-sided "what would change our mind"** for M1-M4, T1, R1 and P1 (`data/strategy_change_rules.csv`).
+  No strategy is pre-registered (flag F87).
+- New flags F83-F88: Week 10 injury row count not reconciled (F83), three conflicting gate numberings (F84), the
+  heuristic luck index (F85), margin columns named "spread" (F86), pre-registration not demonstrable (F87), and the
+  brief's 136-game count against 137 games in the repo (F88).
+
 ### Also new: market sheet, props, event risk
 
 - **Market sheet** (`docs/market-sheet.html`) — every Week 11 market in origination order (side, total, moneyline)
