@@ -2223,3 +2223,36 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 **Task status:** T96 **done** (brief-gap closure, this session). PR: https://github.com/karagemop466-tech/X2/pull/55 (`arena/b03f4ba1-x2` → `main`), opened 2026-11-15 and merged as the step below; the merge commit is recorded on the PR.
 
 **Reconciliation note (b03f4ba1, after rebasing onto `main` @ `5509535`, PR #54 by 8a7ca071).** 8a7ca071's entry above states that "every brief requirement is implemented on `main`". The readiness register written in this session finds otherwise for specific items: 13 requirements missing, 11 blocked, 10 partial (`data/decision_readiness.csv`). Both entries are kept; neither overwrites the other. The conflict was in COORDINATION.md only (both sides were appended sections); no other file conflicted.
+
+## 2026-11-15 · session `10209425` · PR #56 record
+
+**Branch note.** This session works on the single branch assigned to it, `arena/10209425-x2` (from `main` @ `a78f7bf`). The `session-<id>/<task>` branch naming in this board is superseded for this session by that single-branch rule. Nothing was pushed to any other branch.
+
+**Claim.** Two brief items already substantially covered by session `b03f4ba1` (T96, PR #55, merged into `main` at `2ab6ea5`): the landing-page decision-readiness table and the two-sided "what would change our mind" fields on strategy entries. Because both sessions targeted the same files (`scripts/build.py`, `data/strategy_leaderboard.csv`, `docs/index.html`, `docs/leaderboard.html`), this session's branch was rebased onto `main` @ `2ab6ea5`; the conflicting audit row-counts were resolved in favour of `main` (flags 82, sources 84, reflecting T96's F83–F88). No other session's work was discarded.
+
+**Files touched:** `scripts/build.py` (landing-page decision-readiness table; leaderboard `would_change_if_better` / `would_change_if_worse` columns), `data/strategy_leaderboard.csv` (two new columns, populated per strategy from its measured gates/CI/sign test), `docs/**` (regenerated), `data/repo_line_audit.csv` / `docs/repo-audit.html` (row-count reconciliation), `COORDINATION.md`.
+
+**Verification performed (all pass)**
+- `python3 scripts/verify_results.py` — 137 games reconcile exactly with official standings (32/32 teams exact on W-L-T-PF-PA)
+- `python3 scripts/verify_snapshot.py` — 86 pass, 0 fail, 1 review (Ben Brown position, flagged F77/F37)
+- `python3 scripts/verify_live.py` — 75/75 units matched, 0 discrepancies
+- `python3 scripts/repo_audit.py` — 22 checks, 0 failing
+- `python3 scripts/build.py` — 41 pages built; link and row-source checks passed
+
+**Pull request and merge**
+- PR: https://github.com/karagemop466-tech/X2/pull/56 (`arena/10209425-x2` → `main`)
+- Merge commit: `6fd055a` (merge commit `bcbef74` applied on top of `main` @ `2ab6ea5`)
+- State: MERGED to `main`
+- GitHub Pages: build `built` with no error for commit `6fd055a` (deployed at https://karagemop466-tech.github.io/X2/)
+
+**Flagged irregularities (open, published on Flagged for Review; do not block the merge)**
+- F07/F31/F51: no licensed odds feed — price/market-line cells blank by design; no ROI/CLV computed
+- F09/F19: legal review pending (Japan; Netherlands)
+- F16: written permission for systematic NFL injury-data collection not recorded
+- F17: strategy numeric cutoffs not owner-approved
+- F32/F33: reference-line benchmark, 89-game sample not decisive
+- F64/F65: best strategy positive but not repeatable across weeks; most named risks lack confirmed role
+- F76/F77/F80: originated-side home-team bias (monitoring), Ben Brown position conflict, verification-limitation note
+- F83–F88 (from T96): row-count reconciliation, gate-numbering conflicts, luck-share heuristic, spread sign, pre-registration demonstratability, 136 vs 137 game count
+
+**Note on duplication.** Session `b03f4ba1` (T96) had already delivered a decision-readiness table (45 rows), two-sided change-our-mind rules, control baselines and a removal-of-luck panel on `main` before this session. This session's overlapping changes were reconciled by rebase; both entries are kept in this board, neither overwrites the other.
