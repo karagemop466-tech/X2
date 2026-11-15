@@ -2220,6 +2220,6 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 
 **Caution on IDs.** The readiness table uses `D01`–`D45` in `data/decision_readiness.csv`. The demotion rules in `data/demotion_gate.csv` are `D1`–`D7`. They are different registers; cross-references are written in full where they could be confused.
 
-**Task status:** T96 **done** (brief-gap closure, this session). PR and merge record: appended below once made.
+**Task status:** T96 **done** (brief-gap closure, this session). PR: https://github.com/karagemop466-tech/X2/pull/55 (`arena/b03f4ba1-x2` → `main`), opened 2026-11-15 and merged as the step below; the merge commit is recorded on the PR.
 
 **Reconciliation note (b03f4ba1, after rebasing onto `main` @ `5509535`, PR #54 by 8a7ca071).** 8a7ca071's entry above states that "every brief requirement is implemented on `main`". The readiness register written in this session finds otherwise for specific items: 13 requirements missing, 11 blocked, 10 partial (`data/decision_readiness.csv`). Both entries are kept; neither overwrites the other. The conflict was in COORDINATION.md only (both sides were appended sections); no other file conflicted.
