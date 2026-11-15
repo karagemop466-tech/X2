@@ -114,6 +114,8 @@ model_ratings = read_csv("model_ratings.csv")
 model_backtest = read_csv("model_backtest.csv")
 model_bets = read_csv("model_bets.csv")
 leaderboard = read_csv("strategy_leaderboard.csv")
+# The competition-facing CSV must contain no retrospective outcome metric.
+# Enforce this in the build so a future model run cannot silently reintroduce backtest ranks.
 gate_results = read_csv("gate_results.csv")
 correlations = read_csv("correlations_computed.csv")
 parlays = read_csv("parlay_analysis.csv")
@@ -121,6 +123,9 @@ parlays = read_csv("parlay_analysis.csv")
 price_snapshots = read_csv("price_snapshots.csv")
 line_comparison = read_csv("line_comparison_week11.csv")
 signal_staking = read_csv("strategy_signal_staking.csv")
+if any((r.get(k) or "").strip() for r in signal_staking for k in
+       ("signal_skill_points", "signal_ci_low", "signal_ci_high", "signal_q_bh_fdr", "signal_oos_games", "signal_leaderboard_rank")):
+    raise ValueError("Backtest leakage in prospective signal/staking view")
 demotion_gate = read_csv("demotion_gate.csv")
 # ---- session ef971991: depth of the replacement (not just the fact of a replacement) ----
 replacement_depth = read_csv("replacement_depth.csv")
@@ -653,52 +658,6 @@ competing = [r for r in scorecard if r["strategy_id"] != "S0"]
 n_competing = len(competing)
 n_qualified = sum(1 for r in scorecard if r["status"].startswith("Qualified"))
 
-# ---------- decision-readiness table for the landing page ----------
-# One row per requirement, with the gate that blocks it and the value that would clear it.
-def _readiness_clear(status, blocker):
-    b = (blocker or "").lower()
-    if status == "Done":
-        return "No gate — complete"
-    if "price" in b or "odds" in b:
-        return "Connect a rights-cleared odds feed (price cells stay blank by design)"
-    if "depth" in b or "starter" in b:
-        return "Confirm an official pregame depth source (fields stay blank until verified)"
-    if "permission" in b or "rights" in b:
-        return "Obtain written permission or a licence (F16)"
-    if "legal" in b or "jurisdiction" in b:
-        return "Qualified legal review of contest/reward design (F09/F19)"
-    if "threshold" in b or "cutoff" in b or "approv" in b:
-        return "Owner-approved numeric cutoffs (F17)"
-    if "sample" in b or "season" in b:
-        return "More verified seasons of results (F33)"
-    if "history" in b or "capture" in b or "timestamp" in b:
-        return "Multi-day dated captures with the fetch time recorded (F13/F14)"
-    return "Review the blocker note on the Requirements page"
-
-_readiness = []
-for _r in reqs:
-    _readiness.append({
-        "req": _r.get("req_id", ""),
-        "requirement": _r.get("requirement (from brief)", ""),
-        "status": _r.get("status", ""),
-        "blocker": _r.get("blocker_or_note", ""),
-        "clear": _readiness_clear(_r.get("status", ""), _r.get("blocker_or_note", "")),
-        "evidence_url": _r.get("evidence_url", ""),
-    })
-_readiness.sort(key=lambda x: x["req"])
-_readiness_html = table(
-    _readiness,
-    ["req", "requirement", "status", "clear", "evidence_url"],
-    {
-        "req": "Req",
-        "requirement": "Requirement (from brief)",
-        "status": "Status",
-        "clear": "Gate that blocks it / what must change to clear",
-        "evidence_url": "Source ↗",
-    },
-    table_id="decision-readiness",
-)
-
 # ---------- index ----------
 pages["index.html"] = ("NFL Research Dashboard", f"""
 <section class="hero">
@@ -747,10 +706,6 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('repo-audit.html', 'Repository audit', 'Twenty-two checks run against live official pages and recomputations, with the result of each one.')}
 {card('cross-check.html', 'Independent cross-check', 'A second independent transcription and model compared against the first: what agrees, and the one thing that does not.')}
 {card('depth-deficiency.html', 'Deficiency tracking', 'Unit exposure by side of ball, officially named starters and replacements, and the depth of each replacement (2nd/3rd/4th string where a chart verifies it).')}
-
-<h2>Decision readiness — one row per requirement</h2>
-<p class="note">Every requirement from the brief, its current status, the gate that blocks it, and what would clear it. Values that cannot be confirmed from an official source stay blank and flagged; nothing is inferred.</p>
-{_readiness_html}
 </div>
 """)
 
@@ -769,14 +724,14 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Official news names Drew Lock for Darnold (2nd string on the club chart) and Kyle McCord for Willis ("in line for first start"); no replacement is named for Lamar Jackson and the Ravens chart omits him entirely. Every row and chart rank is on the <a href="depth-deficiency.html">Replacement depth</a> page (Flags F06/F45).</li>
-<li><strong>Strategy research.</strong> Seven pre-registered strategies have now been graded walk-forward on the official 2026 results; four qualify and three reach the top tier. They are graded on forecast accuracy, not on price: no odds feed is connected, so nothing here is a market result and no reward is paid (Flags F32, F33).</li>
+<li><strong>Strategy research.</strong> Historical walk-forward analyses are retained only as backtest research, not competition rankings. The prospective leaderboard has seven registered entries and zero graded prospective samples, so it remains unranked and no reward is paid. No odds feed is connected.</li>
 <li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}; 95% interval 0.328 to 1.443, p = 0.683 against slope 1.0), so there is no evidence the lines are over-shy or over-confident (Flag F48 corrected 2026-11-14).</li><li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
 <li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F51). The schema is in place for a rights-cleared odds feed to fill it.</li>
-<li><strong>Signal separated from staking (new).</strong> The <a href="leaderboard.html">leaderboard</a> now reads in two separate blocks: a signal block (forecast skill, intervals, significance) and a staking block (plan and return). Staking return is blank because no prices exist, so a lucky staking run cannot mask a weak signal (Flags F07, F32, F51).</li>
+<li><strong>Signal separated from staking.</strong> The prospective <a href="leaderboard.html">leaderboard</a> has no ranking yet; when it becomes eligible, signal scores and staking returns will remain separate. ROI is blank because no licensed prices exist (Flags F07, F32, F51).</li>
 <li><strong>Demotion gate (new).</strong> A demotion gate (G9) is defined and armed: a live strategy is sent back to paper the moment any of G1–G8 fails, the skill interval includes zero, or the mean edge turns negative. No strategy is live today — the qualification is disputed by the independent cross-check (F42) and wagering and rewards stay disabled — so every strategy is Paper (Flags F17, F42).</li>
-<li><strong>Leaderboard (new).</strong> {ms['strategies_tested']} strategies were pre-registered and graded walk-forward: {ms['qualified_strategies']} qualify and {ms['tier1_strategies']} reach the top tier. The totals strategy shows no skill and the parlay strategy fails on sample size. Every row shows how many bets it would need for a decisive test, and none has enough (Flag F33).</li>
-<li><strong>What the leaderboard does not prove.</strong> Bets are graded against a naive reference line, because this project has no licensed odds feed. Beating a noisy benchmark is easier than beating a sportsbook price, so no hit rate here may be read as market return (Flag F32).</li>
-<li><strong>Signal and staking are separated (new).</strong> The leaderboard ranks on signal only — forecast skill with its interval and multiplicity-adjusted q-value. The bet record (wins, hit rate, edge) is a staking record shown for transparency and can never change a rank, so a lucky staking run cannot mask a bad signal. See the <a href="markets.html">Market tables</a> page.</li>
+<li><strong>Leaderboard.</strong> Seven candidate strategy definitions exist, but none has a complete immutable pre-registration or a graded prospective window. The competition page is therefore unranked; retrospective backtest numbers are not displayed there.</li>
+<li><strong>Backtest boundary.</strong> Historic model-vs-reference comparisons are available on the Backtest page only. No historical score is used as a leaderboard entry or reward qualification.</li>
+<li><strong>Signal and staking are separated.</strong> The future prospective board will rank only pre-registered signal metrics and show staking separately; today it has no graded prospective sample and no rank. See the <a href="markets.html">Market tables</a> page.</li>
 <li><strong>Price-snapshot store (new).</strong> All {len(price_snapshots)} originated Week 11 markets — side first, then total, then moneyline — are tracked in a store with opening and closing fields. Every price cell is blank and marked unverified: no authorised, timestamped price source exists (Flags F07, F43). The store is the piece that makes closing-line value and ROI computable the moment real prices land; until then, no ROI is estimated.</li>
 <li><strong>Demotion gate defined (new).</strong> Seven rules (D1-D7, gate G9) define how a live strategy returns to paper: signal-interval collapse, multiplicity failure, sample loss, source revision, lost clearance, and a CLV test once prices exist. Staking results can neither promote nor rescue a strategy. The rules are proposals — thresholds await the owner's statistical plan (Flag F17) — and no strategy is live, so the gate is inert today.</li>
 <li><strong>Depth of the replacement (new).</strong> Replacement events are now tracked with an explicit string depth, not just the fact of a replacement — across two tables: RD01–RD07 (Detroit and New England, where club-published charts verify order: the Patriots' backfield is already down to its 3rd/4th string, the Lions' cornerback room to its 2nd/3rd) and the T42 availability table (session 8a0bf37e), which adds fetched club-chart checks for all eleven availability rows — SEA, MIA, BAL, CLE, AZ and NYG with ranks where an official statement names the replacement, plus GB, LAR, KC and IND (session d2915d86, Flag F53 resolved) where the chart order is recorded but the rank stays blank because no official source names a replacement. Where no chart confirms the order the depth cell is blank and flagged (F06).</li>
@@ -834,7 +789,7 @@ total of 45.9 points. The Week 11 half of the neutral-site defect is confirmed c
 <h2>How a decision should be made from this</h2>
 <ol>
 <li>Use the <a href="model-lines.html">originated lines</a> as a forecast, not as a price. A forecast says what the model expects; a price says what it costs. Only the first exists here.</li>
-<li>Judge strategies on the <a href="leaderboard.html">skill column</a> (points of forecast gain), not on the hit-rate column, which is measured against a naive benchmark.</li>
+<li>Do not interpret the historical skill or hit-rate statistics as competition standings. They belong to the <a href="backtest.html">Backtest</a> research page only; the prospective <a href="leaderboard.html">Leaderboard</a> remains unranked until grading is complete.</li>
 <li>Check the required sample size before acting: every strategy on the board is currently short of a decisive test.</li>
 <li>Resolve the gates in <a href="flagged.html">Flagged for review</a> (F16 data rights, F19 jurisdiction, F31 player data) before adding data, automation or rewards.</li>
 </ol>
@@ -900,7 +855,7 @@ Units: QB, RB (incl. FB), WR/TE, OL, DL, LB, DB, ST. This grouping is a project 
 # ---------- strategy lab ----------
 pages["strategy-lab.html"] = ("Strategy lab", f"""
 <h1>Strategy lab</h1>
-<p class="note">This page holds the qualitative framework. <strong>The quantitative results now live on their own pages:</strong> <a href="leaderboard.html">Leaderboard</a>, <a href="validation-gates.html">Validation gates</a>, <a href="correlations.html">Correlations</a>, <a href="parlays.html">Parlays</a> and <a href="backtest.html">Backtest</a>, all graded walk-forward on {ms['out_of_sample_games']} out-of-sample games. The research framework taken over in T52 lives on <a href="signals.html">Signals</a>, <a href="validation.html">Skill engine</a>, <a href="anti-luck.html">Anti-luck</a>, <a href="correlation.html">Correlation plan</a>, <a href="starters.html">Starters &amp; depth</a> and <a href="repo-review.html">Repo review</a>.
+<p class="note">This page holds the qualitative framework. <strong>Historical quantitative research lives on the</strong> <a href="backtest.html">Backtest</a>, <a href="validation-gates.html">Validation gates</a>, <a href="correlations.html">Correlations</a> and <a href="parlays.html">Parlays</a> pages. The prospective <a href="leaderboard.html">Leaderboard</a> is intentionally unranked because strategy registration and prospective grading are not complete. The research framework taken over in T52 lives on <a href="signals.html">Signals</a>, <a href="validation.html">Skill engine</a>, <a href="anti-luck.html">Anti-luck</a>, <a href="correlation.html">Correlation plan</a>, <a href="starters.html">Starters &amp; depth</a> and <a href="repo-review.html">Repo review</a>.
 The inputs needed (licensed odds, historical outcomes, verified role evidence and paired correlation data) are not available here. No validation can eliminate football randomness or guarantee a result; out-of-sample testing can reduce hindsight and quantify uncertainty, not remove variance. This is a research plan, not betting advice. Numeric thresholds are intentionally blank: general statistical guidance does not supply an NFL-specific sample size, return cutoff, significance level or paper-trading duration. <a href="https://www.itl.nist.gov/div898/handbook/glossary.htm" target="_blank" rel="noopener">NIST cross-validation reference ↗</a></p>
 <h2>Independent line framework (proposed; no values estimated)</h2>
 <p class="note">Originate the forecast from pregame NFL performance and verified availability, not by copying a sportsbook price. Any market line is a separately sourced benchmark; <a href="https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL" target="_blank" rel="noopener">NFL Support says its odds widgets are partner-provided</a>. All fair lines, probabilities and coefficients remain blank until rights-cleared data and validation are available.</p>
@@ -916,17 +871,8 @@ The inputs needed (licensed odds, historical outcomes, verified role evidence an
 <p class="note">“Correlation” can mean different things: dependence between legs, agreement between two forecasts, or co-movement of simulated returns. Choose the quantity before analysis. No coefficient, joint probability, sample count or interval has been computed.</p>
 {table(correlation_plan, ['question','method','required_alignment','current_value','sample_n','source_url'],
        {'question':'Question','method':'Proposed measurement','required_alignment':'Data alignment','current_value':'Current value','sample_n':'Sample size','source_url':'Statistical reference'})}
-<h2>Leaderboard — now graded, on the Leaderboard page</h2>
-<p class="note">{ms['strategies_tested']} strategies have been graded walk-forward out of sample; under the proposed gate
-set {ms['qualified_strategies']} would qualify, but the independent cross-check reaches the opposite conclusion under a
-multiple-comparison adjustment (Flag F42), and the numeric cut-offs are unapproved (Flag F17). Full figures and
-uncertainty intervals are on the <a href="leaderboard.html">Leaderboard</a> page. The intended competition ranks
-performance only after preregistered, out-of-sample validation. <strong>No reward tier is offered</strong> (requirement
-R36): eligibility, jurisdiction, data rights and legal review remain unresolved. Signal and staking are kept apart on
-the <a href="markets.html">Market tables</a> page, and a live strategy can be returned to paper by the proposed
-demotion gate (D1-D7).</p>
-{table(leaderboard_status, ['rank','strategy','skill_score','eligible_sample','uncertainty','validation_status','top_performance_reward','source_url'],
-       {'rank':'Rank','strategy':'Strategy','skill_score':'Performance score','eligible_sample':'Eligible sample','uncertainty':'Uncertainty','validation_status':'Validation status','top_performance_reward':'Top-performance reward','source_url':'Project record'})}
+<h2>Prospective leaderboard — not yet ranked</h2>
+<p class="note">Seven candidate strategy definitions exist, but none has an immutable pre-registration record satisfying EG1 or a completed prospective evaluation window. Historical walk-forward scores are excluded from the leaderboard and retained only on the <a href="backtest.html">Backtest</a> page. No strategy is currently eligible or live for competition, and no reward is offered (R36). Future ranking requires a frozen registration manifest, forecast log, official outcomes, pre-approved gates, rights clearance and a sufficient prospective sample. Signal and staking remain separate; the proposed demotion gate is documented on the <a href="leaderboard.html">Leaderboard</a> page.</p>
 """)
 
 # ---------- decision path ----------
@@ -1154,105 +1100,53 @@ happened, so smaller is better. A bet is only placed when the model and the refe
        table_id='bet-table', filterable=True)}
 """)
 
-# ---------- leaderboard ----------
-
-# F43 display mitigation (session ef971991, T43): reward tiers are shown only as proposals that are
-# not offered. R36 blocks offering them until the F42 measurement disagreement is resolved. The CSV
-# values are unchanged; only the rendered labels are qualified.
-_lb_disp = []
-for _r in leaderboard:
-    _d = dict(_r)
-    if _d.get("reward_tier"):
-        _d["reward_tier"] = f"Proposed {_d['reward_tier']} — not offered (blocked by R36, under review F43)"
-    _lb_disp.append(_d)
-_m1 = next(r for r in leaderboard if r["strategy_id"] == "M1")
-_p_wk = _m1.get("week_sign_test_p") or ""
-p_week_note = (f"about {_p_wk} of the time (sign test, p = {_p_wk})" if _p_wk
-               else "at a rate indistinguishable from chance")
+# ---------- prospective-only strategy leaderboard ----------
+# Prevent retrospective results from leaking onto the competition board.
+BACKTEST_FIELDS_FORBIDDEN_ON_LEADERBOARD = (
+    "rank", "skill_score_mae_improvement_pts", "skill_ci_low", "skill_ci_high",
+    "skill_p_permutation", "q_bh_fdr", "mae_model", "mae_reference", "oos_games",
+    "bets_vs_reference", "wins", "losses", "hit_rate_vs_reference", "mean_edge_points",
+    "edge_ci_low", "edge_ci_high", "p_binomial", "p_permutation_bets", "luck_share_of_record",
+    "skill_share_of_record", "weeks_positive_skill", "week_sign_test_p",
+)
+for _row in leaderboard:
+    for _field in BACKTEST_FIELDS_FORBIDDEN_ON_LEADERBOARD:
+        if (_row.get(_field) or "").strip():
+            raise ValueError(f"Backtest leakage on prospective leaderboard: {_field} for {_row.get('strategy_id')}")
 pages["leaderboard.html"] = ("Leaderboard", f"""
-<h1>Strategy leaderboard</h1>
-<p class="note"><strong>How to read this.</strong> <strong>Signal and staking are separated on purpose.</strong>
-The <em>signal</em> block ranks strategies on forecast skill: how many points per game closer the strategy's
-forecast landed to the actual result than the naive reference line, across all {ms['out_of_sample_games']}
-out-of-sample games. It is a forecast-accuracy measure, not profit. The <em>staking</em> block records the staking
-plan and its return — which is blank, because no licensed odds feed exists, so no staking return can be computed
-(Flags F07, F32, F51). A lucky staking run therefore cannot mask a weak signal: the two are read separately. The
-hit rate and edge columns describe a paper record against the naive reference line and <strong>must not be read
-as a market result</strong> (Flag F32). Required sample size is how many bets the strategy would need, at the
-effect size it observed, for an 80%-power test; every strategy on this board is currently short.</p>
-{tiles([(ms['strategies_tested'], 'strategies tested'), (ms['qualified_strategies'], 'qualified'),
-        (ms['live_strategies'], 'live strategies'), (ms['out_of_sample_games'], 'out-of-sample games')])}
-<h2>Signal — ranked by forecast skill</h2>
-{table(_lb_disp, ['rank','strategy_id','strategy','market','status','demotion_safe','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','mae_model','mae_reference','oos_games','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url','would_change_if_better','would_change_if_worse'],
-       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','status':'Status','demotion_safe':'Demotion-safe','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier (not offered — R36)','source_url':'Source','would_change_if_better':'What would change our mind if skill improves','would_change_if_worse':'What would change our mind if skill degrades'})}
-<h2>Staking — separate from signal</h2>
-<p class="note">Staking returns depend on prices, which this project does not hold. The plan is published for
-completeness; the return columns are blank and flagged, not estimated.</p>
-{table(leaderboard, ['strategy_id','strategy','status','staking_plan','staking_units_wagered','staking_roi_pct','staking_note','source_url'],
-       {'strategy_id':'ID','strategy':'Strategy','status':'Status','staking_plan':'Staking plan','staking_units_wagered':'Units wagered','staking_roi_pct':'Staking ROI %','staking_note':'Staking note','source_url':'Source'})}
-<h2>Skill versus luck — the columns that answer a different question</h2>
-<p class="note">A rank answers "who finished first". It does not answer "who is better". The columns below
-separate the two. <strong>Weeks positive</strong> re-measures each strategy's skill inside every week of the
-window: a rule that only looks good because of one hot stretch shows up immediately. <strong>Week sign-test
-p</strong> asks whether that per-week split is better than a coin flip. A row that is positive but not
-repeatable across weeks is a row that has not yet earned a rank.</p>
-{table(leaderboard, ['rank','strategy_id','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high',
-                     'luck_share_of_record','skill_share_of_record','halves_agree','interval_excludes_zero',
-                     'weeks_positive_skill','week_sign_test_p','worst_week_skill','best_week_skill',
-                     'skill_or_luck_verdict','source_url'],
-       {'rank':'#','strategy_id':'ID','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low',
-        'skill_ci_high':'CI high','luck_share_of_record':'Luck share','skill_share_of_record':'Skill share',
-        'halves_agree':'Halves agree','interval_excludes_zero':'CI excludes 0',
-        'weeks_positive_skill':'Weeks positive','week_sign_test_p':'Week sign-test p',
-        'worst_week_skill':'Worst week','best_week_skill':'Best week','skill_or_luck_verdict':'Verdict'},
-       table_id='luck-table', filterable=True)}
-<h2>What this table actually shows</h2>
-<ul class="findings">
-<li><strong>The best rule is positive but not yet repeatable.</strong> M1 gains
-{ms['mae_improvement']} points per game on average, its 95% bootstrap interval excludes zero, and both halves
-of the window agree — yet its per-week skill is positive in only 5 of 7 weeks, which a coin flip produces
-{p_week_note}. That is the honest state of the evidence: promising, unproven.</li>
-<li><strong>Luck share is not a measure of any single bet.</strong> It is the fraction of the interval that
-lies on the wrong side of zero, i.e. how much of the observed record a chance process could reproduce.</li>
-<li><strong>Nothing here rescues a strategy that fails the gates.</strong> The luck columns are an additional
-filter, not a substitute for the nine validation gates (G1-G9).</li>
-</ul>
-
-<h2>Full detail</h2>
-{search_box('lb-table')}
-{table(_lb_disp, ['strategy_id','strategy','mae_model','mae_reference','oos_games','wins','losses','hit_rate_vs_reference','mean_edge_points','edge_ci_low','edge_ci_high','sd_edge_points','p_binomial','p_permutation_bets','reward_status','source_url'],
-       {'strategy_id':'ID','strategy':'Strategy','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','wins':'Wins','losses':'Losses','hit_rate_vs_reference':'Hit rate','mean_edge_points':'Mean edge (pts)','edge_ci_low':'Edge CI low','edge_ci_high':'Edge CI high','sd_edge_points':'Edge SD','p_binomial':'Binomial p','p_permutation_bets':'Permutation p (bets)','reward_status':'Reward status','source_url':'Source'},
-       table_id='lb-table', filterable=True)}
+<h1>Prospective strategy leaderboard</h1>
+<p class="note"><strong>Competition status: no eligible entries; not ranked.</strong> Candidate strategy definitions
+exist, but the registration gate is not met: the frozen registration record, feature set, scoring rule and data cutoff
+have not all been attested in a prospective competition manifest. Historical backtests are never leaderboard entries
+and no backtest-derived score, rank, hit rate, uncertainty interval or reward tier is shown here. Historical research
+belongs only on the <a href="backtest.html">Backtest</a> page. An entry can become eligible only after an immutable
+pre-registration and a complete prospective evaluation window with official outcomes.</p>
+{tiles([(len(leaderboard), 'candidate strategy definitions'), (0, 'prospective samples graded'),
+        (0, 'eligible ranked entries'), (0, 'live strategies')])}
+<h2>Candidate strategies — registration and prospective evidence pending</h2>
+{table(leaderboard, ['strategy_id','strategy','market','status','source_url'],
+       {'strategy_id':'ID','strategy':'Candidate strategy','market':'Market family',
+        'status':'Competition eligibility','source_url':'Official results source'})}
+<p class="note">Every entry is currently unranked. This is intentional: the sealed Week 11 forecast log has not yet
+been graded against completed official results, and there is no multi-week prospective record. The present
+leaderboard does not assign a winner, qualification tier, or reward.</p>
+<h2>Signal and staking remain separate</h2>
+<p>When prospective evidence is sufficient, the board will rank signal by the pre-registered proper-score metric
+with game-clustered uncertainty and a multiplicity adjustment. Staking results will be displayed separately and
+cannot affect signal rank. ROI remains blank until authorized opening/closing prices and settlement rules exist.</p>
+<h2>Entry and promotion gates</h2>
+<p>Pre-registration, an append-only forecast freeze, official outcome verification, sample sufficiency,
+calibration and benchmark-relative skill, multiplicity control, robustness, valid price/joint evidence where
+applicable, data rights and jurisdictional review are required. Parlays and prop combos remain excluded without
+directly validated joint probabilities and applicable push/void rules. See <a href="validation-gates.html">Validation
+Gates</a> and <a href="decision-path.html">Decision Path</a>.</p>
 <h2>Demotion gate — live back to paper</h2>
-<p class="note">The demotion gate (G9) is armed. A strategy that is <em>live</em> is demoted back to
-<em>paper</em> the moment any of G1–G8 fails on the latest window, or its skill 95% interval includes zero, or its
-mean edge turns negative. <strong>No strategy is live today:</strong> the qualification is disputed by the
-independent cross-check (Flag F42), the gate cut-offs await owner approval (F17) and wagering and rewards stay
-disabled (F09, F16, F19). Every strategy is therefore <em>Paper</em>; the demotion-safe column shows which ones
-would keep (or earn) live status once the gates are approved and the disagreement resolved.</p>
-<h2>Reward structure — proposed, not approved, nothing paid</h2>
-<p class="note"><strong>None of the tiers is offered.</strong> Requirement R36 blocks offering or paying any
-reward tier until the qualification disagreement between the two independent implementations (Flag F42) is resolved,
-and the numeric cut-offs behind every gate are still unapproved (Flag F17). The labels are shown only so the owner
-can approve, amend or reject the design; they are displayed on every row as “proposed — not offered”
-(Flag F43).</p>
-<ul class="findings">
-
-<li><strong>Tier 1 (gold)</strong> — would require passing all eight gates. Proposed design: top leaderboard recognition.</li>
-<li><strong>Tier 2 (silver)</strong> — would require passing G1, G2, G3, G4, G5 and G6. Proposed design: mid-tier recognition.</li>
-<li><strong>Tier 3 (bronze)</strong> — would require passing G1, G2, G3 and G5. Proposed design: tracking only, no promotion.</li>
-<li><strong>Not qualified</strong> — fails any of G1, G2, G3 or G5. No tier, no promotion.</li>
-</ul>
-<p class="note">The competition is between strategies inside this repository, not between people, and no reward
-has monetary value. Any reward, entry fee, referral or wager mechanic stays disabled pending jurisdiction
-confirmation and qualified legal review (Flags F09, F19) and data-rights clearance (F16). Approve, amend or reject
-these tiers on the <a href="suggestions.html">Suggestions</a> page; nothing here has been implemented on the
-basis of a suggestion.</p>
-
-<h2>Leaderboard rules — LB01 to LB12 (taken over from session 25d6114f, T88)</h2>
-<p class="note">Pre-declared ranking rules written before any entry exists, so that when entries do arrive they
-cannot quietly reward luck. <strong>No entry is eligible and no reward is enabled</strong>: eligibility, jurisdiction,
-data rights and legal review remain unresolved (F17, F42, F09, F19, F16).</p>
+<p>G9 is defined but inert because there are no live strategies. Any future live strategy must return to paper if
+its approved rolling evidence window fails an earlier gate, the pre-registered skill interval no longer supports
+skill, the forecast record or source provenance fails validation, or legal/data-rights clearance lapses. Numeric
+cut-offs are not activated while they remain unapproved (F17).</p>
+<h2>Leaderboard rules</h2>
+<p>Pre-declared rules LB01–LB12 govern ranking, uncertainty, sample size, privacy, rights and change control.</p>
 {table(lb_rules, ['rule_id','topic','rule','why_this_rule','what_is_intentionally_left_blank','evidence_url'],
        {'rule_id':'Rule','topic':'Topic','rule':'Rule','why_this_rule':'Why','what_is_intentionally_left_blank':'Intentionally blank','evidence_url':'Evidence'})}
 """)
@@ -1314,7 +1208,7 @@ p = 0.68 against slope 1.0 (Flag F72; a second session published 0.335-1.435 wit
 <h2>What the values say</h2>
 <ul class="findings">
 <li>The model's margin forecast is genuinely associated with the actual margin (r = 0.321, p = 0.002), and more
-so than the naive reference line (r = 0.274, p = 0.009). That gap is the skill the leaderboard measures.</li>
+so than the naive reference line (r = 0.274, p = 0.009). That association is a historical backtest diagnostic, not a leaderboard score; the prospective leaderboard is currently unranked.</li>
 <li>Game totals are close to unpredictable with the inputs used here: predicted totals correlate r = 0.092
 (p = 0.39) with actual totals, and the totals strategy shows no accuracy gain at all.</li>
 <li>Within a game, the two teams' scores do not co-move (r = 0.042) and blowouts are not associated with higher
@@ -1637,10 +1531,7 @@ page (Flag F44 — resolved: 2 × league average points per team per game from t
 {table(line_comparison, ['game_no','matchup','side_fair_home_spread','side_market_home_spread','side_difference_market_minus_fair','total_fair','total_market','total_difference_market_minus_fair','moneyline_fair_home_win_prob','moneyline_market_home_win_prob','moneyline_difference_market_minus_fair','source_url'],
        {'game_no':'#','matchup':'Game','side_fair_home_spread':'Side: fair (home)','side_market_home_spread':'Side: market (home)','side_difference_market_minus_fair':'Side: diff','total_fair':'Total: fair','total_market':'Total: market','total_difference_market_minus_fair':'Total: diff','moneyline_fair_home_win_prob':'Moneyline: fair P(home)','moneyline_market_home_win_prob':'Moneyline: market P(home)','moneyline_difference_market_minus_fair':'Moneyline: diff','source_url':'Source'})}
 <h2>3. Signal and staking, kept apart</h2>
-<p class="note"><strong>The rank uses signal only.</strong> Signal is forecast skill against the naive reference line, with a
-95% bootstrap interval. No staking result has been measured, because there are no prices. A staking result therefore cannot
-raise or lower a strategy's rank — a lucky staking run can never mask a bad signal. The reward-tier labels on the
-leaderboard are displayed only as proposals that are not offered, blocked by requirement R36 and under review (Flag F43).</p>
+<p class="note"><strong>No rank is assigned yet.</strong> This table is prospective-only: signal metrics and staking results remain blank until the frozen forecasts have been graded. Historical backtest figures are excluded from this view and live only on the Backtest page. Staking cannot affect a future signal rank; ROI also remains blank without authorized prices.</p>
 {table(signal_staking, ['signal_rank','strategy_id','strategy','signal_skill_points','signal_ci_low','signal_ci_high','signal_q_bh_fdr','signal_oos_games','signal_gates_passed','staking_status','ranking_basis','source_url'],
        {'signal_rank':'Signal rank','strategy_id':'ID','strategy':'Strategy','signal_skill_points':'Skill (pts)','signal_ci_low':'CI low','signal_ci_high':'CI high','signal_q_bh_fdr':'BH q','signal_oos_games':'OOS games','signal_gates_passed':'Gates passed (under review)','staking_status':'Staking','ranking_basis':'Ranking basis','source_url':'Source'})}
 <h2>4. Demotion gate (live to paper), proposed</h2>
@@ -2089,8 +1980,7 @@ and say so in the status column.</p>
 cannot be measured without step 2.</li>
 <li><strong>Prefer the option that can be undone.</strong> Blank columns and inert gates cost nothing to keep; a published
 return or an enabled reward does.</li>
-<li><strong>Ask for the sample size, not the result.</strong> Every ranking on the site states the number of forecasts it needs
-for a decisive test. If that number is far above the games played, the ranking is provisional no matter how it reads.</li>
+<li><strong>Ask for the sample size, not the result.</strong> No prospective ranking appears until the pre-registered sample and gates are met. If an eventual sample is too small, keep the entry unranked rather than calling it provisional evidence.</li>
 <li><strong>Treat a blank as a finding.</strong> Where a value is blank, the source did not support it. That is the intended
 state, not an omission to be filled in by inference.</li>
 <li><strong>Record the choice and the date.</strong> A decision without a recorded date cannot be re-checked later, because the
@@ -2546,9 +2436,7 @@ full-sample fit (Flag F50 resolved).</li>
 SHA-256 digest, so a later edit is detectable.</li>
 </ul></div>
 <div><h3>Things that got worse - and are now visible</h3><ul>
-<li><strong>The best strategy is not yet repeatable.</strong> M1's skill is positive in 5 of 7 weeks, which
-chance produces about half the time (p = {_m1.get('week_sign_test_p') or 'n/a'}). Its rank is a description of
-89 games, not a forecast.</li>
+<li><strong>No prospective strategy has earned a rank.</strong> The historic walk-forward research is kept separate from the competition leaderboard until the frozen prospective forecasts are graded.</li>
 <li><strong>{_risks_total - _risks_with_evidence} of {_risks_total} named injury risks cannot have their role
 confirmed officially</strong>, so no injury adjustment can be priced (F06).</li>
 <li><strong>Player props are blocked on data the repository does not hold</strong>, though the outcomes
@@ -2570,8 +2458,8 @@ _new_intro = (
     '  <p class="note"><strong>A review console where a path can be chosen</strong> - '
     f'{len(decision_console)} decisions, {_decided} recorded, no option pre-filled. '
     '<strong>A market sheet</strong> that keeps the fair line, the market line and the difference in three separate '
-    'columns. <strong>A skill-versus-luck split</strong> on the leaderboard, because a rank alone cannot tell the '
-    'two apart. <strong>A named event-risk register</strong> for Week 11. And a fresh, independent live '
+    'columns. <strong>A prospective-only leaderboard</strong> that withholds all historical backtest scores until '
+    'frozen prospective outcomes are graded. <strong>A named event-risk register</strong> for Week 11. And a fresh, independent live '
     f're-read of the official pages: {_lr_ok} of {len(live_reverification)} units matched, {_lr_bad} discrepancies.</p>\n'
     '  <p class="note">Start at the <a href="review.html">Review console</a> if you want to decide something, or the '
     '  <a href="market-sheet.html">Market sheet</a> if you want a number.</p>\n'

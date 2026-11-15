@@ -38,9 +38,9 @@
  {
   "req_id": "R05",
   "requirement (from brief)": "Treat strategies as a leaderboard with rewards",
-  "status": "Done as a measured leaderboard; reward deliberately disabled",
-  "where_addressed": "Strategy Lab; Suggestions S09",
-  "blocker_or_note": "Eight competing rules are ranked by measured out-of-sample skill. The reward stays off: 0 of 8 clear every gate and legal, jurisdictional and data-rights review is incomplete.",
+  "status": "Framework complete; prospective leaderboard remains unranked; rewards disabled",
+  "where_addressed": "Leaderboard; Strategy Lab; Suggestions S09",
+  "blocker_or_note": "Historical walk-forward results are retained as backtest research only and are forbidden from the competition leaderboard. No prospective evaluation window has been graded; no reward is offered pending legal, jurisdictional and data-rights review.",
   "row_type": "status",
   "evidence_url": "https://www.gov-online.go.jp/article/202411/entry-6786.html"
  },
@@ -191,18 +191,18 @@
  {
   "req_id": "R22",
   "requirement (from brief)": "Research and develop strategies that generate useful signals",
-  "status": "Done — 7 strategies pre-registered and graded walk-forward on 89 out-of-sample games",
-  "where_addressed": "One season only; strategy selection used the same window (S14)",
-  "blocker_or_note": "fact",
+  "status": "Historical walk-forward research exists; prospective competition not yet evaluated",
+  "where_addressed": "Backtest page (research only); prospective Leaderboard",
+  "blocker_or_note": "Candidate model rules and historical 2026 walk-forward research exist, but the repository does not contain complete immutable pre-registration manifests for each strategy. The historical comparison shares a season with strategy selection and is not a prospective competition result. The leaderboard intentionally shows no score or rank until registration and prospective grading pass.",
   "row_type": "fact",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
   "req_id": "R23",
   "requirement (from brief)": "Treat it as a leaderboard competition with rewards for top strategies",
-  "status": "Proposed — three reward tiers computed and published; no reward is paid or approved",
-  "where_addressed": "Legal, jurisdiction and rights review pending (F09, F16, F27)",
-  "blocker_or_note": "decision",
+  "status": "Not enabled; no strategy ranked and no reward paid",
+  "where_addressed": "Prospective Leaderboard; validation gates; Flags F09/F16/F17/F42",
+  "blocker_or_note": "No prospective sample is graded. Rewards remain disabled pending approved thresholds, independent qualification, jurisdictional/legal review and data-rights clearance.",
   "row_type": "decision",
   "evidence_url": "https://github.com/karagemop466-tech/X2"
  },
@@ -337,7 +337,7 @@
   "requirement (from brief)": "Verified results feed so backtests and ROI can be computed",
   "status": "Partially done - verified results feed published; ROI not computable without prices",
   "where_addressed": "Season results page (the verified results feed); Market tables page",
-  "blocker_or_note": "The feed is data/games_2026_results.csv: 137 games, each row linked to the official schedule and game page, reconciled against the official standings (0 mismatches). It supports backtests - the walk-forward backtest and leaderboard are computed from it. ROI cannot be computed at all until the price-snapshot store (R37) holds real market numbers; no ROI value is inferred.",
+  "blocker_or_note": "The feed contains 137 official results, each linked to the NFL schedule/game page and reconciled against all 32 official standings rows. It supports historical backtests. Those historical scores are explicitly excluded from the prospective leaderboard. ROI is not computable without authorized opening/closing prices and settlement rules; no return is inferred.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
@@ -362,9 +362,9 @@
  {
   "req_id": "R41",
   "requirement (from brief)": "Separate signal from staking in the leaderboard",
-  "status": "Done - ranking uses signal only; staking not measured",
+  "status": "Prospective signal/staking separation implemented; no rank or staking result yet",
   "where_addressed": "Market tables page; data/strategy_signal_staking.csv",
-  "blocker_or_note": "Staking has no measured value because no prices exist, so a staking result cannot change the signal rank. Tier labels are under review (F43).",
+  "blocker_or_note": "The public competition table contains no historical skill metrics, ranks, hit rates or ROI. Prospective signal and staking columns are blank until the frozen forecast window is graded and licensed prices exist.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
@@ -407,9 +407,9 @@
  {
   "req_id": "R46",
   "requirement (from brief)": "Separate signal from staking in the leaderboard",
-  "status": "Done - two blocks; staking return blank and flagged",
+  "status": "Prospective-only separation implemented; all performance fields blank pending grading",
   "where_addressed": "leaderboard.html; data/strategy_leaderboard.csv",
-  "blocker_or_note": "Signal block (skill, CI, p-values) separated from staking block (plan, ROI blank). No prices, so staking ROI not computable (F07/F32/F46).",
+  "blocker_or_note": "Backtest-derived signal scores are excluded from the competition leaderboard. The prospective signal and staking views contain no ranks, skill scores or ROI until authorized prospective evidence exists.",
   "row_type": "status",
   "evidence_url": "https://www.itl.nist.gov/div898/handbook/eda/section3/bootplot.htm"
  },
