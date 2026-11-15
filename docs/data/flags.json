@@ -736,5 +736,32 @@
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
   "status": "Open - reconcile",
   "action_requested": "Compare the 137 rows with the official weekly schedule pages, week by week, and record any difference."
+ },
+ {
+  "flag_id": "F89",
+  "category": "Count dependency",
+  "item": "Per-team view depends on the unreconciled Week 10 injury row count",
+  "detail": "The per-team page (team-view.html) is built from data/injuries_week10_2026.csv: 345 rows, reconciled to 66 Out, 10 Doubtful and 84 Questionable with 185 blank designations. The brief records 279 live rows (F83). The per-team counts are reported as the file stands and are not adjusted to either figure. Bye clubs CHI, DEN, PHI and TB are confirmed on the official schedule's Teams on Bye list.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - irregularity",
+  "action_requested": "Recount the official Week 10 injury page club by club and reconcile to 279 or 345 before the per-team counts are treated as final (depends on F83)."
+ },
+ {
+  "flag_id": "F90",
+  "category": "Register coverage",
+  "item": "Decision-readiness table has 45 rows; the requirements register has 58",
+  "detail": "data/decision_readiness.csv (45 rows, D01-D45) is the table published on the landing page. data/requirements.csv (58 rows, R01-R58) is the register. Thirteen requirement rows have no readiness row, so the landing table does not show every requirement. No row was added here because the mapping from R-rows to D-rows is the owner's to make.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv",
+  "status": "Open - reviewer decision",
+  "action_requested": "Owner maps each of the 58 requirement rows to a readiness row, or records which are out of scope, before the landing table is cited as complete."
+ },
+ {
+  "flag_id": "F91",
+  "category": "Method limitation",
+  "item": "Reference-line favourite lost on every out-of-sample game, so the favourite control is weak",
+  "detail": "Backing the reference-line favourite on all 89 out-of-sample games returned mean edge -4.88 points (bootstrap 95% CI -7.65 to -2.18; data/leaderboard_control_runs.csv, row ALL), with a favourite hit rate of 0.416. The naive reference line over-rates favourites on these games. Beating the favourite is therefore a weak control on its own. Random picks remain the skill control.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/leaderboard_control_runs.csv",
+  "status": "Open - interpretation",
+  "action_requested": "Owner decides whether the naive reference line should be supplemented with a second benchmark before any strategy is judged against the favourite control (alongside F17)."
  }
 ]
