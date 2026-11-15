@@ -107,6 +107,12 @@ def main():
                 pair = (s_["player_out"], s_["named_replacement"])
                 if pair not in named_chart:
                     named_chart.append(pair)
+        def _rep_label(name):
+            # a named replacement can himself be on the official report: show that status, never hide it
+            hit = [r for r in team_inj if r["player"] == name]
+            if not hit:
+                return name + " (not on the Week 10 report)"
+            return name + " (on the Week 10 report: " + (hit[0]["game_status"] or "no game designation") + ")"
         named_art = article_by_team.get(t, [])
         art_urls = sorted({u for _p, _n, u in named_art})
         if len(art_urls) > 1:
@@ -137,7 +143,7 @@ def main():
             "starters_out_chart_names": "; ".join(f"{s['player_out']} ({s['official_game_status']})" for s in starters)
                                        if covered and not bye else "",
             "replacements_named_chart_pairs": (len(named_chart) if covered else "") if not bye else "",
-            "replacements_named_chart": "; ".join(f"{p} -> {n}" for p, n in named_chart) if covered and not bye else "",
+            "replacements_named_chart": "; ".join(f"{p} -> {_rep_label(n)}" for p, n in named_chart) if covered and not bye else "",
             "replacements_named_article": "; ".join(f"{p} -> {n}" for p, n, _u in named_art),
             "article_source_url": art_urls[0] if art_urls else "",
             "unverified_note": note,
