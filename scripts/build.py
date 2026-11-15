@@ -654,6 +654,52 @@ competing = [r for r in scorecard if r["strategy_id"] != "S0"]
 n_competing = len(competing)
 n_qualified = sum(1 for r in scorecard if r["status"].startswith("Qualified"))
 
+# ---------- decision-readiness table for the landing page ----------
+# One row per requirement, with the gate that blocks it and the value that would clear it.
+def _readiness_clear(status, blocker):
+    b = (blocker or "").lower()
+    if status == "Done":
+        return "No gate — complete"
+    if "price" in b or "odds" in b:
+        return "Connect a rights-cleared odds feed (price cells stay blank by design)"
+    if "depth" in b or "starter" in b:
+        return "Confirm an official pregame depth source (fields stay blank until verified)"
+    if "permission" in b or "rights" in b:
+        return "Obtain written permission or a licence (F16)"
+    if "legal" in b or "jurisdiction" in b:
+        return "Qualified legal review of contest/reward design (F09/F19)"
+    if "threshold" in b or "cutoff" in b or "approv" in b:
+        return "Owner-approved numeric cutoffs (F17)"
+    if "sample" in b or "season" in b:
+        return "More verified seasons of results (F33)"
+    if "history" in b or "capture" in b or "timestamp" in b:
+        return "Multi-day dated captures with the fetch time recorded (F13/F14)"
+    return "Review the blocker note on the Requirements page"
+
+_readiness = []
+for _r in reqs:
+    _readiness.append({
+        "req": _r.get("req_id", ""),
+        "requirement": _r.get("requirement (from brief)", ""),
+        "status": _r.get("status", ""),
+        "blocker": _r.get("blocker_or_note", ""),
+        "clear": _readiness_clear(_r.get("status", ""), _r.get("blocker_or_note", "")),
+        "evidence_url": _r.get("evidence_url", ""),
+    })
+_readiness.sort(key=lambda x: x["req"])
+_readiness_html = table(
+    _readiness,
+    ["req", "requirement", "status", "clear", "evidence_url"],
+    {
+        "req": "Req",
+        "requirement": "Requirement (from brief)",
+        "status": "Status",
+        "clear": "Gate that blocks it / what must change to clear",
+        "evidence_url": "Source ↗",
+    },
+    table_id="decision-readiness",
+)
+
 # ---------- index ----------
 pages["index.html"] = ("NFL Research Dashboard", f"""
 <section class="hero">
@@ -702,6 +748,10 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('repo-audit.html', 'Repository audit', 'Twenty-two checks run against live official pages and recomputations, with the result of each one.')}
 {card('cross-check.html', 'Independent cross-check', 'A second independent transcription and model compared against the first: what agrees, and the one thing that does not.')}
 {card('depth-deficiency.html', 'Deficiency tracking', 'Unit exposure by side of ball, officially named starters and replacements, and the depth of each replacement (2nd/3rd/4th string where a chart verifies it).')}
+
+<h2>Decision readiness — one row per requirement</h2>
+<p class="note">Every requirement from the brief, its current status, the gate that blocks it, and what would clear it. Values that cannot be confirmed from an official source stay blank and flagged; nothing is inferred.</p>
+{_readiness_html}
 </div>
 """)
 
@@ -1134,8 +1184,8 @@ effect size it observed, for an 80%-power test; every strategy on this board is 
 {tiles([(ms['strategies_tested'], 'strategies tested'), (ms['qualified_strategies'], 'qualified'),
         (ms['live_strategies'], 'live strategies'), (ms['out_of_sample_games'], 'out-of-sample games')])}
 <h2>Signal — ranked by forecast skill</h2>
-{table(_lb_disp, ['rank','strategy_id','strategy','market','status','demotion_safe','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','mae_model','mae_reference','oos_games','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url'],
-       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','status':'Status','demotion_safe':'Demotion-safe','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier (not offered — R36)','source_url':'Source'})}
+{table(_lb_disp, ['rank','strategy_id','strategy','market','status','demotion_safe','skill_score_mae_improvement_pts','skill_ci_low','skill_ci_high','skill_p_permutation','q_bh_fdr','mae_model','mae_reference','oos_games','min_n_for_80pct_power','sample_shortfall','gates_passed','gates_failed','reward_tier','source_url','would_change_if_better','would_change_if_worse'],
+       {'rank':'#','strategy_id':'ID','strategy':'Strategy','market':'Market','status':'Status','demotion_safe':'Demotion-safe','skill_score_mae_improvement_pts':'Skill (pts)','skill_ci_low':'CI low','skill_ci_high':'CI high','skill_p_permutation':'Permutation p','q_bh_fdr':'BH q','mae_model':'MAE model','mae_reference':'MAE reference','oos_games':'OOS games','min_n_for_80pct_power':'Bets needed (80% power)','sample_shortfall':'Short by','gates_passed':'Gates','gates_failed':'Failed','reward_tier':'Proposed tier (not offered — R36)','source_url':'Source','would_change_if_better':'What would change our mind if skill improves','would_change_if_worse':'What would change our mind if skill degrades'})}
 <h2>Staking — separate from signal</h2>
 <p class="note">Staking returns depend on prices, which this project does not hold. The plan is published for
 completeness; the return columns are blank and flagged, not estimated.</p>

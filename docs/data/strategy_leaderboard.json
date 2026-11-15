@@ -43,7 +43,9 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If per-week skill turns reliably positive (sign test p < 0.05) on a held-out week block and the bootstrap CI stays above zero",
+  "would_change_if_worse": "If the mean edge turns negative in any walk-forward block or the skill CI includes zero"
  },
  {
   "rank": "2",
@@ -89,7 +91,9 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If recency-weighted skill replicates on weeks not used to choose the half-life",
+  "would_change_if_worse": "If the CI on skill includes zero or the edge degrades below the reference line"
  },
  {
   "rank": "3",
@@ -135,7 +139,9 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If both halves of the window agree and per-week skill turns positive",
+  "would_change_if_worse": "If one half keeps disagreeing or the edge CI includes zero"
  },
  {
   "rank": "4",
@@ -181,7 +187,9 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If per-week skill turns reliably positive on a held-out block and the CI stays above zero",
+  "would_change_if_worse": "If the mean edge turns negative or the skill CI includes zero"
  },
  {
   "rank": "5",
@@ -227,7 +235,9 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If a total projection beats the league-average total with a CI excluding zero",
+  "would_change_if_worse": "If total skill stays indistinguishable from zero"
  },
  {
   "rank": "6",
@@ -273,7 +283,9 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If the post-bye edge replicates on a larger held-out block with a CI excluding zero",
+  "would_change_if_worse": "If the small-sample edge collapses on more games"
  },
  {
   "rank": "7",
@@ -319,6 +331,8 @@
   "staking_units_wagered": "",
   "staking_roi_pct": "",
   "staking_note": "No licensed odds feed — staking ROI not computable; kept separate from signal so a lucky staking run cannot mask a weak signal (F07/F32/F46)",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "would_change_if_better": "If a directly validated joint probability and the operator's void/push rules both exist",
+  "would_change_if_worse": "If leg dependence is not bounded or push rules are unclear"
  }
 ]
