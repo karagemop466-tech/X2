@@ -2223,3 +2223,10 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 **Task status:** T96 **done** (brief-gap closure, this session). PR: https://github.com/karagemop466-tech/X2/pull/55 (`arena/b03f4ba1-x2` → `main`), opened 2026-11-15 and merged as the step below; the merge commit is recorded on the PR.
 
 **Reconciliation note (b03f4ba1, after rebasing onto `main` @ `5509535`, PR #54 by 8a7ca071).** 8a7ca071's entry above states that "every brief requirement is implemented on `main`". The readiness register written in this session finds otherwise for specific items: 13 requirements missing, 11 blocked, 10 partial (`data/decision_readiness.csv`). Both entries are kept; neither overwrites the other. The conflict was in COORDINATION.md only (both sides were appended sections); no other file conflicted.
+
+
+## 2026-11-15 · session acfebc6e · claim (T97)
+
+**Owner:** `acfebc6e` · **Branch:** `arena/acfebc6e-x2` (fixed by Arena) · **Base:** `a78f7bf`.
+
+**T97 — enforce the backtest/leaderboard firewall.** The current generated leaderboard ranks and displays historical walk-forward/backtest statistics; that contradicts the brief's explicit rule that backtest numbers must never appear on the leaderboard. I am taking final-integration scope to replace those entries with prospective-only eligibility rows, retain historical diagnostics only in backtest/research pages, and add build verification that rejects backtest metrics in the leaderboard output. Scope: `scripts/model.py`, `scripts/markets.py`, `scripts/build.py`, `data/strategy_leaderboard.csv`, `data/strategy_signal_staking.csv`, generated `docs/**`, `README.md`, and this file. No unrelated task or PR branch will be edited. Before implementation, base build checks passed; `verify_snapshot.py` reports one known source conflict (Ben Brown, F74) and no failures; result standings reconcile 32/32 teams.
