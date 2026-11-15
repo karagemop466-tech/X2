@@ -23,11 +23,63 @@ index 12f817c..2e9f371 100644
  `data/live_reverification_2026-11-14.csv`; flag F69.
  
 diff --git a/data/injuries_week10_2026.csv b/data/injuries_week10_2026.csv
-index 1d2e625..dc220d0 100644
+index 1d2e625..c68e776 100644
 --- a/data/injuries_week10_2026.csv
 +++ b/data/injuries_week10_2026.csv
-@@ -318,11 +318,13 @@ game_no,team_abbr,team_name,player,position,injury,practice_status,game_status,p
- 14,LAC,Chargers,Kendall Williamson,S,,Did Not Participate In Practice,,https://www.nfl.com/players/kendall-williamson/,https://www.nfl.com/injuries/
+@@ -139,7 +139,7 @@ game_no,team_abbr,team_name,player,position,injury,practice_status,game_status,p
+ 7,IND,Colts,Jaylon Carlies,LB,Neck,Did Not Participate In Practice,Out,https://www.nfl.com/players/jaylon-carlies/,https://www.nfl.com/injuries/
+ 7,IND,Colts,Akeem Davis-Gaither,LB,Knee,Did Not Participate In Practice,Out,https://www.nfl.com/players/akeem-davis-gaither/,https://www.nfl.com/injuries/
+ 7,IND,Colts,A.J. Haulcy,S,,Full Participation in Practice,,https://www.nfl.com/players/a-j-haulcy/,https://www.nfl.com/injuries/
+-7,IND,Colts,Arden Key,DE,Hamstring,Full Participation in Practice,Questionable,https://www.nfl.com/players/arden-key/,https://www.nfl.com/injuries/
++7,IND,Colts,Arden Key,DE,,Full Participation in Practice,,https://www.nfl.com/players/arden-key/,https://www.nfl.com/injuries/
+ 7,IND,Colts,Will Mallory,TE,Hamstring,Limited Participation in Practice,Questionable,https://www.nfl.com/players/will-mallory/,https://www.nfl.com/injuries/
+ 7,IND,Colts,Luke Rhodes,LS,Hamstring,Did Not Participate In Practice,Out,https://www.nfl.com/players/luke-rhodes/,https://www.nfl.com/injuries/
+ 7,IND,Colts,Grover Stewart,DT,,Full Participation in Practice,,https://www.nfl.com/players/grover-stewart/,https://www.nfl.com/injuries/
+@@ -247,7 +247,7 @@ game_no,team_abbr,team_name,player,position,injury,practice_status,game_status,p
+ 11,LV,Raiders,Thomas Booker,DT,Ankle,Full Participation in Practice,Questionable,https://www.nfl.com/players/thomas-booker/,https://www.nfl.com/injuries/
+ 11,LV,Raiders,Foley Fatukasi,DT,,Full Participation in Practice,,https://www.nfl.com/players/foley-fatukasi/,https://www.nfl.com/injuries/
+ 11,LV,Raiders,Ian Thomas,TE,,Full Participation in Practice,,https://www.nfl.com/players/ian-thomas/,https://www.nfl.com/injuries/
+-11,LV,Raiders,Dont'e Thornton Jr.,WR,Back,Did Not Participate In Practice,Questionable,https://www.nfl.com/players/dont-e-thornton-jr/,https://www.nfl.com/injuries/
++11,LV,Raiders,Dont'e Thornton Jr.,WR,Back,Limited Participation in Practice,Questionable,https://www.nfl.com/players/dont-e-thornton-jr/,https://www.nfl.com/injuries/
+ 11,LV,Raiders,Trey Zuhn III,C,,Full Participation in Practice,,https://www.nfl.com/players/trey-zuhn-iii/,https://www.nfl.com/injuries/
+ 12,SF,49ers,Mike Evans,WR,Achilles,Did Not Participate In Practice,Out,https://www.nfl.com/players/mike-evans/,https://www.nfl.com/injuries/
+ 12,SF,49ers,Renardo Green,CB,Back,Limited Participation in Practice,Questionable,https://www.nfl.com/players/renardo-green/,https://www.nfl.com/injuries/
+@@ -297,32 +297,34 @@ game_no,team_abbr,team_name,player,position,injury,practice_status,game_status,p
+ 13,CIN,Bengals,Dexter Lawrence,DT,,Did Not Participate In Practice,,https://www.nfl.com/players/dexter-lawrence/,https://www.nfl.com/injuries/
+ 13,CIN,Bengals,Brian Parker II,G,Knee,Full Participation in Practice,Doubtful,https://www.nfl.com/players/brian-parker-ii/,https://www.nfl.com/injuries/
+ 13,CIN,Bengals,DJ Turner II,CB,,Full Participation in Practice,,https://www.nfl.com/players/dj-turner-2/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Kayode Awosika,G,,Limited Participation in Practice,,https://www.nfl.com/players/kayode-awosika/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Bud Dupree,DE,,Did Not Participate In Practice,,https://www.nfl.com/players/bud-dupree/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Justin Eboigbe,DE,,Limited Participation in Practice,,https://www.nfl.com/players/justin-eboigbe/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Kayode Awosika,G,Fibula,Full Participation in Practice,Questionable,https://www.nfl.com/players/kayode-awosika/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Bud Dupree,DE,,Full Participation in Practice,,https://www.nfl.com/players/bud-dupree/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Justin Eboigbe,DE,Ankle,Limited Participation in Practice,Questionable,https://www.nfl.com/players/justin-eboigbe/,https://www.nfl.com/injuries/
+ 14,LAC,Chargers,Alex Harkey,G,,Full Participation in Practice,,https://www.nfl.com/players/alex-harkey/,https://www.nfl.com/injuries/
+ 14,LAC,Chargers,Tre Harris,WR,,Full Participation in Practice,,https://www.nfl.com/players/tre-harris/,https://www.nfl.com/injuries/
+ 14,LAC,Chargers,Cam Hart,CB,,Full Participation in Practice,,https://www.nfl.com/players/cam-hart/,https://www.nfl.com/injuries/
+ 14,LAC,Chargers,Daiyan Henley,LB,,Full Participation in Practice,,https://www.nfl.com/players/daiyan-henley/,https://www.nfl.com/injuries/
+ 14,LAC,Chargers,Deane Leonard,CB,,Full Participation in Practice,,https://www.nfl.com/players/deane-leonard/,https://www.nfl.com/injuries/
+ 14,LAC,Chargers,Khalil Mack,LB,,Full Participation in Practice,,https://www.nfl.com/players/khalil-mack/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Ladd McConkey,WR,,Did Not Participate In Practice,,https://www.nfl.com/players/ladd-mcconkey/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Keaton Mitchell,RB,,Limited Participation in Practice,,https://www.nfl.com/players/keaton-mitchell/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,David Njoku,TE,,Limited Participation in Practice,,https://www.nfl.com/players/david-njoku/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Denzel Perryman,LB,,Full Participation in Practice,,https://www.nfl.com/players/denzel-perryman/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Trey Pipkins,T,,Did Not Participate In Practice,,https://www.nfl.com/players/trey-pipkins/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Rodney Shelley,CB,,Limited Participation in Practice,,https://www.nfl.com/players/rodney-shelley/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Branson Taylor,G,,Did Not Participate In Practice,,https://www.nfl.com/players/branson-taylor/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Brenen Thompson,WR,,Did Not Participate In Practice,,https://www.nfl.com/players/brenen-thompson/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Isas Waxter,CB,,Did Not Participate In Practice,,https://www.nfl.com/players/isas-waxter/,https://www.nfl.com/injuries/
+-14,LAC,Chargers,Kendall Williamson,S,,Did Not Participate In Practice,,https://www.nfl.com/players/kendall-williamson/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Ladd McConkey,WR,Back,Did Not Participate In Practice,Questionable,https://www.nfl.com/players/ladd-mcconkey/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Keaton Mitchell,RB,,Full Participation in Practice,,https://www.nfl.com/players/keaton-mitchell/,https://www.nfl.com/injuries/
++14,LAC,Chargers,David Njoku,TE,Fibula,Full Participation in Practice,Questionable,https://www.nfl.com/players/david-njoku/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Denzel Perryman,LB,Pectoral,Full Participation in Practice,Questionable,https://www.nfl.com/players/denzel-perryman/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Trey Pipkins,T,"Not injury related - personal matter, Knee",Limited Participation in Practice,Questionable,https://www.nfl.com/players/trey-pipkins/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Rodney Shelley,CB,,Full Participation in Practice,,https://www.nfl.com/players/rodney-shelley/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Branson Taylor,G,Ankle,Did Not Participate In Practice,Out,https://www.nfl.com/players/branson-taylor/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Brenen Thompson,WR,Hamstring,Did Not Participate In Practice,Doubtful,https://www.nfl.com/players/brenen-thompson/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Isas Waxter,CB,Ankle,Did Not Participate In Practice,Out,https://www.nfl.com/players/isas-waxter/,https://www.nfl.com/injuries/
++14,LAC,Chargers,Kendall Williamson,S,Calf,Did Not Participate In Practice,Out,https://www.nfl.com/players/kendall-williamson/,https://www.nfl.com/injuries/
  14,BAL,Ravens,Rasheen Ali,RB,,Full Participation in Practice,,https://www.nfl.com/players/rasheen-ali/,https://www.nfl.com/injuries/
  14,BAL,Ravens,Rashod Bateman,WR,,Full Participation in Practice,,https://www.nfl.com/players/rashod-bateman/,https://www.nfl.com/injuries/
 +14,BAL,Ravens,Calais Campbell,DT,,Did Not Participate In Practice,,https://www.nfl.com/players/calais-campbell/,https://www.nfl.com/injuries/
