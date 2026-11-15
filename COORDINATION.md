@@ -2186,10 +2186,45 @@ time. Final free IDs after this session: T96+.**
 |----|------|--------|-------|---------------|-----------------|
 | T96 | Control baselines (M1 record, favourite, random) | done by `b03f4ba1` (PR #55); my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | see above |
 | T97 | Two-sided change-my-mind field | done by `b03f4ba1`; my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | `data/strategy_change_rules.csv` |
-| T98 | Per-team view: listed players, Out/Doubtful/Questionable, net injury count, starters out and replacements named where a club chart verifies them | in progress | 6ee4d13e | `scripts/team_view.py` (new), `data/team_view_week10_2026.csv` (new), `scripts/build.py` (new page block, nav entry, validation), generated `docs/team-view.html` | Official NFL.com Week 10 injury report (https://www.nfl.com/injuries/); club charts from `data/depth_replacement.csv` (self-labelled unofficial, F-05/F18); Week 10 bye list from https://www.nfl.com/schedules/2026/by-week/week-10 |
+| T98 | Per-team view: listed players, Out/Doubtful/Questionable, net injury count, starters out and replacements named where a club chart verifies them | **done** (this session) | 6ee4d13e | `scripts/team_view.py` (new), `data/team_view_week10_2026.csv` (new), `scripts/build.py` (new page block, nav entry, validation), generated `docs/team-view.html` | Official NFL.com Week 10 injury report (https://www.nfl.com/injuries/); club charts from `data/depth_replacement.csv` (self-labelled unofficial, F-05/F18); Week 10 bye list from https://www.nfl.com/schedules/2026/by-week/week-10 |
 | T99 | Decision-readiness table on the landing page | done by `b03f4ba1` (45 rows); my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | coverage gap: 45 rows vs 58 requirements (F90) |
-| T100 | Integration: merge `main`, rebuild, run every check, PR `arena/6ee4d13e-x2` → `main`, merge, confirm GitHub Pages, record | in progress | 6ee4d13e | `COORDINATION.md`, generated `docs/**`, PR | runs last |
-| T101 | Control baselines for **every** leaderboard run (M1–M4, T1, R1, P1): random picks and favourites on the exact bets each run made, with a reproduction check | in progress | 6ee4d13e | `scripts/baselines.py` (new), `data/leaderboard_control_runs.csv` (new, separate from `data/control_baselines.csv`), `scripts/model.py` (6-line hook after the leaderboard summaries), `scripts/build.py` (leaderboard block), generated `docs/leaderboard.html` | First-party: `data/model_backtest.csv` and the unrounded walk-forward rows in `scripts/model.py`. Extends T96; does not replace it |
+| T100 | Integration: merge `main`, rebuild, run every check, PR `arena/6ee4d13e-x2` → `main`, merge, confirm GitHub Pages, record | **done** (see completion record) | 6ee4d13e | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+| T101 | Control baselines for **every** leaderboard run (M1–M4, T1, R1, P1): random picks and favourites on the exact bets each run made, with a reproduction check | **done** (this session) | 6ee4d13e | `scripts/baselines.py` (new), `data/leaderboard_control_runs.csv` (new, separate from `data/control_baselines.csv`), `scripts/model.py` (6-line hook after the leaderboard summaries), `scripts/build.py` (leaderboard block), generated `docs/leaderboard.html` | First-party: `data/model_backtest.csv` and the unrounded walk-forward rows in `scripts/model.py`. Extends T96; does not replace it |
+
+### Completion record (6ee4d13e)
+
+**Delivered on this branch**
+- **T98 per-team view**: `docs/team-view.html`, `data/team_view_week10_2026.csv` (32 rows), `scripts/team_view.py`. Bye clubs CHI, DEN, PHI and TB are confirmed on the official schedule's "Teams on Bye" list (https://www.nfl.com/schedules/2026/by-week/week-10). Starter order is shown only for the six clubs with a club team-site chart in `data/depth_replacement.csv` (DAL, DET, GB, NE, NO, TEN). A named replacement who is also on the Week 10 report carries that status (e.g. DAL Locke → Juanyeh Thomas, Doubtful).
+- **T101 controls for every run**: `scripts/baselines.py`, called from `scripts/model.py` after the leaderboard summaries, writes `data/leaderboard_control_runs.csv`. It grades M1, M2, M3, M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made, using unrounded walk-forward values. All seven reproduce their published bet count and mean edge; the build stops if one does not. Leaderboard page section: "Controls for every leaderboard run (T101)".
+- **Merge**: `main` (PR #55, PR #56) merged into the branch. The first merge had one conflict, in COORDINATION.md (both sides appended sections). Both were kept, and my earlier duplicate T96/T97/T99 entries were withdrawn (see the collision record above).
+
+**Sources (read 2026-11-15)**
+- NFL.com Week 10 injury report, https://www.nfl.com/injuries/ — row by row for WAS, NYG, NE and DET; club totals and every starter row for ATL, DAL, GB, NO, SEA and TEN. KC and the other clubs were not re-checked in this session.
+- NFL.com Week 10 schedule, https://www.nfl.com/schedules/2026/by-week/week-10 — Teams on Bye: CHI, DEN, PHI, TB.
+- Club team-site charts listed in `data/depth_replacement.csv` (chart_as_of is not stated on any page; DET and NE self-label as unofficial).
+
+**Verification (run on the merged branch)**
+- `python3 scripts/team_view.py` — asserts 66 Out / 10 Doubtful / 84 Questionable / 345 listed / 185 blank, and 4 bye clubs.
+- `python3 scripts/model.py` — exit 0; all seven control rows reproduce. It also rewrites `data/strategy_leaderboard.csv` without the two PR #56 columns (F93); that file was restored and is not committed in the regenerated form.
+- `python3 scripts/controls.py` — exit 0 (b03f4ba1; reproducible).
+- `python3 scripts/build.py` — 42 pages; row-source and link checks passed.
+- `npm run build` and `npm run verify` — ALL CHECKS PASSED; 1,907 internal links; 4,405 external links, all https and on the allow-list.
+- `python3 scripts/check_links.py` — no broken internal links; all external links https and on the allow-list.
+- `git diff --check` — clean.
+
+**Irregularities (all open; on the Flagged for Review page)**
+- **F89** The per-team counts depend on the unreconciled Week 10 injury row count: the repo file has 345 rows; the brief records 279 (F83). The page reports the file as it stands.
+- **F90** The readiness table from b03f4ba1 has 45 rows; `data/requirements.csv` has 58.
+- **F91** The reference-line favourite lost on all 89 out-of-sample games (mean edge −4.88, CI −7.65 to −2.18), so the favourite control is weak.
+- **F92** Two readiness tables and two change-our-mind sources now exist on `main` (PR #55 and PR #56). Neither was edited here.
+- **F93** `scripts/model.py` regenerates `data/strategy_leaderboard.csv` without the `would_change_if_better` and `would_change_if_worse` columns that PR #56 added by hand, so a re-run removes them.
+
+**Requests to other sessions (logged, not actioned)**
+- **To session 10209425 (PR #56):** the `would_change_*` columns are not produced by `scripts/model.py`. Please move them into the generator (F93), and reconcile the second readiness table with `data/decision_readiness.csv` (F92).
+- **To session a47ccbb1 (PR #48, OPEN since 2026-11-14 20:22 UTC):** its title, "Final integration: fold PRs #14, #31, #37, #38", overlaps this session's integration scope and it has been neither merged nor closed. This session did not close or edit it. Please merge or close it, or record it as superseded.
+- **Shared register:** F89–F93 were appended to `data/flags.csv`, as b03f4ba1 did for F83–F88. No existing row was changed.
+
+**Merge and Pages:** recorded in the PR and in a follow-up record commit on this branch (see below).
 
 **Not claimed (owner-owned, unchanged):** DEC-01…DEC-10, F09, F16, F17, F19, F36, F38, F13, and every `needs review` item.
 
