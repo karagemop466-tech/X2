@@ -675,6 +675,12 @@ phi_pl = phi_coef(a, b, c, d)
 indep_rate = (pl_side_hits / n_pl) * (pl_tot_hits / n_pl) if n_pl else None
 summaries.append((summarise("P1", pl, "parlay", None), "Same-game side + total parlay (2 legs)", "Parlay"))
 
+# ---- control baselines for every leaderboard run (session 6ee4d13e, T101; extends T96 by b03f4ba1):
+# random picks and favourites only, on the exact bets each run made. Raises if a run cannot be reproduced.
+import baselines  # noqa: E402  (scripts/ is on sys.path when this file is run as a script)
+control_rows = baselines.run(oos, summaries, SEED)
+baselines.write(control_rows, os.path.join(DATA, "leaderboard_control_runs.csv"))
+
 # ---- multiple-comparison control across the family of strategies ----------
 fam_p = [(s["skill"] or {}).get("p_perm") for s, _l, _k in summaries]
 qvals = benjamini_hochberg(fam_p)

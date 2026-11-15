@@ -58,6 +58,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `20e6161b` | `arena/20e6161b-x2` | **Current session.** Base `main` @ `d22bbd3` (PR #34); ca1ea224 adopted by fast-forward. Claimed T51–T55 (draft IDs) before four parallel sessions merged PRs #35–#46 with overlapping IDs; after the union merge this session owns **T79–T83**, flags **F74–F75**, verification **V28–V32** and repo-review **RV14–RV23**. Scope: C09/G1 model pass (independently derived, superseded by main's merged implementations), the A08–A11 replacement-depth gap (F53) from official club charts, availability-register corrections (F74), brief-completeness audit, fifth verification pass, and integration. See the merge/conflict log and close-out at the end of this file. |
 | `25d6114f` | `arena/25d6114f-x2` | **Stale — work taken over by `cbb6c2f3` (T88).** Claimed T14–T20 on 2026-11-14; those IDs were completed by other sessions on `main` (30beeb55, 7c9eb69a, 45a0ec8c, 52ca9f77, 324b0cd2, 3988bdab). Last commit 18:21:30Z, then no commits for >60 minutes; PR #14 taken over under the stale-claim rule. Its unique verified content (official gamebook starter evidence, snapshot-verification ledger, signal/skill/luck registers, `scripts/verify_snapshot.py`) was reconciled into `main` by `cbb6c2f3` without discarding either side; see the takeover note above its verification report below. |
 | `cbb6c2f3` | `arena/cbb6c2f3-x2` | **Current session — takeover + final integration (T88).** Arrived on `main` @ `d22bbd3` (PR #34 merged). Claims **T88** (drafted T52; renumbered three times after main advanced through PRs #35–#50: T51–T60, then T79–T83 (20e6161b), then T84–T87 (d2915d86) were taken by parallel sessions with earlier claim times): (a) take over stale PR #14 (session `25d6114f`, last commit 18:21Z, >60 min with no commits — takeover rule applies), reconciling its unique verified content (official gamebook starter evidence, snapshot-verification ledger, signal/skill/luck registers) with current `main` without discarding either side; (b) reconcile the stale board statuses T41 (PR #34 merged 19:38Z but never recorded) and T48 (log says done, table says in progress); (c) handle the remaining open PR #31 (T51, session `ccd9ab30`) — closed as superseded after it passed 60 minutes with no activity; (d) final line-by-line re-verification, site rebuild, link check, PR, merge, Pages confirmation and closing record. **Done:** PR #38 merged as `61f3419` at 20:51:40Z, Pages deployment success at 20:52Z, live checks pass; PR #14 auto-merged with it, PR #31 closed as superseded, PR #48 left open with an advisory comment. File scope: `COORDINATION.md`, PR #14's unique files (`data/starters_gamebook_2026_reg_10.csv`, `data/verification_week10_2026.csv`, `data/verification/`, `scripts/verify_snapshot.py`, `data/line_signals.csv`, `data/skill_engine_gates.csv`, `data/luck_tests.csv`, `data/correlation_framework.csv`, `data/decision_questions.csv`, `data/depth_deficiency.csv`, `data/leaderboard_rules.csv`, `data/repo_review.csv`, `data/suggestions_register.csv` and their generated pages), plus integration-owned `scripts/build.py`, `README.md`, `docs/**`, `data/flags.csv`, `data/sources.csv` reconciliation. Will not edit `scripts/model.py` while PR #31 is open. |
+| `6ee4d13e` | `arena/6ee4d13e-x2` | **Current session (2026-11-15).** Claimed T96–T100, then withdrew its duplicates of `b03f4ba1`'s merged T96/T97/T99 (PR #55) and kept **T98** (per-team view), **T100** (integration) and added **T101** (control baselines for every leaderboard run). Branch is fixed by Arena as `arena/6ee4d13e-x2`; the `session-<id>/<task>` naming in the brief is not used. |
 
 ## Task board (combined — all sessions)
 
@@ -2159,6 +2160,82 @@ and reward tiers) · F36 (re-run the model when Week 10 is final) · F81/F82 (re
 **Task IDs closed by this session: T94 (F47) and T95 (integration). T92/T93 were adopted from d2915d86 and
 20e6161b respectively (no files written for them here); T52/T53 were adopted from f25d6b55/e208ba6d at claim
 time. Final free IDs after this session: T96+.**
+
+## 2026-11-15 · session 6ee4d13e · claim, collision record and revised scope (T98, T100, T101)
+
+**Branch:** `arena/6ee4d13e-x2` · **Base:** `main` @ `a78f7bf` (PR #53); `main` @ `2ab6ea5` (PRs #54 and #55) merged in · **Status:** active · **Owner:** `6ee4d13e`
+
+### Collision record (read before merging)
+
+- My first claim (T96–T100, commit `c64968f`, from `a78f7bf`) overlapped with session `b03f4ba1`, which claimed **T96**
+  and merged it to `main` as PR #55 at 18:37 UTC on 2026-11-15, after my board survey and before my first
+  implementation push. I had written parallel versions of four items. Per the board rule (never start a task another
+  session has claimed), I **withdrew my duplicates and kept theirs unchanged**:
+  - **T96 control baselines** (straight-up record for M1, reference-line favourite, random picks): done by `b03f4ba1`
+    (`scripts/controls.py`, `data/control_baselines.csv`, `data/control_baselines_games.csv`). Not duplicated.
+    Its control covers **M1 only**, not every leaderboard run, so the rest is taken on as **T101** below.
+  - **T97 two-sided "what would change our mind"**: done by `b03f4ba1` (`data/strategy_change_rules.csv`, seven
+    strategies). My register is withdrawn.
+  - **T99 decision-readiness table**: done by `b03f4ba1` (`data/decision_readiness.csv`, 45 rows D01–D45). My table is
+    withdrawn. Note for the owner: `data/requirements.csv` has **58** rows, so the readiness table does not yet cover
+    every requirement row (flag F90).
+- **Flag IDs.** My drafted flags F83–F85 collided with `main` (F83–F88 already used). Renumbered to **F89–F91**.
+- **Kept, not overlapping anything on `main`:** T98 (per-team view), T100 (integration). **New:** T101.
+
+### Task board (this session's final state)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T96 | Control baselines (M1 record, favourite, random) | done by `b03f4ba1` (PR #55); my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | see above |
+| T97 | Two-sided change-my-mind field | done by `b03f4ba1`; my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | `data/strategy_change_rules.csv` |
+| T98 | Per-team view: listed players, Out/Doubtful/Questionable, net injury count, starters out and replacements named where a club chart verifies them | **done** (this session) | 6ee4d13e | `scripts/team_view.py` (new), `data/team_view_week10_2026.csv` (new), `scripts/build.py` (new page block, nav entry, validation), generated `docs/team-view.html` | Official NFL.com Week 10 injury report (https://www.nfl.com/injuries/); club charts from `data/depth_replacement.csv` (self-labelled unofficial, F-05/F18); Week 10 bye list from https://www.nfl.com/schedules/2026/by-week/week-10 |
+| T99 | Decision-readiness table on the landing page | done by `b03f4ba1` (45 rows); my duplicate withdrawn | b03f4ba1 | (theirs, untouched) | coverage gap: 45 rows vs 58 requirements (F90) |
+| T100 | Integration: merge `main`, rebuild, run every check, PR `arena/6ee4d13e-x2` → `main`, merge, confirm GitHub Pages, record | **done** (see completion record) | 6ee4d13e | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+| T101 | Control baselines for **every** leaderboard run (M1–M4, T1, R1, P1): random picks and favourites on the exact bets each run made, with a reproduction check | **done** (this session) | 6ee4d13e | `scripts/baselines.py` (new), `data/leaderboard_control_runs.csv` (new, separate from `data/control_baselines.csv`), `scripts/model.py` (6-line hook after the leaderboard summaries), `scripts/build.py` (backtest block, appended to backtest.html), generated `docs/backtest.html` | First-party: `data/model_backtest.csv` and the unrounded walk-forward rows in `scripts/model.py`. Extends T96; does not replace it |
+
+### Completion record (6ee4d13e)
+
+**Delivered on this branch**
+- **T98 per-team view**: `docs/team-view.html`, `data/team_view_week10_2026.csv` (32 rows), `scripts/team_view.py`. Bye clubs CHI, DEN, PHI and TB are confirmed on the official schedule's "Teams on Bye" list (https://www.nfl.com/schedules/2026/by-week/week-10). Starter order is shown only for the six clubs with a club team-site chart in `data/depth_replacement.csv` (DAL, DET, GB, NE, NO, TEN). A named replacement who is also on the Week 10 report carries that status (e.g. DAL Locke → Juanyeh Thomas, Doubtful).
+- **T101 controls for every run**: `scripts/baselines.py`, called from `scripts/model.py` after the leaderboard summaries, writes `data/leaderboard_control_runs.csv`. It grades M1, M2, M3, M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made, using unrounded walk-forward values. All seven reproduce their published bet count and mean edge; the build stops if one does not. Backtest page section: "Controls for every backtest run (T101, research only)". It is kept off the competition leaderboard, as PR #57 requires.
+- **Merge**: `main` (PR #55, PR #56) merged into the branch. The first merge had one conflict, in COORDINATION.md (both sides appended sections). Both were kept, and my earlier duplicate T96/T97/T99 entries were withdrawn (see the collision record above).
+
+**Sources (read 2026-11-15)**
+- NFL.com Week 10 injury report, https://www.nfl.com/injuries/ — row by row for WAS, NYG, NE and DET; club totals and every starter row for ATL, DAL, GB, NO, SEA and TEN. KC and the other clubs were not re-checked in this session.
+- NFL.com Week 10 schedule, https://www.nfl.com/schedules/2026/by-week/week-10 — Teams on Bye: CHI, DEN, PHI, TB.
+- Club team-site charts listed in `data/depth_replacement.csv` (chart_as_of is not stated on any page; DET and NE self-label as unofficial).
+
+**Verification (run on the merged branch)**
+- `python3 scripts/team_view.py` — asserts 66 Out / 10 Doubtful / 84 Questionable / 345 listed / 185 blank, and 4 bye clubs.
+- `python3 scripts/model.py` — exit 0; all seven control rows reproduce. It also rewrites `data/strategy_leaderboard.csv` without the two PR #56 columns (F93); that file was restored and is not committed in the regenerated form.
+- `python3 scripts/controls.py` — exit 0 (b03f4ba1; reproducible).
+- `python3 scripts/build.py` — 42 pages; row-source and link checks passed.
+- `npm run build` and `npm run verify` — ALL CHECKS PASSED; 1,907 internal links; 4,405 external links, all https and on the allow-list.
+- `python3 scripts/check_links.py` — no broken internal links; all external links https and on the allow-list.
+- `git diff --check` — clean.
+
+**Irregularities (all open; on the Flagged for Review page)**
+- **F89** The per-team counts depend on the unreconciled Week 10 injury row count: the repo file has 345 rows; the brief records 279 (F83). The page reports the file as it stands.
+- **F90** The readiness table from b03f4ba1 has 45 rows; `data/requirements.csv` has 58.
+- **F91** The reference-line favourite lost on all 89 out-of-sample games (mean edge −4.88, CI −7.65 to −2.18), so the favourite control is weak.
+- **F92** Duplicate readiness table and duplicate change-our-mind fields (PR #55, PR #56). Partly resolved on `main` by PR #57, which kept one readiness table. The two change-our-mind sources are still not reconciled.
+- **F93** `scripts/model.py` does not write the `would_change_*` columns that PR #56 added by hand. PR #57's regeneration removed them from `main`; confirmed.
+
+**Requests to other sessions (logged, not actioned)**
+- **To session 10209425 (PR #56):** PR #57 removed the second readiness table and the `would_change_*` leaderboard columns. Please say which change-our-mind source you intend to keep, so the owner can record it (F92, F93).
+- **To session a47ccbb1 (PR #48, OPEN since 2026-11-14 20:22 UTC):** its title, "Final integration: fold PRs #14, #31, #37, #38", overlaps this session's integration scope and it has been neither merged nor closed. This session did not close or edit it. Please merge or close it, or record it as superseded.
+- **Shared register:** F89–F93 were appended to `data/flags.csv`, as b03f4ba1 did for F83–F88. No existing row was changed.
+
+**PR and merge record (6ee4d13e)**
+
+| Event | Record |
+|---|---|
+| PR opened | https://github.com/karagemop466-tech/X2/pull/58 — `arena/6ee4d13e-x2` → `main`; mergeable, status CLEAN at opening |
+| PR merged | Recorded in the follow-up commit on this branch after the merge (merge commit SHA and Pages status) |
+| Pages | Checked after the merge; result recorded in the follow-up commit |
+
+
+**Not claimed (owner-owned, unchanged):** DEC-01…DEC-10, F09, F16, F17, F19, F36, F38, F13, and every `needs review` item.
 
 ## 2026-11-15 · session 8a7ca071 · final verification and closing integration (current session)
 

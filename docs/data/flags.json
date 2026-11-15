@@ -736,5 +736,50 @@
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
   "status": "Open - reconcile",
   "action_requested": "Compare the 137 rows with the official weekly schedule pages, week by week, and record any difference."
+ },
+ {
+  "flag_id": "F89",
+  "category": "Count dependency",
+  "item": "Per-team view depends on the unreconciled Week 10 injury row count",
+  "detail": "The per-team page (team-view.html) is built from data/injuries_week10_2026.csv: 345 rows, reconciled to 66 Out, 10 Doubtful and 84 Questionable with 185 blank designations. The brief records 279 live rows (F83). The per-team counts are reported as the file stands and are not adjusted to either figure. Bye clubs CHI, DEN, PHI and TB are confirmed on the official schedule's Teams on Bye list.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - irregularity",
+  "action_requested": "Recount the official Week 10 injury page club by club and reconcile to 279 or 345 before the per-team counts are treated as final (depends on F83)."
+ },
+ {
+  "flag_id": "F90",
+  "category": "Register coverage",
+  "item": "Decision-readiness table has 45 rows; the requirements register has 58",
+  "detail": "data/decision_readiness.csv (45 rows, D01-D45) is the table published on the landing page. data/requirements.csv (58 rows, R01-R58) is the register. Thirteen requirement rows have no readiness row, so the landing table does not show every requirement. No row was added here because the mapping from R-rows to D-rows is the owner's to make.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv",
+  "status": "Open - reviewer decision",
+  "action_requested": "Owner maps each of the 58 requirement rows to a readiness row, or records which are out of scope, before the landing table is cited as complete."
+ },
+ {
+  "flag_id": "F91",
+  "category": "Method limitation",
+  "item": "Reference-line favourite lost on every out-of-sample game, so the favourite control is weak",
+  "detail": "Backing the reference-line favourite on all 89 out-of-sample games returned mean edge -4.88 points (bootstrap 95% CI -7.65 to -2.18; data/leaderboard_control_runs.csv, row ALL), with a favourite hit rate of 0.416. The naive reference line over-rates favourites on these games. Beating the favourite is therefore a weak control on its own. Random picks remain the skill control.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/leaderboard_control_runs.csv",
+  "status": "Open - interpretation",
+  "action_requested": "Owner decides whether the naive reference line should be supplemented with a second benchmark before any strategy is judged against the favourite control (alongside F17)."
+ },
+ {
+  "flag_id": "F92",
+  "category": "Register duplication",
+  "item": "Duplicate readiness table and duplicate change-our-mind fields on main",
+  "detail": "Two readiness tables appeared on the landing page (data/decision_readiness.csv from PR #55, and a table generated from data/requirements.csv in PR #56), and the leaderboard gained would_change_if_better and would_change_if_worse (PR #56) while data/strategy_change_rules.csv (PR #55) held the same concept. PR #57 (acfebc6e, 'Keep one authoritative readiness table') removed the PR #56 table, so the landing page now shows only the 45-row table; the would_change columns were also dropped from the leaderboard CSV. Still open: the two change-our-mind sources (data/strategy_change_rules.csv and the leaderboard column set) are not reconciled, and the landing table covers 45 of 58 requirements (F90).",
+  "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
+  "status": "Partly resolved on main (readiness table); open for change-our-mind source",
+  "action_requested": "Owner confirms data/strategy_change_rules.csv as the single source of two-sided triggers, and records that the leaderboard no longer carries trigger columns."
+ },
+ {
+  "flag_id": "F93",
+  "category": "Generator mismatch",
+  "item": "scripts/model.py regenerates strategy_leaderboard.csv without the would_change columns",
+  "detail": "scripts/model.py writes data/strategy_leaderboard.csv from a fixed column list that does not include would_change_if_better or would_change_if_worse. Those two columns were added by hand in PR #56. When PR #57 regenerated the file from the generator, they were removed from main. Confirmed in session 6ee4d13e: re-running model.py on the merged branch leaves data/strategy_leaderboard.csv identical to main; the two columns are absent on main.",
+  "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
+  "status": "Open - irregularity (confirmed on main)",
+  "action_requested": "Owner decides whether the two-sided triggers belong on the leaderboard at all; if they do, add them to the generator's column list and regenerate, rather than editing the CSV by hand."
  }
 ]

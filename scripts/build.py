@@ -581,6 +581,7 @@ NAV = [
     ("results.html", "Season results"),
     ("results-feed.html", "Results feed"),
     ("injuries.html", "Injuries"),
+    ("team-view.html", "Per-team view"),
     ("games.html", "Games"),
     ("depth-analysis.html", "Depth exposure"),
     ("depth-deficiency.html", "Deficiency tracking"),
@@ -2548,6 +2549,106 @@ _idx_add = (
 )
 
 pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + _idx_add)
+
+
+# ---------- per-team view, Week 10 (session 6ee4d13e, T98) ----------
+# Built from data/team_view_week10_2026.csv by scripts/team_view.py, which asserts every count
+# against the injury report before writing. This block only renders and checks the file.
+_tv = read_csv("team_view_week10_2026.csv")
+if len(_tv) != 32:
+    raise SystemExit(f"BUILD FAILED: team view has {len(_tv)} rows, expected 32")
+if len({r["team_abbr"] for r in _tv}) != 32:
+    raise SystemExit("BUILD FAILED: team view does not list 32 distinct clubs")
+for _r in _tv:
+    _bye = _r["week10_status"].startswith("Bye")
+    if _bye and any(_r[k] for k in ("listed_players", "out_count", "net_injury_count")):
+        raise SystemExit(f"BUILD FAILED: bye club {_r['team_abbr']} shows injury counts")
+    if not _bye and not _r["source_url"].startswith("https://www.nfl.com/"):
+        raise SystemExit(f"BUILD FAILED: team view row {_r['team_abbr']} lacks an NFL.com source")
+    if _r["replacements_named_chart"] and not _r["starters_out_chart_names"]:
+        raise SystemExit(f"BUILD FAILED: {_r['team_abbr']} names a replacement with no starter out")
+_tv_sum = {k: sum(int(_r[c]) for _r in _tv if _r[c] != "") for k, c in
+           (("Out", "out_count"), ("Doubtful", "doubtful_count"), ("Questionable", "questionable_count"))}
+if _tv_sum != {"Out": 66, "Doubtful": 10, "Questionable": 84}:
+    raise SystemExit(f"BUILD FAILED: team view totals {_tv_sum} do not reconcile with the injury report")
+_tv_chart = sum(1 for _r in _tv if _r["starter_order_source"].startswith("Club"))
+_tv_named = sum(int(_r["replacements_named_chart_pairs"]) for _r in _tv if _r["replacements_named_chart_pairs"] != "")
+_tv_byes = [_r["team_abbr"] for _r in _tv if _r["week10_status"].startswith("Bye")]
+_tv_html = table(_tv, [
+        "team_abbr", "team_name", "week10_status", "listed_players", "out_count", "doubtful_count",
+        "questionable_count", "no_game_designation_count", "net_injury_count", "starters_out_chart_names",
+        "replacements_named_chart", "replacements_named_article", "starter_order_source", "unverified_note",
+        "source_url", "chart_url"],
+    {"team_abbr": "Club", "team_name": "Name", "week10_status": "Week 10 status", "listed_players": "Listed",
+     "out_count": "Out", "doubtful_count": "Doubtful", "questionable_count": "Questionable",
+     "no_game_designation_count": "No game designation", "net_injury_count": "Net injury count (Out + Doubtful)",
+     "starters_out_chart_names": "Starters Out on the club chart (1st string)",
+     "replacements_named_chart": "Replacement named on the chart (verified rows only)",
+     "replacements_named_article": "Replacement named in an official article",
+     "starter_order_source": "Starter-order source", "unverified_note": "Note",
+     "source_url": "Source", "chart_url": "Club chart"},
+    table_id="team-view-table", filterable=True)
+pages["team-view.html"] = ("Per-team view", (
+    '<h1>Per-team view: Week 10, 2026</h1>'
+    '<p class="note">One row per club (32). Injury counts come from the official NFL.com Week 10 injury report, '
+    'as held in <code>data/injuries_week10_2026.csv</code>; the rows reconcile to 66 Out, 10 Doubtful and 84 Questionable '
+    '(345 listed players, of which 185 have no game designation). Four clubs were on bye and have no injury section '
+    f'(official schedule, Teams on Bye: {", ".join(_tv_byes)}); they are shown blank, never as injury-free.</p>'
+    f'<p class="note"><strong>Starter order is known for only {_tv_chart} of 32 clubs</strong>: the club team-site charts '
+    'in <code>data/depth_replacement.csv</code>. For every other club the starter column is blank, not inferred. '
+    f'Named replacements shown: {_tv_named} verified (player, replacement) pairs from club charts, plus the article-named rows. '
+    'A player with no verified replacement stays unnamed. Two charts (DET, NE) label themselves unofficial (F05, F18); '
+    'no chart in the register states its as-of date (chart_as_of is not stated on any page).</p>'
+    '<p class="note"><strong>Verification scope (read 2026-11-15 from https://www.nfl.com/injuries/):</strong> '
+    'WAS, NYG, NE and DET were compared row by row (player, injury, practice and game status) and match the repo file. '
+    'ATL, DAL, GB, NO, SEA and TEN were compared on their club totals and on every starter row, and match. '
+    'KC and the other clubs were not re-checked in this session: their counts are as in the repo file and are not '
+    'independently verified (F89). A named replacement who is also on the report is labelled with that status.</p>'
+    '<p class="note"><strong>Open irregularity (F83):</strong> the repo injury file holds 345 Week 10 rows, while the brief '
+    'records 279 live rows. This page reports the file as it stands and does not choose between the two figures. '
+    'Flag F89 records the per-team dependency.</p>'
+    + _tv_html))
+
+# ---------- controls for every backtest run (session 6ee4d13e, T101; research only) ----------
+# Backtest statistics belong on the Backtest research page, never on the prospective leaderboard (see the
+# leakage guard above), so this block is appended to backtest.html.
+# Written by scripts/baselines.py, called from scripts/model.py, which raises if a run's bet set or
+# mean edge cannot be reproduced. The rows below are rendered as written; nothing is re-derived here.
+_lbc = read_csv("leaderboard_control_runs.csv")
+for _r in _lbc:
+    if _r["status"] == "Computed" and _r["control"].startswith("Random") and _r["n_decided"] != _r["reproduced_bets"]:
+        raise SystemExit(f"BUILD FAILED: {_r['strategy_id']} control row does not reproduce its bet count")
+    if not _r["source_url"].startswith("https://www.nfl.com/"):
+        raise SystemExit(f"BUILD FAILED: backtest control row {_r['strategy_id']} lacks an NFL.com source")
+_lbc_ids = sorted({_r["strategy_id"] for _r in _lbc if _r["strategy_id"] != "ALL"})
+if _lbc_ids != ["M1", "M2", "M3", "M4", "P1", "R1", "T1"]:
+    raise SystemExit(f"BUILD FAILED: backtest controls cover {_lbc_ids}, expected all seven runs")
+_lbc_html = table(_lbc, [
+        "strategy_id", "control", "market", "n_bet_games", "n_decided", "strategy_mean_edge", "control_mean_edge",
+        "control_edge_p025", "control_edge_p975", "share_random_draws_at_least_strategy",
+        "strategy_minus_control", "diff_ci_low", "diff_ci_high", "strategy_hit_rate", "control_hit_rate",
+        "status", "source_url"],
+    {"strategy_id": "Run", "control": "Control", "market": "Market", "n_bet_games": "Bet games",
+     "n_decided": "Decided", "strategy_mean_edge": "Run mean edge (pts)", "control_mean_edge": "Control mean edge (pts)",
+     "control_edge_p025": "Control 2.5%", "control_edge_p975": "Control 97.5%",
+     "share_random_draws_at_least_strategy": "Share of random draws at least as high",
+     "strategy_minus_control": "Run minus control", "diff_ci_low": "Paired diff 2.5%", "diff_ci_high": "Paired diff 97.5%",
+     "strategy_hit_rate": "Run hit rate", "control_hit_rate": "Control hit rate", "status": "Status",
+     "source_url": "Source"},
+    table_id="backtest-controls-table", filterable=True)
+_lbc_add = (
+    '<h2>Controls for every backtest run (T101, research only)</h2>'
+    '<p class="note"><strong>Historical walk-forward diagnostics, not a competition ranking.</strong> Each run is graded against two controls on the <strong>exact bets that run made</strong>: '
+    'seeded random picks, and the reference-line favourite on the same games. Edges are in points against the naive '
+    'reference line, computed from unrounded walk-forward predictions (scripts/baselines.py). '
+    '<strong>No market favourite exists in this repository</strong> (F32), so the favourite control is the reference line\'s, '
+    'not a bookmaker\'s. A total (T1) and a parlay (P1) have no single favourite, so their favourite control is marked '
+    'not applicable. The context row shows the reference favourite on all 89 games; it is negative, so the favourite '
+    'control is weak on its own (F91), and random picks remain the skill control. The straight-up control panel above '
+    'uses a different measure (winner, not edge) and is not comparable row-for-row.</p>'
+    + _lbc_html
+)
+pages["backtest.html"] = (pages["backtest.html"][0], pages["backtest.html"][1] + _lbc_add)
 
 
 # ---------- collision guards ----------

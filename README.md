@@ -31,6 +31,11 @@ where a source verifies it).
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
 
+### Also new (session 6ee4d13e): per-team view, controls for every run
+
+- **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the official injury counts, the net injury count, starters Out on a club chart and the replacements named there. Bye clubs are shown blank, never as injury-free. Starter order is available for six clubs only. The injury row count is still open (F83; see F89).
+- **Backtest page: controls for every run** (`data/leaderboard_control_runs.csv`, computed by `scripts/baselines.py` from `scripts/model.py`): M1-M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made. Every run must reproduce its published bet count and mean edge, or the build stops. The favourite control is weak on these games (F91).
+
 ### Also new (session b03f4ba1): controls, two-sided triggers, readiness table
 
 - **Landing page: removal-of-luck panel and decision-readiness table.** The panel shows each strategy's skill, its
@@ -156,6 +161,7 @@ python3 scripts/originate.py        # side -> total -> moneyline, our opening/cu
 python3 scripts/depth_chain.py      # depth of the replacement from official club depth charts
 python3 scripts/correlation_provenance.py   # recompute every correlation, publish inputs and n
 python3 scripts/repo_audit.py       # line-by-line audit against live official pages
+python3 scripts/team_view.py        # per-team view for Week 10 (asserts the 66/10/84 injury totals)
 python3 scripts/build.py            # rebuild docs/ and check every row has a source
 npm run build && npm run verify     # the separate Node dashboard (12 pages)
 ```
