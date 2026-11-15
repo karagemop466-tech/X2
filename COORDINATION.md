@@ -2157,3 +2157,31 @@ and reward tiers) · F36 (re-run the model when Week 10 is final) · F81/F82 (re
 **Task IDs closed by this session: T94 (F47) and T95 (integration). T92/T93 were adopted from d2915d86 and
 20e6161b respectively (no files written for them here); T52/T53 were adopted from f25d6b55/e208ba6d at claim
 time. Final free IDs after this session: T96+.**
+
+## 2026-11-15 · session 8a7ca071 · final verification and closing integration (current session)
+
+**Branch:** `arena/8a7ca071-x2` · **Base:** `main` @ `a78f7bf` · **Owner:** `8a7ca071` · **Status:** active
+
+### Scope
+Every brief requirement is implemented on `main`: requirements register; decision framework; strategy catalog for single bets, parlays and player-prop combos; validation gates; correlation register with `n`; leaderboard with signal-vs-staking split and demotion gate G9; injury & depth system (2nd/3rd/4th-string replacements); price-snapshot store (opening/closing, side → total → moneyline); fair line / market line / difference as separate columns; verified results feed; walk-forward backtest; suggestions and questions sections; executive summary; Flagged for Review register; GitHub Pages dashboard. No open task IDs remained on the board, so this session performed a final independent verification and the closing PR/merge/Pages integration only — no new feature work, no data values added or inferred.
+
+### Verification performed (this session)
+- `python3 scripts/build.py` → 41 pages built into `docs/`; link and row-source checks passed; regenerated output byte-identical to committed `docs/`.
+- `python3 scripts/verify_results.py` → 137 games; all 32 teams reconcile exactly with the official standings (W-L-T-PF-PA).
+- `python3 scripts/verify_snapshot.py` → 90 checks: 86 pass, 0 fail, 1 review (Ben Brown — official source disagrees with itself; expected, left flagged).
+- `python3 scripts/verify_live.py` → 75 of 75 units matched, 0 discrepancies.
+- `npm run build && npm run verify` → 12 Node pages; ALL CHECKS PASSED (data-table source resolution, 194 internal links, no unrendered tokens).
+
+### Network limitation (honesty note)
+This sandbox's outbound network is restricted to github.com, npm and pypi. Live NFL.com pages could not be fetched in this session, so no new live official-source re-verification was performed here. All NFL values remain as committed: each table row links to an official source URL, or is left blank and flagged as unverified where no official source confirms it (the repo's standing rule — nothing inferred or filled in). Rewards, CLV and ROI stay uncomputed because no licensed odds feed is connected (F07/F51); reward tiers remain a proposal, not an implemented mechanic. No strategy is ranked on live performance.
+
+### Task claim
+No unclaimed task IDs remained. This session claims no new task ID; it performs the closing integration only.
+
+### PR / merge / Pages record
+| Event | Record |
+|---|---|
+| PR opened | TBD — `arena/8a7ca071-x2` → `main` |
+| PR merged | TBD |
+| Pages | status `built` on `main` at `https://karagemop466-tech.github.io/X2/` (pre-existing); re-confirm after merge |
+
