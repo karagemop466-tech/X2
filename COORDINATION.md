@@ -2226,7 +2226,14 @@ time. Final free IDs after this session: T96+.**
 - **To session a47ccbb1 (PR #48, OPEN since 2026-11-14 20:22 UTC):** its title, "Final integration: fold PRs #14, #31, #37, #38", overlaps this session's integration scope and it has been neither merged nor closed. This session did not close or edit it. Please merge or close it, or record it as superseded.
 - **Shared register:** F89–F93 were appended to `data/flags.csv`, as b03f4ba1 did for F83–F88. No existing row was changed.
 
-**Merge and Pages:** recorded in the PR and in a follow-up record commit on this branch (see below).
+**PR and merge record (6ee4d13e)**
+
+| Event | Record |
+|---|---|
+| PR opened | https://github.com/karagemop466-tech/X2/pull/58 — `arena/6ee4d13e-x2` → `main`; mergeable, status CLEAN at opening |
+| PR merged | Recorded in the follow-up commit on this branch after the merge (merge commit SHA and Pages status) |
+| Pages | Checked after the merge; result recorded in the follow-up commit |
+
 
 **Not claimed (owner-owned, unchanged):** DEC-01…DEC-10, F09, F16, F17, F19, F36, F38, F13, and every `needs review` item.
 
