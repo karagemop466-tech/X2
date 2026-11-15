@@ -1240,6 +1240,36 @@ for s, label, kind in order:
         "source_url": SRC_SCHED + "10",
     })
 
+# Backtest-derived comparisons are research diagnostics, never leaderboard entries.
+# Keep them on the backtest side of the boundary; the public competition ledger
+# remains unranked until a pre-registered prospective window has been graded.
+scored_leader_rows = leader_rows
+leader_rows = []
+for s, label, kind in summaries:
+    leader_rows.append({
+        "rank": "",
+        "strategy_id": s["strategy_id"],
+        "strategy": label,
+        "market": kind,
+        "status": "Not eligible — registration and prospective grading pending",
+        "demotion_safe": "",
+        "skill_score_mae_improvement_pts": "", "skill_ci_low": "", "skill_ci_high": "",
+        "skill_p_permutation": "", "q_bh_fdr": "", "mae_model": "", "mae_reference": "",
+        "oos_games": "", "bets_vs_reference": "", "wins": "", "losses": "",
+        "hit_rate_vs_reference": "", "mean_edge_points": "", "edge_ci_low": "", "edge_ci_high": "",
+        "p_binomial": "", "p_permutation_bets": "", "sd_edge_points": "",
+        "min_n_for_80pct_power": "", "sample_shortfall": "",
+        "gates_passed": "", "gates_failed": "",
+        "luck_share_of_record": "", "skill_share_of_record": "", "halves_agree": "",
+        "interval_excludes_zero": "", "weeks_positive_skill": "", "week_sign_test_p": "",
+        "worst_week_skill": "", "best_week_skill": "",
+        "skill_or_luck_verdict": "Not assessed prospectively",
+        "reward_tier": "Not eligible", "reward_status": "Disabled — no prospective sample",
+        "staking_plan": "", "staking_units_wagered": "", "staking_roi_pct": "",
+        "staking_note": "No prospective ranking or staking result is published.",
+        "source_url": SRC_SCHED + "11",
+    })
+
 gate_rows = []
 for gid, name, meaning, rule, src in GATE_DEFS:
     passing = [s["strategy_id"] for s, _l, _k in summaries if gate_eval(s).get(gid)]
@@ -1421,20 +1451,17 @@ write("model_backtest.csv", backtest_rows,
 write("model_bets.csv", bet_rows,
       ["strategy_id", "week", "matchup", "bet", "reference_line", "model_line", "actual",
        "edge_points", "result", "game_url", "source_url"])
-write("strategy_leaderboard.csv", leader_rows,
-      ["rank", "strategy_id", "strategy", "market", "status", "demotion_safe",
-       "skill_score_mae_improvement_pts",
-       "skill_ci_low", "skill_ci_high", "skill_p_permutation", "q_bh_fdr", "mae_model",
-       "mae_reference", "oos_games", "bets_vs_reference", "wins", "losses",
-       "hit_rate_vs_reference", "mean_edge_points", "edge_ci_low", "edge_ci_high",
-       "p_binomial", "p_permutation_bets", "sd_edge_points",
-       "min_n_for_80pct_power", "sample_shortfall",
-       "gates_passed", "gates_failed", "luck_share_of_record", "skill_share_of_record",
-       "halves_agree", "interval_excludes_zero",
-       "weeks_positive_skill", "week_sign_test_p", "worst_week_skill", "best_week_skill",
-       "skill_or_luck_verdict", "reward_tier", "reward_status",
-       "staking_plan", "staking_units_wagered", "staking_roi_pct", "staking_note",
-       "source_url"])
+leaderboard_fields = ["rank", "strategy_id", "strategy", "market", "status", "demotion_safe",
+       "skill_score_mae_improvement_pts", "skill_ci_low", "skill_ci_high", "skill_p_permutation",
+       "q_bh_fdr", "mae_model", "mae_reference", "oos_games", "bets_vs_reference", "wins", "losses",
+       "hit_rate_vs_reference", "mean_edge_points", "edge_ci_low", "edge_ci_high", "p_binomial",
+       "p_permutation_bets", "sd_edge_points", "min_n_for_80pct_power", "sample_shortfall", "gates_passed",
+       "gates_failed", "luck_share_of_record", "skill_share_of_record", "halves_agree",
+       "interval_excludes_zero", "weeks_positive_skill", "week_sign_test_p", "worst_week_skill",
+       "best_week_skill", "skill_or_luck_verdict", "reward_tier", "reward_status", "staking_plan",
+       "staking_units_wagered", "staking_roi_pct", "staking_note", "source_url"]
+write("strategy_backtest_scores.csv", scored_leader_rows, leaderboard_fields)
+write("strategy_leaderboard.csv", leader_rows, leaderboard_fields)
 write("gate_results.csv", gate_rows,
       ["gate_id", "gate", "meaning", "rule", "status", "strategies_passing", "source_url"])
 write("correlations_computed.csv", corr_rows,
@@ -1489,10 +1516,12 @@ summary = {
                                "(DEC-09); C09 interval/p corrected to the slope's own SE (F48, REQ-8a-1)"),
     "week11_games": len(week11),
     "strategies_tested": len(summaries),
-    "qualified_strategies": sum(1 for r in leader_rows if r["reward_tier"] != "Not qualified"),
-    "tier1_strategies": sum(1 for r in leader_rows if r["reward_tier"].startswith("Tier 1")),
-    "live_strategies": sum(1 for r in leader_rows if r["status"] == "Live"),
-    "paper_strategies": sum(1 for r in leader_rows if r["status"] == "Paper"),
+    "qualified_strategies": 0,
+    "tier1_strategies": 0,
+    "live_strategies": 0,
+    "paper_strategies": 0,
+    "prospective_entries_unranked": len(leader_rows),
+    "prospective_entries_graded": 0,
     "price_snapshot_rows": len(snap_rows),
     "lookahead_audit_pass": G1_PASSED,
     "lookahead_audit_weeks": len({f["test"] for f in lookahead}),

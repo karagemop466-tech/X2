@@ -1,7 +1,52 @@
 [
-  { "id": "L-01", "rank": "", "strategy": "CLV Edge — Single Side", "metric": "Mean CLV (out-of-sample)", "value": "", "reward": "Not defined — disabled pending legal, rights and validation review (D10)", "status": "registered, unranked — no strategy has passed the validation gates", "source": "clv-squawka" },
-  { "id": "L-02", "rank": "", "strategy": "Total Model — Single Total", "metric": "Mean CLV (out-of-sample)", "value": "", "reward": "Not defined — disabled pending legal, rights and validation review (D10)", "status": "registered, unranked — no strategy has passed the validation gates", "source": "clv-squawka" },
-  { "id": "L-03", "rank": "", "strategy": "Moneyline Value — Single ML", "metric": "Mean CLV (out-of-sample)", "value": "", "reward": "Not defined — disabled pending legal, rights and validation review (D10)", "status": "registered, unranked — no strategy has passed the validation gates", "source": "clv-oddsindex" },
-  { "id": "L-04", "rank": "", "strategy": "Uncorrelated Parlay Builder", "metric": "Mean CLV (out-of-sample)", "value": "", "reward": "Not defined — disabled pending legal, rights and validation review (D10)", "status": "registered, unranked — pending correlation computation and live data", "source": "clv-oddsindex" },
-  { "id": "L-05", "rank": "", "strategy": "Injury-Driven Line Move", "metric": "Mean CLV (out-of-sample)", "value": "", "reward": "Not defined — disabled pending legal, rights and validation review (D10)", "status": "registered, unranked — pending live line and depth feed", "source": "nfl-injuries" }
+  {
+    "id": "L-01",
+    "rank": "",
+    "strategy": "CLV Edge — Single Side",
+    "metric": "Mean CLV (out-of-sample)",
+    "value": "",
+    "reward": "Not defined — disabled pending legal, rights and validation review (D10)",
+    "status": "candidate, unranked — no strategy has passed the validation gates; immutable pre-registration manifest not yet verified",
+    "source": "clv-squawka"
+  },
+  {
+    "id": "L-02",
+    "rank": "",
+    "strategy": "Total Model — Single Total",
+    "metric": "Mean CLV (out-of-sample)",
+    "value": "",
+    "reward": "Not defined — disabled pending legal, rights and validation review (D10)",
+    "status": "candidate, unranked — no strategy has passed the validation gates; immutable pre-registration manifest not yet verified",
+    "source": "clv-squawka"
+  },
+  {
+    "id": "L-03",
+    "rank": "",
+    "strategy": "Moneyline Value — Single ML",
+    "metric": "Mean CLV (out-of-sample)",
+    "value": "",
+    "reward": "Not defined — disabled pending legal, rights and validation review (D10)",
+    "status": "candidate, unranked — no strategy has passed the validation gates; immutable pre-registration manifest not yet verified",
+    "source": "clv-oddsindex"
+  },
+  {
+    "id": "L-04",
+    "rank": "",
+    "strategy": "Uncorrelated Parlay Builder",
+    "metric": "Mean CLV (out-of-sample)",
+    "value": "",
+    "reward": "Not defined — disabled pending legal, rights and validation review (D10)",
+    "status": "candidate, unranked — pending correlation computation and live data; immutable pre-registration manifest not yet verified",
+    "source": "clv-oddsindex"
+  },
+  {
+    "id": "L-05",
+    "rank": "",
+    "strategy": "Injury-Driven Line Move",
+    "metric": "Mean CLV (out-of-sample)",
+    "value": "",
+    "reward": "Not defined — disabled pending legal, rights and validation review (D10)",
+    "status": "candidate, unranked — pending live line and depth feed; immutable pre-registration manifest not yet verified",
+    "source": "nfl-injuries"
+  }
 ]
