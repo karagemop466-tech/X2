@@ -574,5 +574,14 @@
   "blocker_or_note": "136 = weeks 1-9, 137 = the published feed, 150 = everything official through Week 10. F88's '136 vs 137' is answered; the remaining question is which corpus to publish on, recorded as P09.",
   "row_type": "requirement",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "req_id": "R65",
+  "requirement (from brief)": "Publish every model total twice until one wins — keep both estimators visible with the gap column",
+  "status": "Done — three totals published with gaps; collapse gate left OPEN by the pre-registered rule",
+  "where_addressed": "Two model totals page; data/model_totals_two_estimators_week11.csv; data/estimator_walkforward_2026.csv",
+  "blocker_or_note": "A (ridge structure), B (matchup experience) and C (naive constant) are published side by side for all 13 Week 11 games. MAE over 89 walk-forward games: A 11.08, B 11.07, C 10.96. No paired-bootstrap interval excludes zero, so rule E4 keeps all three; nothing is collapsed.",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11"
  }
 ]
