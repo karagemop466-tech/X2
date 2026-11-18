@@ -1,0 +1,44 @@
+[
+ {
+  "check_id": "FR01",
+  "check": "every graded row reproduced the published M1 and reference lines",
+  "method": "re-fit on games strictly before each game's week, compare with data/model_backtest.csv",
+  "result": "pass — 89 graded games x 2 models reproduced to within 0.055 points, which is the published rounding (1 decimal)",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "check_id": "FR02",
+  "check": "every Week 11 row reproduced the published fair line, points and win probability",
+  "method": "fit on all 137 feed games (ref_week 11), compare with data/model_lines_week11.csv",
+  "result": "pass — 26 rows × up to 7 fields",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "check_id": "FR03",
+  "check": "residual scales used for the probabilities",
+  "method": "M1 walk-forward residuals, as scripts/model.py defines them",
+  "result": "sd(margin) = 12.254 pts, sd(total) = 13.785 pts over 89 games",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "check_id": "FR04",
+  "check": "the nine 2026 international games matched to the results feed",
+  "method": "official slate read 2026-11-18, matched on (week, team pair)",
+  "result": "7 of 9 in the feed; 7 of those carry no neutral flag; the Week 11 game is flagged Y in the schedule file",
+  "source_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "check_id": "FR05",
+  "check": "cost of the missing neutral flag on the eight settled games",
+  "method": "prediction-only sensitivity (no re-fit), per game",
+  "result": "summed change in absolute margin error across the eight games: -2.821 points; largest single-game shift 0.403 pts",
+  "source_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "check_id": "FR06",
+  "check": "fitness of the published rating set used for Week 11",
+  "method": "the fit this script re-derives uses 274 team-game observations from data/games_2026_results.csv",
+  "result": "n_obs = 274; the 13 settled Week 10 games the feed is missing are therefore absent from the Week 11 line (see data/week_count_reconciliation_2026-11-18.csv)",
+  "source_url": "https://www.nfl.com/standings/"
+ }
+]

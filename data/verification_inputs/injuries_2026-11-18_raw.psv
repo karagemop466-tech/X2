@@ -1,0 +1,353 @@
+# Raw transcription of https://www.nfl.com/injuries/ (and the same render at
+# https://www.nfl.com/injuries/?season=2026&week=11&type=REG) read on 2026-11-18 (UTC).
+# Page heading as rendered: "Injuries - WEEK 10"; section headers "THURSDAY, NOVEMBER 12TH",
+# "SUNDAY, NOVEMBER 15TH", "MONDAY, NOVEMBER 16TH". All eight rendered chunks were read.
+# One row per table row, in page order: team|player|position|injury|P|game_status
+# P = practice designation: F full, L limited, D did not participate. Blank = blank on the page.
+WAS|John Bates|TE||F|
+WAS|Treylon Burks|WR||D|
+WAS|Jayden Daniels|QB||F|
+WAS|Matt Gulbin|C||F|
+WAS|Chig Okonkwo|TE||F|
+WAS|Lucas Patrick|C|Concussion|D|Out
+WAS|Amik Robertson|CB||L|
+WAS|Shy Tuttle|DT||F|
+WAS|Colson Yankoff|TE|Knee|D|Out
+NYG|Abdul Carter|LB||F|
+NYG|Jermaine Eluemunor|T||F|
+NYG|Malik Harrison|LB|Groin|L|Questionable
+NYG|Colton Hood|CB||F|
+NYG|Theo Johnson|TE||F|
+NYG|Charlie Jones|WR||F|
+NYG|J.J. McCarthy|QB||F|
+NYG|Darnell Mooney|WR||F|
+NYG|Malik Nabers|WR||F|
+NYG|Cam Skattebo|RB||F|
+NYG|Andrew Thomas|T||F|
+NE|Ben Brown|C|Knee|D|Out
+NE|A.J. Brown|WR|Ankle, Knee|L|Questionable
+NE|Kevin Byard|S|Chest|F|Questionable
+NE|Carlton Davis III|CB|Knee|D|Out
+NE|Reggie Gilliam|FB|Knee|L|Questionable
+NE|TreVeyon Henderson|RB|Illness|D|Out
+NE|Hunter Henry|TE||L|
+NE|Cameron Latu|TE|Back|L|Questionable
+NE|Drake Maye|QB||F|
+NE|Morgan Moses|T||F|
+NE|Walter Rouse|T|Concussion|L|Questionable
+NE|Brenden Schooler|S|Hamstring|L|Questionable
+NE|Rhamondre Stevenson|RB|Knee|L|Questionable
+NE|Greg Van Roten|G|Hamstring|F|Questionable
+NE|Charles Woods|CB|Hamstring|F|Questionable
+DET|Brian Branch|S||F|
+DET|Jared Goff|QB||F|
+DET|Kerby Joseph|S|Knee|D|Out
+DET|Cade Mays|C|Ankle|D|Out
+DET|D.J. Reed|CB|Hip|D|Out
+DET|Jacob Saylors|RB||F|
+DET|Amon-Ra St. Brown|WR|Rib|L|Questionable
+DET|Sione Vaki|RB|Ankle|L|Questionable
+DET|DJ Wonnum|DE||F|
+KC|Jeffrey Bassa|LB||F|
+KC|Mansoor Delane|CB|Shoulder|F|Questionable
+KC|Justin Fields|QB||F|
+KC|Jaden Hicks|S||F|
+KC|Travis Kelce|TE||F|
+KC|Patrick Mahomes|QB||F|
+KC|Jaylon Moore|T|Ankle|D|Out
+KC|Omarr Norman-Lott|DT|Knee|L|Out
+KC|Jaydn Ott|RB|Hamstring|L|Questionable
+KC|Rashee Rice|WR||F|
+KC|Kenneth Walker III|RB|Groin|D|Questionable
+KC|Peter Woods|DT|Neck|D|Out
+KC|Xavier Worthy|WR||F|
+ATL|Zachariah Branch|WR|Hamstring|D|Out
+ATL|Kendal Daniels|LB||F|
+ATL|Divine Deablo|LB|Forearm|D|Doubtful
+ATL|Gervon Dexter Sr.|DT|Illness|L|Questionable
+ATL|Jake Matthews|T||L|
+ATL|Liam McCullough|LS||D|
+ATL|James Pearce Jr.|DE|Back|L|Questionable
+ATL|Za'Darius Smith|DE||F|
+ATL|Jawaan Taylor|T||L|
+ATL|Cameron Thomas|DE||F|
+ATL|Josh Woods|LB|Ankle|F|Questionable
+MIN|Jordan Addison|WR|Thumb|L|Questionable
+MIN|Blake Cashman|LB|Concussion|L|Out
+MIN|Christian Darrisaw|T||D|
+MIN|T.J. Hockenson|TE|Wrist, Chest|D|Out
+MIN|Tyrion Ingram-Dawkins|DT|Ankle|D|Out
+MIN|Theo Jackson|S||F|
+MIN|Jauan Jennings|WR|Calf|D|Out
+MIN|Josh Metellus|S|Shoulder|L|Questionable
+MIN|Kyler Murray|QB|Hamstring|D|Out
+MIN|Harrison Smith|S||L|
+MIN|Kyle Van Noy|LB|Calf|L|Questionable
+MIN|Jay Ward|S||F|
+MIN|Carson Wentz|QB||F|
+GB|Aaron Banks|G||L|
+GB|Chris Brooks|RB|Ankle|L|Questionable
+GB|Javon Bullard|S|Ankle, Knee|L|Questionable
+GB|Zaire Franklin|LB|Shin|D|Doubtful
+GB|Travis Glover|G|Knee|L|Questionable
+GB|Ty'Ron Hopper|LB||F|
+GB|Josh Jacobs|RB|Finger|D|Out
+GB|Xavier McKinney|S|Foot|L|Questionable
+GB|Bo Melton|WR||F|
+GB|Skyy Moore|WR|Ankle|L|Questionable
+GB|Micah Parsons|LB|Knee, Illness|L|Out
+GB|Sean Rhyan|C|Ankle|D|Out
+GB|Trey Smack|K||F|
+GB|Lukas Van Ness|LB|Back|L|Questionable
+GB|Josh Whyle|TE|Concussion|D|Out
+GB|Savion Williams|WR||L|
+GB|Kevin Zeitler|G|Ankle, Triceps|D|Questionable
+JAX|Jessie Bates|S|Not injury related - resting player|L|Out
+JAX|Ezra Cleveland|G||F|
+JAX|Branson Combs|LB||F|
+JAX|Jordan Davis|DT|Not injury related - resting player|L|Out
+JAX|BJ Green II|DE|Forearm|F|Out
+JAX|Robert Hainsey|C|Concussion|L|Questionable
+JAX|Antonio Johnson|S||L|
+JAX|Jakobi Meyers|WR||L|
+JAX|Chris Rodriguez Jr.|RB||D|
+JAX|Bhayshul Tuten|RB||L|
+JAX|Travon Walker|DE||L|
+TEN|Cody Barton|LB|Concussion|D|Out
+TEN|John Franklin-Myers|DE||F|
+TEN|Marcus Harris|CB||F|
+TEN|Anthony Hill Jr.|LB|Neck|D|Out
+TEN|Jaylon Jones|CB||F|
+TEN|JC Latham|T||F|
+TEN|Tony Pollard|RB||F|
+TEN|Peter Skoronski|G|Hamstring|D|Out
+TEN|Tyjae Spears|RB|Knee|F|Questionable
+TEN|Carnell Tate|WR|Shoulder|D|Out
+TEN|Tommy Townsend|P|Knee, Achilles|D|Out
+TEN|Kevin Winston Jr.|S||F|
+BUF|Alec Anderson|G||F|
+BUF|Christian Benford|CB|Wrist|F|Questionable
+BUF|Terrel Bernard|LB||D|
+BUF|Spencer Brown|T|Ankle|D|Doubtful
+BUF|Dion Dawkins|T||F|
+BUF|Sam Franklin Jr.|S|Shoulder|L|Questionable
+BUF|Greg Gaines|DT||F|
+BUF|Jordan Hancock|CB|Hamstring|F|Questionable
+BUF|Dalton Kincaid|TE||F|
+BUF|Connor McGovern|C||F|
+BUF|Ed Oliver|DE||D|
+BUF|Ar'maj Reed-Adams|G||F|
+BUF|T.J. Sanders|DE||F|
+BUF|Tyrell Shavers|WR|Knee|F|Questionable
+NYJ|Jarvis Brownlee Jr.|CB|Illness|L|Questionable
+NYJ|Omar Cooper Jr.|WR|Ankle|F|Questionable
+NYJ|Adonai Mitchell|WR|Knee|F|Questionable
+NYJ|Joseph Ossai|DE|Ankle|F|Questionable
+NYJ|VJ Payne|S|Knee|F|Questionable
+NYJ|Harrison Phillips|DT|Ankle|F|Questionable
+NYJ|Trevin Wallace|LB|Groin|D|Out
+NYJ|Garrett Wilson|WR|Concussion|F|Questionable
+NYJ|Nahshon Wright|CB|Back|F|Questionable
+MIA|Tucker Addington|LS||L|
+MIA|Kaytron Allen|RB||F|
+MIA|Darrell Baker Jr.|CB|Knee|F|Questionable
+MIA|Chris Bell|WR|Knee|D|Doubtful
+MIA|Aaron Brewer|C|Concussion|D|Out
+MIA|Malik Herring|DE||F|
+MIA|Will Kacmarek|TE||F|
+MIA|Michael Taaffe|S||F|
+MIA|Dante Trader Jr.|S||F|
+MIA|Jared Wayne|WR|Quadricep|D|Out
+MIA|Jaylen Wright|RB||F|
+IND|Mo Alie-Cox|TE|Groin|D|Out
+IND|CJ Allen|LB||F|
+IND|Jaylon Carlies|LB|Neck|D|Out
+IND|Akeem Davis-Gaither|LB|Knee|D|Out
+IND|A.J. Haulcy|S||F|
+IND|Arden Key|DE||F|
+IND|Will Mallory|TE|Hamstring|L|Questionable
+IND|Luke Rhodes|LS|Hamstring|D|Out
+IND|Grover Stewart|DT||F|
+IND|Jonathan Taylor|RB||F|
+IND|Jerry Tillery|DT|Calf|D|Out
+IND|Jalen Travis|T|Knee|D|Out
+IND|Justin Walley|CB||F|
+IND|Charvarius Ward|CB||F|
+CAR|Jonathon Brooks|RB|Groin|L|Doubtful
+CAR|Brady Christensen|G|Hamstring|F|Questionable
+CAR|Trevor Etienne|RB||F|
+CAR|Chuba Hubbard|RB||F|
+CAR|Lee Hunter|DT||F|
+CAR|Mike Jackson|CB|Groin|L|Doubtful
+CAR|Will Lee III|CB|Hamstring|L|Questionable
+CAR|Xavier Legette|WR|Knee|F|Questionable
+CAR|Damien Lewis|G||F|
+CAR|Bobby Okereke|LB|Foot|D|Out
+CAR|Jaelan Phillips|LB|Hamstring|F|Questionable
+CAR|Torricelli Simpkins III|G||F|
+NO|Kelvin Banks Jr.|T||F|
+NO|CJ Donaldson|RB|Shoulder|D|Out
+NO|David Edwards|G||F|
+NO|Martin Emerson|CB|Shin|L|Questionable
+NO|Travis Etienne|RB|Hamstring|F|Questionable
+NO|Noah Fant|TE||F|
+NO|Taliese Fuaga|T|Knee|D|Out
+NO|Alvin Kamara|RB||F|
+NO|Erik McCoy|C|Biceps|D|Out
+NO|Christen Miller|DT|Knee|D|Out
+NO|Asim Richards|T||F|
+NO|Quincy Riley|CB||F|
+HOU|Azeez Al-Shaair|LB|Groin, Not injury related - personal matter|D|Out
+HOU|Will Anderson Jr.|DE|Ankle|D|Questionable
+HOU|Reed Blankenship|S||F|
+HOU|Trent Brown|T|Wrist, Illness|D|Questionable
+HOU|Tank Dell|WR||F|
+HOU|Blake Fisher|T||F|
+HOU|Marvin Harrison Jr.|WR|Hamstring|D|Out
+HOU|Jacob Hummel|LB|Groin|F|Questionable
+HOU|Danielle Hunter|DE|Hamstring|D|Out
+HOU|Brevin Jordan|TE|Finger, Foot|D|Out
+HOU|Woody Marks|RB||F|
+HOU|David Montgomery|RB|Groin|F|Questionable
+HOU|Keylan Rutledge|G|Neck, Shoulder|D|Out
+HOU|Jaylin Smith|CB|Hamstring|F|Questionable
+HOU|Wyatt Teller|G|Illness, Back|L|Questionable
+HOU|Tommy Togiai|DT||F|
+CLE|Austin Barber|T||F|
+CLE|Denzel Boston|WR|Toe|L|Questionable
+CLE|Michael Burton|FB|Calf|D|Out
+CLE|Maliek Collins|DT||F|
+CLE|Harold Fannin Jr.|TE||F|
+CLE|Ronnie Hickman Jr.|S|Concussion|D|Out
+CLE|Tytus Howard|T||F|
+CLE|Elgton Jenkins|C||F|
+CLE|Donovan McMillon|S||L|
+CLE|Carson Schwesinger|LB||F|
+CLE|Denzel Ward|CB||L|
+CLE|Quincy Williams|LB||F|
+LAR|Davis Allen|TE|Oblique|L|Questionable
+LAR|Steve Avila|G|Hamstring|D|Out
+LAR|Joe Cardona|LS|Ankle|L|Questionable
+LAR|Kam Curl|S|Toe|L|Questionable
+LAR|Aaron Donald|DT||D|
+LAR|Terrance Ferguson|TE|Ankle, Hamstring|D|Out
+LAR|Braden Fiske|DT||D|
+LAR|Myles Garrett|LB|Knee, Not injury related - resting player|D|Questionable
+LAR|Tyler Higbee|TE||L|
+LAR|Trent McDuffie|CB|Back|L|Questionable
+LAR|Puka Nacua|WR||D|
+LAR|Colby Parkinson|TE||F|
+LAR|Matthew Stafford|QB||F|
+LAR|Byron Young|LB||D|
+AZ|Budda Baker|S||F|
+AZ|Zachary Carter|DT|Knee|L|Out
+AZ|Hjalte Froholdt|C|Concussion|D|Out
+AZ|Jon Gaines II|G|Ankle|D|Out
+AZ|Bam Knight|RB||F|
+AZ|Hunter Long|TE|Knee|L|Questionable
+AZ|Roy Lopez|DT|Toe, Ankle|L|Questionable
+AZ|Max Melton|CB|Knee, Hand|L|Questionable
+AZ|Darius Robinson|DT|Wrist|L|Questionable
+AZ|Isaac Seumalo|G||F|
+AZ|Dante Stills|DT||F|
+AZ|Josh Sweat|LB||F|
+AZ|Jayden Williams|T|Knee|L|Questionable
+AZ|Mack Wilson|LB||F|
+AZ|Andrew Wingard|S|Groin|D|Questionable
+SEA|AJ Barner|TE||F|
+SEA|Anthony Bradford|G||F|
+SEA|Charles Cross|T|Ankle|D|Out
+SEA|Sam Darnold|QB|Ribs, Quadricep|D|Out
+SEA|Derick Hall|LB||D|
+SEA|Drew Lock|QB||L|
+SEA|Quenton Nelson|G|Knee|D|Out
+SEA|Uchenna Nwosu|LB||F|
+SEA|Patrick O'Connell|LB||F|
+SEA|Connor O'Toole|LB||F|
+SEA|Brandon Pili|DT||F|
+SEA|Jarran Reed|DT||F|
+SEA|Rashid Shaheed|WR||F|
+SEA|Jaxon Smith-Njigba|WR||F|
+SEA|Leonard Williams|DT|Stinger|D|Out
+LV|Thomas Booker|DT|Ankle|F|Questionable
+LV|Foley Fatukasi|DT||F|
+LV|Ian Thomas|TE||F|
+LV|Dont'e Thornton Jr.|WR|Back|D|Questionable
+LV|Trey Zuhn III|C||F|
+SF|Mike Evans|WR|Achilles|D|Out
+SF|Renardo Green|CB|Back|L|Questionable
+SF|Dre Greenlaw|LB|Knee|L|Questionable
+SF|Nate Hobbs|CB|Groin|F|Questionable
+SF|Deommodore Lenoir|CB|Foot|L|Questionable
+SF|Christian McCaffrey|RB||F|
+SF|Siran Neal|S||F|
+SF|Demarcus Robinson|WR||F|
+SF|Deebo Samuel Sr.|WR||F|
+SF|Upton Stout|CB|Shoulder, Neck|L|Questionable
+SF|C.J. West|DT|Knee|F|Questionable
+SF|Trent Williams|T|Shoulder|D|Questionable
+DAL|DaRon Bland|CB|Ankle|L|Questionable
+DAL|Jonathan Bullard|DT|Calf|F|Questionable
+DAL|Alijah Clark|S|Illness|D|Questionable
+DAL|Donovan Ezeiruaku|LB|Ankle|D|Out
+DAL|Jake Ferguson|TE|Knee, Ankle|D|Out
+DAL|Tyler Goodson|RB|Ankle, Knee|D|Out
+DAL|Malik Hooker|S||D|
+DAL|Marist Liufau|LB||F|
+DAL|P.J. Locke|S|Concussion|D|Out
+DAL|Von Miller|LB||D|
+DAL|Jonathan Mingo|WR|Ankle|D|Out
+DAL|Devin Moore|CB|Hip|F|Questionable
+DAL|DeMarvion Overshown|LB||F|
+DAL|George Pickens|WR||F|
+DAL|Joey Porter Jr.|CB|Ankle, Foot|L|Questionable
+DAL|Luke Schoonmaker|TE||F|
+DAL|Brevyn Spann-Ford|TE||F|
+DAL|Juanyeh Thomas|S|Hamstring|D|Doubtful
+DAL|KaVontae Turpin|WR||F|
+PIT|Brandin Echols|CB||F|
+PIT|DeShon Elliott|S||F|
+PIT|Derrick Harmon|DT|Foot|F|Questionable
+PIT|Cameron Heyward|DT||F|
+PIT|Ben Skowronek|WR||F|
+PIT|Doneiko Slaughter|CB||F|
+PIT|Darnell Washington|TE||F|
+PIT|T.J. Watt|LB||F|
+CIN|Jonathan Allen|DT||L|
+CIN|Jalen Davis|CB|Hamstring|F|Doubtful
+CIN|Kyle Dugger|S|Quadricep|D|Out
+CIN|Dylan Fairchild|G||F|
+CIN|B.J. Hill|DT||D|
+CIN|Andrei Iosivas|WR|Thumb|F|Doubtful
+CIN|Dexter Lawrence|DT||D|
+CIN|Brian Parker II|G|Knee|F|Doubtful
+CIN|DJ Turner II|CB||F|
+LAC|Kayode Awosika|G|Fibula|F|Questionable
+LAC|Bud Dupree|DE||F|
+LAC|Justin Eboigbe|DE|Ankle|L|Questionable
+LAC|Alex Harkey|G||F|
+LAC|Tre Harris|WR||F|
+LAC|Cam Hart|CB||F|
+LAC|Daiyan Henley|LB||F|
+LAC|Deane Leonard|CB||F|
+LAC|Khalil Mack|LB||F|
+LAC|Ladd McConkey|WR|Back|D|Questionable
+LAC|Keaton Mitchell|RB||F|
+LAC|David Njoku|TE|Fibula|F|Questionable
+LAC|Denzel Perryman|LB|Pectoral|F|Questionable
+LAC|Trey Pipkins|T|Not injury related - personal matter, Knee|L|Questionable
+LAC|Rodney Shelley|CB||F|
+LAC|Branson Taylor|G|Ankle|D|Out
+LAC|Brenen Thompson|WR|Hamstring|D|Doubtful
+LAC|Isas Waxter|CB|Ankle|D|Out
+LAC|Kendall Williamson|S|Calf|D|Out
+BAL|Rasheen Ali|RB||F|
+BAL|Rashod Bateman|WR||F|
+BAL|Calais Campbell|DT||D|
+BAL|Kyle Hamilton|S||F|
+BAL|Jaylinn Hawkins|S|Knee|L|Out
+BAL|Matthew Hibner|TE||F|
+BAL|Olaivavega Ioane|G||F|
+BAL|Adam Randall|RB|Neck, Hamstring|F|Questionable
+BAL|Ronnie Stanley|T||D|
+BAL|Nate Wiggins|CB||F|

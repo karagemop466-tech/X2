@@ -336,5 +336,57 @@
   "main_trade_off": "Re-fitting changes historical numbers, so it must be done once and recorded.",
   "current_evidence_state": "One affected game identified in Week 11; historical weeks not yet checked. Flag F58.",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "suggestion_id": "S45",
+  "area": "Corpus",
+  "topic": "Re-run the backtest corpus with the 13 missing Week 10 games and the neutral-site flags",
+  "depends_on_decision": "P09 (Review console)",
+  "recommended_path": "B now, A next release: publish a v2 research register, keep v1 frozen and readable",
+  "recommendation_strength": "Strong - the gap is measured, not suspected",
+  "paths_available": "A splice and re-publish | B parallel v2 register | C disclose only",
+  "why_recommended": "The numbers are already reproducible: adding the 13 transcribed games reconciles all 32 clubs with today's official standings, and the seven unflagged international games flip three side picks. Publishing a v2 register tests that without breaking comparability.",
+  "main_trade_off": "Reviewer effort: two versions of the same table on the site until one is chosen.",
+  "current_evidence_state": "data/games_week10_backfill_2026.csv (13 rows, reconciled), data/results_feed_completeness_2026-11-18.csv (32 checks), data/neutral_site_sensitivity_2026.csv (7 rows)",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/results_feed_completeness_2026-11-18.csv"
+ },
+ {
+  "suggestion_id": "S46",
+  "area": "Capture job",
+  "topic": "Pinned, hashed, self-checking availability captures",
+  "depends_on_decision": "F16 (data rights) gates automation; the manual form needs no decision",
+  "recommended_path": "Manual hashed capture on a fixed cadence now; automate only after the rights review",
+  "recommendation_strength": "Strong - it is the prerequisite for five blocked requirements (D09-D13, D20, D21)",
+  "paths_available": "A manual cadence | B scripted cadence | C wait",
+  "why_recommended": "Today's two reads produced the first delta the repository has had, and immediately exposed a hazard no one had recorded: the hub ignores its week parameter, so an unattended job would have captured the same week twice and labelled it the new one.",
+  "main_trade_off": "Manual capture is slow and will miss days; automated capture is the thing the terms question forbids for now.",
+  "current_evidence_state": "scripts/availability_captures.py works and is pinned; no scheduler exists (G18)",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/availability_captures.csv"
+ },
+ {
+  "suggestion_id": "S49",
+  "area": "Fixture context",
+  "topic": "Venue transcription for the remaining 141 fixtures",
+  "depends_on_decision": "F16 (data rights) and the schedule for reads",
+  "recommended_path": "Upcoming slate first, then backwards week by week; always the game-centre block, never the ticket or hotel link",
+  "recommendation_strength": "Medium - high value for totals, low urgency while no market price exists to beat",
+  "paths_available": "A all fixtures | B upcoming slate only | C none until rights are read",
+  "why_recommended": "The Week 11 pages disagree with each other on a stadium name (NRG versus Reliant for the same fixture), which shows exactly why the game-centre block is the only defensible source.",
+  "main_trade_off": "141 page reads for a column the model does not yet use.",
+  "current_evidence_state": "Nine venues transcribed (data/international_games_2026.csv); one game-centre block read in the repository's history (SRC-73)",
+  "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "suggestion_id": "S50",
+  "area": "Verification",
+  "topic": "Double-read every capture that becomes published data",
+  "depends_on_decision": "F16 (data rights) for who may read at all; the control itself needs no decision",
+  "recommended_path": "A now (model inputs double-read), move to B if a second divergence is ever found",
+  "recommendation_strength": "Strong - it is the only control that catches a mis-transcription, and it fired on first use",
+  "paths_available": "A double read for model inputs | B double read for every capture | C single read plus raw-body store",
+  "why_recommended": "346 of 347 players agreed between two readers of the same render; the one field that disagreed was a real error in this session's own capture, found only because a second reader existed. No hash or row-count pin would have caught it.",
+  "main_trade_off": "Twice the reads per capture, and it cannot fix a shared misreading of an ambiguous cell.",
+  "current_evidence_state": "scripts/capture_cross_check.py (5 checks, all pass) and data/capture_cross_check_2026-11-18.csv; F109",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/capture_cross_check_2026-11-18.csv"
  }
 ]

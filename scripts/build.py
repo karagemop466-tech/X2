@@ -525,7 +525,8 @@ LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url"
               "depth_chart_url": "Club chart ↗", "checked_against": "Official page ↗",
               "official_source_url": "Official source ↗", "chart_url": "Club chart ↗",
               "injury_source_url": "Injury report ↗",
-              "schedule_source_url": "Schedule ↗"}
+              "schedule_source_url": "Schedule ↗",
+              "backfill_source_url": "Week 10 slate ↗", "availability_source_url": "Injury report ↗"}
 
 
 def cell(key, val, row=None):
@@ -1381,7 +1382,10 @@ xc_rows = [
      "note": "Team keys were normalised before comparing (this implementation uses LAR for the Rams, the other uses LA).",
      "source_url": "https://www.nfl.com/schedules/2026/by-week/week-1"},
     {"check": "Standings reconciliation",
-     "ours": "Computed W-L-T, PF and PA for all 32 teams from the ledger; 0 mismatches against the official standings",
+     "ours": "Computed W-L-T, PF and PA for all 32 teams from the ledger; 0 mismatches against the standings "
+             "snapshot the ledger was frozen on (data/standings_2026_snapshot.csv, read 2026-11-14). Against the "
+             "official standings read on 2026-11-18 the same comparison fails for 26 of 32 teams, because 13 settled "
+             "Week 10 games are not in the ledger (F96, F105).",
      "theirs": "Same reconciliation recorded in scripts/verify_results.py",
      "agreement": "Both reproduce the official standings",
      "note": "Two independent implementations reaching the same official page is the strongest control available here.",
@@ -1896,7 +1900,9 @@ REVIEW_PATH = [
     {"step": "3", "theme": "Finish the results feed before measuring anything more",
      "why_first": "Skill, correlation and ROI all rest on the results ledger. The ledger reconciles for all 32 teams, but a handful of game-center pages do not display a score, so those rows are verified against the standings rather than game by game.",
      "recommended": "Get the official Game Book PDFs for the rows that cannot be read on the game center, and store the PDF link per game (DEC-06).",
-     "have_now": "137 games; every team's W-L-T and points reconcile exactly with the official standings.",
+     "have_now": "137 games; every team's W-L-T and points reconcile exactly with the standings snapshot the "
+                "ledger was frozen on (read 2026-11-14). Today's standings imply 150 completed games and 26 of 32 "
+                "clubs differ; the 13 missing settled games are transcribed and reconcile all 32 (F105, P09).",
      "still_missing": "A per-game official artifact for the rows whose game-center page hides the score (F47).",
      "reversible": "Yes — it adds evidence, it does not change numbers.",
      "blocks_row": "Step 4", "evidence_url": "https://www.nfl.com/standings/"},
@@ -2796,6 +2802,9 @@ more weeks earlier. The 163 games are weeks 1-11: 136 played games (weeks 1-9), 
 
 NAV.insert(NAV.index(("results-feed.html", "Results feed")) + 1, ("captures.html", "Captures & changes"))
 NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("fixture-context.html", "Fixture context"))
+NAV.insert(NAV.index(("fixture-context.html", "Fixture context")) + 1, ("capture-integrity.html", "Capture integrity"))
+NAV.insert(NAV.index(("capture-integrity.html", "Capture integrity")) + 1, ("feed-completeness.html", "Feed completeness"))
+NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("forecast-records.html", "Forecast records"))
 
 _cap_idx = (
     '<h2>Captures, changes and the drift alarm (read 2026-11-18)</h2>'
@@ -2807,6 +2816,417 @@ _cap_idx = (
     + '</div>'
 )
 pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + _cap_idx)
+
+# Read-date caveat on the verification page: its reconciliation rows are true of the standings snapshot the
+# ledger was frozen on, and a reader needs the date to know that (flag F106).
+pages["verification.html"] = (pages["verification.html"][0], pages["verification.html"][1] + f"""
+<h2>Read-date caveat, added 2026-11-18 (session cf85d485)</h2>
+<p class="warn">Every row above that says the results feed reconciles with the official standings was checked against
+<code>data/standings_2026_snapshot.csv</code>, a standings read taken on <strong>2026-11-14, before the Week 10
+Sunday games</strong>. That is a real check of internal arithmetic and it passes, but it is not a check of
+currency: against the standings read on <strong>2026-11-18</strong> the same comparison fails for
+<strong>26 of 32</strong> clubs, because 13 settled Week 10 games are not in the ledger. Adding the rows transcribed
+from the official Week 10 slate reconciles <strong>32 of 32</strong> clubs on W-L-T and on points for and against —
+see <a href="feed-completeness.html">Feed completeness</a> and flags F96, F105, F106. Two rules follow from this and
+are recorded here so the next verification row cannot repeat it: <em>a reconciliation claim must carry the read date
+of both sides</em>, and <em>a reconciliation between two surfaces read on the same day, one derived from the other,
+proves arithmetic and not currency</em>.</p>
+""")
+
+
+# ---------- capture integrity, feed completeness and forecast records (session cf85d485, T102-T107) ----------
+# Three pages built from the registers this session wrote. Nothing here re-derives a number: the tables render
+# exactly what scripts/availability_captures.py, scripts/capture_cross_check.py,
+# scripts/results_feed_completeness.py and scripts/forecast_records.py produced, and each of those scripts fails
+# its own run if a pinned count, a reconciliation or a reproduction check does not hold. The injury delta and the
+# standings diff themselves are published once, on captures.html (session d0ede22d's registers); this page keeps the
+# capture ledger, the club-by-club reverification and the cross-check between the two readers, because those are the
+# artefacts that say whether a number on this site can be trusted, not what it says.
+_captures = read_csv("availability_captures.csv")
+_avail_delta = read_csv("availability_delta_2026-11-14_to_2026-11-18.csv")
+_avail_summary = read_csv("availability_delta_summary.csv")
+_reverify18 = read_csv("live_reverification_2026-11-18.csv")
+_xcheck = read_csv("capture_cross_check_2026-11-18.csv")
+_what_changed = read_csv("what_changed_2026-11-14_to_2026-11-18.csv")
+_feed_complete = read_csv("results_feed_completeness_2026-11-18.csv")
+_feed_recon = read_csv("week_count_reconciliation_2026-11-18.csv")
+_backfill = read_csv("games_week10_backfill_2026.csv")
+_fr_checks = read_csv("forecast_record_checks.csv")
+_fr_graded = read_csv("forecast_records_2026.csv")
+_fr_w11 = read_csv("forecast_records_week11.csv")
+_intl = read_csv("international_games_2026.csv")
+_neutral = read_csv("neutral_site_sensitivity_2026.csv")
+
+for _name, _rows, _id_field in (
+        ("availability_captures", _captures, "capture_id"),
+        ("availability_delta", _avail_delta, "player"),
+        ("availability_delta_summary", _avail_summary, "metric"),
+        ("live_reverification_2026-11-18", _reverify18, "check_id"),
+        ("capture_cross_check_2026-11-18", _xcheck, "check_id"),
+        ("what_changed", _what_changed, "team_abbr"),
+        ("results_feed_completeness", _feed_complete, "team_abbr"),
+        ("week_count_reconciliation", _feed_recon, "metric"),
+        ("games_week10_backfill", _backfill, "game_no"),
+        ("forecast_record_checks", _fr_checks, "check_id"),
+        ("forecast_records_2026", _fr_graded, "record_id"),
+        ("forecast_records_week11", _fr_w11, "record_id"),
+        ("international_games_2026", _intl, "week"),
+        ("neutral_site_sensitivity_2026", _neutral, "matchup")):
+    if not _rows:
+        errors.append(f"{_name}: no rows — the register is empty, publish nothing from it")
+    for _r in _rows:
+        _link = (_r.get("source_url") or _r.get("game_url") or "").strip()
+        if not _link:
+            errors.append(f"{_name} {_r.get(_id_field, '?')}: row without an official source link")
+        else:
+            check_official(_link, f"{_name}.{_id_field}")
+
+# Pinned row counts: the drift alarm for the published registers themselves.
+_pin = {"availability_captures": 2, "availability_delta": 18, "availability_delta_summary": 14,
+        "live_reverification_2026-11-18": 28, "capture_cross_check_2026-11-18": 5,
+        "what_changed": 32, "results_feed_completeness": 32, "week_count_reconciliation": 8,
+        "games_week10_backfill": 13, "forecast_record_checks": 6, "forecast_records_2026": 178,
+        "forecast_records_week11": 26, "international_games_2026": 9, "neutral_site_sensitivity_2026": 7}
+for _nm, _n in (("availability_captures", len(_captures)), ("availability_delta", len(_avail_delta)),
+                ("availability_delta_summary", len(_avail_summary)),
+                ("live_reverification_2026-11-18", len(_reverify18)),
+                ("capture_cross_check_2026-11-18", len(_xcheck)), ("what_changed", len(_what_changed)),
+                ("results_feed_completeness", len(_feed_complete)),
+                ("week_count_reconciliation", len(_feed_recon)), ("games_week10_backfill", len(_backfill)),
+                ("forecast_record_checks", len(_fr_checks)), ("forecast_records_2026", len(_fr_graded)),
+                ("forecast_records_week11", len(_fr_w11)), ("international_games_2026", len(_intl)),
+                ("neutral_site_sensitivity_2026", len(_neutral))):
+    if _n != _pin[_nm]:
+        errors.append(f"{_nm}: {_n} rows, pinned expectation {_pin[_nm]} — re-run the capture script against "
+                      f"the official page before publishing this table")
+for _r in _fr_checks + _feed_recon + _xcheck:
+    _txt = " ".join(str(v) for v in _r.values()).lower()
+    if "fail" in _txt or "does not reconcile" in _txt:
+        errors.append(f"a check that failed is being published as if it passed: {list(_r.values())[:3]}")
+for _r in _fr_graded + _fr_w11:
+    if _r["reproduced_published_line"] != "yes":
+        errors.append(f"forecast record {_r['record_id']} did not reproduce the published line; not fit to publish")
+
+_pub_eq = next((r["value"] for r in _avail_summary if r["metric"] == "published_snapshot_equals"), "")
+_xc01 = next((r for r in _xcheck if r["check_id"] == "XC-01"), {})
+pages["capture-integrity.html"] = ("Capture integrity & cross-checks", f"""
+<section class="hero">
+  <h1>Capture integrity and cross-checks</h1>
+  <p>The injury hub and the standings as a <strong>timestamped series with hashes</strong>, plus the check that
+  decides whether any single transcription on this site can be trusted. The numbers themselves live on
+  <a href="captures.html">Captures &amp; changes</a>; this page is about whether they are the numbers the page
+  really showed, and to whom.</p>
+  <p class="note"><strong>Read times.</strong> CAP-01 is the 2026-11-14 transcription (date only — no clock time was
+  recorded, and that missing field is why a delta was impossible until today). CAP-02 was read on
+  <strong>2026-11-18 at 03:46 UTC</strong> from all eight rendered chunks. A second session read the same page at
+  <strong>03:39 UTC</strong> and its transcription is the one the published register was rebuilt from. Each row
+  links to the official page it came from:
+  <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">nfl.com/injuries ↗</a> ·
+  <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">nfl.com/standings ↗</a>.</p>
+</section>
+{tiles([(len(_captures), "dated reads of one official report"),
+        (_captures[1]["rows"] + " / " + _captures[0]["rows"], "players read today / on 2026-11-14"),
+        (_xcheck[0]["disagreements"] + " of " + str(int(_xcheck[0]["compared"]) * 5), "fields two readers disagreed on"),
+        (len([r for r in _reverify18 if r["result"] == "match"]), "of 28 club blocks matching today's read")])}
+<h2>Capture ledger — one row per read, with its hash</h2>
+<p class="note">The payload hash is over the canonical rows (sorted
+<code>team|player|position|injury|practice|game status</code>), so an identical read on a later day has an identical
+hash and a moved page does not; <code>sha256_capture_file</code> hashes the stored transcription itself. Both hashes
+are computed over a <em>transcription</em>, not over HTTP bytes — the fetch surface returns processed text, so
+neither hash can prove what the server sent (flag F100). <code>fields_corrected</code> is the count of cells where a
+later official read overrode the transcription; the raw capture keeps what was read.</p>
+{table(_captures, ["capture_id", "source_url", "week_label_as_rendered", "read_utc", "read_time_precision",
+                   "rows", "clubs", "out_designations", "doubtful_designations", "questionable_designations",
+                   "undesignated_rows", "fields_corrected", "sha256_payload", "sha256_capture_file",
+                   "delta_capable", "capture_method", "note"],
+       {"capture_id": "Capture", "source_url": "Source", "week_label_as_rendered": "Week label rendered",
+        "read_utc": "Read (UTC)", "read_time_precision": "Time precision", "rows": "Rows", "clubs": "Clubs",
+        "out_designations": "Out", "doubtful_designations": "Doubtful", "questionable_designations": "Questionable",
+        "undesignated_rows": "No designation", "fields_corrected": "Fields corrected",
+        "sha256_payload": "Payload sha256", "sha256_capture_file": "File sha256", "delta_capable": "Supports a delta",
+        "capture_method": "How it was captured", "note": "Note"}, table_id="capture-ledger")}
+<h2>Cross-check: two readers of one render</h2>
+<p class="note">Two sessions transcribed the same page seven minutes apart, without coordination, and the
+comparison is the only control in this repository that can catch a <strong>mis-transcription</strong> — as opposed
+to a source change or an arithmetic slip. It caught one:
+<strong>{_xc01.get("outcome", "")}</strong>.
+{_xc01.get("detail", "")}</p>
+{table(_xcheck, ["check_id", "what_compared", "register_a", "register_b", "rows_a", "rows_b", "compared",
+                 "disagreements", "outcome", "status", "source_url"],
+       {"check_id": "Check", "what_compared": "What was compared", "register_a": "Register A",
+        "register_b": "Register B", "rows_a": "Rows A", "rows_b": "Rows B", "compared": "Players/clubs compared",
+        "disagreements": "Disagreements", "outcome": "Outcome", "status": "Status", "source_url": "Source"},
+       table_id="cross-check")}
+<h2>Today's read against the published table, club by club</h2>
+<p class="note">This is the full recount session b03f4ba1 left at four of eight chunks (flag F83, now closed for the
+repo side). Every one of the 28 club blocks in the published register matches today's read — the register was
+re-published from the 2026-11-18 read — and the <em>Equals CAP-01</em> column shows which clubs have moved since
+2026-11-14. Whether a move came from the page or from a transcription is recorded in the cross-check above and in
+flag F107: for the older capture it cannot be attributed, because no raw bytes were kept.</p>
+{table(_reverify18, ["check_id", "unit", "checked_against", "read_detail", "repo_rows", "live_rows",
+                     "missing_from_repo", "extra_in_repo", "field_differences", "repo_equals_2026_11_14_capture",
+                     "result", "read_utc", "source_url"],
+       {"check_id": "Check", "unit": "Unit", "checked_against": "Read against", "read_detail": "Read detail",
+        "repo_rows": "Published rows", "live_rows": "Rows today", "missing_from_repo": "Missing from the table",
+        "extra_in_repo": "Extra in the table", "field_differences": "Field differences",
+        "repo_equals_2026_11_14_capture": "Equals CAP-01", "result": "Result", "read_utc": "Read (UTC)",
+        "source_url": "Source"}, table_id="reverify-2026-11-18", filterable=True)}
+<h2>What the published table currently equals</h2>
+<p class="note">Computed by script, not asserted: <code>data/injuries_week10_2026.csv</code>
+({_avail_summary[[r["metric"] for r in _avail_summary].index("published_snapshot_rows")]["value"]} rows) equals
+<strong>{_pub_eq or 'neither capture'}</strong>. Until session d0ede22d re-published it on 2026-11-18 it equalled
+CAP-01 exactly, which is what the earlier verification rows on
+<a href="verification.html">Verification</a> were describing; a claim of that kind should always carry the read date
+of both sides (flag F106).</p>
+<p class="warn"><strong>Cadence hazard (F94).</strong> The hub ignores its own week parameter:
+<code>https://www.nfl.com/injuries/?season=2026&amp;week=11&amp;type=REG</code> rendered the <strong>Week 10</strong>
+tables on 2026-11-18, four days after those games, while the club records printed beside them already showed
+post-Week-10 forms (BUF 8-1, NE 5-5). A capture job keyed on the URL would store the same week twice and label it
+the new one, and would mix two dates inside one row. Any scheduled capture must store the rendered
+<code>Injuries - WEEK n</code> heading — the <em>Week label rendered</em> column above — and fail when it is not the
+week it meant to capture.</p>
+""")
+
+_feed_tiles = tiles([
+    ("137", "games in the published results feed"),
+    ("1", "of 14 Week 10 games the feed carries a score for"),
+    ("13", "settled games transcribed here"),
+    ("32/32", "clubs that reconcile once the 13 are added"),
+])
+pages["feed-completeness.html"] = ("Feed completeness", f"""
+<section class="hero">
+  <h1>Results-feed completeness</h1>
+  <p>The feed every backtest and every ROI number depends on holds 137 games. Today's official standings imply
+  <strong>150</strong> completed games through Week 10 (149 wins, 149 losses, 2 ties = 300 team-games). The gap is
+  the Week 10 slate: the feed carries the Thursday, Nov 12 game and none of the 13 that followed it, although
+  <code>data/games_week10_2026.csv</code> lists all 14 matchups with the result column blank on 13 of them.</p>
+  <p class="note">Nothing on this page changes a published metric. The 13 scores are transcribed from
+  <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">the official Week 10
+  schedule page</a> and then checked against
+  <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">the official standings</a>: with the 13 rows
+  added, every club's win-loss-tie record, points for and points against equals the standings exactly. Without them,
+  26 of 32 clubs do not. Two independent official surfaces agreeing to the point is the verification.</p>
+</section>
+{_feed_tiles}
+<h2>League arithmetic — and the 136 vs 137 dispute, settled</h2>
+{table(_feed_recon, ["metric", "value", "basis", "result", "source_url"],
+       {"metric": "Measure", "value": "Value", "basis": "Basis", "result": "Result", "source_url": "Source"},
+       table_id="feed-reconciliation")}
+<h2>Club by club: what the feed is missing</h2>
+{table(_feed_complete, ["team_abbr", "team_name", "feed_games", "feed_record", "feed_pf_pa",
+                        "official_games_2026_11_18", "official_record_2026_11_18",
+                        "official_pf_pa_2026_11_18", "games_missing_from_feed", "points_for_missing",
+                        "points_against_missing", "feed_as_published_matches_official",
+                        "feed_plus_backfill_matches_official", "source_url", "backfill_source_url"],
+       {"team_abbr": "Club", "team_name": "Team", "feed_games": "Games in feed", "feed_record": "Feed record",
+        "feed_pf_pa": "Feed PF/PA", "official_games_2026_11_18": "Games official",
+        "official_record_2026_11_18": "Official record", "official_pf_pa_2026_11_18": "Official PF/PA",
+        "games_missing_from_feed": "Games missing", "points_for_missing": "PF missing",
+        "points_against_missing": "PA missing", "feed_as_published_matches_official": "Feed matches today",
+        "feed_plus_backfill_matches_official": "Feed + 13 matches", "source_url": "Standings",
+        "backfill_source_url": "Week 10 slate"}, table_id="feed-completeness", filterable=True)}
+<h2>The 13 settled Week 10 games, transcribed and source-linked</h2>
+<p class="note">These rows are published as a <em>backfill register</em>, deliberately not spliced into
+<code>data/games_2026_results.csv</code>: that file feeds the model fit, the 89-game walk-forward corpus, the
+controls and every published error metric, and re-running those changes numbers the site already shows. Whether to
+re-run is a decision, recorded on the <a href="review.html">Review console</a> and on
+<a href="suggestions.html">Suggestions</a>; it is not something to do silently inside a data capture.</p>
+{table(_backfill, ["game_no", "date_as_shown", "section_as_rendered", "away_team", "away_points", "home_team",
+                   "home_points", "home_margin", "total_points", "winner", "international_game_flag_as_rendered",
+                   "already_in_results_feed", "status", "game_url", "source_url"],
+       {"game_no": "#", "date_as_shown": "Date", "section_as_rendered": "Section as rendered",
+        "away_team": "Away", "away_points": "A pts", "home_team": "Home", "home_points": "H pts",
+        "home_margin": "Home margin", "total_points": "Total", "winner": "Winner",
+        "international_game_flag_as_rendered": "International", "already_in_results_feed": "Already in feed",
+        "status": "Verification", "game_url": "Game page", "source_url": "Source"},
+       table_id="week10-backfill")}
+<h2>Fixture context from published schedule facts only</h2>
+<p class="note">Readiness D25 asked for a fixture-context feature set built <strong>only</strong> from published
+schedule facts, and D26 for the venue of every fixture transcribed from the official game centre. The venues below
+are the nine games the league itself designates as international, transcribed from
+<a href="https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+target="_blank" rel="noopener">NFL Football Operations</a> on 2026-11-18 — eight of them sit inside the model's
+training corpus, where the feed carries no <code>neutral_site</code> value at all.</p>
+{table(_intl, ["week", "date_as_published", "away_designated", "home_designated", "venue_official", "city_official",
+               "kickoff_official", "new_market_2026", "in_results_feed", "feed_row_matchup", "feed_score",
+               "neutral_site_column_in_feed", "treated_as_neutral_by_the_model", "verification", "source_url"],
+       {"week": "Week", "date_as_published": "Date as published", "away_designated": "Away",
+        "home_designated": "Designated home", "venue_official": "Venue (official)", "city_official": "City",
+        "kickoff_official": "Kickoff", "new_market_2026": "New market 2026", "in_results_feed": "In the feed",
+        "feed_row_matchup": "Feed row", "feed_score": "Feed score", "neutral_site_column_in_feed": "Feed neutral column",
+        "treated_as_neutral_by_the_model": "Modelled as neutral", "verification": "Verification", "source_url": "Source"},
+       table_id="international-slate")}
+<h3>What the missing neutral flag costs — prediction-only sensitivity</h3>
+<p class="note">This panel changes the <em>prediction</em> for the affected games and leaves the fit alone, so it is a
+lower bound: the ratings also absorb the mis-flag, and re-fitting with the flags is part of the same owner decision
+as the backfill. The fitted home-field term on the published fit is negative (−0.4 pts), which is why
+"no home edge at a neutral venue" moves some games the other way.</p>
+{table(_neutral, ["week", "matchup", "model_margin_as_published", "model_margin_if_treated_as_neutral",
+                  "model_shift_pts", "reference_margin_as_published", "reference_margin_if_treated_as_neutral",
+                  "reference_shift_pts", "actual_margin_home_minus_away", "effect_on_error", "source_url",
+                  "game_url"],
+       {"week": "Week", "matchup": "Game", "model_margin_as_published": "M1 as published",
+        "model_margin_if_treated_as_neutral": "M1 if neutral", "model_shift_pts": "M1 shift",
+        "reference_margin_as_published": "Reference as published", "reference_margin_if_treated_as_neutral":
+        "Reference if neutral", "reference_shift_pts": "Reference shift",
+        "actual_margin_home_minus_away": "Actual margin", "effect_on_error": "Effect on |error|",
+        "source_url": "Source", "game_url": "Game page"}, table_id="neutral-sensitivity")}
+""")
+
+_fr_m1 = [r for r in _fr_graded if r["model_id"] == "M1"]
+pages["forecast-records.html"] = ("Forecast records", f"""
+<section class="hero">
+  <h1>Forecast records: probability plus inputs, never a pick alone</h1>
+  <p>Every stored output here is a <strong>probability</strong> together with the <strong>inputs that produced
+  it</strong> and the residual scale that turned a number into that probability, so an output can be audited and
+  replayed. The inputs are not descriptions: the same script re-derives each line from the documented construction
+  and refuses to publish if the published number does not come back (tolerance is the published 1-decimal rounding).</p>
+  <p class="note"><strong>No market price exists in this repository</strong> (F07, F51), so “covers” and “overs”
+  are scored against the naive reference line the corpus is graded on, not against a bookmaker line. They are a
+  benchmark-relative result, not a market edge. Personnel and availability features are
+  <strong>not</strong> inputs: the model carries none, which is why the ablation the brief asks for is blocked (D24).</p>
+</section>
+{tiles([(str(len(_fr_graded)), "graded records (games × models)"), (str(len(_fr_w11)), "Week 11 prospective records"),
+        ("178/178", "lines reproduced from the published CSVs"), ("26/26", "Week 11 lines reproduced")])}
+<h2>Reproduction and integrity checks</h2>
+{table(_fr_checks, ["check_id", "check", "method", "result", "source_url"],
+       {"check_id": "Check", "check": "What was checked", "method": "Method", "result": "Result",
+        "source_url": "Source"}, table_id="forecast-checks")}
+<h2>Week 11 prospective records — frozen before kickoff, outcomes blank</h2>
+{table(_fr_w11, ["record_id", "matchup", "kickoff_or_date", "model_id", "neutral_site_as_modelled",
+                 "output_margin_home_minus_away_pts", "output_total_pts", "prob_home_win",
+                 "prob_home_covers_reference_line", "prob_over_reference_total", "reference_cover_line_pts",
+                 "reference_over_line_pts", "residual_sd_margin_used", "residual_sd_total_used", "pick",
+                 "inputs_json", "status", "game_url", "source_url"],
+       {"record_id": "Record", "matchup": "Game", "kickoff_or_date": "Kickoff", "model_id": "Model",
+        "neutral_site_as_modelled": "Neutral", "output_margin_home_minus_away_pts": "Margin (H−A)",
+        "output_total_pts": "Total", "prob_home_win": "P(home win)", "prob_home_covers_reference_line":
+        "P(covers ref)", "prob_over_reference_total": "P(over ref)", "reference_cover_line_pts": "Ref cover line",
+        "reference_over_line_pts": "Ref over line", "residual_sd_margin_used": "sd margin", "residual_sd_total_used":
+        "sd total", "pick": "Pick", "inputs_json": "Inputs stored with the output", "status": "Status",
+        "game_url": "Game page", "source_url": "Source"}, table_id="forecast-w11", filterable=True)}
+<h2>Graded corpus (weeks 4–10): the same record, with outcomes and scores</h2>
+<p class="note">One row per game per model: the M1 line and the naive reference line it is graded against.
+Outcomes are from the official final scores already in the feed; Brier and log loss are computed from the
+probability recorded at prediction time, and a push against the reference line is left unscored rather than
+rounded to a win or a loss.</p>
+{table(_fr_m1, ["record_id", "week", "matchup", "neutral_site_as_modelled", "output_margin_home_minus_away_pts",
+                "output_total_pts", "prob_home_win", "prob_home_covers_reference_line", "prob_over_reference_total",
+                "reference_cover_line_pts", "reference_over_line_pts", "actual_margin", "actual_total",
+                "outcome_home_win", "outcome_cover", "outcome_over", "brier_home_win", "logloss_home_win",
+                "brier_cover", "brier_over", "inputs_json", "game_url", "source_url"],
+       {"record_id": "Record", "week": "Wk", "matchup": "Game", "neutral_site_as_modelled": "Neutral",
+        "output_margin_home_minus_away_pts": "Margin (H−A)", "output_total_pts": "Total", "prob_home_win":
+        "P(home win)", "prob_home_covers_reference_line": "P(covers ref)", "prob_over_reference_total":
+        "P(over ref)", "reference_cover_line_pts": "Ref line", "reference_over_line_pts": "Ref total",
+        "actual_margin": "Actual margin", "actual_total": "Actual total", "outcome_home_win": "Home won",
+        "outcome_cover": "Cover", "outcome_over": "Over", "brier_home_win": "Brier (win)",
+        "logloss_home_win": "Log loss (win)", "brier_cover": "Brier (cover)", "brier_over": "Brier (over)",
+        "inputs_json": "Inputs stored with the output", "game_url": "Game page", "source_url": "Source"},
+       table_id="forecast-graded", filterable=True)}
+<p class="note">The full graded ledger including the reference-model rows is
+<code>data/forecast_records_2026.csv</code> ({len(_fr_graded)} rows) and
+<code>data/forecast_records_week11.csv</code> ({len(_fr_w11)} rows); both are also exported to
+<code>docs/data/</code> as JSON. Historical scores here are research diagnostics: they are not on the
+leaderboard, and the leaderboard stays unranked until a prospective window closes
+(<a href="leaderboard.html">Leaderboard</a>).</p>
+""")
+
+
+# The exports dict above runs earlier in this file than this block, so the registers added here are exported to
+# docs/data/ in their own loop rather than by editing that dict.
+for _nm, _rows in (("availability_captures", _captures), ("availability_delta_summary", _avail_summary),
+                   ("availability_delta_2026-11-14_to_2026-11-18", _avail_delta),
+                   ("live_reverification_2026-11-18", _reverify18),
+                   ("capture_cross_check_2026-11-18", _xcheck),
+                   ("what_changed_2026-11-14_to_2026-11-18", _what_changed),
+                   ("results_feed_completeness_2026-11-18", _feed_complete),
+                   ("week_count_reconciliation_2026-11-18", _feed_recon),
+                   ("games_week10_backfill_2026", _backfill), ("forecast_record_checks", _fr_checks),
+                   ("forecast_records_2026", _fr_graded), ("forecast_records_week11", _fr_w11),
+                   ("international_games_2026", _intl), ("neutral_site_sensitivity_2026", _neutral)):
+    with open(os.path.join(DOCS, "data", _nm + ".json"), "w", encoding="utf-8") as _f:
+        json.dump(_rows, _f, ensure_ascii=False, indent=1)
+
+# Landing-page additions: what moved, and whether the numbers can be trusted. Kept deliberately short — the
+# delta and standings tables live on captures.html.
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
+<h2>Freshness and capture integrity (2026-11-18)</h2>
+<ul>
+  <li><strong>Injury hub:</strong> {_captures[0]['rows']} rows read on 2026-11-14, {_captures[1]['rows']} on
+  2026-11-18; {len(_avail_delta)} players moved between the two reads of the same report. The published register
+  now equals today's read. <a href="capture-integrity.html">Capture integrity &amp; cross-checks</a> ·
+  <a href="captures.html">Captures &amp; changes</a>.</li>
+  <li><strong>Two readers, one disagreement:</strong> an independent transcription of the same render agreed on
+  346 of 347 players; the single differing cell was an error in this session's capture, settled by a third read of
+  the live page and corrected in the register — never in the raw capture. <a href="capture-integrity.html">Cross-check</a> (F109).</li>
+  <li><strong>Results feed:</strong> 13 settled Week 10 games are absent from the corpus the backtests grade on;
+  adding the transcribed rows reconciles all 32 clubs against today's standings.
+  <a href="feed-completeness.html">Feed completeness</a> (F96, F105, P09).</li>
+  <li><strong>Forecast outputs:</strong> every model line is stored with its inputs and its win/cover/over
+  probabilities, and reproduces from the published CSVs before it is allowed to publish.
+  <a href="forecast-records.html">Forecast records</a>.</li>
+  <li><strong>Cadence hazard:</strong> the injury hub ignores its week URL parameter, so an unattended capture would
+  silently re-store Week 10 and label it Week 11 (F94).</li>
+</ul>
+""")
+
+pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
+<h2>Capture-integrity desk: changes on 2026-11-18 (session cf85d485, T102&ndash;T107)</h2>
+<ul class="findings">
+<li><strong>The same official report now exists at three clock times.</strong> The Week 10 injury hub was
+transcribed on 2026-11-14 ({_captures[0]['rows']} rows), and twice on 2026-11-18 — 03:39 UTC by session d0ede22d
+and 03:46 UTC here, {len(_captures[1]['rows'])} rows across {len(_reverify18)} club blocks in both. The published
+register was rebuilt from the 2026-11-18 read, and every one of the 28 blocks in it matches today's read
+(<a href="capture-integrity.html">Capture integrity</a>). The recount session b03f4ba1 left incomplete is done:
+the 345-vs-347 difference is a source movement (Baltimore added Calais Campbell and Ronnie Stanley), not a repo
+omission, so flag F83 closes for the repo side.</li>
+<li><strong>The double read caught a real error, which is the point of it.</strong> Two independent transcriptions of
+the same render agreed on <strong>346 of 347 players</strong> across all five fields. The one disagreement — JAX
+Chris Rodriguez Jr.'s practice status — was this session's own mis-read, settled by a third read of the live page
+at 04:2x UTC and corrected in the derived registers (18 moved players, not 19; 6 practice changes, not 7). The raw
+capture is left exactly as read, and the correcting script refuses to run if the capture stops matching the value it
+overrode, so a correction can never drift into an invented number. No published register changed, because the one
+this site shows was already right (F109, and <code>scripts/capture_cross_check.py</code>).</li>
+<li><strong>The injury signal is a delta, as the brief requires.</strong> {len(_avail_delta)} of 347 players moved
+in four days: 2 rows added, 6 practice-designation changes, 13 game-status changes and 13 injury-text changes, in
+3 of 28 club blocks (BAL, IND, LAC); 0 players were removed. Ten of the 18 are a designation appearing where the
+earlier capture left the cell blank — capture completeness, not news, and the case for scoring changes rather than
+levels. Field-level detail: <a href="captures.html">Captures &amp; changes</a>
+(<code>data/captures/injury_delta_2026-11-18.csv</code>); readiness D10, D49.</li>
+<li><strong>The results feed is 13 settled games short, and the old reconciliation was stale rather than
+wrong-arithmetic.</strong> Today's official standings imply 150 completed games through Week 10 (149 wins, 149
+losses, 2 ties); <code>data/games_2026_results.csv</code> holds 137, of which one is a Week 10 game. The
+"all 32 teams reconcile" claim was checked against a standings read taken <em>before</em> the Week 10 Sunday games,
+so both sides were stale in the same direction (F106). The 13 games were transcribed from the official Week 10
+by-week page — never computed from records — and with them <strong>32 of 32</strong> clubs reconcile on W-L-T
+<em>and</em> points for and against; without them 26 of 32 do not.
+<a href="feed-completeness.html">Feed completeness</a>. Nothing was re-run: adopting the rows changes every
+published metric, so it is proposal <strong>P09</strong> on the <a href="decisions.html">Review console</a>
+(F96, F105; readiness D29).</li>
+<li><strong>Every model output is now stored with its inputs and its probabilities.</strong> {len(_fr_graded)}
+graded rows and {len(_fr_w11)} Week 11 rows carry win, cover and over probabilities against the naive reference
+price (no licensed market price exists, F07/F51), the reference line itself, the residual sd used, Brier and log
+loss, and an <code>inputs_json</code> with mu / attack / defence / home terms, ridge lambda, n_obs and weeks. The
+build refuses to publish unless all {len(_fr_graded) + len(_fr_w11)} lines reproduce the published CSVs to one
+decimal; writing the check corrected two of this session's own assumptions first (a wrongly applied neutral-site
+treatment, and the published one-decimal rounding). <a href="forecast-records.html">Forecast records</a>
+(readiness D27 closed for the ledger; the D24 ablation stays blocked because the model has no personnel input).</li>
+<li><strong>The neutral-site question now has a number.</strong> Seven settled games in the corpus are official
+international games with a blank <code>neutral_site</code> value; the eighth (New England at Detroit in Munich) is
+one of the 13 outside the feed. On the published fit the home-field term is <strong>-0.403</strong> points, so each
+of those seven model margins shifts by 0.403, three flip the side pick, and BAL at DAL crosses the pre-registered
+&plusmn;3-point betting gate (1.13 to 4.03). It is a predictions-only sensitivity: the feed column was left blank
+rather than filled, because filling it re-fits the published ratings (F71 measured today, readiness D26).</li>
+<li><strong>Suggestions written up, not implemented.</strong> S45 freeze v1 and publish a parallel v2 corpus
+register; S46 manual hashed captures on a fixed cadence now, automation only after the rights question F16 is
+answered; S49 venue transcription for the remaining fixtures from the game-centre block only; and
+<strong>S50</strong>, make every capture that becomes published data a double read — the control that caught this
+session's own error, which today happens to be luck rather than design
+(<a href="decision-path.html">Review path</a>).</li>
+</ul>
+""")
+
 
 # ---------- collision guards ----------
 # Two parallel sessions can register the same page slug, or add two NAV entries

@@ -1,0 +1,40 @@
+[
+ {
+  "capture_id": "CAP-01",
+  "source_url": "https://www.nfl.com/injuries/",
+  "week_label_as_rendered": "WEEK 10",
+  "read_utc": "2026-11-14T00:00Z",
+  "read_time_precision": "date only — the 2026-11-14 capture recorded no clock time (D10); the time is unknown, not assumed",
+  "capture_method": "manual transcription of every rendered chunk, kept as a TSV payload",
+  "rows": "345",
+  "clubs": "28",
+  "out_designations": "66",
+  "doubtful_designations": "10",
+  "questionable_designations": "84",
+  "undesignated_rows": "185",
+  "fields_corrected": "0",
+  "sha256_payload": "adaceee7322205ebbcda91ff46e6e4d7cfca454a62a934112b454fff99f44b9c",
+  "sha256_capture_file": "99e6e5ee39a406c108a48c4dbaef9f94ba54d5acf41ddb2636ca019b7e1a0150",
+  "delta_capable": "yes — paired with CAP-02",
+  "note": "The capture the published site table is built from; verified equal to data/injuries_week10_2026.csv row for row by scripts/verify_snapshot.py and again by this script."
+ },
+ {
+  "capture_id": "CAP-02",
+  "source_url": "https://www.nfl.com/injuries/",
+  "week_label_as_rendered": "WEEK 10",
+  "read_utc": "2026-11-18T03:46Z",
+  "read_time_precision": "minute — transcription time of the same fetch session that read all eight chunks",
+  "capture_method": "manual transcription of every rendered chunk of the live page, plus the ?season=2026&week=11&type=REG render, which returned the Week 10 tables unchanged",
+  "rows": "347",
+  "clubs": "28",
+  "out_designations": "70",
+  "doubtful_designations": "11",
+  "questionable_designations": "90",
+  "undesignated_rows": "176",
+  "fields_corrected": "1",
+  "sha256_payload": "77ceea6d81dca0c4eb2c6b2aa038f61356c3357c02d25dc70312026e036a5163",
+  "sha256_capture_file": "f3065ee742b5ad4d504a9dc41b3f3c6627a67d279b5e4dd59c00b3aa8978bbaf",
+  "delta_capable": "yes — two dated reads of the same report exist",
+  "note": "Second read of one report in this repository, which is what makes a delta possible. One field of the 347 rows was mis-transcribed and is corrected below by a third read: JAX Chris Rodriguez Jr., practice status. The raw PSV and the session TSV keep the value as read; the derived registers use the corrected value."
+ }
+]

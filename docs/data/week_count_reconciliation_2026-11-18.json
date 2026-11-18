@@ -1,0 +1,58 @@
+[
+ {
+  "metric": "games_in_published_results_feed",
+  "value": "137",
+  "basis": "data/games_2026_results.csv row count; per week: w1=16, w2=16, w3=16, w4=16, w5=15, w6=14, w7=14, w8=14, w9=15, w10=1",
+  "result": "measured",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/games_2026_results.csv"
+ },
+ {
+  "metric": "games_in_feed_through_week_9",
+  "value": "136",
+  "basis": "weeks 1-9 as held in the feed: w1=16, w2=16, w3=16, w4=16, w5=15, w6=14, w7=14, w8=14, w9=15",
+  "result": "the brief's 136-game log is the through-Week-9 log",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "week_10_slate_games_official",
+  "value": "14",
+  "basis": "the official Week 10 schedule page lists 14 final games plus 4 byes",
+  "result": "verified 2026-11-18",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "week_10_games_in_feed",
+  "value": "1",
+  "basis": "only the Thursday Nov 12 game carries a score in the feed",
+  "result": "gap: 13 settled games absent",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "games_implied_by_official_standings",
+  "value": "150",
+  "basis": "today's standings read: 149 wins, 149 losses, 2 ties = 300 team-games = 150 games",
+  "result": "137 + 13 = 150 reconciles",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "feed_plus_backfill_reconciles_all_32_clubs",
+  "value": "yes",
+  "basis": "every club's W-L-T, points for and points against equal the official standings after adding the 13 rows",
+  "result": "pass",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "feed_as_published_reconciles",
+  "value": "no — 26 of 32 clubs short",
+  "basis": "the 2026-11-14 'all 32 teams reconcile' check compared the feed with a standings read taken before the Week 10 Sunday games",
+  "result": "irregularity: the reconciliation was stale, not the arithmetic",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "backtest_corpus_effect",
+  "value": "89 walk-forward games, Week 10 contributes 1",
+  "basis": "data/model_backtest.csv is graded on the same feed, so the newest out-of-sample week is a single game",
+  "result": "flagged for the owner; no metric recomputed here",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_backtest.csv"
+ }
+]

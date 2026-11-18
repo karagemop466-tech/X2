@@ -1,0 +1,20 @@
+# Raw transcription of https://www.nfl.com/schedules/2026/by-week/week-10 (read 2026-11-18T04:00Z).
+# The page renders the full 14-game Week 10 slate with final scores; "at" order is taken from each game
+# link slug. The Patriots at Lions row sits under the heading "International Game, November 15th" with
+# the Munich 2026 event logo; the other 13 rows sit under Thursday Night Football / Sunday /
+# Sunday Night Football / Monday Night Football headings.
+# Fields: order|section_as_rendered|date_as_shown|away|away_pts|home|home_pts|game_slug|international_flag
+1|Thursday Night Football, November 12th|Thursday November 12th|WAS|24|NYG|21|commanders-at-giants-2026-reg-10|
+2|International Game, November 15th|Sunday November 15th|NE|10|DET|35|patriots-at-lions-2026-reg-10|yes
+3|Sunday, November 15th|Sunday November 15th|KC|35|ATL|13|chiefs-at-falcons-2026-reg-10|
+4|Sunday, November 15th|Sunday November 15th|HOU|24|CLE|27|texans-at-browns-2026-reg-10|
+5|Sunday, November 15th|Sunday November 15th|MIN|30|GB|10|vikings-at-packers-2026-reg-10|
+6|Sunday, November 15th|Sunday November 15th|MIA|22|IND|24|dolphins-at-colts-2026-reg-10|
+7|Sunday, November 15th|Sunday November 15th|CAR|20|NO|17|panthers-at-saints-2026-reg-10|
+8|Sunday, November 15th|Sunday November 15th|BUF|31|NYJ|12|bills-at-jets-2026-reg-10|
+9|Sunday, November 15th|Sunday November 15th|JAX|40|TEN|23|jaguars-at-titans-2026-reg-10|
+10|Sunday, November 15th|Sunday November 15th|LA|34|AZ|6|rams-at-cardinals-2026-reg-10|
+11|Sunday, November 15th|Sunday November 15th|SEA|21|LV|13|seahawks-at-raiders-2026-reg-10|
+12|Sunday, November 15th|Sunday November 15th|SF|46|DAL|40|49ers-at-cowboys-2026-reg-10|
+13|Sunday Night Football, November 15th|Sunday November 15th|PIT|18|CIN|38|steelers-at-bengals-2026-reg-10|
+14|Monday Night Football, November 16th|Monday November 16th|LAC|23|BAL|20|chargers-at-ravens-2026-reg-10|

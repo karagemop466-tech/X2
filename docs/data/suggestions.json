@@ -526,5 +526,77 @@
   "status": "Proposed - not implemented",
   "row_type": "decision",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-11"
+ },
+ {
+  "suggestion_id": "S45",
+  "area": "Corpus",
+  "suggestion": "Freeze v1, then re-run the corpus on the complete 150-game log with the Week 10 backfill and the nine neutral-site flags, and publish both side by side",
+  "benefit_for_decisions": "Every error, interval, gate and control number on the site is computed on 137 games in which Week 10 is a single game; the 13 missing rows are settled and reconciled, and the seven unflagged international games flip 3 side picks and cross the betting gate on 1. Re-running makes the corpus match the league it claims to reproduce, and publishing both versions keeps the comparison honest.",
+  "effort": "Medium - the transcription and the reconciliation are already done (data/games_week10_backfill_2026.csv, data/international_games_2026.csv); the work is re-running the pipeline and versioning the outputs",
+  "main_risk": "Published numbers change. Mitigated only by keeping the frozen v1 register and a version tag on every page that shows a metric.",
+  "options": "A splice into the canonical feed and re-publish | B publish a v2 research register without touching v1 | C keep 137 and disclose the gap",
+  "status": "Proposed - awaiting the owner (P09)",
+  "row_type": "suggestion",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/week_count_reconciliation_2026-11-18.csv"
+ },
+ {
+  "suggestion_id": "S46",
+  "area": "Capture job",
+  "suggestion": "Build the availability capture as a pinned, self-checking job: store the raw body plus sha256, record the rendered 'Injuries - WEEK n' label and fail when it is not the intended week",
+  "benefit_for_decisions": "Turns one transcription into a series, makes the surprise signal computable on demand, and closes the two hazards found today: the hub ignores its week parameter (F94), and the four-day-old capture cannot be defended because no raw bytes exist (F97).",
+  "effort": "Low to medium - the transcription, normalisation, hashing and diff logic exist in scripts/availability_captures.py; what is missing is the schedule and the raw-body store",
+  "main_risk": "Terms of use. NFL.com section 1.3 prohibits systematic retrieval to compile a database without written consent (F16), so this must not be automated until the rights question is answered; a manual, dated, hashed capture is the interim.",
+  "options": "A manual daily capture, hashed | B scripted capture into a private store | C wait for the rights review",
+  "status": "Proposed",
+  "row_type": "suggestion",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "suggestion_id": "S47",
+  "area": "Availability signal",
+  "suggestion": "Publish the delta as the injury feature and keep the level as display only: score a change (DNP to FP, Questionable to Out), never a designation",
+  "benefit_for_decisions": "The brief's rule is that the injury signal is a surprise. Today's two reads give the first test of that rule: 18 of 347 players moved in four days, and 10 of the moves are a game designation appearing where the earlier capture left the cell blank rather than a practice code changing - exactly the signal a level-based feature would miss, and exactly the row that must be labelled a capture-completeness difference instead of news.",
+  "effort": "Low - the delta table and its summary counts are built (data/availability_delta_2026-11-14_to_2026-11-18.csv); what remains is wiring it into a feature once three or more captures exist",
+  "main_risk": "With two captures the movement rate is measured on one report, and one of the two transcriptions already contained an error (F109); do not calibrate a coefficient on it (D20, D21 stay blocked until a multi-week series exists and each link in it is double-read).",
+  "options": "A delta-only feature | B level and delta as separate columns | C keep it display-only until a series exists",
+  "status": "Proposed",
+  "row_type": "suggestion",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/availability_delta_summary.csv"
+ },
+ {
+  "suggestion_id": "S48",
+  "area": "Site",
+  "suggestion": "Put a per-register freshness header on the landing page: rows captured, age in days, and the last time the source was re-read",
+  "benefit_for_decisions": "The site header said 'Data as of 2026-11-14' while the injury hub, the standings and the results feed had all moved; a reader could not tell a stale table from a complete one. The new Captures & deltas page shows the age and the diff; promoting the age to the landing page makes staleness impossible to miss.",
+  "effort": "Low - build.py already knows the read times in data/availability_captures.csv and the reconciliation date in data/week_count_reconciliation_2026-11-18.csv",
+  "main_risk": "None material; it is a disclosure, not a new number.",
+  "options": "A header per register | B one site-wide 'oldest register' figure | C colour-only age badge",
+  "status": "Proposed (the two new pages already carry per-register read times)",
+  "row_type": "suggestion",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/docs/captures.html"
+ },
+ {
+  "suggestion_id": "S49",
+  "area": "Fixture context",
+  "suggestion": "Transcribe the Game Info stadium block for the remaining 141 fixtures on a schedule, one fixture per read, and add roof/surface from the same page",
+  "benefit_for_decisions": "Venue is the cheapest fixture-context feature there is and it moves totals; readiness D26 cannot close while 9 of 150 games have a confirmed venue, and the weather overlay (D42) has nothing to key on.",
+  "effort": "Medium - the pattern is proven (SRC-73, the Week 10 and Week 11 pages read today); it is 141 small reads with a verbatim field",
+  "main_risk": "Volume of reads against the terms question (F16), and schedule pages render the venue inconsistently (the Week 11 page's ticket and hotel links named NRG Stadium while the game centre for the same fixture rendered Reliant Stadium), so the game-centre block is the only acceptable source.",
+  "options": "A game centre per fixture, one per day | B only for the upcoming slate | C skip until the rights review",
+  "status": "Proposed",
+  "row_type": "suggestion",
+  "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "suggestion_id": "S50",
+  "area": "Verification",
+  "suggestion": "Make every capture that becomes 'the data' a double read: two independent transcriptions of the same render, diffed by script, diff published",
+  "benefit_for_decisions": "It is the only check in this repository that catches a transcription error, as opposed to a source change or an arithmetic slip. Found today by accident - two sessions happened to read the same page seven minutes apart - and it caught one wrong cell of 2,082 (F109). Making it a rule converts a lucky catch into a standing control, and the same script (scripts/capture_cross_check.py) can key on the render rather than the day.",
+  "effort": "Medium - doubles the reading work per capture; the comparison side is already written and fails loudly",
+  "main_risk": "Two readers of the same render share a systematic risk (both may misread a truncated cell the same way), so it narrows but does not eliminate the error; a third read settles only what the source has not moved on.",
+  "options": "A double read for registers that feed the model, single read for display | B double read for every capture | C single read plus the raw-body store",
+  "status": "Proposed",
+  "row_type": "suggestion",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/capture_cross_check_2026-11-18.csv"
  }
 ]
