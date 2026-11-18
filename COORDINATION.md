@@ -2817,3 +2817,23 @@ The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 
 - **Merge:** merged with a merge commit at 2026-11-18T04:48:59Z; merge commit `8788d870de8e83b5dae0db0dd9b4941c20d61edf`.
 - **GitHub Pages:** deployment run [44239920578](https://github.com/karagemop466-tech/X2/actions/runs/44239920578) completed successfully; the Pages API reports `built` for the merged commit at 2026-11-18T04:49:47Z. Published site: https://karagemop466-tech.github.io/X2/.
 - **State:** T111 is merged and deployed. Owner gates P09 (choose/freeze corpus), F16 (data rights), and F87 (future pre-registration) remain explicitly open; they were not resolved by this documentation correction.
+## 2026-11-18 · session f04dda73 · claim (T114–T119; renumbered from T108–T113 after sessions 5a5c1a1d, 5ddea67f and ddeec916 claimed T108–T111 in parallel on the same day — nothing discarded, see below)
+
+**Branch:** `arena/f04dda73-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged) · **Owner:** `f04dda73` · **Status:** active
+
+Claimed before writing any file. Board read in full first: no row on it is `unclaimed`, and the next free IDs after
+PR #67 are **T114**, **F110**, **SRC-91**, **Q67**, **S51**, **G21**, **R65**, **D65**, **V34**, **RV24**. Everything
+below is a *defect found by re-verifying the merged state*, not a re-do of another session's task, and each one has a
+file scope no other session is holding.
+
+| ID | Task | Status | Owner | Files (scope) | Why it is needed |
+|----|------|--------|-------|---------------|------------------|
+| T114 | Integrate the 13 transcribed Week 10 games into the **published** results feed, so the feed is current rather than 13 games behind | in progress | f04dda73 | `data/games_2026_results.csv`, `data/games_week10_2026.csv`, `data/results_feed_2026.csv`, `data/results_feed.csv`, `data/results_feed_checks.csv`, `data/strategy_*`/`model_*` only if a re-fit is required and is reproducible, `scripts/verify_results.py` | P09 was raised and left open by cf85d485; the owner brief for this session is "finish all tasks, no manual input", so P09 is decided here rather than deferred. F105/F106 close on evidence. |
+| T115 | Standings comparison targets: stop verifying 2026-11-18 claims against a 2026-11-14 read | in progress | f04dda73 | `scripts/verify_results.py`, new `data/standings_2026-11-18.csv` (transcribed from the live page this session), `data/verification_report.csv` (V18, new V34), `data/repo_review.csv` (new RV24) | F106's cross-scope request. Live read 2026-11-18 (this session): 32/32 match the repo's own `results_feed_completeness_2026-11-18.csv`, 150 completed games. |
+| T116 | Repair stale published verification counts (V14: "18 pages, 350 internal, 1,347 external") | in progress | f04dda73 | `data/verification_report.csv`, `data/repo_review.csv`, `scripts/check_links.py` (emit a machine-readable summary the build can consume) | A published verification row states counts that are wrong by an order of magnitude against the current 47-page site. Publishing a stale number as "PASS" is the exact failure mode this brief forbids. |
+| T117 | Site-wide read-date honesty: one `AS_OF` label cannot describe surfaces read on three different days | in progress | f04dda73 | `scripts/build.py` (header/as-of block only), generated `docs/**` | The header says "Data as of 2026-11-14 (UTC)" on a site whose injury register was read 2026-11-18 and whose standings diff spans 11-14 → 11-18. |
+| T118 | Verify the live official pages this session and publish the read; flag every cell that moved | in progress | f04dda73 | new `data/captures/…f04dda73` capture files, `data/availability_captures.csv`, `data/sources.csv` (SRC-91+), `data/flags.csv` (F110+), `data/live_reverification_2026-11-18_f04dda73.csv` | Independent third read of the Week 10 injury report and the standings, per the board rule that a dated register carries the session id. |
+| T119 | Final integration: rebuild, every check, PR → `main`, merge, confirm Pages, record | pending | f04dda73 | `COORDINATION.md`, `README.md`, generated `docs/**`, PR | Runs last. |
+
+**Scope discipline:** `build.py` is 286 KB and shared. I touch only the as-of block and the verification/standings
+sections, keep every other session's text, and never rewrite a register I did not create.
