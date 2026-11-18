@@ -830,11 +830,11 @@
  {
   "flag_id": "F99",
   "category": "Coverage gap",
-  "item": "Venue transcription: 13 of 163 fixtures read from the official game centre",
-  "detail": "data/venues_2026.csv holds 13 venues read on 2026-11-18 from the official game centre Game Info block: every Week 11 fixture (IND at HOU, Reliant Stadium, Houston, TX; the other 12 Week 11 games are listed on the fixture-context page). The other 150 fixtures are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
+  "item": "Venue transcription: 27 of 163 fixtures read from the official game centre",
+  "detail": "data/venues_2026.csv holds 27 venues read on 2026-11-18 from the official game centre Game Info block: all 13 Week 11 fixtures and all 14 Week 10 fixtures (session 60c8c865, T113). The other 136 fixtures (weeks 1-9) are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
   "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
-  "status": "Unverified - 150 of 163 fixtures blank",
-  "action_requested": "Read each remaining game centre page (one request each) and add a row with its URL (Week 10 and earlier, then the rest of the 2026 slate)."
+  "status": "Unverified - 136 of 163 fixtures blank",
+  "action_requested": "Read each remaining game centre page (one request each) and add a row with its URL (weeks 1-9, then any remaining 2026 slate)."
  },
  {
   "flag_id": "F100",
@@ -925,5 +925,14 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Resolved by a third read - mechanism worth keeping",
   "action_requested": "Make the double-read the default for anything that becomes 'the data': two independent transcriptions of the same page, diffed by script, with the diff published. A single reader with a hash proves the file did not change, not that it is right."
+ },
+ {
+  "flag_id": "F110",
+  "category": "Source conflict",
+  "item": "Two official NFL sources name the Munich stadium differently",
+  "detail": "The Week 10 game centre (patriots at lions, https://www.nfl.com/games/patriots-at-lions-2026-reg-10) renders Stadium = \"FC BAYERN MUNICH STADIUM\" and Location = \"MUNICH\". The official international slate (NFL Football Operations) renders the same fixture as venue \"FC Bayern Munich Arena\", city \"Munich, Germany\". Both are official nfl.com-family sources read on 2026-11-18; neither is corrected here. data/venues_2026.csv keeps the game-centre text verbatim (that register is defined as the game-centre read) and data/international_games_2026.csv keeps the operations text verbatim.",
+  "source_url": "https://www.nfl.com/games/patriots-at-lions-2026-reg-10",
+  "status": "Open - reviewer decision",
+  "action_requested": "Owner: pick which official spelling is canonical for display, or keep both labelled by source (recommended: keep both, labelled)."
  }
 ]
