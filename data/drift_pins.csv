@@ -13,6 +13,6 @@ standings_diff_2026-11-14_to_2026-11-18.csv,32,team_abbr;net_prior;net_current,t
 team_view_week10_2026.csv,32,team_abbr;source_url,team_abbr,,2026-11-18,"Per-team view, one row per club."
 depth_replacement.csv,33,depth_id;team_abbr;player_out;injury_source_url,depth_id,,2026-11-18,"Depth-of-replacement register (33 rows, 6 clubs)."
 price_snapshots_extended.csv,306,snapshot_id;week;matchup;source_url,snapshot_id,,2026-11-18,"Price-snapshot store (306 market rows; opening/closing blank, F07)."
-decision_readiness.csv,45,req_id;status;source_url,req_id,,2026-11-18,Decision-readiness table (45 requirement rows).
-flags.csv,96,flag_id;item;status,flag_id,,2026-11-18,Flagged-for-review register (96 rows after T107; F94-F102 added 2026-11-18 by d0ede22d).
+decision_readiness.csv,58,req_id;requirement_id;status;source_url,req_id,,2026-11-18,"Decision-readiness table, one row per requirement (58 rows, R01-R58); requirement_id added by cb11a6c7 (T102)."
+flags.csv,97,flag_id;item;status,flag_id,,2026-11-18,"Flagged-for-review register (97 rows; F94-F102 by d0ede22d, F103 by cb11a6c7)."
 sources.csv,88,source_id;url;accessed_date,source_id,,2026-11-18,Source register (88 rows; SRC-85 to SRC-88 added 2026-11-18 by d0ede22d).

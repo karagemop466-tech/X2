@@ -41,7 +41,10 @@ where a source verifies it).
 - **Landing page: removal-of-luck panel and decision-readiness table.** The panel shows each strategy's skill, its
   interval, weeks positive and halves agreement. The luck index is a heuristic built inside the model (flag F85).
   The readiness table has one row per requirement from the brief, with its status, the gate that blocks it and
-  the number that would clear it (45 rows, sourced to the official page or first-party file in each row).
+  the number that would clear it. It was reconciled to the full requirements register (58 rows, one per requirement,
+  each carrying its register ID) by `python3 scripts/reconcile_readiness.py`; the readiness-to-register mapping is
+  recorded in `data/readiness_mapping.csv` and flagged **F103** for owner review. Every row is sourced to the official
+  page or first-party file it names.
 - **Leaderboard: control baselines** (`data/control_baselines.csv`, reproduced by `python3 scripts/controls.py`):
   random picks (seeded), the naive reference line's favourite, and M1, graded on the same 88 decided out-of-sample games.
   No betting-market favourite is measured (flag F32).
