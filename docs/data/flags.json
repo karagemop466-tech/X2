@@ -970,5 +970,41 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Resolved - per-surface dates published",
   "action_requested": "Keep the freshness table updated when a surface is re-read; a stale row here is itself a finding. Owner to confirm the Week 11 lines may stay frozen through kickoff (they should)."
+ },
+ {
+  "flag_id": "F115",
+  "category": "Coverage",
+  "item": "Depth-chart parser proven on one club, not 32",
+  "detail": "scripts/depth_parse.py handles the two named parse failures (jersey-number prefixes; shared and empty slots) with 11 build-failing tests. The worked example is Green Bay (read 2026-11-18, self-labelled 'Unofficial, Nov. 10, 2026'). The parser has NOT been applied to the other 31 clubs. The Texans chart is a raster image and is refused by check DP07 rather than transcribed by eye.",
+  "source_url": "https://www.packers.com/team/depth-chart",
+  "status": "Open - coverage",
+  "action_requested": "Run the same parser over the remaining 31 club charts and record any that render as images."
+ },
+ {
+  "flag_id": "F116",
+  "category": "Source behaviour",
+  "item": "The official game-centre page publishes no roof and no playing surface",
+  "detail": "All 13 Week 11 game-centre pages read 2026-11-18 publish, under Game Info, exactly two venue fields: Location and Stadium. No roof state and no playing surface appears on the page. The roof/surface overlay therefore cannot be built from official sources; data/venue_roof_surface_week11_2026-11-18.csv leaves both columns blank and flagged on 13 of 13 rows.",
+  "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
+  "status": "Open - source gap",
+  "action_requested": "Owner decision: accept a non-NFL source class, license an environmental feed, or drop the overlay as unsatisfiable."
+ },
+ {
+  "flag_id": "F117",
+  "category": "Result",
+  "item": "Neither fitted total estimator separates from the naive league constant",
+  "detail": "Over 89 walk-forward games the mean absolute errors are A (ridge structure) 11.08, B (matchup experience) 11.07 and C (naive league constant) 10.96 points. No pair's paired-bootstrap 95% interval excludes zero (A minus B: -0.273 to +0.279). Pre-registered rule E4 fires: the collapse gate stays OPEN and all three totals keep publishing. A negative result, recorded as one.",
+  "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
+  "status": "Result recorded - non-blocking",
+  "action_requested": "Re-run when a second season of settled games exists; the sample, not the method, limits separation."
+ },
+ {
+  "flag_id": "F118",
+  "category": "Cross-source",
+  "item": "A Texans linebacker is ACT on the club page while the reserve list placed him on Reserve/Injured",
+  "detail": "The official reserve-list feed records Jacob Hummel (HOU) Reserve/Injured on 09/26/2026. The Houston Texans roster page read 2026-11-18 renders his status as ACT. The two official surfaces disagree; the row is kept as finding RF-HOU-01 rather than overwritten into agreement.",
+  "source_url": "https://www.nfl.com/teams/houston-texans/roster",
+  "status": "Open - cross-source disagreement",
+  "action_requested": "Re-read the Texans roster page after the next transaction date; if it persists, treat the status column as unreliable for this club."
  }
 ]

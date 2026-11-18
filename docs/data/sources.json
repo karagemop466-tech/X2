@@ -918,5 +918,55 @@
   "accessed_date": "2026-11-18",
   "used_for": "The 13 Week 10 finals scored out of sample in data/corpus_v2_2026.csv",
   "verification_note": "Both chunks read. All 14 Week 10 finals transcribed by hand from the page headline form (e.g. \"Patriots 10, Lions 35, FINAL\") and compared with data/games_week10_backfill_2026.csv: 13 of 13 match exactly. The Thursday WAS-NYG game was already in the feed. Feeds T108, F110."
+ },
+ {
+  "source_id": "SRC-93",
+  "title": "2026 NFL reserve-list (Reserve/Injured) — August to November",
+  "publisher": "NFL.com",
+  "url": "https://www.nfl.com/transactions/league/reserve-list/2026/11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "The 32-team roster/IR sweep: 94 Reserve/Injured transactions across 31 of 32 clubs. Confirms Malik Willis (MIA, 11/10) is on injured reserve, so his absence from the weekly report is not health.",
+  "verification_note": "Read 2026-11-18; the Aug, Sep, Oct and Nov pages read in full. NYJ has no Reserve/Injured transaction in those pages and is reported as 0, not imputed."
+ },
+ {
+  "source_id": "SRC-94",
+  "title": "Green Bay Packers depth chart (self-labelled 'Unofficial, Nov. 10, 2026')",
+  "publisher": "Green Bay Packers",
+  "url": "https://www.packers.com/team/depth-chart",
+  "type": "Club official site (self-labelled unofficial)",
+  "accessed_date": "2026-11-18",
+  "used_for": "The worked example for the hardened depth parser: jersey-number prefixes in every cell, Kitan Oladapo at rank 2 of two slots, empty cells at WR2/WR3 and PR1.",
+  "verification_note": "Read 2026-11-18, transcribed character for character including numbers and empty cells into data/verification_inputs/depth_chart_packers_raw_2026-11-18.tsv."
+ },
+ {
+  "source_id": "SRC-95",
+  "title": "Houston Texans depth chart (published as a raster image)",
+  "publisher": "Houston Texans",
+  "url": "https://www.houstontexans.com/team/depth-chart",
+  "type": "Club official site (image only)",
+  "accessed_date": "2026-11-18",
+  "used_for": "Evidence for check DP07: the chart is an <img> under an 'Unofficial Depth Chart' heading with no player cells in the page text. www.texans.com/team/depth-chart returns 404.",
+  "verification_note": "Read 2026-11-18. No cell transcribed from this page; transcribing names from pixels is the manual inference the brief forbids."
+ },
+ {
+  "source_id": "SRC-96",
+  "title": "National Weather Service public API (hourly forecast) — US Government, public domain",
+  "publisher": "NOAA / National Weather Service",
+  "url": "https://www.weather.gov/documentation/services-web-api",
+  "type": "US Government federal source",
+  "accessed_date": "2026-11-18",
+  "used_for": "The hourly wind/precipitation/temperature overlay. One kickoff-hour read captured for Arrowhead Stadium from the grid the API resolves for the published coordinate pair (EAX/47,48).",
+  "verification_note": "Read 2026-11-18. Single request. Coordinate provenance and the period start are published per row so the read is reproducible."
+ },
+ {
+  "source_id": "SRC-97",
+  "title": "NFL.com Game Center — Week 11 (all 13 games), Game Info block",
+  "publisher": "NFL.com",
+  "url": "https://www.nfl.com/schedule/2026/by-week/week-11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "Venue transcription for 13 of 13 Week 11 games, and the evidence that the block publishes only Location and Stadium — no roof, no surface.",
+  "verification_note": "All 13 game-centre pages read 2026-11-18, transcribed as rendered into data/verification_inputs/venues_week11_2026-11-18_raw.tsv."
  }
 ]

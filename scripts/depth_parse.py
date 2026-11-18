@@ -96,6 +96,7 @@ def main():
         checks.append({
             "check_id": cid, "what_is_checked": what, "expected": expected,
             "observed": got, "result": "pass" if ok else "FAIL", "note": note,
+            "source_url": CHART_URL if cid != "DP07" else TEXANS_URL,
         })
         return ok
 
@@ -133,6 +134,16 @@ def main():
             slot_counter[(unit, pos)] += 1
             slot_no = slot_counter[(unit, pos)]
 
+        # A continuation row's ranks must CONTINUE the slot rather than restart at 1.
+        # Restarting would put a second player at rank 1 of one slot, which is the
+        # shared-slot fabrication this file exists to prevent (the club put him at the
+        # end of the same list, on a separate line).
+        rank_offset = 0
+        if continued:
+            rank_offset = max(
+                (c["rank_as_rendered"] for c in cells if c["slot_id"] == f"GB-{unit[:3]}-{pos}-{slot_no}"),
+                default=0)
+
         for ci in range(2, len(header)):
             raw = r[ci].strip()
             # The continuation marker cell is not a player and not an empty slot:
@@ -140,7 +151,7 @@ def main():
             if raw.startswith("col4-rendered-on-own-line"):
                 raw = ""
             jersey, name, had_num = parse_cell(raw)
-            rank = ci - 1      # 1-based rank within the slot as rendered (rank1 = column 2)
+            rank = (ci - 1) + rank_offset   # 1-based rank within the slot as rendered
             cells.append({
                 "team_abbr": "GB", "club": "Green Bay Packers", "unit": unit,
                 "position": pos, "slot_occurrence": slot_no, "slot_id": f"GB-{unit[:3]}-{pos}-{slot_no}",
@@ -224,6 +235,19 @@ def main():
           all(c["player_name"] == "" for c in empties) and len(empties) > 0,
           "GB: WR rank 2 and 3 blank, PR rank 1 blank.")
 
+    # 4b. No slot may contain two players at the same rank: that would be a fabricated
+    #     co-starter. The 2026-11-18 Packers chart has none.
+    seen = {}
+    dup = []
+    for c in cells:
+        k = (c["slot_id"], c["rank_as_rendered"])
+        if k in seen and c["raw_cell"]:
+            dup.append(k)
+        seen[k] = True
+    check("DP04b", "No slot contains two ranked players at the same rank",
+          "0 duplicated (slot, rank) pairs", f"{len(dup)} duplicates", not dup,
+          "A duplicate rank would be a co-starter the club never named.")
+
     # 5. No jersey-order inference: the rank sequence within a slot is the rendered
     #    column order, and it is NOT monotone in jersey number. If it were, that
     #    would be evidence for the shortcut the brief rejects.
@@ -277,7 +301,7 @@ def main():
 
     write(OUT_CELLS, cells, list(cells[0].keys()))
     write(OUT_SLOTS, slots, list(slots[0].keys()))
-    write(OUT_CHECKS, checks, ["check_id", "what_is_checked", "expected", "observed", "result", "note"])
+    write(OUT_CHECKS, checks, ["check_id", "what_is_checked", "expected", "observed", "result", "note", "source_url"])
 
     failed = [c for c in checks if c["result"] != "pass"]
     print(f"depth_parse: {len(cells)} cells ({n_cells} non-empty), {len(slots)} slots, "

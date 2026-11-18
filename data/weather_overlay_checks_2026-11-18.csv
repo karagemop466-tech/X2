@@ -1,8 +1,8 @@
-check_id,what_is_checked,expected,observed,result,note
-WX01,Venue transcribed for every Week 11 game from the official game centre,13 of 13,13 of 13,pass,"https://www.nfl.com/games/<slug> Game Info block, one page per game."
-WX02,Every transcribed game has a stadium name,0 blanks,0 blanks,pass,
-WX03,"Every venue with a published coordinate has an NWS kickoff-hour row captured, or is explicitly listed as not read",1 candidate venues,1 captured; not read: none,pass,A venue that was not read is named here rather than silently omitted. Each unread venue also carries its reason on the published venue table.
-WX03b,Every NWS row carries the start time of the period it was read from,0 rows without a period start,0 rows,pass,Without the period start a reader cannot tell a kickoff forecast from a convenience sample.
-WX04,No roof state is asserted anywhere in the published table,every roof_state_official blank,0 filled,pass,The requirement is not satisfiable from official sources at this read; the table says so rather than estimating.
-WX05,No playing surface is asserted anywhere in the published table,every playing_surface_official blank,0 filled,pass,
-WX06,No NWS overlay is attached to a venue whose roof status is unknown,0 venues,0,pass,"The candidate set is venues with a published coordinate pair, which is a separate question from whether a roof exists."
+check_id,what_is_checked,expected,observed,result,note,source_url
+WX01,Venue transcribed for every Week 11 game from the official game centre,13 of 13,13 of 13,pass,"https://www.nfl.com/games/<slug> Game Info block, one page per game.",https://www.nfl.com/games/colts-at-texans-2026-reg-11
+WX02,Every transcribed game has a stadium name,0 blanks,0 blanks,pass,,https://www.nfl.com/games/colts-at-texans-2026-reg-11
+WX03,"Every venue with a published coordinate has an NWS kickoff-hour row captured, or is explicitly listed as not read",1 candidate venues,1 captured; not read: none,pass,A venue that was not read is named here rather than silently omitted. Each unread venue also carries its reason on the published venue table.,https://api.weather.gov/
+WX03b,Every NWS row carries the start time of the period it was read from,0 rows without a period start,0 rows,pass,Without the period start a reader cannot tell a kickoff forecast from a convenience sample.,https://api.weather.gov/
+WX04,No roof state is asserted anywhere in the published table,every roof_state_official blank,0 filled,pass,The requirement is not satisfiable from official sources at this read; the table says so rather than estimating.,https://www.nfl.com/games/colts-at-texans-2026-reg-11
+WX05,No playing surface is asserted anywhere in the published table,every playing_surface_official blank,0 filled,pass,,https://www.nfl.com/games/colts-at-texans-2026-reg-11
+WX06,No NWS overlay is attached to a venue whose roof status is unknown,0 venues,0,pass,"The candidate set is venues with a published coordinate pair, which is a separate question from whether a roof exists.",https://www.nfl.com/games/colts-at-texans-2026-reg-11

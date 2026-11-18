@@ -139,7 +139,8 @@ def main():
 
     def check(cid, what, expected, observed, ok, note=""):
         checks.append({"check_id": cid, "what_is_checked": what, "expected": expected,
-                       "observed": observed, "result": "pass" if ok else "FAIL", "note": note})
+                       "observed": observed, "result": "pass" if ok else "FAIL", "note": note,
+                       "source_url": RESERVE_URL.format(m="11")})
         return ok
 
     # ------------------------------------------------------- read reserve list
@@ -307,7 +308,7 @@ def main():
                               "source_url": RESERVE_URL.format(m="11"), "read_utc": READ_UTC}],
               ["finding_id", "team_abbr", "kind", "player", "detail", "resolution",
                "source_url", "read_utc"])
-    write(OUT_CHECKS, checks, ["check_id", "what_is_checked", "expected", "observed", "result", "note"])
+    write(OUT_CHECKS, checks, ["check_id", "what_is_checked", "expected", "observed", "result", "note", "source_url"])
 
     failed = [c for c in checks if c["result"] != "pass"]
     print(f"roster_sweep: {len(reserve)} reserve-list rows, {len(rows)} club rows, "

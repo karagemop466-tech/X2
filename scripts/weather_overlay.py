@@ -102,7 +102,9 @@ def main():
 
     def check(cid, what, expected, observed, ok, note=""):
         checks.append({"check_id": cid, "what_is_checked": what, "expected": expected,
-                       "observed": observed, "result": "pass" if ok else "FAIL", "note": note})
+                       "observed": observed, "result": "pass" if ok else "FAIL", "note": note,
+                       "source_url": ("https://api.weather.gov/" if cid.startswith("WX03")
+                                      else "https://www.nfl.com/games/colts-at-texans-2026-reg-11")})
 
     # ------------------------------------------------------------- read venues
     with open(RAW_VENUES, encoding="utf-8") as f:
@@ -214,7 +216,7 @@ def main():
     if nws_rows:
         write(OUT_NWS, nws_rows, list(nws_rows[0].keys()))
     write(OUT_CHECKS, checks, ["check_id", "what_is_checked", "expected", "observed",
-                               "result", "note"])
+                               "result", "note", "source_url"])
 
     failed = [c for c in checks if c["result"] != "pass"]
     print(f"weather_overlay: {len(roof_rows)} venues, {len(nws_rows)} NWS reads, "

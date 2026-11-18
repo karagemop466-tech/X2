@@ -345,7 +345,7 @@ def main():
             "sign_test_p": f'{v["p"]:.4f}', "n_nonzero_pairs": v["n_nonzero"],
             "reading": ("A positive value means the FIRST estimator has the LARGER error "
                         "(is worse)."),
-            "n_games": n, "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11",
+            "n_games": n, "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
         })
     write(OUT_DEC, dec_rows, list(dec_rows[0].keys()))
 
