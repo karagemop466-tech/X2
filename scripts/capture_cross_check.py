@@ -15,7 +15,7 @@ own register:
 Neither register is a copy of the other, so they can be compared. That comparison is the only check in
 this repository that can catch a *transcription* error, as opposed to a source change or a computation
 error, and it caught one: this session's read of JAX Chris Rodriguez Jr.'s practice status disagreed with
-the other read on one field. A third read of the live page (chunk 1 of 8, 2026-11-18T04:12Z) settled it
+the other read on one field. A third read of the live page (chunk 1 of 8, 2026-11-18, taken after both transcriptions existed) settled it
 against this session, and the correction lives in scripts/availability_captures.py (CORRECTIONS).
 
 What this script does
@@ -168,7 +168,7 @@ def main():
              outcome="one field of 2,082 compared fields disagreed",
              detail=f"Applied corrections: {len(CORRECTIONS)}. JAX Chris Rodriguez Jr. practice status: this session read 'Did Not Participate In Practice', "
                     "the other read 'Limited Participation in Practice'. Settled by a third read of the live page "
-                    "(chunk 1 of 8, 2026-11-18T04:12Z), which renders 'Limited Participation in Practice' with an "
+                    "(chunk 1 of 8, 2026-11-18, taken after both transcriptions were written), which renders 'Limited Participation in Practice' with an "
                     "empty Game Status cell: this session's transcription was wrong. Corrected in "
                     "scripts/availability_captures.py (CORRECTIONS), which is the only place the value is changed; "
                     "the raw PSV keeps what was read.",

@@ -11,7 +11,7 @@
   "only_in_a": "",
   "only_in_b": "",
   "outcome": "one field of 2,082 compared fields disagreed",
-  "detail": "Applied corrections: 1. JAX Chris Rodriguez Jr. practice status: this session read 'Did Not Participate In Practice', the other read 'Limited Participation in Practice'. Settled by a third read of the live page (chunk 1 of 8, 2026-11-18T04:12Z), which renders 'Limited Participation in Practice' with an empty Game Status cell: this session's transcription was wrong. Corrected in scripts/availability_captures.py (CORRECTIONS), which is the only place the value is changed; the raw PSV keeps what was read.",
+  "detail": "Applied corrections: 1. JAX Chris Rodriguez Jr. practice status: this session read 'Did Not Participate In Practice', the other read 'Limited Participation in Practice'. Settled by a third read of the live page (chunk 1 of 8, 2026-11-18, taken after both transcriptions were written), which renders 'Limited Participation in Practice' with an empty Game Status cell: this session's transcription was wrong. Corrected in scripts/availability_captures.py (CORRECTIONS), which is the only place the value is changed; the raw PSV keeps what was read.",
   "status": "Divergence found and resolved",
   "source_url": "https://www.nfl.com/injuries/"
  },

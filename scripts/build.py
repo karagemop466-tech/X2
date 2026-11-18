@@ -3183,8 +3183,8 @@ the 345-vs-347 difference is a source movement (Baltimore added Calais Campbell 
 omission, so flag F83 closes for the repo side.</li>
 <li><strong>The double read caught a real error, which is the point of it.</strong> Two independent transcriptions of
 the same render agreed on <strong>346 of 347 players</strong> across all five fields. The one disagreement — JAX
-Chris Rodriguez Jr.'s practice status — was this session's own mis-read, settled by a third read of the live page
-at 04:2x UTC and corrected in the derived registers (18 moved players, not 19; 6 practice changes, not 7). The raw
+Chris Rodriguez Jr.'s practice status — was this session's own mis-read, settled by a third read of the live page taken later
+on 2026-11-18, after both transcriptions existed and corrected in the derived registers (18 moved players, not 19; 6 practice changes, not 7). The raw
 capture is left exactly as read, and the correcting script refuses to run if the capture stops matching the value it
 overrode, so a correction can never drift into an invented number. No published register changed, because the one
 this site shows was already right (F109, and <code>scripts/capture_cross_check.py</code>).</li>

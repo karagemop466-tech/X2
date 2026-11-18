@@ -2529,7 +2529,7 @@ hand rather than by overwriting. What happened, per collision:
 `scripts/capture_cross_check.py` (new) + `data/capture_cross_check_2026-11-18.csv` compare the two transcriptions of
 the same 2026-11-18 render: **346 of 347 players agree on all five fields**. The disagreement was JAX
 **Chris Rodriguez Jr.** practice status — I read `Did Not Participate In Practice`, d0ede22d read
-`Limited Participation in Practice`. A third read of the live page (chunk 1 of 8, 2026-11-18T04:12Z) renders
+`Limited Participation in Practice`. A third read of the live page (chunk 1 of 8, 2026-11-18, taken after both transcriptions were written) renders
 `Limited Participation in Practice` with an empty Game Status cell: **my capture was wrong and the published register
 was already right.** Handling: the raw PSV and the session TSV keep what was read; the correction is a named
 `CORRECTIONS` entry in `scripts/availability_captures.py` that *fails the run* if the capture ever stops matching the
