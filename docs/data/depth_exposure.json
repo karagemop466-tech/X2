@@ -40,6 +40,16 @@
   "source_url": "https://www.nfl.com/injuries/"
  },
  {
+  "team": "BAL Ravens",
+  "unit": "DB",
+  "side": "Defense",
+  "out": "Jaylinn Hawkins (S)",
+  "doubtful": "—",
+  "questionable": "—",
+  "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
   "team": "BUF Bills",
   "unit": "OL",
   "side": "Offense",
@@ -295,7 +305,7 @@
   "side": "Defense",
   "out": "Jerry Tillery (DT)",
   "doubtful": "—",
-  "questionable": "Arden Key (DE)",
+  "questionable": "—",
   "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
   "source_url": "https://www.nfl.com/injuries/"
  },
@@ -354,6 +364,36 @@
   "unit": "DL",
   "side": "Defense",
   "out": "Omarr Norman-Lott (DT); Peter Woods (DT)",
+  "doubtful": "—",
+  "questionable": "—",
+  "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "team": "LAC Chargers",
+  "unit": "WR/TE",
+  "side": "Offense",
+  "out": "—",
+  "doubtful": "Brenen Thompson (WR)",
+  "questionable": "Ladd McConkey (WR); David Njoku (TE)",
+  "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "team": "LAC Chargers",
+  "unit": "OL",
+  "side": "Offense",
+  "out": "Branson Taylor (G)",
+  "doubtful": "—",
+  "questionable": "Kayode Awosika (G); Trey Pipkins (T)",
+  "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "team": "LAC Chargers",
+  "unit": "DB",
+  "side": "Defense",
+  "out": "Isas Waxter (CB); Kendall Williamson (S)",
   "doubtful": "—",
   "questionable": "—",
   "starter_backup_status": "UNVERIFIED — no league-wide official depth chart (club charts cover 12 teams, self-labelled unofficial; F06/F45)",

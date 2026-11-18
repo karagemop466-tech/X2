@@ -228,14 +228,12 @@ add("A10", "Originated lines",
 inj = read("injuries_week10_2026.csv")
 add("A11", "Injuries",
     "The %d-row Week 10 injury snapshot" % len(inj),
-    "Two independent full row-by-row passes against the live injury report are already "
-    "recorded (flag F20, session 7c9eb69a) and (flag F10/T15, session 30beeb55), both "
-    "on 2026-11-14 with no discrepancies. This session did not re-fetch the page; it "
-    "re-used the snapshot and re-checked its derived products instead.",
-    "%d rows across %d teams and %d games, unchanged. Rows are a point-in-time "
-    "snapshot and must be re-read before any refresh"
+    "Re-read on 2026-11-18 (full eight-chunk read of the official page, transcribed to data/captures/injury_week10_2026-11-18.psv) and compared row by row "
+    "with the register: 2 rows added, 32 field values changed (F94). The 2026-11-14 'no discrepancies' passes (flags F20, F10/T15) are superseded by this read. "
+    "scripts/verify_snapshot.py checks the register against the .psv; scripts/verify_live.py is a consistency check only (same transcription on both sides).",
+    "%d rows across %d teams and %d games, from the 2026-11-18 read. Rows are a point-in-time snapshot; re-read before any refresh"
     % (len(inj), len({r["team_abbr"] for r in inj}), len({r["game_no"] for r in inj})),
-    SRC_INJ, "pass (not re-fetched this session)")
+    SRC_INJ, "pass against the 2026-11-18 read (verify_snapshot 86 pass, 0 fail, 1 review F74)")
 
 # ---- A12 register integrity ---------------------------------------------------
 for fname, key in (("flags.csv", "flag_id"), ("questions.csv", "question_id"),

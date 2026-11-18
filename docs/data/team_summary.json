@@ -15,7 +15,7 @@
   "listed": 14,
   "out": 6,
   "doubtful": 0,
-  "questionable": 2,
+  "questionable": 1,
   "offense_out_or_doubtful": 2,
   "defense_out_or_doubtful": 3,
   "special_teams_out_or_doubtful": 1,
@@ -71,6 +71,17 @@
   "out": 1,
   "doubtful": 3,
   "questionable": 0,
+  "offense_out_or_doubtful": 2,
+  "defense_out_or_doubtful": 2,
+  "special_teams_out_or_doubtful": 0,
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "team": "LAC Chargers",
+  "listed": 19,
+  "out": 3,
+  "doubtful": 1,
+  "questionable": 6,
   "offense_out_or_doubtful": 2,
   "defense_out_or_doubtful": 2,
   "special_teams_out_or_doubtful": 0,
@@ -220,6 +231,17 @@
   "source_url": "https://www.nfl.com/injuries/"
  },
  {
+  "team": "BAL Ravens",
+  "listed": 10,
+  "out": 1,
+  "doubtful": 0,
+  "questionable": 1,
+  "offense_out_or_doubtful": 0,
+  "defense_out_or_doubtful": 1,
+  "special_teams_out_or_doubtful": 0,
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
   "team": "BUF Bills",
   "listed": 14,
   "out": 0,
@@ -248,28 +270,6 @@
   "doubtful": 0,
   "questionable": 7,
   "offense_out_or_doubtful": 1,
-  "defense_out_or_doubtful": 0,
-  "special_teams_out_or_doubtful": 0,
-  "source_url": "https://www.nfl.com/injuries/"
- },
- {
-  "team": "BAL Ravens",
-  "listed": 8,
-  "out": 0,
-  "doubtful": 0,
-  "questionable": 0,
-  "offense_out_or_doubtful": 0,
-  "defense_out_or_doubtful": 0,
-  "special_teams_out_or_doubtful": 0,
-  "source_url": "https://www.nfl.com/injuries/"
- },
- {
-  "team": "LAC Chargers",
-  "listed": 19,
-  "out": 0,
-  "doubtful": 0,
-  "questionable": 0,
-  "offense_out_or_doubtful": 0,
   "defense_out_or_doubtful": 0,
   "special_teams_out_or_doubtful": 0,
   "source_url": "https://www.nfl.com/injuries/"

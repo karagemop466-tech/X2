@@ -14,5 +14,5 @@ team_view_week10_2026.csv,32,team_abbr;source_url,team_abbr,,2026-11-18,"Per-tea
 depth_replacement.csv,33,depth_id;team_abbr;player_out;injury_source_url,depth_id,,2026-11-18,"Depth-of-replacement register (33 rows, 6 clubs)."
 price_snapshots_extended.csv,306,snapshot_id;week;matchup;source_url,snapshot_id,,2026-11-18,"Price-snapshot store (306 market rows; opening/closing blank, F07)."
 decision_readiness.csv,45,req_id;status;source_url,req_id,,2026-11-18,Decision-readiness table (45 requirement rows).
-flags.csv,87,flag_id;item;status,flag_id,,2026-11-18,Flagged-for-review register (87 rows at bd4f469; new flags are staged in data/drafts for T107).
-sources.csv,84,source_id;url;accessed_date,source_id,,2026-11-18,Source register (84 rows at bd4f469; new sources are staged in data/drafts for T107).
+flags.csv,96,flag_id;item;status,flag_id,,2026-11-18,Flagged-for-review register (96 rows after T107; F94-F102 added 2026-11-18 by d0ede22d).
+sources.csv,88,source_id;url;accessed_date,source_id,,2026-11-18,Source register (88 rows; SRC-85 to SRC-88 added 2026-11-18 by d0ede22d).

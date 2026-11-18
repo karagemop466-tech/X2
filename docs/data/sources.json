@@ -838,5 +838,45 @@
   "accessed_date": "2026-11-14",
   "used_for": "Depth check for IND DE (A11): Arden Key not listed",
   "verification_note": "Opened and read on 2026-11-14 with fetch_page (session d2915d86). Club news links label each weekly chart unofficial; the current edition is the Week 10 chart. DE rows: Tuimoloau, Gumbs and Latu, Curry - Arden Key is absent."
+ },
+ {
+  "source_id": "SRC-85",
+  "title": "NFL injury report, Week 10 page, read 2026-11-18 (8 chunks)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/injuries/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "Week 10 injury re-read (347 rows), delta against 2026-11-14",
+  "verification_note": "Read in full by hand, chunks 0-7. Page has no last-updated time. Transcription: data/captures/injury_week10_2026-11-18.psv."
+ },
+ {
+  "source_id": "SRC-86",
+  "title": "NFL standings, read 2026-11-18 (2 chunks)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/standings/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "Standings diff against 2026-11-14 (32 clubs)",
+  "verification_note": "Read in full by hand. Records include the Week 10 Sunday and Monday games."
+ },
+ {
+  "source_id": "SRC-87",
+  "title": "Indianapolis Colts at Houston Texans, 2026 REG 11, Game Center (Game Info)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "Venue of one fixture (F99)",
+  "verification_note": "Game Info section read: LOCATION HOUSTON, TX; STADIUM RELIANT STADIUM."
+ },
+ {
+  "source_id": "SRC-88",
+  "title": "NFL Week 11 schedule, read 2026-11-18 (chunk 0)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "Week 11 kickoff days and teams (fixture context)",
+  "verification_note": "Chunk 0 only read. Three games on that page (Colts at Texans, Dolphins at Bills, Ravens at Panthers) were checked; the other 10 Week 11 games were not compared with the register."
  }
 ]
