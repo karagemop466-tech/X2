@@ -583,5 +583,14 @@
   "blocker_or_note": "Both estimators are published per game and per week with the gap, a game-cluster bootstrap interval and a sign-flip p. The interval spans zero (paired difference -0.113, 95% CI -0.98 to +0.81, n=89), so neither estimator is selected and both stay visible. This is a research comparison against realised totals, not a market comparison (F07/F32).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-4"
+ },
+ {
+  "req_id": "R66",
+  "requirement (from brief)": "Publish a weekly \"what changed\" diff instead of a static snapshot (rank change, rating change, availability change)",
+  "status": "Done — diff published; the corpus limitation is published with it",
+  "where_addressed": "Corpus tranche page (weekly diff)",
+  "blocker_or_note": "32 clubs with rank, rating and availability change between two dated snapshots. On the frozen corpus only one game separates the snapshots, so 29 of 32 clubs do not move; the same diff on the 150-game v2 corpus moves up to 2.5 rating points. Availability is a re-read delta inside the Week 10 report, not week-over-week news, because no Week 11 report exists (F111).",
+  "row_type": "status",
+  "evidence_url": "https://www.nfl.com/injuries/"
  }
 ]

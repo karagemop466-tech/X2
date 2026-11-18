@@ -3437,6 +3437,44 @@ rows, which is how this was noticed in the first place. Making the total venue-n
 display change, and it is flagged for the model owner rather than applied here (F113).</p>
 """)
 
+# ---------- session db00d539: weekly what-changed diff (appended to the corpus page) ----------
+_wd = read_csv("weekly_diff_2026-11-18.csv")
+if len(_wd) != 32:
+    raise SystemExit("BUILD FAILED: the weekly diff is not one row per club")
+if sorted(int(r["rank_before_week11"]) for r in _wd) != list(range(1, 33)):
+    raise SystemExit("BUILD FAILED: the weekly diff rank column is not a permutation of 1..32")
+_wd_movers = sorted(_wd, key=lambda r: -abs(float(r["net_rating_change_v2_corpus"])))[:6]
+_wd_avail = [r for r in _wd if int(r["availability_delta_rows"]) > 0]
+_wd_static = sum(1 for r in _wd if r["rank_change_up_is_positive"] == "0")
+pages["corpus-tranche.html"] = (pages["corpus-tranche.html"][0], pages["corpus-tranche.html"][1] + f"""
+<h2>The weekly "what changed" diff, published instead of a static snapshot (T114)</h2>
+<p class="note"><strong>Three columns, and the honest version shows why two of them are nearly
+empty.</strong> The brief asks for a diff of rank change, rating change and availability change, stored per
+week rather than overwritten. All three are here, one row per club: the rating change is the same ridge fit
+re-run before the Week 10 Sunday slate and after it (net rating = attack − defence, i.e. expected margin
+against an average opponent), the rank change is the movement of that ordering, and the availability change
+is counted from the dated injury delta. Nothing is a level; each is a difference between two dated reads.</p>
+<p class="note"><strong>The finding.</strong> On the frozen 137-game feed, <em>one</em> game separates the two
+snapshots — the Week 10 Thursday result — so <strong>{_wd_static} of 32 clubs</strong> do not move a single rank
+place. That is not a bug in the diff, it is the corpus: the other 13 Week 10 games are outside the frozen feed
+(F96). The same two snapshots re-run on the parallel 150-game corpus move things materially —
+{", ".join("%s %+.2f pts (%d→%d)" % (r["club"], float(r["net_rating_change_v2_corpus"]), int(r["rank_before_week10_v2_corpus"]), int(r["rank_before_week11_v2_corpus"])) for r in _wd_movers)}.
+Both columns are published side by side; neither is presented as <em>the</em> rating.</p>
+<p class="note"><strong>Availability is published as a re-read delta, not as week-over-week news.</strong>
+{len(_wd_avail)} clubs moved inside the same Week 10 report between the two reads
+({", ".join("%s: %s rows" % (r["club"], r["availability_delta_rows"]) for r in _wd_avail)}), and the rows are
+labelled that way. A true week-over-week availability change cannot be computed because no Week 11 report has
+been published (F111) — so the column stays a re-read delta with its note, never a number dressed up as a
+weekly change.</p>
+{search_box('weekly-diff-table')}
+{table(_wd, ['club','rank_before_week10','rank_before_week11','rank_change_up_is_positive','net_rating_before_week10','net_rating_before_week11','net_rating_change','rank_change_v2_corpus_up_is_positive','net_rating_change_v2_corpus','availability_delta_rows','availability_change_note','source_url'],
+       {'club':'Club','rank_before_week10':'Rank before Wk10','rank_before_week11':'Rank before Wk11','rank_change_up_is_positive':'Rank &Delta; (frozen)','net_rating_before_week10':'Rating before Wk10','net_rating_before_week11':'Rating before Wk11','net_rating_change':'Rating &Delta; (frozen)','rank_change_v2_corpus_up_is_positive':'Rank &Delta; (v2 corpus)','net_rating_change_v2_corpus':'Rating &Delta; (v2 corpus)','availability_delta_rows':'Availability rows changed','availability_change_note':'What that availability number is','source_url':'Source'},
+       table_id='weekly-diff-table', filterable=True)}
+<p class="note">Recompute with <code>python3 scripts/weekly_diff.py</code>; the script refuses to publish unless both
+fits use only games strictly before their cut-off, the two snapshots cover the same 32 clubs, the availability
+counts recount to the delta file, and each rank column is a permutation of 1–32.</p>
+""")
+
 # ---------- session db00d539: executive summary entry ----------
 pages["executive-summary.html"] = (pages["executive-summary.html"][0],
     pages["executive-summary.html"][1] + f"""
