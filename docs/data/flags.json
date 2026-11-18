@@ -862,5 +862,14 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Result change - recorded (non-blocking)",
   "action_requested": "Owner to confirm the register-driven change and whether C08 stays on the published correlations page."
+ },
+ {
+  "flag_id": "F103",
+  "category": "Register mapping",
+  "item": "Readiness-to-register mapping is this session's interpretation",
+  "detail": "The landing decision-readiness table has one row per requirement in the requirements register (58 rows, D01-D58), each carrying a requirement_id from data/requirements.csv. To reconcile two registers authored by parallel sessions, this session mapped each readiness row to a register requirement in data/readiness_mapping.csv: 6 exact text matches, 11 related (same domain), 28 approximate (the register has no dedicated row, so the nearest domain row was chosen) and 13 new rows for register requirements that had no readiness row. The build asserts the mapping is a bijection onto R01-R58. The approximate matches are interpretation, not an official fact, and are published here so the owner can re-map before the table is cited as authoritative. This closes the coverage half of F90; the mapping-quality half stays open here. (Renumbered F94 -> F103 after session d0ede22d took F94 for the injury-register delta.)",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping.csv",
+  "status": "Open - needs review",
+  "action_requested": "Owner reviews data/readiness_mapping.csv and confirms or corrects the 28 approximate D-row to R-id matches, then records F90 as resolved."
  }
 ]

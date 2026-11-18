@@ -2487,6 +2487,22 @@ controls_rows = read_csv("control_baselines.csv")
 research_rows = read_csv("strategy_backtest_scores.csv")
 mind_rows = read_csv("strategy_change_rules.csv")
 ready_rows = read_csv("decision_readiness.csv")
+# F90: the readiness table must have one row per requirement in the register.
+# Assert the requirement_id column is a bijection onto the register's R-ids.
+_reg_ids = [r["req_id"] for r in reqs]
+_ready_map = {}
+for _r in ready_rows:
+    _rid = (_r.get("requirement_id") or "").strip()
+    if not _rid:
+        continue
+    if _rid in _ready_map:
+        raise SystemExit(f"BUILD FAILED: requirement {_rid} appears in readiness rows "
+                         f"{_ready_map[_rid]} and {_r['req_id']}")
+    _ready_map[_rid] = _r["req_id"]
+if set(_ready_map) != set(_reg_ids):
+    raise SystemExit("BUILD FAILED: readiness table does not cover exactly the requirements "
+                     f"register ({len(_reg_ids)} requirements): missing {sorted(set(_reg_ids) - set(_ready_map))}, "
+                     f"extra {sorted(set(_ready_map) - set(_reg_ids))}")
 _ready_status = Counter(r["status"].split(" (")[0].strip() for r in ready_rows)
 _ready_done = _ready_status.get("Done", 0)
 _ready_partial = _ready_status.get("Partial", 0)
@@ -2524,8 +2540,8 @@ _luck_html = table(_luck_rows,
      "source_url": "Source"},
     table_id="luck-panel-table")
 _ready_html = table(ready_rows,
-    ["req_id", "brief_item", "status", "what_the_repo_shows_now", "blocking_gate", "number_that_clears_it", "source_url"],
-    {"req_id": "ID", "brief_item": "Requirement (from the brief)", "status": "Status",
+    ["req_id", "requirement_id", "brief_item", "status", "what_the_repo_shows_now", "blocking_gate", "number_that_clears_it", "source_url"],
+    {"req_id": "ID", "requirement_id": "Requirement ID", "brief_item": "Requirement (from the brief)", "status": "Status",
      "what_the_repo_shows_now": "What the repo shows now", "blocking_gate": "Gate that blocks it",
      "number_that_clears_it": "Number that would clear it", "source_url": "Source"},
     table_id="readiness-table", filterable=True)
@@ -2548,11 +2564,12 @@ _idx_add = (
     '<p class="note">Controls use the same historical decided games; the “favourite” is from the naive reference line, not a betting market.</p>'
     + _ctl_html +
     '<h2>Decision readiness: one row per requirement</h2>'
-    f'<p class="note">{len(ready_rows)} requirements from the brief. '
+    f'<p class="note">One row per requirement in the requirements register ({len(ready_rows)} of {len(_reg_ids)}). '
     f'<strong>{_ready_done} done, {_ready_partial} partial, {_ready_missing} missing, '
     f'{_ready_blocked} blocked, {_ready_irreg} irregular.</strong> Each row names the gate that blocks it and the number '
     'that would clear it. A number is given only where the repo has a threshold for it; otherwise the basis column '
-    'says so.</p>'
+    'says so. Each row carries its register requirement ID; the readiness-to-register mapping is recorded in '
+    'data/readiness_mapping.csv and is this session&rsquo;s interpretation, flagged F103 for owner review.</p>'
     + _ready_html
 )
 
