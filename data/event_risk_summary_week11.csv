@@ -1,6 +1,6 @@
 metric,value,basis,source_url
 Week 11 games,13,officially scheduled games,https://www.nfl.com/schedules/2026/by-week/week-11
-Named event risks published,65,one row per named player and market,https://www.nfl.com/injuries/
+Named event risks published,70,one row per named player and market,https://www.nfl.com/injuries/
 Risks where an official source names the player,7,"official statements, register A01-A11",https://www.nfl.com/injuries/
-Risks where the player's role is NOT established officially,58,the gap this project must close before an injury adjustment can be priced (F06). Every one of these is left blank rather than guessed.,https://www.nfl.com/injuries/
+Risks where the player's role is NOT established officially,63,the gap this project must close before an injury adjustment can be priced (F06). Every one of these is left blank rather than guessed.,https://www.nfl.com/injuries/
 Weeks of injury data held,1,Week 10 only. A one-week snapshot cannot estimate an injury effect size; see injury_impact_2026.csv and DEC-05.,https://www.nfl.com/injuries/

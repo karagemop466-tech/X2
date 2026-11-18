@@ -925,5 +925,59 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Resolved by a third read - mechanism worth keeping",
   "action_requested": "Make the double-read the default for anything that becomes 'the data': two independent transcriptions of the same page, diffed by script, with the diff published. A single reader with a hash proves the file did not change, not that it is right."
+ },
+ {
+  "flag_id": "F110",
+  "category": "Results feed",
+  "item": "The published 137-game feed reconciles 6 of 32 clubs, not 32 of 32",
+  "detail": "Re-read the official standings on 2026-11-18 and compared club by club on W-L-T, points for and points against. The published feed matches 6 of 32 clubs. The feed plus the 13 transcribed Week 10 rows matches 32 of 32, with 0 differences. The old 32/32 claim was checked against a standings read taken before the Week 10 Sunday games, so both sides were stale in the same direction. Every sentence on the site that says '137 games reconciled against the official standings' is today contradicted by the source it cites.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "open",
+  "action_requested": "P09 decides which corpus is published; until then the disclosure stands on every table that uses the corpus."
+ },
+ {
+  "flag_id": "F111",
+  "category": "Model",
+  "item": "The model's edge over the naive line shrinks when the missing 13 games are added",
+  "detail": "MAE improvement over the naive reference line is 1.74 points on the published 137-game corpus and 1.38 points on the complete 150-game corpus, with the same code, seed and thresholds. The naive line also improves, so part of the v1 edge was a small-sample artefact of the missing week. Reported on corpus-v2.html rather than suppressed.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/corpus_version_comparison.csv",
+  "status": "open",
+  "action_requested": "Do not quote the v1 edge without the v2 number beside it."
+ },
+ {
+  "flag_id": "F112",
+  "category": "Depth",
+  "item": "The stored Week 10 depth-chart transcription embeds editorial notes inside player-name cells",
+  "detail": "7 cells in data/depth_charts_2026_week10.json read like 'Jake Ferguson | Brevyn Spann-Ford (listed together in the first column)'. The note is not a player name, and it makes a shared slot indistinguishable from a ranked one, which defeats the brief's requirement to represent shared slots faithfully. The clean values are published in data/depth_chart_diff_2026-11-14_vs_2026-11-18.csv beside the polluted ones. The stored file was not edited because it belongs to another session's scope.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/depth_chart_diff_2026-11-14_vs_2026-11-18.csv",
+  "status": "open",
+  "action_requested": "The owning session should move the note into its own column; until then, do not parse these cells as names."
+ },
+ {
+  "flag_id": "F113",
+  "category": "Depth",
+  "item": "The depth-string register covers 9 of the 26 Week 11 clubs, and one club cannot be read as text",
+  "detail": "Each club chart was read from that club's own site on 2026-11-18. HOU publishes its chart as an image, so no position/name table exists in the page text and transcription was refused rather than done by eye. The other unread clubs are listed in data/chart_rejections.csv with the status 'not read this session' - they are not rejected, only unread. Any deficiency claim on the site is therefore about the clubs in the table and about no others.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/chart_rejections.csv",
+  "status": "open",
+  "action_requested": "Extend the register club by club; report coverage beside every depth number."
+ },
+ {
+  "flag_id": "F114",
+  "category": "Register hygiene",
+  "item": "The requirements register carried four stale counts, one of them a false 'Done'",
+  "detail": "R30 claimed '137 game rows reconciled against official standings (32/32 teams exact)' - false against today's source. R26 claimed 9 correlations where the provenance register holds 13. R01 claimed 345 injury rows where the capture holds 347. R21 described the model without mentioning that a second, complete corpus now exists. Corrected by scripts/fix_requirements.py, which refuses to run if the text it replaces has already changed.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv",
+  "status": "closed",
+  "action_requested": "None; recorded so the correction is auditable."
+ },
+ {
+  "flag_id": "F115",
+  "category": "Event risk",
+  "item": "The event-risk registers move when other scripts are re-run, so their counts are not stable between sessions",
+  "detail": "Re-running scripts/desk_v2.py rebuilt data/event_risk_week11.csv from 65 to 70 rows and changed the summary counts, with no change to any input file. The register is derived, so this is expected behaviour rather than a defect, but it means a published count of 'named event risks' is a function of when a script last ran, not of the data. No pinned value is affected (drift check passes).",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/event_risk_summary_week11.csv",
+  "status": "open",
+  "action_requested": "Either pin the event-risk outputs like the other 28 registers, or state on the page that they are rebuilt on every run."
  }
 ]
