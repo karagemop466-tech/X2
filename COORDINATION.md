@@ -2702,11 +2702,36 @@ This session therefore claims the free range **T110–T113** and the registers *
 
 | ID | Task | Status | Files (scope) | Why |
 |---|---|---|---|---|
-| T110 | **Corpus v2, published beside a frozen v1.** Decision **P09 option B**: splice the 13 verified Week 10 games and the eight settled international-game neutral-site flags into a *parallel* v2 corpus, re-run the whole pipeline on it, and publish v1 and v2 side by side with a version tag. v1 files are never edited. | in progress | `data/corpus_v2/games_2026_results_v2.csv`, `scripts/model_v2.py`, `data/corpus_v2/*.csv`, `docs/corpus-v2.html` | P09 has blocked R38/R64/D62/D64/G20 since 2026-11-18T04:00Z and the brief forbids waiting for a human. Option B is the one option that changes no published number, so it is the only one a session may take unilaterally. |
-| T111 | **Matchup deficiency matrix, 1st–4th string**, as an interactive table: one row per club/unit/position slot, one column per string, every cell either an official-source-verified name or blank with the reason it is blank. | in progress | `data/matchup_matrix_week11.csv`, `scripts/matrix.py`, `docs/matchup-matrix.html` + NAV | Explicit brief requirement that has no page. Existing depth pages are exposure counts, not a string matrix. |
-| T112 | **Line-by-line verification pass against live official sources**, with a dated register, and flag every irregularity found (including stale counts inside `data/requirements.csv`). | in progress | `data/verify_39948feb_2026-11-18.csv`, `data/flags.csv` (append F110+), `data/sources.csv` (append SRC-91+) | The brief requires it every session and the corpus claim is now stale. |
+| T110 | **Corpus v2, published beside a frozen v1.** Decision **P09 option B**: splice the 13 verified Week 10 games and the eight settled international-game neutral-site flags into a *parallel* v2 corpus, re-run the whole pipeline on it, and publish v1 and v2 side by side with a version tag. v1 files are never edited. | **done** | `data/corpus_v2/games_2026_results.csv`, `scripts/model_v2.py`, `data/corpus_v2/*.csv`, `docs/corpus-v2.html` | P09 has blocked R38/R64/D62/D64/G20 since 2026-11-18T04:00Z and the brief forbids waiting for a human. Option B is the one option that changes no published number, so it is the only one a session may take unilaterally. |
+| T111 | **Matchup deficiency matrix, 1st–4th string**, as an interactive table: one row per club/unit/position slot, one column per string, every cell either an official-source-verified name or blank with the reason it is blank. | **done** | `data/matchup_matrix_week11.csv`, `scripts/depth_strings.py`, `scripts/matchup.py`, `docs/matchup-matrix.html` + NAV | Explicit brief requirement that has no page. Existing depth pages are exposure counts, not a string matrix. |
+| T112 | **Line-by-line verification pass against live official sources**, with a dated register, and flag every irregularity found (including stale counts inside `data/requirements.csv`). | **done** | `data/verify_39948feb_2026-11-18.csv`, `data/flags.csv` (append F110+), `data/sources.csv` (append SRC-91+) | The brief requires it every session and the corpus claim is now stale. |
 | T113 | **Integration:** rebuild, run every check, PR → `main`, merge, confirm GitHub Pages, record. | runs last | `data/decision_readiness.csv`, `data/requirements.csv`, `README.md`, `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
 
 **Not claimed:** licensed market prices (F07/F51 — no licensed feed exists), off-site storage/alerting (D17,
 outside a static host), prior-season injury archives (D08/D20/D45 — not on any official page reachable here),
 the data-rights review (F16) and the reward/reward-tier sign-off (F09/F19/F36). These stay open and blocked.
+
+### Close-out, session 39948feb (2026-11-18)
+
+| Task | Result |
+|---|---|
+| T110 | **Corpus v2 published beside a frozen v1.** The 13 verified Week 10 games plus 8 settled international neutral-site flags form `data/corpus_v2/` (150 games). `scripts/model_v2.py` hashes all 15 v1 outputs, executes `scripts/model.py` unmodified with `DATA` redirected, and fails unless all 15 hashes are unchanged afterwards. 106-metric version comparison at `data/corpus_v2/corpus_version_comparison.csv`; page at `docs/corpus-v2.html`. |
+| T111 | **Matchup deficiency matrix**, 9 clubs / 205 club-position rows / 820 string cells, at `docs/matchup-matrix.html`. Shared and empty cells are preserved as published (`slot_type`), never resolved into a fabricated order. Coverage is published as a table: 1 club refused (HOU, image-only chart), 21 unread, each with its reason. |
+| T112 | **22-check verification register** at `data/verify_39948feb_2026-11-18.csv` (15 PASS, 5 IRREGULAR, 1 FINDING, 1 PARTIAL). Flags **F110–F115** and sources **SRC-91–SRC-101** appended. `data/requirements.csv` corrected on 6 cells by `scripts/fix_requirements.py`, which refuses to run if the stale text it replaces has already changed. |
+| T113 | Rebuilt (49 pages), `check_links` clean (2,575 internal / 5,881 external), `drift_check` 28/28 with the 2 new pins moved deliberately, `repo_audit` A12–A15, PR to `main`. |
+
+**The result that matters most is a negative one.** On the complete 150-game corpus the model's MAE improvement
+over the naive reference line is **1.38 points, not 1.74**. The naive line also improves when the missing week is
+added, so part of the published v1 edge was a small-sample artefact of the week that was absent. It is published on
+`corpus-v2.html` rather than suppressed.
+
+**Defects found and published, not silently fixed:** the 137-game feed reconciles 6 of 32 clubs against today's
+official standings (F110); 7 cells of the stored Week 10 depth-chart transcription embed editorial notes inside
+player-name fields, making shared slots indistinguishable from ranked ones (F112 — recorded with clean values beside
+them, not edited, because that file is another session's scope); the requirements register carried a false "Done"
+on R30 (F114).
+
+**Standing blockers unchanged:** licensed market prices (F07/F51), off-site storage/alerting (D17), prior-season
+injury archives (D08/D20/D45), data-rights review (F16), reward-tier sign-off (F09/F19/F36). The Week 11 forecast
+seal was **not** touched: it still records `fit_games_used=137`, which is disclosed on the verification page (V-20)
+rather than corrected, because editing it would destroy the pre-registration it exists to provide.
