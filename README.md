@@ -45,7 +45,7 @@ where a source verifies it).
 One new page — **Corpus tranche (v1 vs v2)** (`docs/corpus-tranche.html`) — carries four pieces of work that all
 answer the same question: *what can be measured now, and what is still blocked.*
 
-- **The 13 missing games exist as a published tranche without touching the frozen corpus.** `data/corpus_v2_2026.csv`
+- **The 13 missing games exist as a published tranche without touching the frozen corpus.** `data/tranche_150game_2026_db00d539.csv`
   holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10 games transcribed from the
   official by-week page on 2026-11-18. `scripts/corpus_v2.py` writes nothing unless the v1 rows are unchanged (C1),
   the tranche equals the transcription (C2), v2 reproduces the 2026-11-18 official standings for 32/32 clubs while v1

@@ -39,8 +39,8 @@ DATA = os.path.join(ROOT, "data")
 V1 = "games_2026_results.csv"
 BACKFILL = "games_week10_backfill_2026.csv"
 STAND_CURRENT = os.path.join("captures", "standings_2026-11-18.csv")
-V2 = "corpus_v2_2026.csv"
-DIFF = "corpus_v2_diff.csv"
+V2 = "tranche_150game_2026_db00d539.csv"
+DIFF = "tranche_diff_db00d539.csv"
 
 STAD = "https://www.nfl.com/standings/"
 SCHED10 = "https://www.nfl.com/schedules/2026/by-week/week-10"

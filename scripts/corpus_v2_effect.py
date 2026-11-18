@@ -65,7 +65,7 @@ def load(name):
 
 
 v1 = load("games_2026_results.csv")
-v2 = load("corpus_v2_2026.csv")
+v2 = load("tranche_150game_2026_db00d539.csv")
 week11 = read("schedule_week11_2026.csv")
 
 TEAMS = sorted({r["away_team"] for r in v2} | {r["home_team"] for r in v2})
@@ -247,12 +247,12 @@ if fail:
         print("  -", f)
     sys.exit(1)
 
-write("forecast_seal_discrepancy.csv", seal_rows,
+write("forecast_seal_discrepancy_db00d539.csv", seal_rows,
       ["check", "digest_matches_published_seal", "detail", "source_url"])
-write("corpus_v2_identity.csv", identity,
+write("tranche_identity_db00d539.csv", identity,
       ["evaluation_week", "training_games_v1", "training_games_v2", "training_sets_identical",
        "out_of_sample_predictions_affected", "basis", "source_url"])
-write("corpus_v2_effect.csv", effect,
+write("tranche_effect_db00d539.csv", effect,
       ["game_no", "matchup", "spread_v1", "spread_v2", "spread_change_v2_minus_v1",
        "total_v1", "total_v2", "total_change_v2_minus_v1", "reference_spread",
        "passes_3pt_gate_v1", "passes_3pt_gate_v2", "gate_decision_changed",

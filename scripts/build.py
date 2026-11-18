@@ -3273,11 +3273,11 @@ session's own error, which today happens to be luck rather than design
 
 
 # ---------- session db00d539: dated corpus tranche, Week 11 venue register, Week 11 report probe ----------
-_c2 = read_csv("corpus_v2_2026.csv")
-_c2diff = read_csv("corpus_v2_diff.csv")
-_c2ident = read_csv("corpus_v2_identity.csv")
-_c2eff = read_csv("corpus_v2_effect.csv")
-_sealdisc = read_csv("forecast_seal_discrepancy.csv")
+_c2 = read_csv("tranche_150game_2026_db00d539.csv")
+_c2diff = read_csv("tranche_diff_db00d539.csv")
+_c2ident = read_csv("tranche_identity_db00d539.csv")
+_c2eff = read_csv("tranche_effect_db00d539.csv")
+_sealdisc = read_csv("forecast_seal_discrepancy_db00d539.csv")
 _venues11 = read_csv("venues_2026.csv")
 _probe11 = read_csv("week11_report_probe.csv")
 _tranche = [r for r in _c2diff if r["in_corpus_v1"] == "no"]
@@ -3290,7 +3290,7 @@ _seal_fixed = _seal_row.get("seal reproduces with the neutral-site flag applied"
 _seal_ignored = _seal_row.get("seal reproduces with the neutral-site flag ignored", "no")
 # --- invariants this page must not publish unless they hold ---
 if len(_c2) != 150:
-    raise SystemExit("BUILD FAILED: corpus_v2_2026.csv is not 150 games")
+    raise SystemExit("BUILD FAILED: tranche_150game_2026_db00d539.csv is not 150 games")
 if len(_tranche) != 13:
     raise SystemExit("BUILD FAILED: the tranche is not 13 games")
 if not _ident_ok:
@@ -3306,7 +3306,7 @@ pages["corpus-tranche.html"] = ("Corpus tranche (v1 vs v2)", f"""
 <code>data/games_2026_results.csv</code> — 137 games (weeks 1–9 = the brief's 136-game log, plus the Week 10
 Thursday game). Thirteen Week 10 games played on 15 and 16 November 2026 are settled and were transcribed from the
 official by-week page, but editing a pre-registered corpus in place would silently change every published metric.
-So the 13 games are published as a <strong>parallel</strong> corpus (<code>data/corpus_v2_2026.csv</code>, 150 games)
+So the 13 games are published as a <strong>parallel</strong> corpus (<code>data/tranche_150game_2026_db00d539.csv</code>, 150 games)
 and v1 is left byte-frozen. This is proposal <strong>P09</strong> / readiness <strong>D29</strong> and
 <strong>D64</strong> finally carrying a number instead of a request.</p>
 
@@ -3528,7 +3528,7 @@ pages["executive-summary.html"] = (pages["executive-summary.html"][0],
 <h2>Corpus, venue and Week 11 availability (session db00d539, T108&ndash;T110)</h2>
 <ul class="findings">
 <li><strong>The 13 missing games now exist as a published tranche, without touching the frozen corpus.</strong>
-<code>data/corpus_v2_2026.csv</code> holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10
+<code>data/tranche_150game_2026_db00d539.csv</code> holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10
 games transcribed on 2026-11-18. It publishes only if v2 reproduces the official 2026-11-18 standings for
 <strong>32 of 32</strong> clubs while v1 fails for 26 — which is the premise, measured. Nothing was adopted: the model
 still fits the frozen 137, and the owner chooses at P09. The consequence is stated before the choice: the backtest
