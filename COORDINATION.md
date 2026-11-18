@@ -2688,7 +2688,7 @@ was claimed twice within an hour because the name encodes the date and nothing e
 
 **Not claimed (owner-owned, unchanged):** every pre-existing flag, every `needs review` item, DEC-01…DEC-10, F09, F16, F17, F19, F98 and the strategy/leaderboard decisions.
 
-### T108 close-out (session 5a5c1a1d, 2026-11-18)
+### T111 close-out (session 5a5c1a1d, 2026-11-18)
 
 **Sources (each read on 2026-11-18, the NFL.com game centre "Game Info" block, chunk 0):** the 13 Week 11 game-centre
 pages listed in `data/schedule_week11_2026.csv` (`game_url`):
@@ -2793,3 +2793,20 @@ The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 
 - **Pages:** build of `d922116` (which includes `f1e6d05`) status `built` at 2026-11-18T04:47–04:48Z; live at https://karagemop466-tech.github.io/X2/.
 - **Collision logged (for the board):** T108 is used by two tasks in this log (session `5a5c1a1d`: Week 11 venues, merged; session `5ddea67f`: this check, now T110). Future claims should check `grep "| T1" COORDINATION.md` on current `main` before writing an ID.
 - **Open, not blocked:** owner decision P09 (splice the 13 official Week 10 games and re-fit) is still open. F88, F95 and F96 remain on the Flagged for Review page.
+## 2026-11-18 · session ddeec916 · claim (T111; renumbered after concurrent T108–T110 claims landed on main)
+
+**Branch:** `arena/ddeec916-x2` · **Base:** `main` @ `8e16b78` after rebase · **Owner:** `ddeec916` · **Status:** done
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|---|---|---|---|---|---|
+| T111 | Correct current-site decision-critical copy where it contradicts the latest completeness/registration evidence; clarify suggestion review path and README status | done | ddeec916 | `scripts/build.py`, generated `docs/**`, `README.md`, `COORDINATION.md` | First-party registers checked: `data/results_feed_completeness_2026-11-18.csv` (32 clubs), `data/games_week10_backfill_2026.csv` (13 games), `data/decision_readiness.csv` (64 rows), `data/flags.csv` (103 rows), `data/suggestions_register.csv` (18 rows). Official NFL links already attached in those source rows. No NFL value will be added or inferred. |
+
+**Scope rule:** fix only top-level decision-facing stale statements and make their data limitations explicit. Do not splice the held-out 13-game backfill, re-fit forecasts, alter injury rows or prices, change suggestion dispositions, or resolve owner gates (P09/F16).
+
+### T111 close-out
+
+**Status: done (content and checks complete; integration PR follows).** Updated the site generator and regenerated `docs/` so the landing page, executive summary, backtest, season-results, results-feed and review-path pages distinguish the 137-game model corpus from the 150 games reflected in the 2026-11-18 standings. The site now states that 13 source-linked Week 10 games are held in a separate backfill, that the 137-game feed fails the current standings comparison for 26/32 clubs, and that the 89-game walk-forward results describe only the existing corpus pending P09. It also removes a false “seven strategies ranked” home-card description, makes the injury verification limitation explicit, and labels the site-wide date as the latest injury capture rather than implying every source is from that date. README now has a current decision-state summary, a corrected 64-row/58-requirement count, and usable Suggestions / Review path / Questions entry points.
+
+**Sources:** official [NFL standings](https://www.nfl.com/standings/) and [Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10); repository evidence `data/results_feed_completeness_2026-11-18.csv` (32 clubs), `data/games_week10_backfill_2026.csv` (13 games), `data/decision_readiness.csv` (64 rows), `data/flags.csv` (F16/F87/F94/F96/F109), and `data/suggestions_register.csv` (18 options for review). No new NFL result or injury value was transcribed.
+
+**Verification:** `python3 scripts/build.py` (47 pages; row-source and link guards pass); `python3 scripts/check_links.py` (47 pages, 2,387 internal / 5,145 approved HTTPS external links, no broken internal links); `python3 scripts/repo_audit.py` (22 checks, 0 failing); `python3 scripts/verify_results.py` (137 games reconcile to the committed 2026-11-14 standings snapshot only; the site now states that this does not reconcile to the newer 2026-11-18 read); `python3 scripts/verify_snapshot.py` (103 pass, 0 fail, 1 review); `npm run build && npm run verify` (all pass); `git diff --check` (pass). No price, odds, ROI, depth rank or new NFL statistic was filled in.
