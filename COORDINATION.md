@@ -3170,9 +3170,26 @@ external, 0 broken), `verify_results.py` (32/32), `verify_snapshot.py` (0 fail, 
 `verify_live.py` (75/75), `repo_audit.py` (passes), `drift_check.py` (30/30), `model.py` (byte-reproducible),
 `npm run build && npm run verify` (ALL CHECKS PASSED).
 **Collision resolution.** `origin/main` advanced while this session worked (PRs #69, #70, #73, #74, and f04dda73's
-T114–T119). The branch was rebased onto `origin/main`; the single `COORDINATION.md` conflict was resolved by
-**keeping both sides** (all other sessions' entries and this session's T108–T111 claim). No other session's work was
-discarded.
+T114–T119, which also touched the same registers and `scripts/build.py`). The branch was rebased onto `origin/main`;
+every conflict was resolved **without discarding any session's work**:
+
+- **`COORDINATION.md`** — both sides kept: all other sessions' entries and this session's T108–T111 claim, in
+  chronological order.
+- **`scripts/build.py`** — auto-merged cleanly; both this session's v2 feed integration and f04dda73's
+  `READ_LATEST`/corpus-v2/decision-queue work are present (48 pages built).
+- **`scripts/verify_results.py`** — f04dda73's version is a strictly more complete F106 fix (a `--target` argument
+  that compares the ledger against both the 2026-11-14 snapshot and the 2026-11-18 capture, prints both read dates
+  and exits non-zero on currency). This session **adopts that version** and yields its own simpler staleness guard,
+  which it subsumes.
+- **Registers (`flags.csv`, `drift_pins.csv`, `decision_readiness.csv`, `repo_line_audit.csv`)** — unioned by unique
+  key. This session's colliding `F110` was renumbered to **F115** (f04dda73's F110–F114 kept); the `flags.csv` pin
+  updated to 109 rows; both sessions' drift pins kept (34 total); `D02`/`D64` merged so both the corpus-v2 decision
+  and the v2 150-game register are named.
+- **Generated `docs/**` and `docs/data/*.json`** — resolved by regenerating `python3 scripts/build.py` from the
+  merged `scripts/build.py`, the only correct resolution for a generated tree.
+
+No other session's work was discarded.
+
 **PR, merge and deployment:**
 - **PR #76** (`arena/79c9cb37-x2` → `main`): "T108-T111: v2 150-game verified results feed (closes P09), F106
   read-date guard, live verification, integration".
