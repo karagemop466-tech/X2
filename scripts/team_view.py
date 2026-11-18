@@ -6,7 +6,7 @@ who are Out or Doubtful according to a club depth chart, and the replacements na
 
 Inputs (all in data/):
   standings_2026_week10.csv          the 32 clubs (names)
-  injuries_week10_2026.csv           the official Week 10 injury report, 347 rows (read 2026-11-18)
+  injuries_week10_2026.csv           the official Week 10 injury report, 347 rows (re-captured 2026-11-18)
   depth_replacement.csv              club-chart replacement register (structured, 33 rows)
   replacement_depth_week10_2026.csv  news/roundup-based register (11 rows; used only as named evidence)
   schedule                           the Week 10 bye list, from the official schedule page

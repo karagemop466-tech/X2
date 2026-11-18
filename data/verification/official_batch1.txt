@@ -1,23 +1,3 @@
-WAS|John Bates|TE||F|
-WAS|Treylon Burks|WR||D|
-WAS|Jayden Daniels|QB||F|
-WAS|Matt Gulbin|C||F|
-WAS|Chig Okonkwo|TE||F|
-WAS|Lucas Patrick|C|Concussion|D|Out
-WAS|Amik Robertson|CB||L|
-WAS|Shy Tuttle|DT||F|
-WAS|Colson Yankoff|TE|Knee|D|Out
-NYG|Abdul Carter|LB||F|
-NYG|Jermaine Eluemunor|T||F|
-NYG|Malik Harrison|LB|Groin|L|Questionable
-NYG|Colton Hood|CB||F|
-NYG|Theo Johnson|TE||F|
-NYG|Charlie Jones|WR||F|
-NYG|J.J. McCarthy|QB||F|
-NYG|Darnell Mooney|WR||F|
-NYG|Malik Nabers|WR||F|
-NYG|Cam Skattebo|RB||F|
-NYG|Andrew Thomas|T||F|
 NE|Ben Brown|C|Knee|D|Out
 NE|A.J. Brown|WR|Ankle, Knee|L|Questionable
 NE|Kevin Byard|S|Chest|F|Questionable
@@ -119,3 +99,76 @@ TEN|Tyjae Spears|RB|Knee|F|Questionable
 TEN|Carnell Tate|WR|Shoulder|D|Out
 TEN|Tommy Townsend|P|Knee, Achilles|D|Out
 TEN|Kevin Winston Jr.|S||F|
+BUF|Alec Anderson|G||F|
+BUF|Christian Benford|CB|Wrist|F|Questionable
+BUF|Terrel Bernard|LB||D|
+BUF|Spencer Brown|T|Ankle|D|Doubtful
+BUF|Dion Dawkins|T||F|
+BUF|Sam Franklin Jr.|S|Shoulder|L|Questionable
+BUF|Greg Gaines|DT||F|
+BUF|Jordan Hancock|CB|Hamstring|F|Questionable
+BUF|Dalton Kincaid|TE||F|
+BUF|Connor McGovern|C||F|
+BUF|Ed Oliver|DE||D|
+BUF|Ar'maj Reed-Adams|G||F|
+BUF|T.J. Sanders|DE||F|
+BUF|Tyrell Shavers|WR|Knee|F|Questionable
+NYJ|Jarvis Brownlee Jr.|CB|Illness|L|Questionable
+NYJ|Omar Cooper Jr.|WR|Ankle|F|Questionable
+NYJ|Adonai Mitchell|WR|Knee|F|Questionable
+NYJ|Joseph Ossai|DE|Ankle|F|Questionable
+NYJ|VJ Payne|S|Knee|F|Questionable
+NYJ|Harrison Phillips|DT|Ankle|F|Questionable
+NYJ|Trevin Wallace|LB|Groin|D|Out
+NYJ|Garrett Wilson|WR|Concussion|F|Questionable
+NYJ|Nahshon Wright|CB|Back|F|Questionable
+MIA|Tucker Addington|LS||L|
+MIA|Kaytron Allen|RB||F|
+MIA|Darrell Baker Jr.|CB|Knee|F|Questionable
+MIA|Chris Bell|WR|Knee|D|Doubtful
+MIA|Aaron Brewer|C|Concussion|D|Out
+MIA|Malik Herring|DE||F|
+MIA|Will Kacmarek|TE||F|
+MIA|Michael Taaffe|S||F|
+MIA|Dante Trader Jr.|S||F|
+MIA|Jared Wayne|WR|Quadricep|D|Out
+MIA|Jaylen Wright|RB||F|
+IND|Mo Alie-Cox|TE|Groin|D|Out
+IND|CJ Allen|LB||F|
+IND|Jaylon Carlies|LB|Neck|D|Out
+IND|Akeem Davis-Gaither|LB|Knee|D|Out
+IND|A.J. Haulcy|S||F|
+IND|Arden Key|DE||F|
+IND|Will Mallory|TE|Hamstring|L|Questionable
+IND|Luke Rhodes|LS|Hamstring|D|Out
+IND|Grover Stewart|DT||F|
+IND|Jonathan Taylor|RB||F|
+IND|Jerry Tillery|DT|Calf|D|Out
+IND|Jalen Travis|T|Knee|D|Out
+IND|Justin Walley|CB||F|
+IND|Charvarius Ward|CB||F|
+CAR|Jonathon Brooks|RB|Groin|L|Doubtful
+CAR|Brady Christensen|G|Hamstring|F|Questionable
+CAR|Trevor Etienne|RB||F|
+CAR|Chuba Hubbard|RB||F|
+CAR|Lee Hunter|DT||F|
+CAR|Mike Jackson|CB|Groin|L|Doubtful
+CAR|Will Lee III|CB|Hamstring|L|Questionable
+CAR|Xavier Legette|WR|Knee|F|Questionable
+CAR|Damien Lewis|G||F|
+CAR|Bobby Okereke|LB|Foot|D|Out
+CAR|Jaelan Phillips|LB|Hamstring|F|Questionable
+CAR|Torricelli Simpkins III|G||F|
+NO|Kelvin Banks Jr.|T||F|
+NO|CJ Donaldson|RB|Shoulder|D|Out
+NO|David Edwards|G||F|
+NO|Martin Emerson|CB|Shin|L|Questionable
+NO|Travis Etienne|RB|Hamstring|F|Questionable
+NO|Noah Fant|TE||F|
+NO|Taliese Fuaga|T|Knee|D|Out
+NO|Alvin Kamara|RB||F|
+NO|Erik McCoy|C|Biceps|D|Out
+NO|Christen Miller|DT|Knee|D|Out
+NO|Asim Richards|T||F|
+NO|Quincy Riley|CB||F|
+HOU|Azeez Al-Shaair|LB|Groin, Not injury related - personal matter|D|Out

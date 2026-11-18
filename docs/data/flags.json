@@ -741,10 +741,10 @@
   "flag_id": "F89",
   "category": "Count dependency",
   "item": "Per-team view depends on the unreconciled Week 10 injury row count",
-  "detail": "The per-team page (team-view.html) is built from data/injuries_week10_2026.csv: 345 rows, reconciled to 66 Out, 10 Doubtful and 84 Questionable with 185 blank designations. The brief records 279 live rows (F83). The per-team counts are reported as the file stands and are not adjusted to either figure. Bye clubs CHI, DEN, PHI and TB are confirmed on the official schedule's Teams on Bye list.",
+  "detail": "The per-team page (team-view.html) is built from data/injuries_week10_2026.csv: 347 rows (re-captured 2026-11-18), reconciled to 70 Out, 11 Doubtful and 90 Questionable with 176 blank designations. The brief records 279 live rows (F83). The per-team counts are reported as the file stands and are not adjusted to either figure. Bye clubs CHI, DEN, PHI and TB are confirmed on the official schedule's Teams on Bye list.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Open - irregularity",
-  "action_requested": "Recount the official Week 10 injury page club by club and reconcile to 279 or 345 before the per-team counts are treated as final (depends on F83)."
+  "status": "Resolved for 2026-11-18 re-capture; brief figure still open (F83)",
+  "action_requested": "Reconcile the brief's 279 figure to the official page's 347-row count (F83)."
  },
  {
   "flag_id": "F90",

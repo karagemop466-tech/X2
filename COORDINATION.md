@@ -59,6 +59,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `25d6114f` | `arena/25d6114f-x2` | **Stale — work taken over by `cbb6c2f3` (T88).** Claimed T14–T20 on 2026-11-14; those IDs were completed by other sessions on `main` (30beeb55, 7c9eb69a, 45a0ec8c, 52ca9f77, 324b0cd2, 3988bdab). Last commit 18:21:30Z, then no commits for >60 minutes; PR #14 taken over under the stale-claim rule. Its unique verified content (official gamebook starter evidence, snapshot-verification ledger, signal/skill/luck registers, `scripts/verify_snapshot.py`) was reconciled into `main` by `cbb6c2f3` without discarding either side; see the takeover note above its verification report below. |
 | `cbb6c2f3` | `arena/cbb6c2f3-x2` | **Current session — takeover + final integration (T88).** Arrived on `main` @ `d22bbd3` (PR #34 merged). Claims **T88** (drafted T52; renumbered three times after main advanced through PRs #35–#50: T51–T60, then T79–T83 (20e6161b), then T84–T87 (d2915d86) were taken by parallel sessions with earlier claim times): (a) take over stale PR #14 (session `25d6114f`, last commit 18:21Z, >60 min with no commits — takeover rule applies), reconciling its unique verified content (official gamebook starter evidence, snapshot-verification ledger, signal/skill/luck registers) with current `main` without discarding either side; (b) reconcile the stale board statuses T41 (PR #34 merged 19:38Z but never recorded) and T48 (log says done, table says in progress); (c) handle the remaining open PR #31 (T51, session `ccd9ab30`) — closed as superseded after it passed 60 minutes with no activity; (d) final line-by-line re-verification, site rebuild, link check, PR, merge, Pages confirmation and closing record. **Done:** PR #38 merged as `61f3419` at 20:51:40Z, Pages deployment success at 20:52Z, live checks pass; PR #14 auto-merged with it, PR #31 closed as superseded, PR #48 left open with an advisory comment. File scope: `COORDINATION.md`, PR #14's unique files (`data/starters_gamebook_2026_reg_10.csv`, `data/verification_week10_2026.csv`, `data/verification/`, `scripts/verify_snapshot.py`, `data/line_signals.csv`, `data/skill_engine_gates.csv`, `data/luck_tests.csv`, `data/correlation_framework.csv`, `data/decision_questions.csv`, `data/depth_deficiency.csv`, `data/leaderboard_rules.csv`, `data/repo_review.csv`, `data/suggestions_register.csv` and their generated pages), plus integration-owned `scripts/build.py`, `README.md`, `docs/**`, `data/flags.csv`, `data/sources.csv` reconciliation. Will not edit `scripts/model.py` while PR #31 is open. |
 | `6ee4d13e` | `arena/6ee4d13e-x2` | **Current session (2026-11-15).** Claimed T96–T100, then withdrew its duplicates of `b03f4ba1`'s merged T96/T97/T99 (PR #55) and kept **T98** (per-team view), **T100** (integration) and added **T101** (control baselines for every leaderboard run). Branch is fixed by Arena as `arena/6ee4d13e-x2`; the `session-<id>/<task>` naming in the brief is not used. |
+| `e2d7b11d` | `arena/e2d7b11d-x2` | **Current session (2026-11-18).** Arrived on `main` @ `bd4f469` (PR #58 merged). Claims **T102–T105**: the 58-row decision-readiness table (F90), the change-our-mind source reconciliation with build guards (F92/F93), disposition of the stale open PR #48, and the closing integration (re-verification, PR, merge, Pages). Also performed an independent full re-read of the official Week 10 injury page on 2026-11-18, found the page had changed since the 2026-11-14 transcription (345 → 347 rows), re-captured and republished it (flag F94, commit 240d9dd). Branch is fixed by Arena; no other branch is touched. |
 
 ## Task board (combined — all sessions)
 
@@ -2568,3 +2569,84 @@ link guards pass · `check_links.py` 47 pages, 2 379 internal / 5 098 external, 
   **F16** (data-rights review) before any automation. **F106** carries a request to add read dates to
   `scripts/verify_results.py`, which this session did not own and therefore did not edit.
 * **Claims released.** `arena/cf85d485-x2` takes nothing further; T102–T107 are closed or handed to P09.
+
+
+## 2026-11-18 · session e2d7b11d · claim (T102–T105)
+
+**Branch:** `arena/e2d7b11d-x2` (fixed by Arena) · **Base:** `main` @ `bd4f469` (PR #58 merged) · **Owner:** `e2d7b11d` · **Status:** active
+
+### Task board (this session)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T102 | Decision-readiness table: one row per requirement (58 rows, not 45) | in progress | e2d7b11d | `data/decision_readiness.csv` (rewritten, 58 rows R01–R58), `scripts/build.py` (readiness block text only), generated `docs/**` | Repo facts verified against `data/*` on 2026-11-18; official sources as cited per row. Closes F90. |
+| T103 | Reconcile the two change-our-mind sources; make the register canonical and guarded | in progress | e2d7b11d | `data/strategy_change_rules.csv` (canonicality note), `scripts/build.py` (coverage + no-trigger-columns guards), `data/flags.csv` (F92/F93 updates), generated `docs/**` | `data/strategy_change_rules.csv` (7 candidates) confirmed as the single source of two-sided triggers; the leaderboard column set is gone from `main` (PR #57). Closes F92/F93 with enforced checks. |
+| T104 | Disposition of stale open PR #48 (a47ccbb1, open since 2026-11-14 20:22 UTC) | in progress | e2d7b11d | GitHub action only (close as superseded with advisory comment), `COORDINATION.md` record | Its content (verified results feed, depth-of-replacement, origination order, correlation provenance, skill engine, repo audit) landed on `main` via PRs #38–#52; the board rule (>60 min no activity) permits takeover. |
+| T105 | Final integration: rebuild, run every check, PR `arena/e2d7b11d-x2` → `main`, merge, confirm GitHub Pages, record | pending | e2d7b11d | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+
+### Independent re-verification performed before claiming (2026-11-18)
+
+- Fetched the official NFL.com Week 10 injury report in full (8 chunks, https://www.nfl.com/injuries/) and diffed it
+  row by row against `data/injuries_week10_2026.csv` with a new machine check (`scripts/verify_live_injuries.py`,
+  raw capture stored in `data/verification/live_injuries_2026-11-18_chunk*.txt`). **The live page had changed since
+  the 2026-11-14 transcription**: 347 rows, not 345. Change set: BAL +2 rows (Calais Campbell, Ronnie Stanley);
+  BAL Jaylinn Hawkins (injury/game status), BAL Adam Randall (injury/game status), IND Arden Key (designation
+  removed), 10 LAC rows updated. Re-captured and republished (commit 240d9dd); flags F83/F89 updated, F94 added.
+- Re-fetched the official Week 11 schedule page: all 13 games, kickoffs, networks and the 6-team bye list match
+  `data/schedule_week11_2026.csv`; the MIN at SF game is confirmed as a Mexico City neutral-site game.
+- `verify_live.py` inputs refreshed to 2026-11-18 for injuries/schedule/byes (standings input remains the
+  2026-11-14 point-in-time capture, matched to the committed standings snapshots): **75 of 75 units matched**.
+- Also resolved the arithmetic behind **F88**: the results feed holds 137 games = 136 games through Week 9
+  (weeks 1–9: 16+16+16+16+15+14+14+14+15) + the one Week 10 Thursday game (WAS at NYG) that was played before
+  the 2026-11-14 snapshot. The brief's "136-game log" is the Weeks 1–9 corpus; the extra game is the verified
+  Thursday result (F22). F88 updated to resolved-with-explanation.
+
+### T104 resolution (2026-11-18, session e2d7b11d): PR #48 closed as superseded
+
+PR #48 ("Final integration: fold PRs #14, #31, #37, #38", branch `arena/a47ccbb1-x2`) had been open with no commits
+since 2026-11-14 20:22 UTC, so it exceeded the 60-minute takeover rule by more than three days.
+
+Verified against git before acting:
+
+- The four PRs it folded (#14, #31, #37, #38) were merged to `main` independently through the normal PR sequence;
+  merged PRs #49–#58 followed, so the folded content is already on `main`.
+- The branch has an empty merge-base with `main` and a net diff of -9,624 / +1,382 lines. Merging it now would
+  regress `main`: 48 modern files would be deleted (scripts/verify_live.py, scripts/controls.py,
+  scripts/baselines.py, data/decision_readiness.csv, data/event_risk_week11.csv, and more) and build.py/model.py
+  rewritten to older versions.
+- No work was discarded: every file the branch changed is covered by the merged per-feature PRs.
+
+Action: a comment was posted on PR #48 recording the disposition and the git evidence, then the PR was closed as
+superseded. No open PRs remain on the repository.
+
+### T105 completion (2026-11-18, session e2d7b11d)
+
+**Final integration complete.** PR **#63** ("T102-T105: 58-row decision-readiness table, change-our-mind
+reconciliation, PR #48 disposition, final integration") was merged to `main` as merge commit `37a6d9a`
+(2026-11-18T04:25:25Z). GitHub Pages is live at https://karagemop466-tech.github.io/X2/ and serves the merged
+content (landing page shows the 347-row Week 10 injury register, the F94 verification status, and the
+category subpages).
+
+The branch was rebased three times as `main` advanced through concurrent sessions d0ede22d, cb11a6c7 and
+cf85d485 (PRs #59-#66), each of which independently performed parts of the 2026-11-18 injury re-capture and
+the readiness reconciliation. Conflicts were resolved without discarding any session's work:
+
+- `data/flags.csv`: kept the concurrent sessions' more complete 103-row register (F83 closed, F94-F109) and
+  re-applied this session's F89 update (347 rows, 70/11/90).
+- `data/decision_readiness.csv`: kept the concurrent session's canonical 64-row table (D01-D64, covering all
+  58 requirements R01-R58 via the requirement_id mapping, bijection-guarded by build.py).
+- `data/injuries_week10_2026.csv`: identical 347 data rows on both sides; kept main's row ordering.
+- `scripts/build.py`: merged both sessions' verification text; kept this session's change-our-mind trigger
+  guards (F92/F93) and the canonicality note.
+- `data/drift_pins.csv`: fixed the `live_reverification_2026-11-18.csv` pin to 75 rows (verify_live.py checks
+  28 injury blocks + injury total + 32 standings + 13 Week 11 games + bye list) and removed `field_differences`
+  from the required non-blank columns (blank by design on matching units).
+
+**Final verification (all green on the merged state):** verify_snapshot.py (0 FAIL, 1 REVIEW F74),
+verify_live_injuries.py (347/347 rows, 0 field mismatches), verify_live.py (75/75 units), verify_results.py
+(32/32 teams reconcile), team_view.py (Out 70 / Doubtful 11 / Questionable 90 / listed 347), model.py,
+build.py (47 pages, link + row-source + drift-pin checks), check_links.py (47 pages, 0 broken links),
+npm run build + verify (ALL CHECKS PASSED).
+
+**T102-T105 status: done.** F90 (readiness coverage), F92/F93 (change-our-mind canonicality) resolved;
+PR #48 closed as superseded (T104); final integration merged and Pages confirmed (T105).
