@@ -2618,3 +2618,35 @@ Verified against git before acting:
 
 Action: a comment was posted on PR #48 recording the disposition and the git evidence, then the PR was closed as
 superseded. No open PRs remain on the repository.
+
+### T105 completion (2026-11-18, session e2d7b11d)
+
+**Final integration complete.** PR **#63** ("T102-T105: 58-row decision-readiness table, change-our-mind
+reconciliation, PR #48 disposition, final integration") was merged to `main` as merge commit `37a6d9a`
+(2026-11-18T04:25:25Z). GitHub Pages is live at https://karagemop466-tech.github.io/X2/ and serves the merged
+content (landing page shows the 347-row Week 10 injury register, the F94 verification status, and the
+category subpages).
+
+The branch was rebased three times as `main` advanced through concurrent sessions d0ede22d, cb11a6c7 and
+cf85d485 (PRs #59-#66), each of which independently performed parts of the 2026-11-18 injury re-capture and
+the readiness reconciliation. Conflicts were resolved without discarding any session's work:
+
+- `data/flags.csv`: kept the concurrent sessions' more complete 103-row register (F83 closed, F94-F109) and
+  re-applied this session's F89 update (347 rows, 70/11/90).
+- `data/decision_readiness.csv`: kept the concurrent session's canonical 64-row table (D01-D64, covering all
+  58 requirements R01-R58 via the requirement_id mapping, bijection-guarded by build.py).
+- `data/injuries_week10_2026.csv`: identical 347 data rows on both sides; kept main's row ordering.
+- `scripts/build.py`: merged both sessions' verification text; kept this session's change-our-mind trigger
+  guards (F92/F93) and the canonicality note.
+- `data/drift_pins.csv`: fixed the `live_reverification_2026-11-18.csv` pin to 75 rows (verify_live.py checks
+  28 injury blocks + injury total + 32 standings + 13 Week 11 games + bye list) and removed `field_differences`
+  from the required non-blank columns (blank by design on matching units).
+
+**Final verification (all green on the merged state):** verify_snapshot.py (0 FAIL, 1 REVIEW F74),
+verify_live_injuries.py (347/347 rows, 0 field mismatches), verify_live.py (75/75 units), verify_results.py
+(32/32 teams reconcile), team_view.py (Out 70 / Doubtful 11 / Questionable 90 / listed 347), model.py,
+build.py (47 pages, link + row-source + drift-pin checks), check_links.py (47 pages, 0 broken links),
+npm run build + verify (ALL CHECKS PASSED).
+
+**T102-T105 status: done.** F90 (readiness coverage), F92/F93 (change-our-mind canonicality) resolved;
+PR #48 closed as superseded (T104); final integration merged and Pages confirmed (T105).
