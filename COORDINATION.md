@@ -2674,3 +2674,39 @@ verification"), while this session's contribution is the *independent* control �
 **Rule for the next session, from two collisions on one day:** a dated register written by a hand-run script must
 carry the session id in its filename until an integration session has merged it. `live_reverification_<date>.csv`
 was claimed twice within an hour because the name encodes the date and nothing else.
+
+## 2026-11-18 · session `39948feb` · claim (T110–T113)
+
+**Owner:** `39948feb` · **Branch:** `arena/39948feb-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged).
+**Checked the board first:** the highest IDs on `main` are T107 (cf85d485), F109, SRC-90, Q66, S50, G20, R64, D64, P09.
+This session therefore claims the free range **T110–T113** and the registers **F110+**, **SRC-91+**, **Q67+**,
+**S51+**, **G21+**, **R65+**, **D65+**.
+
+### What this session re-derived independently before claiming
+
+1. **Today's live standings, read 2026-11-18, reconcile the repo's 13 transcribed Week 10 games and NOT the
+   published feed.** All 32 club rows were read from `https://www.nfl.com/standings/` and compared, team by team,
+   on W-L-T / PF / PA against (a) `data/games_2026_results.csv` as published and (b) that file plus
+   `data/games_week10_backfill_2026.csv`. Result: **feed only = 6 of 32 clubs match; feed + 13 backfill rows =
+   32 of 32 match, 0 differ.** This reproduces F105's claim from an independent read and confirms the 13 rows are
+   correct. It also means every "137 games reconciled against the official standings" statement on the site is now
+   contradicted by the live standings, which is a *publication* problem, not a transcription problem.
+2. **All 14 Week 10 finals re-read** from `https://www.nfl.com/schedules/2026/by-week/week-10` and each one matches
+   the backfill register score for score (NE 10 DET 35, KC 35 ATL 13, HOU 24 CLE 27, MIN 30 GB 10, MIA 22 IND 24,
+   CAR 20 NO 17, BUF 31 NYJ 12, JAX 40 TEN 23, LA 34 AZ 6, SEA 21 LV 13, SF 46 DAL 40, PIT 18 CIN 38, LAC 23 BAL 20,
+   plus WAS 24 NYG 21 already in the feed).
+3. `python3 scripts/model.py` reproduces every committed model output byte for byte (run in a clean copy; `diff -rq`
+   over `data/` returned nothing), so a v2 corpus can be built without any doubt about the v1 baseline.
+
+### Task board (this session)
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T110 | **Corpus v2, published beside a frozen v1.** Decision **P09 option B**: splice the 13 verified Week 10 games and the eight settled international-game neutral-site flags into a *parallel* v2 corpus, re-run the whole pipeline on it, and publish v1 and v2 side by side with a version tag. v1 files are never edited. | in progress | `data/corpus_v2/games_2026_results_v2.csv`, `scripts/model_v2.py`, `data/corpus_v2/*.csv`, `docs/corpus-v2.html` | P09 has blocked R38/R64/D62/D64/G20 since 2026-11-18T04:00Z and the brief forbids waiting for a human. Option B is the one option that changes no published number, so it is the only one a session may take unilaterally. |
+| T111 | **Matchup deficiency matrix, 1st–4th string**, as an interactive table: one row per club/unit/position slot, one column per string, every cell either an official-source-verified name or blank with the reason it is blank. | in progress | `data/matchup_matrix_week11.csv`, `scripts/matrix.py`, `docs/matchup-matrix.html` + NAV | Explicit brief requirement that has no page. Existing depth pages are exposure counts, not a string matrix. |
+| T112 | **Line-by-line verification pass against live official sources**, with a dated register, and flag every irregularity found (including stale counts inside `data/requirements.csv`). | in progress | `data/verify_39948feb_2026-11-18.csv`, `data/flags.csv` (append F110+), `data/sources.csv` (append SRC-91+) | The brief requires it every session and the corpus claim is now stale. |
+| T113 | **Integration:** rebuild, run every check, PR → `main`, merge, confirm GitHub Pages, record. | runs last | `data/decision_readiness.csv`, `data/requirements.csv`, `README.md`, `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
+
+**Not claimed:** licensed market prices (F07/F51 — no licensed feed exists), off-site storage/alerting (D17,
+outside a static host), prior-season injury archives (D08/D20/D45 — not on any official page reachable here),
+the data-rights review (F16) and the reward/reward-tier sign-off (F09/F19/F36). These stay open and blocked.
