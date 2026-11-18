@@ -1,0 +1,7 @@
+comparison,mean_paired_difference_pts,ci95_low,ci95_high,interval_excludes_zero,sign_test_p,n_nonzero_pairs,reading,n_games,source_url
+A minus B,+0.006,-0.273,+0.279,no,1.0000,88,A positive value means the FIRST estimator has the LARGER error (is worse).,89,https://www.nfl.com/schedules/2026/by-week/week-11
+B minus A,-0.006,-0.279,+0.273,no,1.0000,88,A positive value means the FIRST estimator has the LARGER error (is worse).,89,https://www.nfl.com/schedules/2026/by-week/week-11
+A minus C,+0.116,-0.791,+1.004,no,1.0000,89,A positive value means the FIRST estimator has the LARGER error (is worse).,89,https://www.nfl.com/schedules/2026/by-week/week-11
+C minus A,-0.116,-1.004,+0.791,no,1.0000,89,A positive value means the FIRST estimator has the LARGER error (is worse).,89,https://www.nfl.com/schedules/2026/by-week/week-11
+B minus C,+0.110,-0.686,+0.921,no,0.8323,89,A positive value means the FIRST estimator has the LARGER error (is worse).,89,https://www.nfl.com/schedules/2026/by-week/week-11
+C minus B,-0.110,-0.921,+0.686,no,0.8323,89,A positive value means the FIRST estimator has the LARGER error (is worse).,89,https://www.nfl.com/schedules/2026/by-week/week-11
