@@ -25,7 +25,16 @@ _drift = _sp.run([sys.executable, os.path.join(ROOT, "scripts", "drift_check.py"
                  capture_output=True, text=True)
 if _drift.returncode != 0:
     raise SystemExit("BUILD FAILED: drift alarm\n" + _drift.stdout + _drift.stderr)
+# The site carries surfaces read on more than one date. A single "data as of" label
+# cannot be true of all of them: the injury register and the standings were read on
+# 2026-11-18, while the week-11 schedule, the depth charts and the frozen forecast log
+# were read on 2026-11-14 and are deliberately frozen there. AS_OF stays as the frozen
+# baseline that many sections legitimately describe; READ_LATEST and READ_SUMMARY are
+# what the header shows, so the label on every page is true of the newest read rather
+# than of the oldest (T111, flag F114).
 AS_OF = "2026-11-14"
+READ_LATEST = "2026-11-18"
+READ_SUMMARY = "injury report, standings and Week 10 slate read 2026-11-18; Week 11 lines and depth charts read 2026-11-14"
 OFFICIAL_HOSTS = {
     # static.www.nfl.com serves official NFL gamebook PDFs linked from the NFL game
     # centers (T52 takeover). It is a first-party NFL host, not a third-party provider.
@@ -626,12 +635,12 @@ def page(slug, title, body, active):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} · NFL Research Dashboard</title>
-<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Latest injury capture: 2026-11-18; other source dates are shown per page.">
+<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Latest official read {READ_LATEST}; other source dates are shown per page.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest injury capture: 2026-11-18 (UTC) · dates shown per source</span></div>
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest read {READ_LATEST} · {READ_SUMMARY} · dates shown per source</span></div>
   <nav aria-label="Main">{nav}</nav>
 </header>
 <main>
@@ -669,6 +678,36 @@ n_competing = len(competing)
 n_qualified = sum(1 for r in scorecard if r["status"].startswith("Qualified"))
 
 # ---------- index ----------
+# T111 / F114. One row per surface, each carrying its own read date. Hand-maintained
+# because the read date is a fact about when a human read the page, not something a
+# script can derive; the build checks the row count and that every row has a source.
+_freshness_rows = [
+    {"surface": "Week 10 injury register (347 rows)", "official_source": "NFL.com injury report",
+     "last_read": "2026-11-18", "status": "current",
+     "why_that_date": "Re-read in full and re-published on 2026-11-18; 13 clubs changed between the two reads (F94, F105).",
+     "source_url": "https://www.nfl.com/injuries/"},
+    {"surface": "Standings (32 clubs, 150 completed games)", "official_source": "NFL.com standings",
+     "last_read": "2026-11-18", "status": "current",
+     "why_that_date": "Read after the Week 10 slate completed. The results ledger still holds 137 games, so the currency check fails (V35, F113).",
+     "source_url": "https://www.nfl.com/standings/"},
+    {"surface": "Week 10 finals (13 games added to the corpus)", "official_source": "NFL.com Week 10 by-week schedule",
+     "last_read": "2026-11-18", "status": "current",
+     "why_that_date": "Transcribed from the official schedule page and reconciled 32 of 32 clubs against the standings (F105).",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"},
+    {"surface": "Week 11 lines and the sealed pre-kickoff forecast log", "official_source": "NFL.com Week 11 schedule",
+     "last_read": "2026-11-14", "status": "frozen on purpose",
+     "why_that_date": "Fitted on the 137-game ledger and SHA-256 sealed before kickoff. Re-fitting on newer results would turn a forecast into a retrodiction, so it is not re-derived (F114).",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"},
+    {"surface": "Club depth charts and replacement depth", "official_source": "Official club depth-chart pages",
+     "last_read": "2026-11-14", "status": "frozen on purpose",
+     "why_that_date": "Club charts are pre-injury and self-labelled unofficial; the capture date is published with every row so a reader can see the lag (F45).",
+     "source_url": "https://www.detroitlions.com/team/depth-chart"},
+    {"surface": "Week 11 schedule", "official_source": "NFL.com Week 11 by-week schedule",
+     "last_read": "2026-11-14", "status": "not yet re-read",
+     "why_that_date": "Confirmed game by game on 2026-11-14. Kickoff times and broadcasters can move, so this is the surface most likely to be stale.",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"},
+]
+
 pages["index.html"] = ("NFL Research Dashboard", f"""
 <section class="hero">
   <h1>NFL Research Dashboard</h1>
@@ -682,6 +721,14 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
         (ms['mae_improvement'], 'points of forecast gain vs the naive line'), (ms['strategies_tested'], 'strategies tested'),
         (tot['rows'], 'players listed (Week 10)'), (ms['week11_games'], 'Week 11 lines originated')])}
 <section class="hero"><h2>Decision-critical results-feed limitation</h2><p><strong>Do not treat the existing backtest corpus as a complete current-season feed.</strong> The model's published feed contains 137 games; the 2026-11-18 standings imply 150 completed games. A separately transcribed 13-game Week 10 backfill makes all 32 club records and points reconcile, while the feed as published fails for 26 of 32 clubs. The backfill is deliberately not merged into model inputs pending the documented P09 corpus decision. See <a href="feed-completeness.html">Feed completeness</a>, <a href="review-path.html">Review path</a> and <a href="flagged.html">Flagged for review</a>.</p><p>Consequently, the 89-game walk-forward statistics describe the existing historical corpus; they are not a final-season evaluation. No leaderboard strategy is ranked.</p></section>
+<h2>How current is each surface?</h2>
+<p class="note">Each register below was read from its official source on the date in its own row, and several of them
+deliberately are not the newest read. A single site-wide "data as of" date was true of the oldest of these and false of
+the newest, so the date is published per surface instead (flag F114). A frozen register is frozen on purpose: the Week 11
+lines are sealed pre-kickoff evidence and re-deriving them from newer results would destroy what they prove.</p>
+{table(_freshness_rows, ["surface","official_source","last_read","status","why_that_date","source_url"],
+       {"surface":"Surface","official_source":"Official source","last_read":"Last read","status":"Status",
+        "why_that_date":"Why that date","source_url":"Source"}, table_id="freshness")}
 <h2>Start here</h2>
 <div class="cards">
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
@@ -2770,9 +2817,13 @@ came from. Nothing here is a prediction.</p>
 NFL.com Terms (Section 1.3) prohibit systematic retrieval to compile data without written consent, and gate D22 is not
 cleared, so no automated daily capture runs (see F98). The clock-time history the brief asks for therefore starts with
 two reads, not with a daily series.</p>
-<p class="note"><strong>Results register is behind the official standings (F96).</strong> The verified results feed holds
-137 games (weeks 1-9 plus the Week 10 Thursday game). The 2026-11-18 standings reflect {_games_added} more games played
-in Week 10 (Sunday and Monday), which are not in the frozen register.</p>
+<p class="note"><strong>Results register is behind the official standings (F96, F113).</strong> The verified results
+feed holds 137 games (weeks 1-9 plus the Week 10 Thursday game). The 2026-11-18 standings reflect {_games_added} more
+games played in Week 10 (Sunday and Monday). Those games are transcribed and source-linked on the
+<a href="feed-completeness.html">Feed completeness</a> page and scored out of sample on the
+<a href="corpus-v2.html">Pre-registered corpus</a> page, but they are <em>not</em> in the frozen register, so
+<code>scripts/verify_results.py</code> now reports the currency check as a failure rather than as a pass
+(V35; desk row RF07b).</p>
 <h2>Injury report: capture details</h2>
 {_tbl(["Item", "Value", "Source"], _cap_meta_rows, "cap-meta")}
 <h2>Injury report: changes since 2026-11-14 (publishing the delta, not the level)</h2>
