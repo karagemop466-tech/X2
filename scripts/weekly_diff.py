@@ -116,7 +116,7 @@ g10, p10, g11, p11 = snapshots()
 # reason the diff is published twice: in the frozen feed the only new information between the
 # two snapshots is ONE game (the Week 10 Thursday result), so the rating column is blind to
 # the other 13 Week 10 games. In corpus v2 all 14 are present. Both columns are published.
-results_v2 = load_results("corpus_v2_2026.csv")
+results_v2 = load_results("tranche_150game_2026_db00d539.csv")
 TEAMS_v2 = sorted({r["away_team"] for r in results_v2} | {r["home_team"] for r in results_v2})
 if TEAMS_v2 != TEAMS:
     raise SystemExit("BUILD FAILED: corpus v2 has a different club set")
