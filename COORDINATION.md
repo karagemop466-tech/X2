@@ -2729,6 +2729,13 @@ Checks green: `scripts/build.py` (47 pages, link and row-source checks), `script
 Cade Mays (C, Ankle) and D.J. Reed (CB, Hip) all show Did Not Participate in Practice and Game Status **Out**.
 `data/injuries_week10_2026.csv` holds the same three Out rows. No change was needed.
 
+### PR, merge and deployment record — session 5a5c1a1d (T108, T109)
+
+- **PR #69** (`arena/5a5c1a1d-x2` → `main`): merged with a merge commit, `4b42bb0f9e7532dee5d472e76b3503cf736c9090`, at 2026-11-18T04:45:25Z. The PR had no CI checks configured; it was mergeable and clean.
+- **GitHub Pages:** build for `4b42bb0` reached `built` at 2026-11-18T04:46:07Z (`gh api repos/karagemop466-tech/X2/pages/builds/latest`).
+- **Live check:** https://karagemop466-tech.github.io/X2/docs/fixture-context.html now shows the "Venues read from the official game centre" table with all 13 Week 11 venues. The site is served from the repository root, so pages are under `/docs/`; the root URL `/X2/fixture-context.html` returns 404 (this was already the case before this session).
+- **Board:** T108 done, T109 done. Nothing from this session is left unclaimed or half-merged. No other session's file was changed.
+
 ## 2026-11-18 · session `5ddea67f` · claim (T110)
 
 **Branch:** `arena/5ddea67f-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67) · **Owner:** `5ddea67f` · **Status:** active
