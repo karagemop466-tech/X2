@@ -2991,6 +2991,15 @@ already uses and it is the reason the checks exist:
 rights review (F16), no legal opinion (F09/F19), no gate threshold (F17), and no edit to another session's data.
 Each is referenced as a dependency where it blocks a number.
 
+### T124 integration record — session `8da77ba6` (2026-11-18)
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/78 — `arena/8da77ba6-x2` → `main`, "T113–T117: depth-chart parsing hardened, 32-club roster/IR sweep, three published totals, venue/roof/weather overlay". The PR title keeps the T113–T117 numbering it was opened under; the final board numbering is **T120–T124** after the third collision wave, recorded above.
+- **Merge:** merged with a merge commit; `main` merge commit **`575971c06a4529f36fda3a292469dae9f5b86df2`**, merged **2026-11-18T04:59:31Z**.
+- **GitHub Pages:** the Pages build for that commit reports `status: built` (created 2026-11-18T04:59:32Z). The four new pages were fetched live and render: `docs/two-estimators.html`, `docs/roster-sweep.html`, `docs/depth-parsing.html`, `docs/venue-weather.html`.
+- **Site path correction, for the next session:** the deployed site serves the generator output under **`/X2/docs/`**, not `/X2/`. A direct `/X2/two-estimators.html` returns 404; `/X2/docs/two-estimators.html` returns the page. Every in-site link is correct (2 691 internal links, 0 broken), only hand-typed root-relative URLs are affected.
+- **Verification on the merged state:** `build.py` 52 pages, row-source and link guards pass · `drift_check.py` **43/43 registers** · `repo_audit.py` 22 checks, 0 failing · `verify_snapshot.py` 103 pass / 0 fail / 1 review · `verify_live_injuries.py` 347/347 · `check_links.py` 2 691 internal / 5 448 external, 0 broken · `npm run build && npm run verify` PASS.
+- **A pre-existing flag on `main`, not introduced here:** `verify_results.py` passes arithmetically against the 2026-11-14 snapshot (32/32 clubs) but **fails against the 2026-11-18 capture**, because the ledger holds 137 games and the current official standings imply 150. That is F106 (feed completeness) and is carried by the fourth session's feed work; it is noted here only so the next reader does not attribute it to this branch.
+- **Register IDs used (free on `main` at merge time):** **F115–F118**, **SRC-93–SRC-97**, **R65 / D65**. Three earlier collisions — F110–F113, SRC-91–92 — were resolved by re-deriving the next free ID from `main`, never by overwriting another session's rows.
 
 **Follow-up PR #79 merged and deployed.** https://github.com/karagemop466-tech/X2/pull/79 → merge commit
 **`6539aa7`** (`6539aa754de25af2168e7bf2d7b3a00c2fb75587`) at 2026-11-18T04:57:13Z; Pages build for `6539aa7`
