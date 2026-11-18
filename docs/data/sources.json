@@ -938,5 +938,35 @@
   "accessed_date": "2026-11-18",
   "used_for": "Venue and city for every Week 11 fixture (Game Info block), T110",
   "verification_note": "One page per fixture; the exact URL is carried per row in data/venues_2026.csv. MIN at SF was cross-checked against SRC-90 and agrees (Estadio Banorte, Mexico City)."
+ },
+ {
+  "source_id": "SRC-95",
+  "title": "Houston Texans depth chart (published as a raster image)",
+  "publisher": "Houston Texans",
+  "url": "https://www.houstontexans.com/team/depth-chart",
+  "type": "Club official site (image only)",
+  "accessed_date": "2026-11-18",
+  "used_for": "Evidence for check DP07: the chart is an <img> under an 'Unofficial Depth Chart' heading with no player cells in the page text. www.texans.com/team/depth-chart returns 404.",
+  "verification_note": "Read 2026-11-18. No cell transcribed from this page; transcribing names from pixels is the manual inference the brief forbids."
+ },
+ {
+  "source_id": "SRC-96",
+  "title": "National Weather Service public API (hourly forecast) — US Government, public domain",
+  "publisher": "NOAA / National Weather Service",
+  "url": "https://www.weather.gov/documentation/services-web-api",
+  "type": "US Government federal source",
+  "accessed_date": "2026-11-18",
+  "used_for": "The hourly wind/precipitation/temperature overlay. One kickoff-hour read captured for Arrowhead Stadium from the grid the API resolves for the published coordinate pair (EAX/47,48).",
+  "verification_note": "Read 2026-11-18. Single request. Coordinate provenance and the period start are published per row so the read is reproducible."
+ },
+ {
+  "source_id": "SRC-97",
+  "title": "NFL.com Game Center — Week 11 (all 13 games), Game Info block",
+  "publisher": "NFL.com",
+  "url": "https://www.nfl.com/schedule/2026/by-week/week-11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "Venue transcription for 13 of 13 Week 11 games, and the evidence that the block publishes only Location and Stadium — no roof, no surface.",
+  "verification_note": "All 13 game-centre pages read 2026-11-18, transcribed as rendered into data/verification_inputs/venues_week11_2026-11-18_raw.tsv."
  }
 ]

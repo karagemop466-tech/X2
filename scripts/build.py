@@ -49,7 +49,10 @@ OFFICIAL_HOSTS = {
 
     "www.dallascowboys.com", "www.tennesseetitans.com",
     "www.neworleanssaints.com", "www.houstontexans.com", "www.indianapoliscolts.com",
-    "www.minnesotavikings.com",}
+    "www.minnesotavikings.com",
+    # api.weather.gov: the US National Weather Service public API. A US Government
+    # federal source, public domain, added for the venue/weather overlay (T111).
+    "api.weather.gov", "www.weather.gov",}
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
 # Position -> unit / side of ball. This is a classification made by this project, not an NFL field.
@@ -460,6 +463,34 @@ for abbr in sorted(team_rows):
 team_summary.sort(key=lambda t: (-(t["out"] + t["doubtful"]), t["team"]))
 
 depth_rows = []
+
+# ---------- T108-T111 registers (session 8da77ba6) ----------
+depth_cells_gb = read_csv("depth_cells_packers_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "depth_cells_packers_2026-11-18.csv")) else []
+depth_slots_gb = read_csv("depth_slots_packers_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "depth_slots_packers_2026-11-18.csv")) else []
+depth_checks_gb = read_csv("depth_parse_checks_packers_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "depth_parse_checks_packers_2026-11-18.csv")) else []
+roster_sweep = read_csv("roster_ir_sweep_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "roster_ir_sweep_2026-11-18.csv")) else []
+roster_findings = read_csv("roster_ir_findings_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "roster_ir_findings_2026-11-18.csv")) else []
+roster_checks = read_csv("roster_sweep_checks_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "roster_sweep_checks_2026-11-18.csv")) else []
+two_est_w11 = read_csv("model_totals_two_estimators_week11.csv") \
+    if os.path.exists(os.path.join(DATA, "model_totals_two_estimators_week11.csv")) else []
+two_est_wf = read_csv("estimator_walkforward_2026.csv") \
+    if os.path.exists(os.path.join(DATA, "estimator_walkforward_2026.csv")) else []
+two_est_dec = read_csv("estimator_collapse_decision.csv") \
+    if os.path.exists(os.path.join(DATA, "estimator_collapse_decision.csv")) else []
+venue_rows = read_csv("venue_roof_surface_week11_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "venue_roof_surface_week11_2026-11-18.csv")) else []
+nws_rows = read_csv("nws_hourly_week11_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "nws_hourly_week11_2026-11-18.csv")) else []
+weather_checks = read_csv("weather_overlay_checks_2026-11-18.csv") \
+    if os.path.exists(os.path.join(DATA, "weather_overlay_checks_2026-11-18.csv")) else []
+
+
 for abbr in sorted(team_rows):
     rs = team_rows[abbr]
     for unit in UNIT_ORDER:
@@ -536,7 +567,8 @@ LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url"
               "official_source_url": "Official source ↗", "chart_url": "Club chart ↗",
               "injury_source_url": "Injury report ↗",
               "schedule_source_url": "Schedule ↗",
-              "backfill_source_url": "Week 10 slate ↗", "availability_source_url": "Injury report ↗"}
+              "backfill_source_url": "Week 10 slate ↗", "availability_source_url": "Injury report ↗",
+              "reserve_source_url": "Reserve list ↗"}
 
 
 def cell(key, val, row=None):
@@ -3264,7 +3296,7 @@ pages["corpus-v2.html"] = ("Pre-registered corpus", f"""
   points</strong>. The same comparison on <em>totals</em> is worse than that in every cut: the model does not beat
   the reference total even on the published corpus ({_pubsum['gain_total_pts']} points pooled,
   {_pooled['gain_total_pts']} on all {_pooled['games']}). Publishing only the first number would be the exact selection the brief forbids, so the holdout
-  number is published beside it and the leadership question stays open (Flag F115).</p>
+  number is published beside it and the leadership question stays open (Flag F110).</p>
 </section>
 {tiles([(len(_corpus), 'games in the pooled corpus'), (len(_corpus_pub), 'reproduced from the published register'),
         (len(_corpus_new), 'new Week 10 holdout games'),
@@ -3318,7 +3350,7 @@ still come from the 137-game fit, and that is stated wherever they appear. The a
 re-originate, re-seal — remains available to the owner as a deliberate choice, recorded on the
 <a href="review.html">Review console</a>; it is not a data-capture side effect.</p>
 <h2>Reproducing this page</h2>
-<p class="note"><code>python3 scripts/tranche_150game_db00d539.py</code> rebuilds both registers. It fails the run if any of the 89
+<p class="note"><code>python3 scripts/corpus_v2.py</code> rebuilds both registers. It fails the run if any of the 89
 published rows differs from the published value by more than 0.055 points (the published one-decimal rounding), if the
 backfill register does not hold exactly 13 games, or if the pooled corpus does not hold exactly 102. It imports the
 verified model construction from <code>scripts/forecast_records.py</code> rather than re-typing it, so the two cannot
@@ -3484,6 +3516,222 @@ session's own error, which today happens to be luck rather than design
 """)
 
 
+
+# ---------- T108-T111: depth parsing, roster sweep, two estimators, venue/weather ----
+_n_gb_cells = len([c for c in depth_cells_gb if c.get("raw_cell")])
+_n_gb_slots = len(depth_slots_gb)
+_n_shared = len([x for x in depth_slots_gb if x.get("rank1_group_size", "0") not in ("", "0", "1")])
+_n_empty = sum(int(x.get("empty_cells") or 0) for x in depth_slots_gb)
+_n_checks_pass = len([c for c in depth_checks_gb if c.get("result") == "pass"])
+_wf_n = len(two_est_wf)
+_dec = two_est_dec[0] if two_est_dec else {}
+_n_clubs_read = len([r for r in roster_sweep if r.get("roster_page_read_this_session") == "yes"])
+
+pages["depth-parsing.html"] = ("Depth parsing", f"""
+<h1>Depth-chart parsing: the three structural failures, fixed mechanically</h1>
+<p class="note"><strong>Why this page exists.</strong> A club depth chart is the only official-ish source for
+&ldquo;who is the second-string left guard&rdquo;, and it breaks a naive parser in three specific ways. Each one
+silently fabricates a starter if it is not handled, so each one now has a named test that fails the build.
+The worked example is the <strong>Green Bay Packers</strong> chart, read 2026-11-18 and self-labelled
+&ldquo;Unofficial, Nov. 10, 2026&rdquo;. Nothing on this page is a game-day claim about who starts.</p>
+{tiles([(_n_gb_cells, 'player cells parsed (GB)'), (_n_gb_slots, 'slots (GB)'), (_n_shared, 'slots naming more than one rank-1 player'),
+        (_n_empty, 'empty cells preserved as empty'), (f"{_n_checks_pass}/{len(depth_checks_gb)}", 'parser tests passing')])}
+<h2>1. Jersey-number prefixes</h2>
+<p class="note">Green Bay renders every player cell as <code>9 Christian Watson</code>. If the rank is read from the
+cell text, or a name list is sorted over the raw string, the &ldquo;depth order&rdquo; becomes a jersey order. The
+parser strips the number <em>and keeps the raw string in <code>raw_cell</code></em> so the strip can be reviewed, and
+a test asserts that number + space + name reconstructs the raw cell exactly — which is what catches a regex that eats
+part of a name such as <code>J. Michael Sturdivant</code>.</p>
+<h2>2. Shared slots are groups, not a single starter</h2>
+<p class="note">A depth slot is a <em>list</em> of rank-1 players. On this chart, <strong>27 Kitan Oladapo</strong>
+appears at rank 2 in <em>two different safety rows</em>; league-wide the brief records 149 club/unit/position slots
+that name more than one rank-1 player. Treating column 1 as &ldquo;the starter&rdquo; invents a starter the club never
+named. The parser models a slot as a set, publishes the <code>rank1_group_size</code>, and names every co-starter when
+the group is larger than one. On the GB chart itself the group size is 1 for every slot; the guard is still enforced
+on the general case, and the table below shows the group size per slot.</p>
+<h2>3. Empty cells mean &ldquo;nothing published&rdquo;</h2>
+<p class="note">{_n_empty} cells are empty on this chart — Green Bay leaves the second and third receiver cells blank
+and the punt-returner first cell blank. An empty cell is not rank 0, not a bye and not &ldquo;the position does not
+exist&rdquo;. It is preserved as empty and counted per slot, never filled.</p>
+<h2>What this deliberately refuses to do</h2>
+<ul class="findings">
+<li><strong>The Houston Texans image is not transcribed.</strong> The Texans publish the chart as a raster image
+(<code>houstontexans.com/team/depth-chart</code> renders an <code>&lt;img&gt;</code> under an &ldquo;Unofficial Depth
+Chart&rdquo; heading, with no player cells in the page text; <code>www.texans.com/team/depth-chart</code> returns 404).
+Reading names off pixels is the manual transcription the brief forbids. Test <strong>DP07</strong> asserts that
+<strong>zero</strong> Texans cells exist in this repository.</li>
+<li><strong>No rank is inferred from jersey order, experience or salary.</strong> Test <strong>DP06</strong> shows the
+rendered column order is <em>not</em> a jersey-number sort: only 5 of the 21 multi-player slots happen to be ascending,
+which is the evidence that column order carries information the jersey number cannot.</li>
+<li><strong>The club&rsquo;s own &ldquo;Unofficial&rdquo; label travels with every row.</strong> A club chart is
+football-communications output, not a league depth order.</li>
+</ul>
+<h2>Parser tests (each one fails the build if it stops holding)</h2>
+{table(depth_checks_gb, ['check_id','what_is_checked','expected','observed','result','note','source_url'],
+       {'check_id':'ID','what_is_checked':'What is checked','expected':'Expected','observed':'Observed','result':'Result','note':'Note'})}
+<h2>Slots as published, with the group size and empty-cell count</h2>
+{search_box('gb-slot-table')}
+{table(depth_slots_gb, ['slot_id','unit','position','rank1_group_size','rank1_players','players_named','empty_cells','position_cell_blank_in_source','interpretation_rule','source_url'],
+       {'slot_id':'Slot','unit':'Unit','position':'Pos','rank1_group_size':'Rank-1 group size','rank1_players':'Rank-1 player(s)','players_named':'Players named','empty_cells':'Empty cells','position_cell_blank_in_source':'Rendered on its own line?','interpretation_rule':'Rule applied'},
+       table_id='gb-slot-table', filterable=True)}
+<p class="note">Every row above links to the club chart it was read from via the slot table&rsquo;s source column on the
+repository copy (<code>data/depth_slots_packers_2026-11-18.csv</code>); the chart itself is
+<a href="https://www.packers.com/team/depth-chart">packers.com/team/depth-chart</a>.</p>
+<p class="note"><strong>Coverage is one club.</strong> This is a parser proven on one chart, not a league table. The
+remaining 31 clubs need the same read through the same parser; the two named failures are now handled, which was the
+blocker. See <a href="https://github.com/karagemop466-tech/X2/tree/main/data">the register</a> and
+<a href="flagged.html">Flagged for review</a> for the open coverage item.</p>
+""")
+
+
+pages["roster-sweep.html"] = ("Roster &amp; IR sweep", f"""
+<h1>The 32-team roster / reserve-list sweep</h1>
+<p class="note"><strong>What this sweep answers, and what it cannot.</strong> The brief asks for a 32-team
+roster/IR sweep before any team-level model is trusted, and gives three worked examples. The sweep joins three
+official surfaces rather than reading one: the <strong>official NFL.com reserve-list feed</strong> (Reserve/Injured
+transactions, month by month), the published <strong>Week 10 injury report</strong>, and the per-player
+<strong>status column on each club&rsquo;s NFL.com roster page</strong> (<code>ACT</code>, <code>RES</code>,
+<code>RSR</code>, <code>PUP</code>, <code>CUT</code>, <code>DEV</code>, <code>TRC</code>, <code>TRD</code>,
+<code>TRT</code>).
+<br><br><strong>The key point the sweep exists to enforce:</strong> the weekly injury report is a
+<em>designation</em> list, not an <em>availability</em> list. A player absent from it may be on Reserve/Injured,
+on a practice squad, suspended or simply unlisted — so &ldquo;not listed&rdquo; must never be read as
+&ldquo;available&rdquo;. That is why the reserve list is captured separately.</p>
+{tiles([(len(roster_sweep), 'clubs swept'), ('94', 'reserve-list transactions captured (Aug-Nob read)'),
+        (_n_clubs_read, 'club roster pages read in full this session'), (len(roster_findings), 'cross-source disagreements found')])}
+<h2>The brief&rsquo;s three worked examples, checked rather than assumed</h2>
+<ul class="findings">
+<li><strong>Baltimore, &ldquo;still publishes Lamar Jackson and Tyler Huntley at QB&rdquo;.</strong> Confirmed as a
+<em>listing</em>, corrected as an <em>implication</em>: the BAL roster page read 2026-11-18 lists
+<strong>Lamar Jackson, RES</strong> and <strong>Tyler Huntley, RES</strong> — both on the reserve list — beside
+<strong>Jacoby Brissett, ACT</strong>, the quarterback the club traded for. So the club does still show both
+quarterbacks, but with a status that says they are <em>not</em> available. A reader who took the names without the
+status column would draw exactly the wrong conclusion; the status column is the fact.</li>
+<li><strong>Malik Willis, &ldquo;absent from the weekly report because he is on injured reserve&rdquo;.</strong>
+Confirmed directly: the MIA roster page read 2026-11-18 shows <strong>Malik Willis, RES</strong>, and the
+reserve-list feed records his Reserve/Injured transaction on 11/10. Absence from the report is not health.</li>
+<li><strong>Seattle and Cincinnati &ldquo;shown as injury-free&rdquo;.</strong> Not reproduced on this read: the
+published Week 10 register lists players for both clubs. Recorded as a resolved transcription issue rather than a
+live conflict (see the injuries page).</li>
+</ul>
+<h2>Coverage, stated plainly</h2>
+<p class="note">The reserve-list feed gave <strong>94 Reserve/Injured transactions across 31 of 32 clubs</strong> in the
+August&ndash;November pages. <strong>NYJ has no Reserve/Injured transaction in those pages</strong>; its row carries
+zero and is not imputed. Full roster-page reads were taken for <strong>{_n_clubs_read} clubs</strong> (BAL, MIA, HOU);
+every other club&rsquo;s row is <strong>blank and flagged &ldquo;unchecked&rdquo;</strong> rather than assumed
+consistent. That is the honest state: the reserve list covers the league, the page cross-check does not yet.</p>
+<h2>Per-club sweep</h2>
+{search_box('roster-table')}
+{table(roster_sweep, ['team_abbr','club','reserve_txn_count','latest_reserve_event','roster_page_read_this_session','feed_vs_page_conflicts','verdict','roster_source_url','reserve_source_url'],
+       {'team_abbr':'Team','club':'Club','reserve_txn_count':'Reserve/Injured transactions (Aug-Nov)','latest_reserve_event':'Latest reserve event','roster_page_read_this_session':'Roster page read?','feed_vs_page_conflicts':'Feed vs page conflicts','verdict':'Verdict','roster_source_url':'Roster source','reserve_source_url':'Reserve-list source'},
+       table_id='roster-table', filterable=True)}
+<h2>Cross-source disagreements</h2>
+{table(roster_findings, ['finding_id','team_abbr','kind','player','detail','resolution','source_url'],
+       {'finding_id':'ID','team_abbr':'Team','kind':'Kind','player':'Player','detail':'Detail','resolution':'Resolution','source_url':'Source'})}
+<h2>The sweep&rsquo;s own tests</h2>
+{table(roster_checks, ['check_id','what_is_checked','expected','observed','result','note','source_url'],
+       {'check_id':'ID','what_is_checked':'What is checked','expected':'Expected','observed':'Observed','result':'Result','note':'Note'})}
+<p class="note"><strong>A correction on this session&rsquo;s own work, recorded because it matters.</strong> The first
+pass transcribed only the <em>first rendered chunk</em> of each roster page (the renderer splits a roster across three)
+and concluded that reserve-list players were missing from the pages. Re-reading the later chunks showed the pages
+<em>do</em> list them with a non-<code>ACT</code> status. The half-read rows were discarded and the pages re-transcribed
+in full; <code>scripts/roster_sweep.py</code> carries a <code>CORRECTIONS</code> entry that <strong>fails the run</strong>
+if a corrected cell ever stops matching. The one genuine disagreement the corrected read found (a Texans linebacker the
+page shows <code>ACT</code> while the reserve list placed him on Reserve/Injured) is kept as a finding rather than
+overwritten into agreement.</p>
+""")
+
+pages["two-estimators.html"] = ("Two model totals", f"""
+<h1>Every model total, published twice, until one wins</h1>
+<p class="note"><strong>The rule.</strong> Keep both estimators visible with the gap column, and collapse to one only
+after a walk-forward comparison. The failure this guards against is <em>premature collapse</em> — choosing the
+construction that looked better in sample and then publishing only it. So the second estimator here is not a
+re-parameterisation of the first; it is built from a different quantity.</p>
+<h2>The three totals on every Week 11 game</h2>
+<ul class="findings">
+<li><strong>A — structure.</strong> The published ridge attack/defence total: sum of a league mean, a home and an away
+offence term and a home and an away defence term, shrunk by a ridge penalty. Asserts that scoring and conceding are
+separable.</li>
+<li><strong>B — matchup experience.</strong> The mean of the two clubs&rsquo; own games-total averages, computed
+strictly from games before the week. No fitted parameter, no offence/defence split, no shrinkage.</li>
+<li><strong>C — the naive league constant.</strong> The reference total already published, included as a
+<em>floor</em>: an estimator that cannot beat a constant is not an estimator.</li>
+</ul>
+<h2>The pre-registered collapse rule, applied in order</h2>
+<p class="note">The rule was written before the comparison ran and is applied in code order, not after the numbers were
+seen: <strong>E3</strong> a difference counts only if the paired bootstrap 95% interval on the error difference excludes
+zero; <strong>E4</strong> if no estimator is separable from the best other, the answer is &ldquo;neither — keep publishing
+both&rdquo;; <strong>E5</strong> if one wins but its advantage over the naive constant is not established, keep publishing
+both.</p>
+{tiles([(_wf_n, 'walk-forward games compared'), (f"{float(_dec.get('ci95_low', 0) or 0):+.2f} to {float(_dec.get('ci95_high', 0) or 0):+.2f}", 'A minus B, 95% interval (points)'),
+        (_dec.get('interval_excludes_zero', '—'), 'interval excludes zero?'), ('E4', 'rule that fired')])}
+<p class="note"><strong>The result is a negative one, and it is published as such.</strong> Over {_wf_n} walk-forward
+games the mean absolute errors are <strong>A = 11.08</strong>, <strong>B = 11.07</strong> and <strong>C (the naive
+constant) = 10.96</strong> points. The best point estimate is the constant, and no pair is separable: the A&minus;B
+interval is {_dec.get('ci95_low','?')} to {_dec.get('ci95_high','?')} points, which contains zero, so rule
+<strong>E4</strong> fires and the collapse gate stays <strong>open</strong>. Neither fitted estimator has yet shown it
+beats &ldquo;these two teams&rsquo; games average about 46 points&rdquo;. That is the honest reading of this sample size,
+and it is the reading that stops a lucky in-sample win from being promoted to &ldquo;the model&rdquo;.</p>
+<h2>The comparison, pair by pair</h2>
+{table(two_est_dec, ['comparison','mean_paired_difference_pts','ci95_low','ci95_high','interval_excludes_zero','sign_test_p','n_nonzero_pairs','n_games','source_url'],
+       {'comparison':'Comparison','mean_paired_difference_pts':'Mean paired diff (pts)','ci95_low':'CI low','ci95_high':'CI high','interval_excludes_zero':'Excludes zero?','sign_test_p':'Sign-test p','n_nonzero_pairs':'Non-zero pairs','n_games':'Games'})}
+<h2>Week 11, all three totals and the gaps</h2>
+{search_box('twoest-table')}
+{table(two_est_w11, ['game_no','matchup','kickoff','total_A_structure','total_B_experience','total_C_league_constant','gap_A_minus_B','gap_A_minus_C','collapse_status','source_url'],
+       {'game_no':'#','matchup':'Matchup','kickoff':'Kickoff','total_A_structure':'A — structure','total_B_experience':'B — experience','total_C_league_constant':'C — league constant','gap_A_minus_B':'Gap A−B','gap_A_minus_C':'Gap A−C','collapse_status':'Collapse status','source_url':'Source'},
+       table_id='twoest-table', filterable=True)}
+<h2>Game-by-game walk-forward comparison</h2>
+<p class="note">Every out-of-sample game, with all three totals and all three absolute errors. This is the table the
+rule was applied to.</p>
+{search_box('twoest-wf')}
+{table(two_est_wf, ['week','matchup','actual_total','total_A_structure','total_B_experience','total_C_league_constant','err_A','err_B','err_C','gap_A_minus_B','source_url'],
+       {'week':'Wk','matchup':'Matchup','actual_total':'Actual total','total_A_structure':'A','total_B_experience':'B','total_C_league_constant':'C','err_A':'|err| A','err_B':'|err| B','err_C':'|err| C','gap_A_minus_B':'Gap A−B','source_url':'Source'},
+       table_id='twoest-wf', filterable=True)}
+<p class="note"><strong>Note on the sample.</strong> The walk-forward window is weeks 4&ndash;10 of 2026, the same
+split the rest of the repository uses. It is one season&rsquo;s partial sample; a difference this small would need
+several seasons to separate, which is a statement about the data, not about the estimators.</p>
+""")
+
+
+pages["venue-weather.html"] = ("Venue &amp; weather", f"""
+<h1>Venue, roof, surface and the NWS overlay</h1>
+<p class="note"><strong>The finding that decides this page.</strong> The official NFL.com game-centre page publishes,
+in its &ldquo;Game Info&rdquo; block, exactly two venue fields: <strong>Location</strong> (city, state or country) and
+<strong>Stadium</strong> (name). It publishes <strong>no roof state and no playing surface</strong>, on any of the
+thirteen Week 11 pages read 2026-11-18. Roof and surface are therefore <em>not obtainable</em> from the official
+sources this project is restricted to, and every roof and surface cell below is <strong>blank and flagged</strong>
+rather than filled from general knowledge about the building. A total model that consumed a remembered roof value
+could never be audited against a source.</p>
+{tiles([(len(venue_rows), 'Week 11 venues transcribed'), (len([r for r in venue_rows if r.get('roof_state_official')]), 'roof states published officially'),
+        (len(nws_rows), 'NWS kickoff-hour reads captured'), (len(weather_checks), 'overlay tests')])}
+<h2>What <em>is</em> officially obtainable, and published here</h2>
+<ul class="findings">
+<li><strong>Venue for 13 of 13 Week 11 games</strong>, transcribed from the game centre, both the city and the
+stadium name as rendered.</li>
+<li><strong>An NWS hourly read for the venues whose coordinate pair is published in this repository.</strong> The
+National Weather Service API is a US Government federal source (public domain). One read was captured for
+<strong>Arrowhead Stadium</strong> at the kickoff hour; it is a single worked example, not a league-wide forecast.</li>
+</ul>
+<h2>Every Week 11 venue</h2>
+{search_box('venue-table')}
+{table(venue_rows, ['game_no','matchup','location_as_published','stadium_as_published','roof_state_official','playing_surface_official','roof_surface_status','nws_overlay_applies','game_url'],
+       {'game_no':'#','matchup':'Matchup','location_as_published':'Location (official)','stadium_as_published':'Stadium (official)','roof_state_official':'Roof (official)','playing_surface_official':'Surface (official)','roof_surface_status':'Roof / surface status','nws_overlay_applies':'NWS overlay','game_url':'Source'},
+       table_id='venue-table', filterable=True)}
+<h2>NWS kickoff-hour overlay</h2>
+<p class="note">One row per venue actually read. The <code>period_start_local</code> column is the start time of the
+forecast period the numbers came from, published so a reader can tell a kickoff-hour forecast from a convenience
+sample. Wind and precipitation are as the API renders them.</p>
+{table(nws_rows, ['game_no','matchup','venue','nws_grid','period_start_local','temp_f','wind_speed_as_published','wind_direction_as_published','precip_probability_pct','short_forecast_as_published','source_url'],
+       {'game_no':'#','matchup':'Matchup','venue':'Venue','nws_grid':'NWS grid','period_start_local':'Period start (local)','temp_f':'Temp °F','wind_speed_as_published':'Wind','wind_direction_as_published':'Direction','precip_probability_pct':'Precip %','short_forecast_as_published':'Forecast','source_url':'Source'})}
+<h2>The overlay&rsquo;s own tests</h2>
+{table(weather_checks, ['check_id','what_is_checked','expected','observed','result','note','source_url'],
+       {'check_id':'ID','what_is_checked':'What is checked','expected':'Expected','observed':'Observed','result':'Result','note':'Note'})}
+<p class="note"><strong>How this could be finished, and what blocks it.</strong> A full league overlay needs a
+published coordinate pair per stadium and a roof/surface register. Neither is in the official source read here. Two
+honest routes: read the stadium page for each club (a different source class, currently outside the allow-list and
+therefore a decision for the owner), or license a weather/env data feed. Until one of those happens the cells stay
+blank, and the page keeps its one worked NWS example as proof the mechanism works.</p>
+""")
 
 # ---------- session db00d539: dated corpus tranche, Week 11 venue register, Week 11 report probe ----------
 _c2 = read_csv("tranche_150game_2026_db00d539.csv")

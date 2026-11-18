@@ -29,7 +29,7 @@
   points</strong>. The same comparison on <em>totals</em> is worse than that in every cut: the model does not beat
   the reference total even on the published corpus (-0.113 points pooled,
   -0.266 on all 102). Publishing only the first number would be the exact selection the brief forbids, so the holdout
-  number is published beside it and the leadership question stays open (Flag F115).</p>
+  number is published beside it and the leadership question stays open (Flag F110).</p>
 </section>
 <div class="tiles"><div class="tile"><div class="num">102</div><div class="lbl">games in the pooled corpus</div></div><div class="tile"><div class="num">89</div><div class="lbl">reproduced from the published register</div></div><div class="tile"><div class="num">13</div><div class="lbl">new Week 10 holdout games</div></div><div class="tile"><div class="num">5 of 13</div><div class="lbl">holdout games the model was closer</div></div></div>
 <h2>Estimator comparison — the honest version</h2>
@@ -62,7 +62,7 @@ still come from the 137-game fit, and that is stated wherever they appear. The a
 re-originate, re-seal — remains available to the owner as a deliberate choice, recorded on the
 <a href="review.html">Review console</a>; it is not a data-capture side effect.</p>
 <h2>Reproducing this page</h2>
-<p class="note"><code>python3 scripts/tranche_150game_db00d539.py</code> rebuilds both registers. It fails the run if any of the 89
+<p class="note"><code>python3 scripts/corpus_v2.py</code> rebuilds both registers. It fails the run if any of the 89
 published rows differs from the published value by more than 0.055 points (the published one-decimal rounding), if the
 backfill register does not hold exactly 13 games, or if the pooled corpus does not hold exactly 102. It imports the
 verified model construction from <code>scripts/forecast_records.py</code> rather than re-typing it, so the two cannot

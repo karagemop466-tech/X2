@@ -1,0 +1,102 @@
+# Raw transcription of the official NFL.com reserve-list (Reserve/Injured) feed.
+# Read 2026-11-18 (UTC). One row per transaction as rendered.
+# Sources (one per month page):
+#   https://www.nfl.com/transactions/league/reserve-list/2026/9
+#   https://www.nfl.com/transactions/league/reserve-list/2026/10
+#   https://www.nfl.com/transactions/league/reserve-list/2026/11
+# Columns: month_page <TAB> date_as_rendered <TAB> club_abbr <TAB> player <TAB> transaction_as_rendered
+month_page	date_as_rendered	club_abbr	player	transaction
+11	11/17	HOU	Azeez Al-Shaair	Reserve/Injured
+11	11/17	MIA	Zeek Biggers	Reserve/Injured
+11	11/17	MIA	Jordan Phillips	Reserve/Injured
+11	11/17	AZ	Andrew Wingard	Reserve/Injured
+11	11/17	AZ	Jordan Burch	Reserve/Injured
+11	11/17	BUF	Ar'maj Reed-Adams	Reserve/Injured
+11	11/17	IND	Jaylon Carlies	Reserve/Injured
+11	11/17	TEN	Wan'Dale Robinson	Reserve/Injured
+11	11/16	LA	Dylan McMahon	Reserve/Injured
+11	11/16	LAC	Branson Taylor	Reserve/Injured
+11	11/14	NO	Christen Miller	Reserve/Injured
+11	11/14	NE	TreVeyon Henderson	Reserve/Injured
+11	11/14	CLE	Michael Burton	Reserve/Injured
+11	11/14	IND	Mo Alie-Cox	Reserve/Injured
+11	11/14	IND	Akeem Davis-Gaither	Reserve/Injured
+11	11/14	TEN	Peter Skoronski	Reserve/Injured
+11	11/14	TEN	Tommy Townsend	Reserve/Injured
+11	11/14	DAL	Tyler Goodson	Reserve/Injured
+11	11/14	GB	Josh Whyle	Reserve/Injured
+11	11/12	LA	Puka Nacua	Reserve/Injured
+11	11/10	LA	Jordan Whittington	Reserve/Injured
+11	11/10	MIA	Zach Sieler	Reserve/Injured
+11	11/10	MIA	Malik Willis	Reserve/Injured
+11	11/10	SF	Gracen Halton	Reserve/Injured
+11	11/10	AZ	Gardner Minshew	Reserve/Injured
+10	10/07	BAL	Durham Smythe	Reserve/Injured
+10	10/06	JAX	Caleb Ransaw	Reserve/Injured
+10	10/06	PHI	Tank Bigsby	Reserve/Injured
+10	10/06	GB	Edgerrin Cooper	Reserve/Injured
+10	10/06	AZ	Paris Johnson Jr.	Reserve/Injured
+10	10/06	WAS	Jaylin Lane	Reserve/Injured
+10	10/06	MIN	Donovan Jackson	Reserve/Injured
+10	10/06	HOU	Jaylin Smith	Reserve/Injured
+10	10/06	AZ	Hunter Long	Reserve/Injured
+10	10/05	PIT	Derrick Harmon	Reserve/Injured
+10	10/03	LA	Terrance Ferguson	Reserve/Injured
+10	10/03	GB	Warren Brinson	Reserve/Injured
+10	10/03	CAR	Xavier Legette	Reserve/Injured
+10	10/03	CHI	Braxton Jones	Reserve/Injured
+10	10/03	SEA	Jadarian Price	Reserve/Injured
+10	10/03	BAL	Jovaughn Gwyn	Reserve/Injured
+10	10/03	BAL	Ethan Pocic	Reserve/Injured
+10	10/02	HOU	British Brooks	Reserve/Injured
+10	10/01	NO	Travis Etienne	Reserve/Injured
+9	09/30	TB	Jalen McMillan	Reserve/Injured
+9	09/30	HOU	Mario Edwards	Reserve/Injured
+9	09/30	CAR	Jaycee Horn	Reserve/Injured
+9	09/30	CAR	Mike Jackson	Reserve/Injured
+9	09/30	GB	Jayden Reed	Reserve/Injured
+9	09/30	DAL	Jonathan Bullard	Reserve/Injured
+9	09/30	DAL	Jalen Thompson	Reserve/Injured
+9	09/29	WAS	Leo Chenal	Reserve/Injured
+9	09/29	CIN	Jalen Davis	Reserve/Injured
+9	09/29	TEN	Jackson Slater	Reserve/Injured
+9	09/29	NYG	Brian Burns	Reserve/Injured
+9	09/29	NE	Greg Van Roten	Reserve/Injured
+9	09/29	TEN	Fernando Carmona	Reserve/Injured
+9	09/29	LV	Jack Bech	Reserve/Injured
+9	09/29	MIN	Josh Oliver	Reserve/Injured
+9	09/28	GB	Zach Bako-Bewele	Reserve/Injured
+9	09/28	MIA	De'Von Achane	Reserve/Injured
+9	09/26	CIN	Andrei Iosivas	Reserve/Injured
+9	09/26	IND	Alec Pierce	Reserve/Injured
+9	09/26	CAR	Claudin Cherelus	Reserve/Injured
+9	09/26	HOU	Jacob Hummel	Reserve/Injured
+9	09/26	DET	Thomas Harper	Reserve/Injured
+9	09/26	PIT	Gennings Dunker	Reserve/Injured
+9	09/26	MIN	Nick Samac	Reserve/Injured
+9	09/26	DAL	P.J. Locke	Reserve/Injured
+8	08/31	AZ	Josh Minkins	Reserve/Injured
+8	08/31	ATL	Keshawn Banks	Reserve/Injured
+8	08/31	CAR	Tyrek Funderburk	Reserve/Injured
+8	08/31	CAR	Ryan Hayes	Reserve/Injured
+8	08/31	CHI	Beanie Bishop Jr.	Reserve/Injured
+8	08/31	CHI	Ruben Hyppolite II	Reserve/Injured
+8	08/31	CHI	Dontae Manning	Reserve/Injured
+8	08/31	CLE	Travis Bell	Reserve/Injured
+8	08/31	CLE	Elijah Chatman	Reserve/Injured
+8	08/31	CLE	Edefuan Ulofoshio	Reserve/Injured
+8	08/31	DAL	DJ Rogers	Reserve/Injured
+8	08/31	DEN	Drew Sanders	Reserve/Injured
+8	08/31	DET	Michael Niese	Reserve/Injured
+8	08/31	GB	McCallan Castles	Reserve/Injured
+8	08/31	GB	Trey Dean III	Reserve/Injured
+8	08/31	GB	Thomas Yassmin	Reserve/Injured
+8	08/31	HOU	Solomon Byrd	Reserve/Injured
+8	08/31	HOU	Kyonte Hamilton	Reserve/Injured
+8	08/31	JAX	Carter Bradley	Reserve/Injured
+8	08/31	JAX	Keivie Rose	Reserve/Injured
+8	08/31	KC	C.J. Hanson	Reserve/Injured
+8	08/31	KC	Chris Oladokun	Reserve/Injured
+8	08/31	KC	EJ Smith	Reserve/Injured
+8	08/31	LA	Alex Johnson	Reserve/Injured
+8	08/31	LAC	Sincere Brown	Reserve/Injured
