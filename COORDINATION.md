@@ -3243,6 +3243,10 @@ of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all 
   renders all 15 checks with `R2-01`…`R2-15` results as registered here, and the landing page's
   freshness table / decision banner are intact. (The site is served from the repo root, so the path is `/X2/docs/…`;
   `/X2/results-v2.html` 404s by design — F15.)
+* **Follow-up PR #85** merged as **`5391985`**; Pages run **44243859191** on that commit → **success**, and the
+  published page was re-read with a cache-busting query to confirm the corrected intro is what the CDN now serves
+  (a plain re-fetch briefly returned the previous build, so a "the text is stale" report before that was a caching
+  artefact, not a deploy failure: https://karagemop466-tech.github.io/X2/docs/results-v2.html).
 * **Post-merge fixes in the follow-up PR:** the new page's intro said "three sessions / 14 checks" and contained a
   self-link, because an earlier `str.replace` did not match main's text after the merge. Corrected to name all four
   builds with their real filenames and check namespaces, and to point at `docs/results.html` where PR #76's register
