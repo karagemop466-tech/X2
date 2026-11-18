@@ -2778,3 +2778,27 @@ The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 
 **Irregularities for the Flagged for Review page (already present, not newly raised):** F88 (the 136 / 137 count note is stale for 2026-11-18), F95 (IND Arden Key blank status on the 2026-11-18 read), F96 (results feed frozen at 137 vs 150 official games). Owner decision still open: **P09**.
 
 **Handoff for the next session:** nothing is claimed beyond T110. If P09 is recorded as "adopt", the splice and re-fit must follow `scripts/results_feed_completeness.py` and re-run `scripts/forecast_records.py` (which refuses to run unless every published line reproduces).
+
+
+## 2026-11-18 · session 60c8c865 · claim (T111–T115)
+
+**Branch:** `arena/60c8c865-x2` (fixed by Arena) · **Base:** `main` @ `f1e6d05` (PR #70 merged) · **Owner:** `60c8c865` · **Status:** active
+
+Checked the board before claiming: highest task ID on `main` is **T110** (5ddea67f, merged); no open PRs; nothing
+beyond T110 is claimed. This session claims **T111–T115**, the open items no other session holds.
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T111 | Record owner decision **P09 = B** (the console's own recommendation) and publish the **parallel v2 research corpus**: 150-game register (v1 137 + the 13 official Week 10 finals) with neutral-site flags on the 9 international games, a self-checking re-fit that must first reproduce the published v1 ratings/backtest, and a v1-vs-v2 delta page. v1 stays the frozen published record. | in progress | 60c8c865 | `data/decision_console.csv` (P09 row only), `data/games_2026_results_v2.csv` (new), `scripts/corpus_v2.py` (new), `data/corpus_v2_*.csv` (new), `scripts/build.py` (one new page block + nav), generated `docs/**`, `data/flags.csv` (F96/F88 status), `data/decision_readiness.csv` (D29/D64/D62 status text) | Official by-week Week 10 read already committed (`data/verification_inputs/week10_games_2026-11-18_raw.psv`); neutral flags from operations.nfl.com international register (SRC-90). Non-destructive: no v1 metric file is rewritten. |
+| T112 | **F106 fix**: give `scripts/verify_results.py` read-date provenance — print the standings read date and the newest game in the feed, warn when they are stale relative to each other, and run the same reconciliation against the committed 2026-11-18 official standings read (expected: 26 of 32 clubs fail, proving the flag). | in progress | 60c8c865 | `scripts/verify_results.py`, `data/flags.csv` (F106 status), generated `docs/**` | Requested verbatim in F106 ("outside this session's scope — the change is requested in COORDINATION.md"). Inputs: `data/standings_2026_official_read_20261114.csv`, `data/verification_inputs/standings_2026-11-18_raw.psv`. |
+| T113 | **Venue transcription, Week 10** (S49 / F99 / D26): read the Game Info block on all 14 official Week 10 game-centre pages, append verbatim stadium+location rows to `data/venues_2026.csv` (13 → 27 of 163), update F99 and the readiness rows. | in progress | 60c8c865 | `data/venues_2026.csv`, `data/flags.csv` (F99), `data/decision_readiness.csv` (D26/D62 counts), generated `docs/**` | Game URLs from `data/games_week10_backfill_2026.csv` + the WAS@NYG row in `data/games_2026_results.csv`. Blank, never inferred, for anything unread. |
+| T114 | **Reserve-list register** (D14, "not listed" must never mean "available"): transcribe the official NFL reserve-list transaction page for the current window into `data/reserve_list_2026.csv`, source-linked per row, and publish it. | in progress | 60c8c865 | `data/reserve_list_2026.csv` (new), `data/decision_readiness.csv` (D14 status), `scripts/build.py` (table block), generated `docs/**` | Official source named by the readiness row itself: https://www.nfl.com/transactions/league/reserve-list/2026/11 |
+| T115 | Final integration: rebuild, run every check (build, links, drift, snapshot, results, forecast records, controls, model, repo audit, npm), PR `arena/60c8c865-x2` → `main`, merge, confirm GitHub Pages, record in this file. | pending | 60c8c865 | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+
+**Scope rules for this session:** v1 published metric files (`data/games_2026_results.csv`, `data/model_*.csv`,
+`data/strategy_*.csv`, `data/backtest*`) are read-only here — P09 option B keeps them frozen; the v2 corpus lives in
+new files only. No other session's claimed files are edited. Dated new registers carry the session id in mind via
+this claim (filenames are new and unique, so no collision with the 2026-11-18 naming hazard from session e2d7b11d).
+
+**Irregularities noted at claim time (not mine to fix):** none new. Open owner-owned items stay untouched: DEC-01…
+DEC-10, P01–P08, F16, F17, F19, F98.
