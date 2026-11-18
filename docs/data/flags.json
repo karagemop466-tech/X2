@@ -83,11 +83,11 @@
  {
   "flag_id": "F10",
   "category": "Transcription check",
-  "item": "345 injury rows were transcribed manually",
+  "item": "345 injury rows were transcribed manually (2026-11-14 read): superseded by the 2026-11-18 re-read (F94)",
   "detail": "Rows were transcribed from the NFL.com page as read. Two sessions independently compared the full file against the live Week 10 report on 2026-11-14: session 30beeb55 (T15) and session 7c9eb69a (T17, recounted per-team counts from scratch). Both found no discrepancies. Both were manual reads, not an automated diff, and the snapshot is point-in-time.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Resolved for two independent manual passes - no discrepancies found",
-  "action_requested": "Treat row values as verified against the live page on 2026-11-14. Re-verify on any refresh; an automated diff would need authorised data access."
+  "status": "Superseded - see F94",
+  "action_requested": "Use the 2026-11-18 capture (data/captures) and the delta. The 2026-11-14 \"no discrepancies\" finding does not hold for the 2026-11-18 register."
  },
  {
   "flag_id": "F11",
