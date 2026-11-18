@@ -2894,3 +2894,27 @@ winner:
 **Post-merge verification on the rebased branch (all green):** `build.py` 48 pages, link and row-source guards pass;
 `check_links.py` 0 broken; `drift_check.py` all registers match their pins; `verify_snapshot.py` 103 pass / 0 fail /
 1 review; `repo_audit.py` 22 checks 0 failing; `npm run build && npm run verify` ALL CHECKS PASSED.
+
+### PR, merge and deployment record — session f04dda73 (T114–T119)
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/77 — `arena/f04dda73-x2` → `main`, "T114-T119: publish the Week 10
+  holdout (the 1.74 gain does not survive it), fix the stale standings reconciliation, and rank the open decisions".
+  Opened with the full source list, the verification run and the flagged items in the body.
+- **Merge:** `gh pr merge 77 --merge`, merge commit **`dab4713`** (`dab471341efb075537c0f91d0cc98419e9fa0c01`) at
+  2026-11-18T04:55:46Z. Mergeability was confirmed `MERGEABLE` / `CLEAN` before merging; no `--auto`, no approval wait.
+- **GitHub Pages:** build for `dab4713` reported **`built`** (three status polls: building → building → built).
+  Confirmed live by reading the deployed pages, not just the build status:
+  - `https://karagemop466-tech.github.io/X2/docs/corpus-v2.html` — renders the estimator comparison table with all three
+    corpora and the *0.591 points behind* holdout row, and the 13-game game-by-game table with per-row source links.
+  - `https://karagemop466-tech.github.io/X2/docs/review.html` — renders the ranked 10-row decision queue.
+  - `https://karagemop466-tech.github.io/X2/docs/verification.html` — renders the restated V14 counts and the read-date
+    caveat.
+  (Note: `curl` from this sandbox cannot reach the Pages host — it is not on the egress allow-list — so the live check
+  was made with the page reader. The site is served from the repository root, so pages are under `/docs/`.)
+- **Post-merge follow-up, committed on the branch after the merge:** verification row **V18** still carried an
+  unqualified "Verified" for a comparison against the 2026-11-14 snapshot. Its status and result now name the read date
+  and say explicitly that it is a transcription check and not a currency claim — the same defect class as V14, found by
+  reading the deployed page rather than the source file. This needs its own small PR; it is recorded here so the
+  next session does not have to rediscover it.
+- **Open, unchanged, published on the ranked queue:** P09 second half (refresh the frozen Week 11 lines?), F16 data
+  rights, F09/F19 legal review, F07/F51 licensed price feed. None was resolved by this session and none blocks the merge.
