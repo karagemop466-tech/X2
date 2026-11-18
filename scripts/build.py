@@ -2926,7 +2926,8 @@ pages["capture-integrity.html"] = ("Capture integrity & cross-checks", f"""
 </section>
 {tiles([(len(_captures), "dated reads of one official report"),
         (_captures[1]["rows"] + " / " + _captures[0]["rows"], "players read today / on 2026-11-14"),
-        (_xcheck[0]["disagreements"] + " of " + str(int(_xcheck[0]["compared"]) * 5), "fields two readers disagreed on"),
+        (_xcheck[0]["disagreements"] + " of " + _xcheck[0]["outcome"].split(" of ")[1].split(" compared")[0],
+         "cells two readers disagreed on"),
         (len([r for r in _reverify18 if r["result"] == "match"]), "of 28 club blocks matching today's read")])}
 <h2>Capture ledger — one row per read, with its hash</h2>
 <p class="note">The payload hash is over the canonical rows (sorted
@@ -3182,7 +3183,8 @@ register was rebuilt from the 2026-11-18 read, and every one of the 28 blocks in
 the 345-vs-347 difference is a source movement (Baltimore added Calais Campbell and Ronnie Stanley), not a repo
 omission, so flag F83 closes for the repo side.</li>
 <li><strong>The double read caught a real error, which is the point of it.</strong> Two independent transcriptions of
-the same render agreed on <strong>346 of 347 players</strong> across all five fields. The one disagreement — JAX
+the same render agreed on <strong>346 of 347 players</strong> across all four compared fields (position, injury
+text, practice status, game status — 1,388 cells). The one disagreement — JAX
 Chris Rodriguez Jr.'s practice status — was this session's own mis-read, settled by a third read of the live page taken later
 on 2026-11-18, after both transcriptions existed and corrected in the derived registers (18 moved players, not 19; 6 practice changes, not 7). The raw
 capture is left exactly as read, and the correcting script refuses to run if the capture stops matching the value it

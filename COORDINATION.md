@@ -2527,7 +2527,7 @@ hand rather than by overwriting. What happened, per collision:
 
 **The one finding worth more than the tidying: a transcription error, caught because a second reader existed.**
 `scripts/capture_cross_check.py` (new) + `data/capture_cross_check_2026-11-18.csv` compare the two transcriptions of
-the same 2026-11-18 render: **346 of 347 players agree on all five fields**. The disagreement was JAX
+the same 2026-11-18 render: **346 of 347 players agree on all four compared fields** (position, injury text, practice status, game status — 1,388 cells). The disagreement was JAX
 **Chris Rodriguez Jr.** practice status — I read `Did Not Participate In Practice`, d0ede22d read
 `Limited Participation in Practice`. A third read of the live page (chunk 1 of 8, 2026-11-18, taken after both transcriptions were written) renders
 `Limited Participation in Practice` with an empty Game Status cell: **my capture was wrong and the published register

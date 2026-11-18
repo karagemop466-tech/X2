@@ -107,6 +107,9 @@ def main():
             published.append({c: (r.get(c) or "").strip() for c in COLS})
 
     a, b = payload(my_read), payload(their_read)
+    # the fields each transcription is compared on; team and player are the key, not a comparison
+    N_FIELDS = len([c for c in COLS if c not in ("team_abbr", "player")])
+    n_cells = as_read_cells = 0
     as_read = compare(a, b, "two independent transcriptions of the 2026-11-18 injury page, as each was read")
     fixed = []
     for r in my_read:
@@ -165,7 +168,10 @@ def main():
              rows_a=str(len(my_read)), rows_b=str(len(their_read)), compared=str(as_read["compared"]),
              disagreements=str(as_read["field_disagreements"]),
              only_in_a=as_read["only_in_a"], only_in_b=as_read["only_in_b"],
-             outcome="one field of 2,082 compared fields disagreed",
+             outcome=f"{as_read['field_disagreements']} field"
+                     f"{'s' if as_read['field_disagreements'] != 1 else ''} of "
+                     f"{as_read['compared'] * N_FIELDS:,} compared cells disagreed "
+                     f"({N_FIELDS} fields per player: {', '.join(c for c in COLS if c not in ('team_abbr','player'))})",
              detail=f"Applied corrections: {len(CORRECTIONS)}. JAX Chris Rodriguez Jr. practice status: this session read 'Did Not Participate In Practice', "
                     "the other read 'Limited Participation in Practice'. Settled by a third read of the live page "
                     "(chunk 1 of 8, 2026-11-18, taken after both transcriptions were written), which renders 'Limited Participation in Practice' with an "
@@ -178,7 +184,8 @@ def main():
              rows_a=str(len(my_read)), rows_b=str(len(their_read)), compared=str(corrected["compared"]),
              disagreements=str(corrected["field_disagreements"]),
              only_in_a=corrected["only_in_a"], only_in_b=corrected["only_in_b"],
-             outcome="347 of 347 players agree on all five compared fields",
+             outcome=f"{corrected['compared']} of {corrected['compared']} players agree on all "
+                      f"{N_FIELDS} compared fields",
              detail="After the correction the two independent transcriptions are identical, so the published "
                     "register rests on two readers rather than one.",
              status="Agreement", source_url=INJURY_URL),
