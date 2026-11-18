@@ -2464,3 +2464,11 @@ Scheduled or automated capture of nfl.com (D11, D17): NFL Terms Section 1.3 and 
 **Known remaining narrative (not corrected in this session).** Dated historical pages (for example `verification.html`, `cross-check.html`, `injuries.html`, `executive-summary.html`) still describe the 14 November checks as they were on that date. Those statements are dated, but a reader could take them as current. A full narrative sweep is requested for the next integration owner. Source of truth: this log and `data/flags.csv` F94–F102.
 
 **Follow-up PR:** pending (recorded after creation).
+
+## 2026-11-18 · session `d0ede22d` · post-merge record (T107 close)
+
+- **PR #59** — merged, merge commit `5e87ae4` (2026-11-18T03:50:39Z). Pages build for `5e87ae4`: **built**, no error.
+- **PR #60** (landing-page verification correction; flag F10 superseded; PR #59 recorded) — merged, merge commit `5039778` (2026-11-18T03:52:38Z). Pages build for `5039778`: **built**, no error (2026-11-18T03:53:16Z).
+- **Live check.** `https://karagemop466-tech.github.io/X2/docs/index.html?v=5039778` shows the corrected verification status (F94, consistency-only). The un-parameterised root URL was served from a stale CDN copy at the time of the check; the cache-busted URL shows the deployed build.
+- **Known open items after close (non-blocking; on Flagged for Review):** F16 (data rights; blocks scheduled capture), F19 (Netherlands legal review), F94–F102, and the owner decisions listed in the T107 entry. Historical narrative sweep requested (see PR #60 note above).
+- **Recorded on this branch only.** This post-merge record was committed to `arena/d0ede22d-x2` after both merges. It does not reach `main` unless a later integration pulls it.
