@@ -23,6 +23,7 @@ where a source verifies it).
 4. **Price snapshots** (`docs/price-snapshots.html`) — the price-snapshot store recording opening and closing numbers for every originated market; values blank and flagged because no licensed odds feed exists.
 5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, prospective signal/staking fields (blank until grading), and the proposed demotion gate.
 6. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
+6b. **Results corpus v2** (`docs/results-v2.html`) — the completed 150-game register through Week 10, published in parallel with the frozen 137-game record, with the eight completed international games flagged neutral and the cost of a re-registration measured (0 published Week 11 picks flip; side hit rate 0.652 → 0.578).
 7. **Leaderboard** (`docs/leaderboard.html`) — prospective-only competition registry. It is intentionally unranked until frozen prospective forecasts have been graded; full historical outcome tables are on the Backtest page; the landing-page removal-of-luck panel is explicitly marked as research-only. Signal and staking remain separate.
 8. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
 9. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
@@ -30,6 +31,31 @@ where a source verifies it).
 11. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
+
+### Also new (session 82b83a64): the corpus completed in parallel, and its cost measured
+
+- **Results corpus v2** (`docs/results-v2.html`, built by `python3 scripts/results_v2.py` from
+  `data/results_feed_v2_2026.csv`): all 150 games through Week 10 — the 13 settled Week 10 games spliced from the
+  official by-week page, plus the eight completed international games flagged `neutral_site = Y` from the dated
+  NFL Football Operations slate. 14 machine checks (`data/results_feed_v2_checks.csv`) all pass, including a third
+  independent read of the Week 10 page at 2026-11-18T05:05Z (14 of 14 fixtures, scores and winner indicators) and a
+  32-club reconciliation against this session's own standings read of the same minute (V2-05), not against a file
+  already in the repository. `data/results_feed_2026.csv` and `data/games_2026_results.csv` stay frozen at 137 rows.
+- **What a re-registration would cost** (`data/model_v2_research_deltas.csv`, reproduced by
+  `python3 scripts/model_v2_research.py`): `scripts/model.py` run unmodified in a temporary directory on three
+  corpora — published, published-plus-neutral-flags, and the full v2 register. No published Week 11 pick flips; the
+  side hit rate moves 0.652 → 0.629 → 0.578; bets at the pre-registered threshold move 50 → 54 → 59; the forecast
+  log's SHA-256 would change, which is why this is a version and not a correction. Nothing in `data/` published by
+  the model was rewritten by this work.
+- **F106 fixed where it lived**: `scripts/verify_results.py` now takes the standings read as an argument, prints the
+  read date on both sides, lists the dated reads available (`--list`), warns on an undated standings file, and fails
+  loudly when the standings read post-dates the corpus (137 games vs the 2026-11-18 read: 26 of 32 clubs off — the
+  gap, not an error; the v2 register: 0 off).
+- New flags **F110** (the Review console's P09 note publishes a prediction — three side picks, one bet-gate
+  crossing — that measurement contradicts: zero and six) and **F111** (a third read of the injury hub inside 24
+  hours still renders Week 10 while its own selector lists Week 11, so a Wednesday timer has nothing to fire on).
+- Verification record **V34–V36** in `data/verification_report.csv`; source register **SRC-91–SRC-94** in
+  `data/sources.csv`; drift pins for the seven new registers in `data/drift_pins.csv`.
 
 ### Also new (session 6ee4d13e): per-team view, controls for every run
 
