@@ -569,9 +569,9 @@
  {
   "req_id": "R64",
   "requirement (from brief)": "Turn the game log into the pre-registered backtest corpus, with the count reconciled",
-  "status": "Irregular - the count is now explained, the choice is open",
+  "status": "Done - the count is reconciled; a frozen v2 150-game parallel register is published",
   "where_addressed": "data/week_count_reconciliation_2026-11-18.csv; flags F88 and F95; question Q64",
-  "blocker_or_note": "136 = weeks 1-9, 137 = the published feed, 150 = everything official through Week 10. F88's '136 vs 137' is answered; the remaining question is which corpus to publish on, recorded as P09.",
+  "blocker_or_note": "136 = weeks 1-9, 137 = the frozen published feed, 150 = everything official through Week 10. F88's '136 vs 137' is answered; the v2 150-game register (data/results_feed_v2_2026.csv) is published in parallel. The remaining choice - which corpus the published metrics grade on - is owner decision P09.",
   "row_type": "requirement",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },

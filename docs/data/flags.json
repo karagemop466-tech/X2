@@ -896,8 +896,8 @@
   "item": "A 'reconciles against the standings' claim was checked against a stale standings read",
   "detail": "The published claim that all 137 games reconcile with the official standings for all 32 teams (docs/verification.html, and the standing output of scripts/verify_results.py: 'All teams reconcile exactly with the official standings') was made against data/standings_2026_official_read_20261114.csv, a read taken before the Week 10 Sunday games (it shows BUF 7-1, NE 5-4, DET 6-2). The feed and that read were consistent with each other and stale in the same direction; re-read on 2026-11-18 the same comparison fails for 26 clubs. A reconciliation between two surfaces read on the same day, one of which was produced from the other, is weaker than it looks: it proves internal arithmetic, not currency.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Irregularity - open",
-  "action_requested": "Rule for verification records: print the read timestamp of the checked data and of the checking source, and warn when the source read is older than the newest game in the data. scripts/verify_results.py is outside this session's scope - the change is requested in COORDINATION.md rather than made here."
+  "status": "Resolved - the read-date guard is now enforced",
+  "action_requested": "Applied 2026-11-18 by session 79c9cb37 (T109): scripts/verify_results.py now prints the standings-read date next to the verdict and exits non-zero when that read is older than the newest game in the feed; data/standings_2026_snapshot.csv carries a read_date_utc provenance column (2026-11-14; W/L/T/PF/PA unchanged)."
  },
  {
   "flag_id": "F107",
@@ -973,12 +973,12 @@
  },
  {
   "flag_id": "F115",
-  "category": "Coverage",
-  "item": "Depth-chart parser proven on one club, not 32",
-  "detail": "scripts/depth_parse.py handles the two named parse failures (jersey-number prefixes; shared and empty slots) with 11 build-failing tests. The worked example is Green Bay (read 2026-11-18, self-labelled 'Unofficial, Nov. 10, 2026'). The parser has NOT been applied to the other 31 clubs. The Texans chart is a raster image and is refused by check DP07 rather than transcribed by eye.",
-  "source_url": "https://www.packers.com/team/depth-chart",
-  "status": "Open - coverage",
-  "action_requested": "Run the same parser over the remaining 31 club charts and record any that render as images."
+  "category": "Results corpus",
+  "item": "Two results corpora now coexist",
+  "detail": "The frozen 137-game corpus (data/games_2026_results.csv) and the new parallel v2 150-game register (data/results_feed_v2_2026.csv) are both published. The v2 register adds the 13 transcribed Week 10 games and carries the eight played international neutral-site flags; it reconciles 32 of 32 clubs against the official 2026-11-18 standings. The backtest still grades on the 137-game corpus. Which corpus the published metrics use is owner decision P09.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "Open - owner decision P09",
+  "action_requested": "Owner: choose whether the published backtest/leaderboard grades on the frozen 137-game corpus or the v2 150-game register, or publish both with the v2 as the canonical going forward (parallel register recommended until decided)."
  },
  {
   "flag_id": "F116",

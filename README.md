@@ -111,6 +111,21 @@ Five pages added by session `d0d9d19f`, each covering a requirement the earlier 
   published correlation, with each previously published value recomputed from the ledger.
 - **Repository audit** (`docs/repo-audit.html`) — 22 checks against live official pages and recomputations, 0 failing.
 
+### Also new (session 79c9cb37): the v2 verified results feed
+
+- **v2 results feed** (`docs/results.html`, `data/results_feed_v2_2026.csv`, built by
+  `python3 scripts/build_results_feed_v2.py`). The frozen 137-game corpus (weeks 1–9 plus the Week 10 Thursday
+  game) is unchanged; a **parallel v2 register** adds the 13 transcribed Week 10 finals, giving **150 games**
+  through Week 10. Each v2 row carries the eight played international games with `neutral_site = Y` (the ninth,
+  Week 11 Mexico City, is prospective), a per-row verification status, and links to the official game and schedule
+  pages. The register reconciles **32 of 32 clubs** against the official 2026-11-18 standings, and the 13 backfill
+  scores and the international slate were independently re-verified against the live official pages on 2026-11-18
+  (`data/results_feed_v2_checks.csv`, V2-01–V2-12). This closes decision **P09** as a parallel register; the owner
+  still chooses which corpus the published backtest grades on (flag F110).
+- **F106 fixed** (`scripts/verify_results.py`). The verdict now prints the standings-read date and **fails** when
+  that read is older than the newest game in the feed; `data/standings_2026_snapshot.csv` carries a
+  `read_date_utc` provenance column (W/L/T/PF/PA values unchanged).
+
 ## The model, briefly
 
 `scripts/model.py` fits one ridge-regularised least-squares system on points scored:
