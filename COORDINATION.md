@@ -2674,3 +2674,13 @@ verification"), while this session's contribution is the *independent* control �
 **Rule for the next session, from two collisions on one day:** a dated register written by a hand-run script must
 carry the session id in its filename until an integration session has merged it. `live_reverification_<date>.csv`
 was claimed twice within an hour because the name encodes the date and nothing else.
+
+## 2026-11-18 · session `5ddea67f` · claim (T108)
+
+**Branch:** `arena/5ddea67f-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67) · **Owner:** `5ddea67f` · **Status:** active
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T108 | Independent re-check of the Week 10 results gap (F95/F96/P09) from the committed raw captures, plus an environment and base-state audit; record the result and the owner decision still open. No data, model or rating changes. | in progress | 5ddea67f | `COORDINATION.md` only | `data/verification_inputs/standings_2026-11-18_raw.psv` (official standings read), `data/verification_inputs/week10_games_2026-11-18_raw.psv` (official by-week read), `data/games_week10_backfill_2026.csv`, `data/results_feed.csv`; links https://www.nfl.com/standings/ and https://www.nfl.com/schedules/2026/by-week/week-10 |
+
+**Scope note.** Live official pages could not be fetched from this sandbox (`nfl.com` returns no response; the sandbox allow-list is GitHub, npm and PyPI). Every check below therefore runs against the raw captures already committed to the repository, not against a fresh fetch.
