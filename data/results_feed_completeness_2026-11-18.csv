@@ -1,0 +1,33 @@
+team_abbr,team_name,feed_games,feed_record,feed_pf_pa,official_games_2026_11_18,official_record_2026_11_18,official_pf_pa_2026_11_18,games_missing_from_feed,points_for_missing,points_against_missing,feed_plus_backfill_matches_official,feed_as_published_matches_official,official_standing_block_row,source_url,backfill_source_url
+ATL,Atlanta Falcons,9,3-6-0,188/223,10,3-7-0,201/258,1,13,35,yes,no,NFC block 3 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+AZ,Arizona Cardinals,9,3-6-0,178/255,10,3-7-0,184/289,1,6,34,yes,no,NFC block 4 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+BAL,Baltimore Ravens,9,4-5-0,189/236,10,4-6-0,209/259,1,20,23,yes,no,AFC block 2 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+BUF,Buffalo Bills,8,7-1-0,256/187,9,8-1-0,287/199,1,31,12,yes,no,AFC block 1 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+CAR,Carolina Panthers,8,3-5-0,199/219,9,4-5-0,219/236,1,20,17,yes,no,NFC block 3 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+CHI,Chicago Bears,9,7-2-0,241/184,9,7-2-0,241/184,0,0,0,yes,yes,NFC block 2 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+CIN,Cincinnati Bengals,8,6-2-0,240/175,9,7-2-0,278/193,1,38,18,yes,no,AFC block 2 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+CLE,Cleveland Browns,9,5-4-0,161/196,10,6-4-0,188/220,1,27,24,yes,no,AFC block 2 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+DAL,Dallas Cowboys,9,4-5-0,246/236,10,4-6-0,286/282,1,40,46,yes,no,NFC block 1 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+DEN,Denver Broncos,9,7-2-0,198/186,9,7-2-0,198/186,0,0,0,yes,yes,AFC block 4 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+DET,Detroit Lions,8,6-2-0,222/189,9,7-2-0,257/199,1,35,10,yes,no,NFC block 2 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+GB,Green Bay Packers,9,6-3-0,216/191,10,6-4-0,226/221,1,10,30,yes,no,NFC block 2 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+HOU,Houston Texans,8,3-5-0,209/192,9,3-6-0,233/219,1,24,27,yes,no,AFC block 3 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+IND,Indianapolis Colts,9,2-7-0,184/249,10,3-7-0,208/271,1,24,22,yes,no,AFC block 3 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+JAX,Jacksonville Jaguars,8,6-2-0,229/121,9,7-2-0,269/144,1,40,23,yes,no,AFC block 3 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+KC,Kansas City Chiefs,8,6-2-0,202/143,9,7-2-0,237/156,1,35,13,yes,no,AFC block 4 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+LA,Los Angeles Rams,9,5-4-0,214/181,10,6-4-0,248/187,1,34,6,yes,no,NFC block 4 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+LAC,Los Angeles Chargers,8,0-8-0,121/219,9,1-8-0,144/239,1,23,20,yes,no,AFC block 4 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+LV,Las Vegas Raiders,9,4-5-0,238/268,10,4-6-0,251/289,1,13,21,yes,no,AFC block 4 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+MIA,Miami Dolphins,8,1-7-0,126/200,9,1-8-0,148/224,1,22,24,yes,no,AFC block 1 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+MIN,Minnesota Vikings,8,6-2-0,146/116,9,7-2-0,176/126,1,30,10,yes,no,NFC block 2 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+NE,New England Patriots,9,5-4-0,211/207,10,5-5-0,221/242,1,10,35,yes,no,AFC block 1 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+NO,New Orleans Saints,8,3-5-0,185/216,9,3-6-0,202/236,1,17,20,yes,no,NFC block 3 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+NYG,New York Giants,9,5-3-1,203/196,9,5-3-1,203/196,0,0,0,yes,yes,NFC block 1 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+NYJ,New York Jets,9,2-7-0,182/223,10,2-8-0,194/254,1,12,31,yes,no,AFC block 1 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+PHI,Philadelphia Eagles,9,2-7-0,148/221,9,2-7-0,148/221,0,0,0,yes,yes,NFC block 1 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+PIT,Pittsburgh Steelers,8,6-2-0,180/144,9,6-3-0,198/182,1,18,38,yes,no,AFC block 2 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+SEA,Seattle Seahawks,9,5-4-0,202/162,10,6-4-0,223/175,1,21,13,yes,no,NFC block 4 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+SF,San Francisco 49ers,8,7-1-0,235/156,9,8-1-0,281/196,1,46,40,yes,no,NFC block 4 row 1,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+TB,Tampa Bay Buccaneers,9,3-6-0,202/178,9,3-6-0,202/178,0,0,0,yes,yes,NFC block 3 row 2,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+TEN,Tennessee Titans,8,1-7-0,144/199,9,1-8-0,167/239,1,23,40,yes,no,AFC block 3 row 4,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10
+WAS,Washington Commanders,9,3-5-1,196/223,9,3-5-1,196/223,0,0,0,yes,yes,NFC block 1 row 3,https://www.nfl.com/standings/,https://www.nfl.com/schedules/2026/by-week/week-10

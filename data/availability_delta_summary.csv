@@ -1,0 +1,13 @@
+metric,value,basis,source_url
+rows_in_capture_2026_11_14,345,data/verification_inputs/injuries_2026-11-14.tsv,https://www.nfl.com/injuries/
+rows_in_capture_2026_11_18,347,data/verification_inputs/injuries_2026-11-18.tsv,https://www.nfl.com/injuries/
+rows_added_between_reads,2,two dated reads,https://www.nfl.com/injuries/
+rows_removed_between_reads,0,two dated reads,https://www.nfl.com/injuries/
+practice_status_changes,7,two dated reads,https://www.nfl.com/injuries/
+game_status_changes,13,two dated reads,https://www.nfl.com/injuries/
+injury_text_changes,13,two dated reads,https://www.nfl.com/injuries/
+players_unchanged,328,two dated reads,https://www.nfl.com/injuries/
+clubs_with_any_change,4,two dated reads,https://www.nfl.com/injuries/
+clubs_listed,28 of 32,"Week 10 report: 28 clubs played, 4 were on bye",https://www.nfl.com/injuries/
+week_label_rendered_on_2026_11_18,WEEK 10,"the page heading, four days after the Week 10 games and the day before Week 11 kicks off",https://www.nfl.com/injuries/
+published_snapshot_rows,345,data/injuries_week10_2026.csv equals CAP-01 exactly,https://www.nfl.com/injuries/

@@ -1,0 +1,33 @@
+team_abbr,team_name,record_2026_11_14,record_2026_11_18,wins_change,losses_change,net_points_2026_11_14,net_points_2026_11_18,net_points_change,standing_position_2026_11_18,availability_changes_between_captures,rating_refit_in_this_session,source_url,availability_source_url
+ATL,Atlanta Falcons,3-6-0,3-7-0,0,1,-35,-57,-22,NFC block 3 row 4,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+AZ,Arizona Cardinals,3-6-0,3-7-0,0,1,-77,-105,-28,NFC block 4 row 4,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+BAL,Baltimore Ravens,4-5-0,4-6-0,0,1,-47,-50,-3,AFC block 2 row 4,4,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+BUF,Buffalo Bills,7-1-0,8-1-0,1,0,69,88,19,AFC block 1 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+CAR,Carolina Panthers,3-5-0,4-5-0,1,0,-20,-17,3,NFC block 3 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+CHI,Chicago Bears,7-2-0,7-2-0,0,0,57,57,0,NFC block 2 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+CIN,Cincinnati Bengals,6-2-0,7-2-0,1,0,65,85,20,AFC block 2 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+CLE,Cleveland Browns,5-4-0,6-4-0,1,0,-35,-32,3,AFC block 2 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+DAL,Dallas Cowboys,4-5-0,4-6-0,0,1,10,4,-6,NFC block 1 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+DEN,Denver Broncos,7-2-0,7-2-0,0,0,12,12,0,AFC block 4 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+DET,Detroit Lions,6-2-0,7-2-0,1,0,33,58,25,NFC block 2 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+GB,Green Bay Packers,6-3-0,6-4-0,0,1,25,5,-20,NFC block 2 row 4,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+HOU,Houston Texans,3-5-0,3-6-0,0,1,17,14,-3,AFC block 3 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+IND,Indianapolis Colts,2-7-0,3-7-0,1,0,-65,-63,2,AFC block 3 row 3,1,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+JAX,Jacksonville Jaguars,6-2-0,7-2-0,1,0,108,125,17,AFC block 3 row 1,1,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+KC,Kansas City Chiefs,6-2-0,7-2-0,1,0,59,81,22,AFC block 4 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+LA,Los Angeles Rams,5-4-0,6-4-0,1,0,33,61,28,NFC block 4 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+LAC,Los Angeles Chargers,0-8-0,1-8-0,1,0,-98,-95,3,AFC block 4 row 4,13,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+LV,Las Vegas Raiders,4-5-0,4-6-0,0,1,-30,-38,-8,AFC block 4 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+MIA,Miami Dolphins,1-7-0,1-8-0,0,1,-74,-76,-2,AFC block 1 row 4,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+MIN,Minnesota Vikings,6-2-0,7-2-0,1,0,30,50,20,NFC block 2 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+NE,New England Patriots,5-4-0,5-5-0,0,1,4,-21,-25,AFC block 1 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+NO,New Orleans Saints,3-5-0,3-6-0,0,1,-31,-34,-3,NFC block 3 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+NYG,New York Giants,5-3-1,5-3-1,0,0,7,7,0,NFC block 1 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+NYJ,New York Jets,2-7-0,2-8-0,0,1,-41,-60,-19,AFC block 1 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+PHI,Philadelphia Eagles,2-7-0,2-7-0,0,0,-73,-73,0,NFC block 1 row 4,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+PIT,Pittsburgh Steelers,6-2-0,6-3-0,0,1,36,16,-20,AFC block 2 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+SEA,Seattle Seahawks,5-4-0,6-4-0,1,0,40,48,8,NFC block 4 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+SF,San Francisco 49ers,7-1-0,8-1-0,1,0,79,85,6,NFC block 4 row 1,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+TB,Tampa Bay Buccaneers,3-6-0,3-6-0,0,0,24,24,0,NFC block 3 row 2,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+TEN,Tennessee Titans,1-7-0,1-8-0,0,1,-55,-72,-17,AFC block 3 row 4,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/
+WAS,Washington Commanders,3-5-1,3-5-1,0,0,-27,-27,0,NFC block 1 row 3,0,no — model ratings are not re-fit here (see flag),https://www.nfl.com/standings/,https://www.nfl.com/injuries/

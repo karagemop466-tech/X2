@@ -1,0 +1,9 @@
+metric,value,basis,result,source_url
+games_in_published_results_feed,137,"data/games_2026_results.csv row count; per week: w1=16, w2=16, w3=16, w4=16, w5=15, w6=14, w7=14, w8=14, w9=15, w10=1",measured,https://github.com/karagemop466-tech/X2/blob/main/data/games_2026_results.csv
+games_in_feed_through_week_9,136,"weeks 1-9 as held in the feed: w1=16, w2=16, w3=16, w4=16, w5=15, w6=14, w7=14, w8=14, w9=15",the brief's 136-game log is the through-Week-9 log,https://www.nfl.com/schedules/2026/by-week/week-10
+week_10_slate_games_official,14,the official Week 10 schedule page lists 14 final games plus 4 byes,verified 2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-10
+week_10_games_in_feed,1,only the Thursday Nov 12 game carries a score in the feed,gap: 13 settled games absent,https://www.nfl.com/schedules/2026/by-week/week-10
+games_implied_by_official_standings,150,"today's standings read: 149 wins, 149 losses, 2 ties = 300 team-games = 150 games",137 + 13 = 150 reconciles,https://www.nfl.com/standings/
+feed_plus_backfill_reconciles_all_32_clubs,yes,"every club's W-L-T, points for and points against equal the official standings after adding the 13 rows",pass,https://www.nfl.com/standings/
+feed_as_published_reconciles,no — 26 of 32 clubs short,the 2026-11-14 'all 32 teams reconcile' check compared the feed with a standings read taken before the Week 10 Sunday games,"irregularity: the reconciliation was stale, not the arithmetic",https://www.nfl.com/standings/
+backtest_corpus_effect,"89 walk-forward games, Week 10 contributes 1","data/model_backtest.csv is graded on the same feed, so the newest out-of-sample week is a single game",flagged for the owner; no metric recomputed here,https://github.com/karagemop466-tech/X2/blob/main/data/model_backtest.csv

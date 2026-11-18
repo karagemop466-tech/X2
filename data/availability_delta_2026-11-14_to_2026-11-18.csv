@@ -1,0 +1,20 @@
+team_abbr,player,position,practice_2026_11_14,practice_2026_11_18,game_status_2026_11_14,game_status_2026_11_18,injury_2026_11_14,injury_2026_11_18,change,player_url,source_url
+BAL,Adam Randall,RB,Full Participation in Practice,Full Participation in Practice,,Questionable,,"Neck, Hamstring",changed:game_status+injury,,https://www.nfl.com/injuries/
+BAL,Calais Campbell,DT,,Did Not Participate In Practice,,,,,row_added,,https://www.nfl.com/injuries/
+BAL,Jaylinn Hawkins,S,Limited Participation in Practice,Limited Participation in Practice,,Out,,Knee,changed:game_status+injury,,https://www.nfl.com/injuries/
+BAL,Ronnie Stanley,T,,Did Not Participate In Practice,,,,,row_added,,https://www.nfl.com/injuries/
+IND,Arden Key,DE,Full Participation in Practice,Full Participation in Practice,Questionable,,Hamstring,,changed:game_status+injury,,https://www.nfl.com/injuries/
+JAX,Chris Rodriguez Jr.,RB,Limited Participation in Practice,Did Not Participate In Practice,,,,,changed:practice_status,,https://www.nfl.com/injuries/
+LAC,Branson Taylor,G,Did Not Participate In Practice,Did Not Participate In Practice,,Out,,Ankle,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Brenen Thompson,WR,Did Not Participate In Practice,Did Not Participate In Practice,,Doubtful,,Hamstring,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Bud Dupree,DE,Did Not Participate In Practice,Full Participation in Practice,,,,,changed:practice_status,,https://www.nfl.com/injuries/
+LAC,David Njoku,TE,Limited Participation in Practice,Full Participation in Practice,,Questionable,,Fibula,changed:practice_status+game_status+injury,,https://www.nfl.com/injuries/
+LAC,Denzel Perryman,LB,Full Participation in Practice,Full Participation in Practice,,Questionable,,Pectoral,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Isas Waxter,CB,Did Not Participate In Practice,Did Not Participate In Practice,,Out,,Ankle,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Justin Eboigbe,DE,Limited Participation in Practice,Limited Participation in Practice,,Questionable,,Ankle,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Kayode Awosika,G,Limited Participation in Practice,Full Participation in Practice,,Questionable,,Fibula,changed:practice_status+game_status+injury,,https://www.nfl.com/injuries/
+LAC,Keaton Mitchell,RB,Limited Participation in Practice,Full Participation in Practice,,,,,changed:practice_status,,https://www.nfl.com/injuries/
+LAC,Kendall Williamson,S,Did Not Participate In Practice,Did Not Participate In Practice,,Out,,Calf,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Ladd McConkey,WR,Did Not Participate In Practice,Did Not Participate In Practice,,Questionable,,Back,changed:game_status+injury,,https://www.nfl.com/injuries/
+LAC,Rodney Shelley,CB,Limited Participation in Practice,Full Participation in Practice,,,,,changed:practice_status,,https://www.nfl.com/injuries/
+LAC,Trey Pipkins,T,Did Not Participate In Practice,Limited Participation in Practice,,Questionable,,"Not injury related - personal matter, Knee",changed:practice_status+game_status+injury,,https://www.nfl.com/injuries/
