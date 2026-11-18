@@ -2785,3 +2785,11 @@ The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 
 **Irregularities for the Flagged for Review page (already present, not newly raised):** F88 (the 136 / 137 count note is stale for 2026-11-18), F95 (IND Arden Key blank status on the 2026-11-18 read), F96 (results feed frozen at 137 vs 150 official games). Owner decision still open: **P09**.
 
 **Handoff for the next session:** nothing is claimed beyond T110. If P09 is recorded as "adopt", the splice and re-fit must follow `scripts/results_feed_completeness.py` and re-run `scripts/forecast_records.py` (which refuses to run unless every published line reproduces).
+
+### PR and deployment record — session 5ddea67f (T110), recorded 2026-11-18
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/70 — "T108: Week 10 results re-check and session record" (`arena/5ddea67f-x2` → `main`; COORDINATION.md only). Its title still reads T108 because the title edit did not apply; the content is T110.
+- **Merge result:** merged with a merge commit (`gh pr merge 70 --merge`) at 2026-11-18T04:46:14Z → `f1e6d05`. The first merge attempt failed (mergeable: CONFLICTING) because PR #69 (session `5a5c1a1d`) had landed a different task also numbered T108; the claim was renumbered to T110 and rebased onto `main` with both entries kept. No other session's work was discarded.
+- **Pages:** build of `d922116` (which includes `f1e6d05`) status `built` at 2026-11-18T04:47–04:48Z; live at https://karagemop466-tech.github.io/X2/.
+- **Collision logged (for the board):** T108 is used by two tasks in this log (session `5a5c1a1d`: Week 11 venues, merged; session `5ddea67f`: this check, now T110). Future claims should check `grep "| T1" COORDINATION.md` on current `main` before writing an ID.
+- **Open, not blocked:** owner decision P09 (splice the 13 official Week 10 games and re-fit) is still open. F88, F95 and F96 remain on the Flagged for Review page.
