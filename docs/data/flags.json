@@ -896,8 +896,8 @@
   "item": "A 'reconciles against the standings' claim was checked against a stale standings read",
   "detail": "The published claim that all 137 games reconcile with the official standings for all 32 teams (docs/verification.html, and the standing output of scripts/verify_results.py: 'All teams reconcile exactly with the official standings') was made against data/standings_2026_official_read_20261114.csv, a read taken before the Week 10 Sunday games (it shows BUF 7-1, NE 5-4, DET 6-2). The feed and that read were consistent with each other and stale in the same direction; re-read on 2026-11-18 the same comparison fails for 26 clubs. A reconciliation between two surfaces read on the same day, one of which was produced from the other, is weaker than it looks: it proves internal arithmetic, not currency.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Irregularity - open",
-  "action_requested": "Rule for verification records: print the read timestamp of the checked data and of the checking source, and warn when the source read is older than the newest game in the data. scripts/verify_results.py is outside this session's scope - the change is requested in COORDINATION.md rather than made here."
+  "status": "Resolved 2026-11-18 (session 60c8c865, T112)",
+  "action_requested": "Done: scripts/verify_results.py now prints the read date of the checked data (feed verified_on 2026-11-14; newest game 2026-11-12) and of the checking source (standings read 2026-11-14), applies the F106 staleness rule, and additionally reconciles the feed against the newer official read of 2026-11-18: 26 of 32 clubs differ (the warning), while feed plus the 13-game official Week 10 tranche matches 32 of 32 (the gap is fully explained). Exit code stays 0 only when the primary reconciliation and the explained-gap check both pass. RF07 in data/results_feed_checks.csv now carries the currency warning verbatim (re-run of scripts/desk.py)."
  },
  {
   "flag_id": "F107",
