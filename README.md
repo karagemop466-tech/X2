@@ -199,7 +199,7 @@ reconciled by picking a winner.
   points from those games reproduces the official standings exactly for all 32 teams; the check is
   `scripts/verify_results.py`.
 - The Week 11 lines were fitted before Week 10's Sunday games were played; re-run `scripts/model.py` afterwards (F36).
-- Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 14 November 2026 (UTC); the repository contains 345 rows across 28 teams and 14 listed games.
+- Snapshot source: [NFL Week 10 injury report](https://www.nfl.com/injuries/), read 18 November 2026 (UTC) by a full re-read of all eight chunks; the repository contains 347 rows across 28 teams and 14 listed games. This replaces the 14 November register of 345 rows (F94); the changes are in `data/captures/injury_delta_2026-11-18.csv`.
 - **Snapshot verification ledger (T88 takeover):** `python3 scripts/verify_snapshot.py` re-compares the committed snapshot with a stored field-by-field transcription of the official page: 345 of 345 rows match on position, injury, practice status and game status (1,380 comparisons, 0 mismatches), plus all 14 games, the 4 bye teams and all 345 player links (90 checks: 87 PASS, 1 CONFIRMED, 1 NEW EVIDENCE, 1 REVIEW, 0 FAIL). Residual limitation: that transcription was produced in the same session as the snapshot, so a shared misreading would not be detected — logged as **F80**; two further independent passes against the live page (sessions 30beeb55 and 7c9eb69a) reached the same result. Reproduce with `python3 scripts/verify_snapshot.py`; see `docs/verification.html`.
 - **Starter identity is officially verifiable after the game (T88 takeover).** The NFL publishes no pregame depth chart and the official roster page has no depth column, so a “1st/2nd/3rd/4th string” rank cannot be sourced (F06). The official NFL gamebook does publish the starting lineup by slot, the substitutions, the Did Not Play list and the Not Active list. Nineteen such rows from the Week 10 Commanders at Giants gamebook are recorded in `data/starters_gamebook_2026_reg_10.csv` and on `docs/starters.html` — logged as **F78**; the gamebook carries its own use restriction (**F79**). A single gamebook does not establish pregame depth order. Every row and every game header was independently re-verified against the live page on 2026-11-14 with no discrepancies found (Flag F20). A separate session (30beeb55, T15) reached the same result independently; the manual-transcription limitation is retained (F10).
 - The [official NFL Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10) confirms CHI, DEN, PHI and TB were on bye; this is not inferred from injury-report absence.
@@ -210,11 +210,10 @@ reconciled by picking a winner.
 
 ## Verification, this session
 
-A second, independent transcription of the same official pages was made on 2026-11-14 and compared row by row
-(`scripts/verify_live.py`, inputs in `data/verification_inputs/`). **75 of 75 units matched with 0 discrepancies:**
-all 345 injury rows across 28 teams (injury, practice status and game status identical), all 32 standings lines on
-W-L-T-PF-PA, all 13 Week 11 games on day, kickoff time and network, and the 6-team bye list. Results in
-`data/live_reverification_2026-11-14.csv`; flag F69.
+The 18 November 2026 re-read of the Week 10 injury page (347 rows) was compared with the register by script
+(`scripts/verify_live.py`, inputs in `data/verification_inputs/`): **75 of 75 units matched.** This is a consistency check only: both
+inputs come from the same 18 November transcription, so it is not independent verification. The 14 November "no discrepancies"
+result is superseded (F94). Results are in `data/live_reverification_2026-11-14.csv`.
 
 Gate G1 is no longer a constant `True` (that was flag F50). It now runs ten checks in `scripts/model.py` —
 strictly-earlier training weeks, a from-scratch refit that reproduces archived predictions exactly, and an

@@ -6,7 +6,7 @@ who are Out or Doubtful according to a club depth chart, and the replacements na
 
 Inputs (all in data/):
   standings_2026_week10.csv          the 32 clubs (names)
-  injuries_week10_2026.csv           the official Week 10 injury report, 345 rows
+  injuries_week10_2026.csv           the official Week 10 injury report, 347 rows (read 2026-11-18)
   depth_replacement.csv              club-chart replacement register (structured, 33 rows)
   replacement_depth_week10_2026.csv  news/roundup-based register (11 rows; used only as named evidence)
   schedule                           the Week 10 bye list, from the official schedule page
@@ -52,8 +52,8 @@ def main():
         sys.exit(f"expected 32 clubs, found {len(teams)}")
     names = {t["team_abbr"]: t["team_name"] for t in teams}
     inj = read("injuries_week10_2026.csv")
-    if len(inj) != 345:
-        sys.exit(f"expected 345 injury rows, found {len(inj)}")
+    if len(inj) != 347:
+        sys.exit(f"expected 347 injury rows, found {len(inj)}")
     dr = read("depth_replacement.csv")
     art = read("replacement_depth_week10_2026.csv")
 
@@ -151,15 +151,15 @@ def main():
             "chart_url": chart_url.get(t, ""),
         })
 
-    # reconciliation against the official report totals (345 rows: 66 Out, 10 Doubtful, 84 Questionable)
+    # reconciliation against the official report totals (347 rows: 70 Out, 11 Doubtful, 90 Questionable)
     sums = {k: sum(int(r[c]) for r in rows if r[c] != "") for k, c in
             (("Out", "out_count"), ("Doubtful", "doubtful_count"), ("Questionable", "questionable_count"))}
     listed = sum(int(r["listed_players"]) for r in rows if r["listed_players"] != "")
-    if (sums["Out"], sums["Doubtful"], sums["Questionable"], listed) != (66, 10, 84, 345):
+    if (sums["Out"], sums["Doubtful"], sums["Questionable"], listed) != (70, 11, 90, 347):
         sys.exit(f"team totals do not reconcile with the injury report: {sums}, listed {listed}")
     blank_total = sum(int(r["no_game_designation_count"]) for r in rows if r["no_game_designation_count"] != "")
-    if blank_total != 185:
-        sys.exit(f"blank game-status rows do not reconcile: {blank_total} vs 185")
+    if blank_total != 176:
+        sys.exit(f"blank game-status rows do not reconcile: {blank_total} vs 176")
     if sum(1 for r in rows if r["week10_status"].startswith("Bye")) != 4:
         sys.exit("expected 4 bye clubs")
 
