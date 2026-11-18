@@ -947,10 +947,10 @@
  {
   "flag_id": "F112",
   "category": "Strength of evidence - one slate of venues",
-  "item": "Venue transcription is now complete for one slate (13/13) and still blank for the rest of the season",
-  "detail": "F99 recorded 1 of 163 fixtures with a venue read from an official source. T110 transcribed all 13 Week 11 fixtures from their own official game-centre pages, and the neutral-site row was cross-checked against the independent international-games register (SRC-90) and agrees. 150 of 163 fixtures still carry no venue. A fixture-context feature that uses venue for the historical corpus therefore remains blocked, and the register must not be read as season-wide coverage.",
+  "item": "Venue transcription is complete for one slate (13/13) and still blank for the rest of the season",
+  "detail": "F99 recorded 1 of 163 fixtures with a venue read from an official source. T110 transcribed all 13 Week 11 fixtures from their own official game-centre pages, and IND at HOU had already been read, and the neutral-site row was cross-checked against the independent international-games register (SRC-90) and agrees. 149 of 163 fixtures still carry no venue (14 of 163 now read: 13 Week 11 fixtures plus IND at HOU). A fixture-context feature that uses venue for the historical corpus therefore remains blocked, and the register must not be read as season-wide coverage.",
   "source_url": "https://www.nfl.com/games/vikings-at-49ers-2026-reg-11",
-  "status": "Open - coverage 13 of 163",
+  "status": "Open - coverage 14 of 163",
   "action_requested": "Re-run scripts/venues_week11.py once per slate, then state coverage as a number on the page rather than 'in progress'."
  },
  {

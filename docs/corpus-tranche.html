@@ -156,6 +156,37 @@ weekly change.</p>
 fits use only games strictly before their cut-off, the two snapshots cover the same 32 clubs, the availability
 counts recount to the delta file, and each rank column is a permutation of 1–32.</p>
 
+<h2>What this cycle changed, and what it deliberately did not</h2>
+<div class="tiles">
+  <div class="tile"><div class="num">150</div><div class="lbl">games in the published corpus v2 (137 frozen + 13 tranche)</div></div>
+  <div class="tile"><div class="num">0</div><div class="lbl">frozen v1 rows changed</div></div>
+  <div class="tile"><div class="num">13/13</div><div class="lbl">Week 11 venues read from official game centres</div></div>
+  <div class="tile"><div class="num">4</div><div class="lbl">injury routes probed for a Week 11 report (0 found, 1 control working)</div></div>
+  <div class="tile"><div class="num">2</div><div class="lbl">total estimators published per game</div></div>
+  <div class="tile"><div class="num">32</div><div class="lbl">clubs in the weekly diff, both corpus versions</div></div>
+  <div class="tile"><div class="num">4</div><div class="lbl">new flags opened (F110&ndash;F113), none hidden</div></div>
+  <div class="tile"><div class="num">0</div><div class="lbl">market prices invented (no licensed feed exists)</div></div>
+</div>
+<h2>New flags this cycle</h2>
+<table>
+<thead><tr><th>ID</th><th>What it is</th><th>Status</th><th>Source</th></tr></thead>
+<tbody>
+<tr><td>F110</td><td><strong>The sealed pre-kickoff forecast log and the published Week 11 line disagree on one game, and the seal says which is the frozen number</strong></td><td>Irregularity - open (owner decision)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-11" target="_blank" rel="noopener">source</a></td></tr><tr><td>F111</td><td><strong>No Week 11 injury report is published on any of four official routes, checked with a working control</strong></td><td>Open - absence verified, feature blocked</td><td><a href="https://www.nfl.com/injuries/league/2026/reg11" target="_blank" rel="noopener">source</a></td></tr><tr><td>F112</td><td><strong>Venue transcription is complete for one slate (13/13) and still blank for the rest of the season</strong></td><td>Open - coverage 14 of 163</td><td><a href="https://www.nfl.com/games/vikings-at-49ers-2026-reg-11" target="_blank" rel="noopener">source</a></td></tr><tr><td>F113</td><td><strong>The fitted home-field term enters the model total, so the total is not venue-neutral</strong></td><td>Open - owner decision, no published number changed</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/model.py" target="_blank" rel="noopener">source</a></td></tr>
+</tbody>
+</table>
+<h2>New sources this cycle</h2>
+<div class="tablewrap"><table class="data"><thead><tr><th>ID</th><th>Source</th><th>Link</th><th>Read</th><th>Used for</th></tr></thead><tbody><tr><td>SRC-91</td><td>Official Week 10 schedule 2026 (by-week page)</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Link ↗</a></td><td>2026-11-18</td><td>The 13 settled Week 10 games ingested as the corpus tranche (T108); every tranche row&#x27;s source_url</td></tr><tr><td>SRC-92</td><td>Official NFL standings (current read)</td><td><a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">Link ↗</a></td><td>2026-11-18</td><td>The C3 control for the corpus tranche: 32/32 clubs reconcile with the 150-game corpus, 26/32 with the frozen 137-game feed</td></tr><tr><td>SRC-93</td><td>NFL injury report hub — season/week routes</td><td><a href="https://www.nfl.com/injuries/league/2026/reg11" target="_blank" rel="noopener">Link ↗</a></td><td>2026-11-18</td><td>The T109 negative result: no Week 11 report is published on any of four routes, with reg9 used as a working control</td></tr><tr><td>SRC-94</td><td>Official game centres — Week 11 slate (13 pages)</td><td><a href="https://www.nfl.com/games/colts-at-texans-2026-reg-11" target="_blank" rel="noopener">Link ↗</a></td><td>2026-11-18</td><td>Venue and city for every Week 11 fixture (Game Info block), T110</td></tr></tbody></table></div>
+<h2>Reproduce every number on this page</h2>
+<pre><code>python3 scripts/corpus_v2.py          # build the 150-game tranche, run checks C1-C5
+python3 scripts/corpus_v2_effect.py   # backtest identity + Week 11 line movement + seal checks G1-G3
+python3 scripts/two_estimator_totals.py  # both total estimators, tests S1-S4
+python3 scripts/weekly_diff.py        # the weekly diff, tests W1-W4
+python3 scripts/venues_week11.py      # 13 venues, tests V1-V6
+python3 scripts/week11_report_probe.py   # the four-route probe, tests P1-P3</code></pre>
+<p class="note">Each script exits non-zero and writes nothing when a check fails, so a silent failure is not
+possible. <code>scripts/drift_check.py</code> pins every register's row count and required columns; the pins for
+this cycle's seven new registers are in <code>data/drift_pins.csv</code>.</p>
+
 </main>
 <footer>
   <p>Every value on this site links to an official source or is marked blank/unverified; project implementation claims link to the repository.

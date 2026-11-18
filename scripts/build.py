@@ -3475,6 +3475,47 @@ fits use only games strictly before their cut-off, the two snapshots cover the s
 counts recount to the delta file, and each rank column is a permutation of 1–32.</p>
 """)
 
+# ---------- session db00d539: what this cycle changed, in one place ----------
+_src_last = read_csv("sources.csv")
+_flags_now = read_csv("flags.csv")
+_cycle_flags = [r for r in _flags_now if r["flag_id"] in ("F110", "F111", "F112", "F113")]
+if len(_cycle_flags) != 4:
+    raise SystemExit("BUILD FAILED: the four flags this cycle opened are not all present")
+pages["corpus-tranche.html"] = (pages["corpus-tranche.html"][0], pages["corpus-tranche.html"][1] + f"""
+<h2>What this cycle changed, and what it deliberately did not</h2>
+<div class="tiles">
+  <div class="tile"><div class="num">150</div><div class="lbl">games in the published corpus v2 (137 frozen + 13 tranche)</div></div>
+  <div class="tile"><div class="num">0</div><div class="lbl">frozen v1 rows changed</div></div>
+  <div class="tile"><div class="num">13/13</div><div class="lbl">Week 11 venues read from official game centres</div></div>
+  <div class="tile"><div class="num">4</div><div class="lbl">injury routes probed for a Week 11 report (0 found, 1 control working)</div></div>
+  <div class="tile"><div class="num">2</div><div class="lbl">total estimators published per game</div></div>
+  <div class="tile"><div class="num">32</div><div class="lbl">clubs in the weekly diff, both corpus versions</div></div>
+  <div class="tile"><div class="num">{len(_cycle_flags)}</div><div class="lbl">new flags opened (F110&ndash;F113), none hidden</div></div>
+  <div class="tile"><div class="num">0</div><div class="lbl">market prices invented (no licensed feed exists)</div></div>
+</div>
+<h2>New flags this cycle</h2>
+<table>
+<thead><tr><th>ID</th><th>What it is</th><th>Status</th><th>Source</th></tr></thead>
+<tbody>
+{"".join(f'<tr><td>{r["flag_id"]}</td><td><strong>{r["item"]}</strong></td><td>{r["status"]}</td><td><a href="{r["source_url"]}" target="_blank" rel="noopener">source</a></td></tr>' for r in _cycle_flags)}
+</tbody>
+</table>
+<h2>New sources this cycle</h2>
+{table([r for r in _src_last if r["source_id"] in ("SRC-91", "SRC-92", "SRC-93", "SRC-94")],
+       ['source_id','title','url','accessed_date','used_for'],
+       {'source_id':'ID','title':'Source','url':'Link','accessed_date':'Read','used_for':'Used for'})}
+<h2>Reproduce every number on this page</h2>
+<pre><code>python3 scripts/corpus_v2.py          # build the 150-game tranche, run checks C1-C5
+python3 scripts/corpus_v2_effect.py   # backtest identity + Week 11 line movement + seal checks G1-G3
+python3 scripts/two_estimator_totals.py  # both total estimators, tests S1-S4
+python3 scripts/weekly_diff.py        # the weekly diff, tests W1-W4
+python3 scripts/venues_week11.py      # 13 venues, tests V1-V6
+python3 scripts/week11_report_probe.py   # the four-route probe, tests P1-P3</code></pre>
+<p class="note">Each script exits non-zero and writes nothing when a check fails, so a silent failure is not
+possible. <code>scripts/drift_check.py</code> pins every register's row count and required columns; the pins for
+this cycle's seven new registers are in <code>data/drift_pins.csv</code>.</p>
+""")
+
 # ---------- session db00d539: executive summary entry ----------
 pages["executive-summary.html"] = (pages["executive-summary.html"][0],
     pages["executive-summary.html"][1] + f"""

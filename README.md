@@ -36,6 +36,42 @@ where a source verifies it).
 - **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the official injury counts, the net injury count, starters Out on a club chart and the replacements named there. Bye clubs are shown blank, never as injury-free. Starter order is available for six clubs only. The injury row count is still open (F83; see F89).
 - **Backtest page: controls for every run** (`data/leaderboard_control_runs.csv`, computed by `scripts/baselines.py` from `scripts/model.py`): M1-M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made. Every run must reproduce its published bet count and mean edge, or the build stops. The favourite control is weak on these games (F91).
 
+### Also new (session db00d539): corpus tranche, both total estimators, weekly diff, Week 11 venues
+
+One new page — **Corpus tranche (v1 vs v2)** (`docs/corpus-tranche.html`) — carries four pieces of work that all
+answer the same question: *what can be measured now, and what is still blocked.*
+
+- **The 13 missing games exist as a published tranche without touching the frozen corpus.** `data/corpus_v2_2026.csv`
+  holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10 games transcribed from the
+  official by-week page on 2026-11-18. `scripts/corpus_v2.py` writes nothing unless the v1 rows are unchanged (C1),
+  the tranche equals the transcription (C2), v2 reproduces the 2026-11-18 official standings for 32/32 clubs while v1
+  fails for 26 (C3), the standings imply 150 games arithmetically (C4) and every row carries an official URL (C5).
+  Nothing is adopted: the model still fits the frozen 137, and adoption is proposal P09 (readiness D29, D64).
+- **What adopting it would change is measured, not asserted.** `scripts/corpus_v2_effect.py` shows the backtest cannot
+  move — all 13 added games are in Week 10, so 7/7 walk-forward evaluation weeks have an identical training set,
+  checked row set by row set — while the Week 11 line would move up to 2.33 points on the side and 3.74 on the total,
+  with 0 pre-registered ±3-point gate decisions changing.
+- **An irregularity the check exposed (F110).** The SHA-256 seal on the pre-kickoff forecast log reproduces only when
+  the neutral-site flag is *ignored*, while `model_lines_week11.csv` applies it: on MIN at SF the sealed log froze
+  2.5/38.5 and the published line reads 2.9/38.9. The published line is the correct treatment under F71, so it was not
+  reverted; the seal is what is stale and re-sealing a frozen artefact is an owner decision (two options published).
+- **Both total estimators, every week, with the gap (T112).** `data/two_estimator_totals.csv` publishes the ratings
+  total and the league-average total for all 89 walk-forward games with the gap and which was closer;
+  `data/two_estimator_summary.csv` publishes weekly and pooled comparisons. Pooled MAE 11.08 vs 10.96, paired
+  difference −0.113 (95% game-cluster bootstrap −0.98 to +0.81, sign-flip p 0.80), mean |gap| 3.52 points — the
+  interval spans zero, so no estimator is collapsed and both stay visible. Writing the S1 gate exposed **F113**: the
+  fitted home-field term enters the model *total*, so published totals are not venue-neutral.
+- **A weekly "what changed" diff (T114).** `data/weekly_diff_2026-11-18.csv` gives rank change, rating change and
+  availability change for all 32 clubs, computed on the frozen feed and on the 150-game corpus. On the frozen feed one
+  game separates the two snapshots, so 29 of 32 clubs do not move; on v2 the largest move is SF +2.52 points (rank
+  10 → 5). Availability is labelled a re-read delta inside the Week 10 report, never week-over-week news.
+- **Every Week 11 venue, from the official game centre (T110).** `data/venues_2026.csv` carries all 13 fixtures with a
+  per-row URL, the away/home pair checked against the official schedule and the neutral-site row cross-checked against
+  the independent international-games register. Coverage of the season is 14 of 163 fixtures (F99, F112).
+- **No Week 11 injury report exists yet (F111).** Four routes were read on 2026-11-18 including a control:
+  `/injuries/league/2026/reg9` renders WEEK 9, proving the route works, while the bare hub, `?week=11` and `/reg11`
+  all render WEEK 10. Published as an absence with a date, not filled with the Week 10 report.
+
 ### Also new (session b03f4ba1): controls, two-sided triggers, readiness table
 
 - **Landing page: removal-of-luck panel and decision-readiness table.** The panel shows each strategy's skill, its
@@ -145,6 +181,13 @@ The source register includes official NFL, Japanese government, and NIST referen
 
 ## Build and verification
 
+```bash
+python3 scripts/corpus_v2.py         # build the 150-game tranche; checks C1-C5 must pass
+python3 scripts/corpus_v2_effect.py  # backtest identity, Week 11 line movement, forecast-seal checks G1-G3
+python3 scripts/two_estimator_totals.py  # both total estimators + the collapse rule; tests S1-S4
+python3 scripts/weekly_diff.py       # the weekly rank/rating/availability diff; tests W1-W4
+python3 scripts/venues_week11.py     # 13 Week 11 venues from the official game centres; tests V1-V6
+python3 scripts/week11_report_probe.py   # the four-route Week 11 availability probe; tests P1-P3
 ```bash
 python3 scripts/verify_results.py   # reconcile the 137 games against the official standings
 python3 scripts/verify_snapshot.py  # reproducible field-by-field re-check of the Week 10 snapshot
