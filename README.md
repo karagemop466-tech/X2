@@ -71,7 +71,7 @@ answer the same question: *what can be measured now, and what is still blocked.*
   10 → 5). Availability is labelled a re-read delta inside the Week 10 report, never week-over-week news.
 - **Every Week 11 venue, from the official game centre (T110).** `data/venues_2026.csv` carries all 13 fixtures with a
   per-row URL, the away/home pair checked against the official schedule and the neutral-site row cross-checked against
-  the independent international-games register. Coverage of the season is 14 of 163 fixtures (F99, F112).
+  the independent international-games register. Coverage of the season is 13 of 163 fixtures — the whole Week 11 slate (F99, F112).
 - **No Week 11 injury report exists yet (F111).** Four routes were read on 2026-11-18 including a control:
   `/injuries/league/2026/reg9` renders WEEK 9, proving the route works, while the bare hub, `?week=11` and `/reg11`
   all render WEEK 10. Published as an absence with a date, not filled with the Week 10 report.

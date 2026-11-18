@@ -3369,8 +3369,9 @@ unranked. Reproduce with <code>python3 scripts/corpus_v2_effect.py</code>; regis
 <h2>Week 11 venues, transcribed from the official game centres</h2>
 <p class="note"><strong>Flag F99 is not closed, it is narrowed with a number.</strong> Venue coverage was 1 of 163
 fixtures. All 13 Week 11 fixtures have now been read from their own official game centre (Game Info block: Location,
-Stadium) and published with a per-row URL: coverage is <strong>14 of 163</strong>. The remaining 149 fixtures carry no
-venue and are not inferred from a stadium list (F112). Each row's away/home pair is checked against the official Week 11
+Stadium) and published with a per-row URL: coverage is <strong>13 of 163</strong>. The remaining 150 fixtures carry no
+venue and are not inferred from a stadium list (F112). The pre-existing IND at HOU row was itself a Week 11 fixture, so
+the slate filled in 12 new rows rather than 13 — an earlier draft of this page said 14 and double-counted it. Each row's away/home pair is checked against the official Week 11
 schedule, no venue field may be blank, and the neutral-site row must be outside the designated home team's market.</p>
 {table([r for r in _venues11 if r["week"] == "11"], ['fixture_id','week','away_team','home_team','stadium','location','read_date_utc','verification_status','source_url'],
        {'fixture_id':'Fixture','week':'Week','away_team':'Away','home_team':'Home','stadium':'Stadium','location':'City','read_date_utc':'Read (UTC)','verification_status':'Verification','source_url':'Official game centre'})}
@@ -3542,10 +3543,10 @@ ignored, while the published Week 11 line applies it. On MIN at SF the sealed lo
 line reads 2.9 / 38.9; all twelve other fixtures agree to the decimal. The published line is the correct treatment
 under F71, so it was not reverted — the seal is what is stale, and re-sealing a frozen artefact is an owner decision
 (two options published). Nothing was overwritten.</li>
-<li><strong>Venue coverage is no longer "1 of 163" as a hand-wave; it is 14 of 163, with the slate named.</strong>
+<li><strong>Venue coverage is no longer "1 of 163" as a hand-wave; it is 13 of 163 (the whole Week 11 slate).</strong>
 All 13 Week 11 fixtures were transcribed from their own official game centre (Location and Stadium, Game Info block)
 with a per-row URL, and the neutral-site row is cross-checked against the independent international-games register and
-agrees. The other 149 fixtures remain blank rather than inferred (F99, F112; readiness D26).</li>
+agrees. The other 150 fixtures remain blank rather than inferred (F99, F112; readiness D26).</li>
 <li><strong>The Week 11 injury report does not exist yet on any official route, and that is now a published
 result rather than an absence of effort.</strong> Four routes were read on 2026-11-18 including a control: the reg9
 control renders WEEK 9, proving the route works, while the bare hub, <code>?week=11</code> and
