@@ -3000,7 +3000,7 @@ what was actually resolved, because a renumbering that is not written down is in
 
 | Collision | Resolution |
 |---|---|
-| Task IDs `T108–T111` claimed by `39948feb`, `5a5c1a1d`, `5ddea67f`, `ddeec916` | `f04dda73` renumbered to T114–T119 on `main`. This session renumbers **T110–T113 → T120–T123**. Nothing was dropped; every block survives in this log. |
+| Task IDs `T108–T111` claimed by `39948feb`, `5a5c1a1d`, `5ddea67f`, `ddeec916` | `f04dda73` renumbered to T114–T119 on `main`. This session renumbers **T110–T113 → T125–T128**. Nothing was dropped; every block survives in this log. |
 | Flag IDs `F110–F120` claimed by three sessions (`f04dda73`, `8da77ba6`, `39948feb`) | The two that landed on `main` first keep **F110–F118**. This session's six flags end up at **F119–F124** after a second rebase. The sets are different findings and all are kept. |
 | Source IDs `SRC-91` onward claimed by three sessions | The earlier two keep **SRC-91–SRC-97**. This session's eleven sources end up at **SRC-98–SRC-108**. |
 | Page slug `corpus-v2.html` claimed by both | `f04dda73`'s page keeps the slug. This session's page is **`corpus-v2-full.html`** ("Corpus v2 (150g)"). |
@@ -3015,11 +3015,11 @@ settled by either build. The comparison register is `data/corpus_v2_cross_estima
 `docs/corpus-v2-full.html`. Two independent estimators converging on a number that is *worse* for the project than the
 published one is the strongest evidence this session produced, and neither pipeline would have been convincing alone.
 
-## 2026-11-18 · session `39948feb` · claim (T120–T123)
+## 2026-11-18 · session `39948feb` · claim (T125–T128)
 
 **Owner:** `39948feb` · **Branch:** `arena/39948feb-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged).
 **Checked the board first:** the highest IDs on `main` are T107 (cf85d485), F109, SRC-90, Q66, S50, G20, R64, D64, P09.
-This session therefore claims the free range **T120–T123** and the registers **F110+**, **SRC-91+**, **Q67+**,
+This session therefore claims the free range **T125–T128** and the registers **F110+**, **SRC-91+**, **Q67+**,
 **S51+**, **G21+**, **R65+**, **D65+**.
 
 ### What this session re-derived independently before claiming
@@ -3042,10 +3042,10 @@ This session therefore claims the free range **T120–T123** and the registers *
 
 | ID | Task | Status | Files (scope) | Why |
 |---|---|---|---|---|
-| T120 | **Corpus v2, published beside a frozen v1.** Decision **P09 option B**: splice the 13 verified Week 10 games and the eight settled international-game neutral-site flags into a *parallel* v2 corpus, re-run the whole pipeline on it, and publish v1 and v2 side by side with a version tag. v1 files are never edited. | **done** | `data/corpus_v2/games_2026_results.csv`, `scripts/model_v2.py`, `data/corpus_v2/*.csv`, `docs/corpus-v2.html` | P09 has blocked R38/R64/D62/D64/G20 since 2026-11-18T04:00Z and the brief forbids waiting for a human. Option B is the one option that changes no published number, so it is the only one a session may take unilaterally. |
-| T121 | **Matchup deficiency matrix, 1st–4th string**, as an interactive table: one row per club/unit/position slot, one column per string, every cell either an official-source-verified name or blank with the reason it is blank. | **done** | `data/matchup_matrix_week11.csv`, `scripts/depth_strings.py`, `scripts/matchup.py`, `docs/matchup-matrix.html` + NAV | Explicit brief requirement that has no page. Existing depth pages are exposure counts, not a string matrix. |
-| T122 | **Line-by-line verification pass against live official sources**, with a dated register, and flag every irregularity found (including stale counts inside `data/requirements.csv`). | **done** | `data/verify_39948feb_2026-11-18.csv`, `data/flags.csv` (append F110+), `data/sources.csv` (append SRC-91+) | The brief requires it every session and the corpus claim is now stale. |
-| T123 | **Integration:** rebuild, run every check, PR → `main`, merge, confirm GitHub Pages, record. | runs last | `data/decision_readiness.csv`, `data/requirements.csv`, `README.md`, `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
+| T125 | **Corpus v2, published beside a frozen v1.** Decision **P09 option B**: splice the 13 verified Week 10 games and the eight settled international-game neutral-site flags into a *parallel* v2 corpus, re-run the whole pipeline on it, and publish v1 and v2 side by side with a version tag. v1 files are never edited. | **done** | `data/corpus_v2/games_2026_results.csv`, `scripts/model_v2.py`, `data/corpus_v2/*.csv`, `docs/corpus-v2.html` | P09 has blocked R38/R64/D62/D64/G20 since 2026-11-18T04:00Z and the brief forbids waiting for a human. Option B is the one option that changes no published number, so it is the only one a session may take unilaterally. |
+| T126 | **Matchup deficiency matrix, 1st–4th string**, as an interactive table: one row per club/unit/position slot, one column per string, every cell either an official-source-verified name or blank with the reason it is blank. | **done** | `data/matchup_matrix_week11.csv`, `scripts/depth_strings.py`, `scripts/matchup.py`, `docs/matchup-matrix.html` + NAV | Explicit brief requirement that has no page. Existing depth pages are exposure counts, not a string matrix. |
+| T127 | **Line-by-line verification pass against live official sources**, with a dated register, and flag every irregularity found (including stale counts inside `data/requirements.csv`). | **done** | `data/verify_39948feb_2026-11-18.csv`, `data/flags.csv` (append F110+), `data/sources.csv` (append SRC-91+) | The brief requires it every session and the corpus claim is now stale. |
+| T128 | **Integration:** rebuild, run every check, PR → `main`, merge, confirm GitHub Pages, record. | runs last | `data/decision_readiness.csv`, `data/requirements.csv`, `README.md`, `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
 
 **Not claimed:** licensed market prices (F07/F51 — no licensed feed exists), off-site storage/alerting (D17,
 outside a static host), prior-season injury archives (D08/D20/D45 — not on any official page reachable here),
@@ -3055,10 +3055,10 @@ the data-rights review (F16) and the reward/reward-tier sign-off (F09/F19/F36). 
 
 | Task | Result |
 |---|---|
-| T120 | **Corpus v2 published beside a frozen v1.** The 13 verified Week 10 games plus 8 settled international neutral-site flags form `data/corpus_v2/` (150 games). `scripts/model_v2.py` hashes all 15 v1 outputs, executes `scripts/model.py` unmodified with `DATA` redirected, and fails unless all 15 hashes are unchanged afterwards. 106-metric version comparison at `data/corpus_v2/corpus_version_comparison.csv`; page at `docs/corpus-v2.html`. |
-| T121 | **Matchup deficiency matrix**, 9 clubs / 205 club-position rows / 820 string cells, at `docs/matchup-matrix.html`. Shared and empty cells are preserved as published (`slot_type`), never resolved into a fabricated order. Coverage is published as a table: 1 club refused (HOU, image-only chart), 21 unread, each with its reason. |
-| T122 | **22-check verification register** at `data/verify_39948feb_2026-11-18.csv` (15 PASS, 5 IRREGULAR, 1 FINDING, 1 PARTIAL). Flags **F110–F115** and sources **SRC-91–SRC-101** appended. `data/requirements.csv` corrected on 6 cells by `scripts/fix_requirements.py`, which refuses to run if the stale text it replaces has already changed. |
-| T123 | Rebuilt (49 pages), `check_links` clean (2,575 internal / 5,881 external), `drift_check` 28/28 with the 2 new pins moved deliberately, `repo_audit` A12–A15, PR to `main`. |
+| T125 | **Corpus v2 published beside a frozen v1.** The 13 verified Week 10 games plus 8 settled international neutral-site flags form `data/corpus_v2/` (150 games). `scripts/model_v2.py` hashes all 15 v1 outputs, executes `scripts/model.py` unmodified with `DATA` redirected, and fails unless all 15 hashes are unchanged afterwards. 106-metric version comparison at `data/corpus_v2/corpus_version_comparison.csv`; page at `docs/corpus-v2.html`. |
+| T126 | **Matchup deficiency matrix**, 9 clubs / 205 club-position rows / 820 string cells, at `docs/matchup-matrix.html`. Shared and empty cells are preserved as published (`slot_type`), never resolved into a fabricated order. Coverage is published as a table: 1 club refused (HOU, image-only chart), 21 unread, each with its reason. |
+| T127 | **22-check verification register** at `data/verify_39948feb_2026-11-18.csv` (15 PASS, 5 IRREGULAR, 1 FINDING, 1 PARTIAL). Flags **F110–F115** and sources **SRC-91–SRC-101** appended. `data/requirements.csv` corrected on 6 cells by `scripts/fix_requirements.py`, which refuses to run if the stale text it replaces has already changed. |
+| T128 | Rebuilt (54 pages after merging two other sessions' pages), `check_links` clean (2,900 internal / 6,209 external), `drift_check` all 43 registers match with the 2 new pins moved deliberately, `repo_audit` A12–A15, PR to `main`. |
 
 **The result that matters most is a negative one.** On the complete 150-game corpus the model's MAE improvement
 over the naive reference line is **1.38 points, not 1.74**. The naive line also improves when the missing week is
@@ -3083,7 +3083,7 @@ same three registers collided. What the resolution finally settled on:
 
 | Register | Final ID space for this session | Why |
 |---|---|---|
-| Task IDs | **T120–T123** (claim block left as written, renumbered once) | `f04dda73` took T114–T119 on `main`. |
+| Task IDs | **T125–T128** (claim block left as written, renumbered once) | `f04dda73` took T114–T119 on `main`. |
 | Flags | **F119–F124** (renumbered twice: F115–F120, then F119–F124) | `f04dda73` took F110–F114; `8da77ba6` then took F115–F118. |
 | Sources | **SRC-98–SRC-108** (renumbered twice) | The same two sessions held SRC-91–SRC-97 between them. |
 | Page slug | **`corpus-v2-full.html`** | `f04dda73` owns `corpus-v2.html`. |

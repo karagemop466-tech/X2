@@ -54,7 +54,7 @@ OFFICIAL_HOSTS = {
     # federal source, public domain, added for the venue/weather overlay (T111).
     "api.weather.gov", "www.weather.gov",
     # 2026-11-18 (session 39948feb): the remaining clubs whose OWN depth-chart pages were
-    # read live for the string register (T121). Each is the club's first-party site.
+    # read live for the string register (T126). Each is the club's first-party site.
     "www.buffalobills.com", "www.buccaneers.com", "www.bengals.com", "www.denverbroncos.com",
     "www.chargers.com", "www.panthers.com", "www.commanders.com", "www.jaguars.com",
     "www.newyorkjets.com", "www.philadelphiaeagles.com", "www.steelers.com",
@@ -3751,7 +3751,7 @@ def read_csv_any(paths):
     raise SystemExit(f"BUILD FAILED: none of these data files exist: {paths}")
 
 
-# ===== session 39948feb: corpus v2 + matchup matrix (T110, T111) =====
+# ===== session 39948feb: corpus v2 + matchup matrix (T125, T126) =====
 # Two registers added on 2026-11-18:
 #   data/corpus_v2/*                      the model re-run on the complete 150-game log,
 #                                         published beside the frozen 137-game v1 (P09 option B)
