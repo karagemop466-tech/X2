@@ -2678,6 +2678,34 @@ was claimed twice within an hour because the name encodes the date and nothing e
 ## 2026-11-18 · session `5a5c1a1d` · claim (T108)
 
 **Branch:** `arena/5a5c1a1d-x2` (fixed by Arena; base `main` @ `2db1bd7`, PR #67) · **Owner:** `5a5c1a1d` · **Status:** in progress
+## 2026-11-18 · session `8da77ba6` · claim (T113–T117)
+
+**Branch:** `arena/8da77ba6-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged) · **Status:** active
+
+### What was already done, and what this session therefore does not redo
+
+Before claiming anything I re-ran the whole existing check set on a clean tree at `2db1bd7` and read the
+registers. All of it passes today: `build.py` (47 pages, link and row-source guards), `check_links.py`
+(2 379 internal / 5 133 external, none broken), `drift_check.py` (28/28 registers), `repo_audit.py`
+(22 checks, 0 failing), `verify_results.py` (137 games, 32/32 clubs reconcile), `verify_snapshot.py`
+(103 pass, 0 fail, 1 review). The board shows T01–T107 closed or in `needs review`, and the brief's
+item list is carried by 64 requirement rows (R01–R64) with a 64-row readiness mapping. **I am not
+re-doing any of that work, and I am not rewriting another session's registers.**
+
+Two live reads this session establish the starting facts for my scope:
+
+- `https://www.nfl.com/injuries/` (2026-11-18) still renders **WEEK 10**, and
+  `https://www.nfl.com/injuries/league/2026/reg11` **also renders WEEK 10** — the hub rewrites the URL
+  to reg10 and serves the Week 10 report. This confirms F94's week-label drift hazard from a second
+  session, independently. The three Detroit designations the brief calls missing (Kerby Joseph, Cade
+  Mays, D.J. Reed) are present as **Out** in the live table and in the published register — that brief
+  item is satisfied by the 2026-11-18 re-capture and needs no further edit (VR-08/VR-12 checked).
+- `https://www.packers.com/team/depth-chart` (read 2026-11-18, self-labelled "Unofficial, Nov. 10,
+  2026") reproduces **both** parsing hazards the brief names: every player cell is prefixed with a
+  jersey number (`9 Christian Watson`), and slots are **shared** (`S: 29 Xavier McKinney | 27 Kitan
+  Oladapo` and `S: 33 Evan Williams | 27 Kitan Oladapo` — one player occupies rank 2 in two slots) and
+  **empty** (`WR: 83 Savion Williams | |`, `PR: | 0 Matthew Golden |`). A correct parser must strip
+  numbers, keep the raw string, and model a slot as a *set* of rank-1 players, not a single starter.
 
 ### Task board (this session)
 
@@ -2918,3 +2946,36 @@ winner:
   next session does not have to rediscover it.
 - **Open, unchanged, published on the ranked queue:** P09 second half (refresh the frozen Week 11 lines?), F16 data
   rights, F09/F19 legal review, F07/F51 licensed price feed. None was resolved by this session and none blocks the merge.
+| T120 | **Depth-chart parser hardening + slot-as-group model.** Fix the two named parse failures (jersey-number prefix; empty and shared slots) mechanically, keep the raw cell string, and publish the Packers chart as a worked 32-club-ready example with the number-strip and group-slot rules asserted by a test. Do **not** transcribe the Texans image by eye. | in progress | 8da77ba6 | `scripts/depth_parse.py` (new), `data/depth_chart_cells_2026-11-18_packers.csv` (new), `data/flags.csv` (append), generated `docs/**` | `https://www.packers.com/team/depth-chart` (read 2026-11-18, "Unofficial, Nov. 10, 2026"); `https://www.texans.com/team/depth-chart` (image check only — no transcription) |
+| T121 | **Roster/IR discrepancy sweep, 32 clubs.** The brief's "run the 32-team roster/IR sweep before any team-level model is trusted" and its Baltimore/Seattle/Miami examples: check each club's published roster for players the club still lists while the injury hub or an official transaction says otherwise. Publish one row per club with the verdict and the source, blanks where unverified. | in progress | 8da77ba6 | `scripts/roster_sweep.py` (new), `data/roster_ir_sweep_2026-11-18.csv` (new), `data/sources.csv` (append), generated `docs/**` | `https://www.nfl.com/teams/<club>/roster`, `https://www.nfl.com/injuries/`, official club news |
+| T122 | **Two-estimator publication with the gap column, until one wins.** The brief asks for every model total to be published twice with the gap, collapsing only after a walk-forward comparison. Publish estimator B (a second, independent construction) beside the existing total for every Week 11 game with the gap, and the walk-forward comparison that says which one wins — including "neither" as a possible answer. | in progress | 8da77ba6 | `scripts/two_estimators.py` (new), `data/model_totals_two_estimators_week11.csv` (new), `data/estimator_walkforward_2026.csv` (new), generated `docs/**` | `data/model_backtest.csv`, `data/games_2026_results.csv` (official results already reconciled) |
+| T123 | **NWS/stadium-roof fixture overlay, sourced not inferred.** Roof status from the official game-centre Stadium block (blank where the block is absent) and hourly wind/precipitation from the US Government's NWS API for the outdoor venues, with the read timestamp. Any venue whose coordinates are unknown stays blank and flagged. | in progress | 8da77ba6 | `scripts/weather_overlay.py` (new), `data/weather_roof_week11_2026-11-18.csv` (new), generated `docs/**` | `https://www.weather.gov/documentation/services-web-api`, `https://api.weather.gov/` (US Government, public domain); `https://www.nfl.com/games/<slug>` Stadium block |
+| T124 | **Integration.** Rebuild, run every check, `git pull --rebase`, PR `arena/8da77ba6-x2` → `main`, merge, confirm GitHub Pages, record the PR and result here. | pending | 8da77ba6 | `COORDINATION.md`, generated `docs/**`, PR | first-party GitHub records |
+
+**Explicitly out of scope** (claimed or owned elsewhere, or blocked by a decision I must not make):
+the price-data licence (P01/DEC-01), the Week 10 corpus splice (P09), the data-rights review (F16), the
+Netherlands/Japan legal question (F19/F09), every numeric gate threshold awaiting owner approval (F17),
+and every existing register another session authored. Where my work touches one of those, it is
+recorded as a dependency in the row, not decided.
+
+**Claimed and pushed before any file outside `COORDINATION.md` was written**, per the board rule.
+
+**ID renumbering (collision resolved, nothing discarded).** Session `5a5c1a1d` claimed
+T108/T109 on `main` (PR #73) for the Week 11 venue transcription and the Lions designations
+before this branch was rebased, so this session's four tasks move to **T120–T124** (final, after three collision waves).
+The two sessions' venue work is complementary and both are kept: `5a5c1a1d` published
+`data/venues_2026.csv` (13 Week 11 rows: stadium + location + source) and this session published
+`data/venue_roof_surface_week11_2026-11-18.csv` (the same 13 venues plus the measured finding that
+the official page carries **no roof and no surface** field, the NWS overlay, and the checks).
+The two transcriptions agree on all 13 stadium names and locations — an independent cross-check.
+
+**ID renumbering, recorded so no task ID is ever ambiguous.** Three earlier collision waves:
+session `5a5c1a1d` claimed T108/T109 (Week 11 venue transcription, Lions designations); then a third
+session held T110/T111 (venue transcription); a fourth held **T114–T119**. So this session's four
+tasks are finally **T120–T124**: T120 depth-chart parsing, T121 roster/IR sweep, T122 three published
+totals, T123 venue/roof/weather, T124 integration. **Nothing from any other session was discarded at
+any wave** — the venue work is complementary and both copies are kept on the site:
+`data/venues_2026.csv` (stadium + location + source) from the other session, and
+`data/venue_roof_surface_week11_2026-11-18.csv` from this one (the same 13 venues plus the measured
+finding that the official page carries **no roof and no surface**, plus the NWS overlay and checks).
+The two transcriptions agree on all 13 stadium names and locations — an independent cross-check.
