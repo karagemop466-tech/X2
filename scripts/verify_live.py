@@ -7,6 +7,14 @@ against a **second, independent transcription** of the same official pages, read
 fresh from the live site on a recorded date and stored under
 ``data/verification_inputs/``.
 
+Input dates (2026-11-18 refresh): the injury and Week 11 schedule/bye inputs were
+re-read from the live pages on 2026-11-18 after the injury snapshot was
+re-captured (flag F94). The standings input remains the 2026-11-14 point-in-time
+capture, because the committed standings snapshots in ``data/`` are dated
+2026-11-14 and the live standings page has since advanced past Week 10; comparing
+the committed snapshot against a newer live read would report the passage of time
+as a data error. Each input is matched to the repo state it verifies.
+
 It deliberately does not read the first transcription when comparing: the second
 transcription is a separate file produced from the live page, so agreement
 between the two is evidence and disagreement is a finding.  Nothing is inferred
@@ -15,7 +23,7 @@ match, and a field present in one and absent in the other is a discrepancy.
 
 Outputs
 -------
-``data/live_reverification_2026-11-14.csv``
+``data/live_reverification_2026-11-18.csv``
     One row per checked unit (a team's injury block, a team's standings line,
     a Week 11 game, a bye team) with the official source URL, the row counts on
     each side, and the result.
@@ -30,8 +38,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA = os.path.join(ROOT, "data")
 INPUTS = os.path.join(DATA, "verification_inputs")
 
-AS_OF = "2026-11-14"
+AS_OF = "2026-11-14"  # standings input read date (the committed standings snapshots are dated 2026-11-14)
 INJ_AS_OF = "2026-11-18"  # injury report read date (see data/captures/injury_week10_2026-11-18.meta.json)
+W11_AS_OF = "2026-11-18"  # Week 11 schedule/bye input read date (refreshed 2026-11-18)
 SRC_INJURIES = "https://www.nfl.com/injuries/"
 SRC_STANDINGS = "https://www.nfl.com/standings/"
 SRC_WEEK11 = "https://www.nfl.com/schedules/2026/by-week/week-11"
@@ -176,7 +185,7 @@ for team in sorted(live_st):
 
 # ------------------------------------------------------------ Week 11 slate --
 repo_w11 = read_csv(os.path.join(DATA, "schedule_week11_2026.csv"))
-live_w11 = read_tsv(os.path.join(INPUTS, "week11_schedule_2026-11-14.tsv"))
+live_w11 = read_tsv(os.path.join(INPUTS, "week11_schedule_2026-11-18.tsv"))
 repo_games = {(norm(r["away_team"]), norm(r["home_team"])): r for r in repo_w11}
 live_games = {(norm(r["away_team"]), norm(r["home_team"])): r for r in live_w11}
 
@@ -206,12 +215,12 @@ for key in sorted(set(repo_games) | set(live_games)):
         "extra_in_repo": "" if live else label,
         "field_differences": "; ".join(diffs),
         "result": result,
-        "read_utc": AS_OF,
+        "read_utc": W11_AS_OF,
         "source_url": SRC_WEEK11,
     })
 
 # Bye teams: the official page lists them explicitly, so this is checked, not inferred.
-live_byes = {norm(r["bye_team"]) for r in read_tsv(os.path.join(INPUTS, "week11_byes_2026-11-14.tsv"))}
+live_byes = {norm(r["bye_team"]) for r in read_tsv(os.path.join(INPUTS, "week11_byes_2026-11-18.tsv"))}
 expected_byes = {"ATL", "CLE", "GB", "LA", "NE", "SEA"}
 bye_match = live_byes == expected_byes
 if not bye_match:
@@ -226,7 +235,7 @@ rows.append({
     "extra_in_repo": ",".join(sorted(live_byes - expected_byes)),
     "field_differences": "" if bye_match else "live=%s" % ",".join(sorted(live_byes)),
     "result": "match" if bye_match else "DISCREPANCY",
-    "read_utc": AS_OF,
+    "read_utc": W11_AS_OF,
     "source_url": SRC_WEEK11,
 })
 
@@ -234,14 +243,14 @@ rows.append({
 FIELDS = ["check_id", "unit", "checked_against", "repo_rows", "live_rows",
           "missing_from_repo", "extra_in_repo", "field_differences", "result",
           "read_utc", "source_url"]
-out = os.path.join(DATA, "live_reverification_2026-11-14.csv")
+out = os.path.join(DATA, "live_reverification_2026-11-18.csv")
 with open(out, "w", encoding="utf-8", newline="") as f:
     w = csv.DictWriter(f, fieldnames=FIELDS)
     w.writeheader()
     w.writerows(rows)
 
 matched = sum(1 for r in rows if r["result"] == "match")
-print("Live re-verification, read %s (UTC)" % AS_OF)
+print("Live re-verification (standings read %s; injuries and Week 11 schedule/byes read %s, UTC)" % (AS_OF, INJ_AS_OF))
 print("  units checked : %d" % len(rows))
 print("  matched       : %d" % matched)
 print("  discrepancies : %d" % (len(rows) - matched))

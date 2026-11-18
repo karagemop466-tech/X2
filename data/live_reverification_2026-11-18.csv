@@ -1,29 +1,76 @@
-check_id,unit,checked_against,read_detail,repo_rows,live_rows,missing_from_repo,extra_in_repo,field_differences,repo_equals_2026_11_14_capture,result,read_utc,source_url
-LR18-ATL,ATL Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",11,11,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-AZ,AZ Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",15,15,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-BAL,BAL Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",10,10,,,0,no,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-BUF,BUF Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",14,14,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-CAR,CAR Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",12,12,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-CIN,CIN Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",9,9,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-CLE,CLE Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",12,12,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-DAL,DAL Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",19,19,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-DET,DET Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",9,9,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-GB,GB Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",17,17,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-HOU,HOU Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",16,16,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-IND,IND Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",14,14,,,0,no,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-JAX,JAX Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",11,11,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-KC,KC Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",13,13,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-LAC,LAC Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",19,19,,,0,no,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-LAR,LAR Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",14,14,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-LV,LV Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",5,5,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-MIA,MIA Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",11,11,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-MIN,MIN Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",13,13,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-NE,NE Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",15,15,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-NO,NO Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",12,12,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-NYG,NYG Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",11,11,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-NYJ,NYJ Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",9,9,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-PIT,PIT Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",8,8,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-SEA,SEA Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",15,15,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-SF,SF Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",12,12,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-TEN,TEN Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",12,12,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
-LR18-WAS,WAS Week 10 injury block,https://www.nfl.com/injuries/,"all 8 rendered chunks of the live page, read 2026-11-18; the published table is compared with the corrected CAP-02 payload",9,9,,,0,yes,match,2026-11-18T03:46Z,https://www.nfl.com/injuries/
+check_id,unit,checked_against,repo_rows,live_rows,missing_from_repo,extra_in_repo,field_differences,result,read_utc,source_url
+LR-INJ-ATL,ATL Week 10 injury block,https://www.nfl.com/injuries/,11,11,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-AZ,AZ Week 10 injury block,https://www.nfl.com/injuries/,15,15,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-BAL,BAL Week 10 injury block,https://www.nfl.com/injuries/,10,10,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-BUF,BUF Week 10 injury block,https://www.nfl.com/injuries/,14,14,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-CAR,CAR Week 10 injury block,https://www.nfl.com/injuries/,12,12,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-CIN,CIN Week 10 injury block,https://www.nfl.com/injuries/,9,9,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-CLE,CLE Week 10 injury block,https://www.nfl.com/injuries/,12,12,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-DAL,DAL Week 10 injury block,https://www.nfl.com/injuries/,19,19,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-DET,DET Week 10 injury block,https://www.nfl.com/injuries/,9,9,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-GB,GB Week 10 injury block,https://www.nfl.com/injuries/,17,17,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-HOU,HOU Week 10 injury block,https://www.nfl.com/injuries/,16,16,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-IND,IND Week 10 injury block,https://www.nfl.com/injuries/,14,14,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-JAX,JAX Week 10 injury block,https://www.nfl.com/injuries/,11,11,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-KC,KC Week 10 injury block,https://www.nfl.com/injuries/,13,13,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-LAC,LAC Week 10 injury block,https://www.nfl.com/injuries/,19,19,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-LAR,LAR Week 10 injury block,https://www.nfl.com/injuries/,14,14,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-LV,LV Week 10 injury block,https://www.nfl.com/injuries/,5,5,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-MIA,MIA Week 10 injury block,https://www.nfl.com/injuries/,11,11,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-MIN,MIN Week 10 injury block,https://www.nfl.com/injuries/,13,13,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-NE,NE Week 10 injury block,https://www.nfl.com/injuries/,15,15,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-NO,NO Week 10 injury block,https://www.nfl.com/injuries/,12,12,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-NYG,NYG Week 10 injury block,https://www.nfl.com/injuries/,11,11,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-NYJ,NYJ Week 10 injury block,https://www.nfl.com/injuries/,9,9,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-PIT,PIT Week 10 injury block,https://www.nfl.com/injuries/,8,8,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-SEA,SEA Week 10 injury block,https://www.nfl.com/injuries/,15,15,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-SF,SF Week 10 injury block,https://www.nfl.com/injuries/,12,12,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-TEN,TEN Week 10 injury block,https://www.nfl.com/injuries/,12,12,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-WAS,WAS Week 10 injury block,https://www.nfl.com/injuries/,9,9,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-INJ-TOTAL,"Week 10 injury report, all listed games",https://www.nfl.com/injuries/,347,347,,,,match,2026-11-18,https://www.nfl.com/injuries/
+LR-STD-ATL,"ATL standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-AZ,"AZ standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-BAL,"BAL standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-BUF,"BUF standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-CAR,"CAR standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-CHI,"CHI standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-CIN,"CIN standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-CLE,"CLE standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-DAL,"DAL standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-DEN,"DEN standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-DET,"DET standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-GB,"GB standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-HOU,"HOU standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-IND,"IND standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-JAX,"JAX standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-KC,"KC standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-LA,"LA standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-LAC,"LAC standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-LV,"LV standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-MIA,"MIA standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-MIN,"MIN standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-NE,"NE standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-NO,"NO standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-NYG,"NYG standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-NYJ,"NYJ standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-PHI,"PHI standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-PIT,"PIT standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-SEA,"SEA standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-SF,"SF standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-TB,"TB standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-TEN,"TEN standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-STD-WAS,"WAS standings (W-L-T, PF, PA)",https://www.nfl.com/standings/,1,1,,,,match,2026-11-14,https://www.nfl.com/standings/
+LR-W11-AZ-KC,Week 11 AZ at KC,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-BAL-CAR,Week 11 BAL at CAR,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-CIN-WAS,Week 11 CIN at WAS,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-IND-HOU,Week 11 IND at HOU,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-JAX-NYG,Week 11 JAX at NYG,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-LV-DEN,Week 11 LV at DEN,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-MIA-BUF,Week 11 MIA at BUF,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-MIN-SF,Week 11 MIN at SF,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-NO-CHI,Week 11 NO at CHI,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-NYJ-LAC,Week 11 NYJ at LAC,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-PIT-PHI,Week 11 PIT at PHI,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-TB-DET,Week 11 TB at DET,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-TEN-DAL,Week 11 TEN at DAL,https://www.nfl.com/schedules/2026/by-week/week-11,1,1,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11
+LR-W11-BYES,Week 11 teams on bye,https://www.nfl.com/schedules/2026/by-week/week-11,6,6,,,,match,2026-11-18,https://www.nfl.com/schedules/2026/by-week/week-11

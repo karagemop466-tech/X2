@@ -1,12 +1,14 @@
 #!/usr/bin/env python3
 """Reproducible line-by-line verification of the committed Week 10 snapshot.
 
-Reads the manual transcription of the official NFL.com injury report held in
+Reads the transcription of the official NFL.com injury report held in
 data/verification/official_batch1.txt and official_batch2.txt (every row and
-every field, transcribed from https://www.nfl.com/injuries/ on 2026-11-14) and
-compares it field by field with data/injuries_week10_2026.csv. It also compares
-the game list with the official Week 10 schedule and records a small set of
-independent player-page checks.
+every field, generated from the raw markdown capture of
+https://www.nfl.com/injuries/ taken on 2026-11-18, saved under
+data/verification/live_injuries_2026-11-18_chunk*.txt) and compares it field by
+field with data/injuries_week10_2026.csv. It also compares the game list with
+the official Week 10 schedule and records a small set of independent
+player-page checks.
 
 Writes data/verification_week10_2026.csv. It NEVER edits the committed snapshot:
 mismatches are reported, not corrected.

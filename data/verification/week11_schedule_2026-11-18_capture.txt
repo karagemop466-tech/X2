@@ -1,0 +1,34 @@
+CAPTURE: NFL.com official Week 11 schedule page, https://www.nfl.com/schedules/2026/by-week/week-11
+Read 2026-11-18 (UTC). Verbatim schedule-fact lines (game list entries) and the Teams on Bye
+section, extracted from the fetched page (3 chunks). Full page noise (ticket/hotel links,
+logos) omitted; every game entry below is quoted exactly as published.
+
+- [Colts at Texans, Thursday, November 19th, 8:15 PM, PRIME](https://www.nfl.com/games/colts-at-texans-2026-reg-11)
+- [Dolphins at Bills, Sunday, November 22nd, 1:00 PM, CBS](https://www.nfl.com/games/dolphins-at-bills-2026-reg-11)
+- [Ravens at Panthers, Sunday, November 22nd, 1:00 PM, FOX](https://www.nfl.com/games/ravens-at-panthers-2026-reg-11)
+- [Saints at Bears, Sunday, November 22nd, 1:00 PM, FOX](https://www.nfl.com/games/saints-at-bears-2026-reg-11)
+- [Titans at Cowboys, Sunday, November 22nd, 1:00 PM, FOX](https://www.nfl.com/games/titans-at-cowboys-2026-reg-11)
+- [Buccaneers at Lions, Sunday, November 22nd, 1:00 PM, FOX](https://www.nfl.com/games/buccaneers-at-lions-2026-reg-11)
+- [Cardinals at Chiefs, Sunday, November 22nd, 1:00 PM, CBS](https://www.nfl.com/games/cardinals-at-chiefs-2026-reg-11)
+- [Steelers at Eagles, Sunday, November 22nd, 1:00 PM, CBS](https://www.nfl.com/games/steelers-at-eagles-2026-reg-11)
+- [Jets at Chargers, Sunday, November 22nd, 4:05 PM, FOX](https://www.nfl.com/games/jets-at-chargers-2026-reg-11)
+- [Jaguars at Giants, Sunday, November 22nd, 4:25 PM, CBS](https://www.nfl.com/games/jaguars-at-giants-2026-reg-11)
+- [Raiders at Broncos, Sunday, November 22nd, 4:25 PM, CBS](https://www.nfl.com/games/raiders-at-broncos-2026-reg-11)
+- [Vikings at 49ers, Sunday, November 22nd, 8:20 PM, NBC](https://www.nfl.com/games/vikings-at-49ers-2026-reg-11)  [Mexico City — neutral site; "Mexico City 2026" event logo shown on the page]
+- [Bengals at Commanders, Monday, November 23rd, 8:15 PM, ESPN](https://www.nfl.com/games/bengals-at-commanders-2026-reg-11)
+
+### Teams on Bye
+
+ATLAtlanta Falcons
+CLECleveland Browns
+GBGreen Bay Packers
+LARLos Angeles Rams
+NENew England Patriots
+SEASeattle Seahawks
+
+
+NORMALIZATIONS APPLIED WHEN BUILDING THE VERIFY_LIVE INPUTS (facts unchanged):
+- kickoff_day: the official page writes 'Sunday, November 22nd'; the comma is dropped to match
+  the repository's established transcription convention for this field (data/schedule_week11_2026.csv).
+- byes: the page's logo code for the Rams is LAR; the bye input uses LA, the alias the repository
+  already applies to the Rams in its standings comparison (LAR = LA).

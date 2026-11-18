@@ -411,7 +411,7 @@ if len(season_games) != 137:
     warnings.append(f"independent ledger has {len(season_games)} games; expected 137")
 
 if len(inj) != 347:
-    warnings.append(f"injury row count is {len(inj)}; expected 347 for the Week 10 snapshot read 2026-11-18")
+    warnings.append(f"injury row count is {len(inj)}; expected 347 for the Week 10 snapshot (re-captured 2026-11-18)")
 if len(games) != 14:
     warnings.append(f"game count is {len(games)}; expected 14")
 
@@ -1123,6 +1123,20 @@ for _row in leaderboard:
     for _field in BACKTEST_FIELDS_FORBIDDEN_ON_LEADERBOARD:
         if (_row.get(_field) or "").strip():
             raise ValueError(f"Backtest leakage on prospective leaderboard: {_field} for {_row.get('strategy_id')}")
+# ---- session e2d7b11d (T103): canonical change-our-mind sources (flags F92/F93) ----
+# data/strategy_change_rules.csv is the single source of the two-sided triggers;
+# the prospective leaderboard deliberately carries no trigger columns, so the source
+# must hold both trigger fields and the leaderboard must NOT carry them (F92/F93).
+MIND_TRIGGER_FIELDS = ("what_would_move_us_toward_trusting_it", "what_would_move_us_away_from_it")
+for _row in leaderboard:
+    for _field in MIND_TRIGGER_FIELDS:
+        if _field in _row:
+            raise ValueError(f"Change-our-mind trigger '{_field}' on strategy_leaderboard.csv (must live "
+                             "only in strategy_change_rules.csv, flags F92/F93)")
+for _row in read_csv("strategy_change_rules.csv"):
+    for _field in MIND_TRIGGER_FIELDS:
+        if not (_row.get(_field) or "").strip():
+            raise ValueError(f"Canonical change-our-mind source missing '{_field}' for {_row.get('strategy_id')}")
 pages["leaderboard.html"] = ("Leaderboard", f"""
 <h1>Prospective strategy leaderboard</h1>
 <p class="note"><strong>Competition status: no eligible entries; not ranked.</strong> Candidate strategy definitions
@@ -2546,16 +2560,22 @@ _luck_html = table(_luck_rows,
      "source_url": "Source"},
     table_id="luck-panel-table")
 _ready_html = table(ready_rows,
-    ["req_id", "requirement_id", "brief_item", "status", "what_the_repo_shows_now", "blocking_gate", "number_that_clears_it", "source_url"],
+    ["req_id", "requirement_id", "brief_item", "status", "what_the_repo_shows_now", "blocking_gate",
+     "number_that_clears_it", "evidence_basis", "source_url"],
     {"req_id": "ID", "requirement_id": "Requirement ID", "brief_item": "Requirement (from the brief)", "status": "Status",
      "what_the_repo_shows_now": "What the repo shows now", "blocking_gate": "Gate that blocks it",
-     "number_that_clears_it": "Number that would clear it", "source_url": "Source"},
+     "number_that_clears_it": "Number that would clear it", "evidence_basis": "Evidence basis",
+     "source_url": "Source"},
     table_id="readiness-table", filterable=True)
 
 _mind_add = (
     '<h2>Two-sided: what would change our mind, per candidate strategy</h2>'
     '<p class="note">Each candidate states evidence that would move us toward or away from trusting it. '
-    'These are future decision rules, not historical leaderboard results; the registration gate is still open (F87).</p>'
+    'These are future decision rules, not historical leaderboard results; the registration gate is still open (F87). '
+    '<strong>Source canonicality (F92/F93):</strong> this register, '
+    '<code>data/strategy_change_rules.csv</code>, is the single source of these two-sided triggers. The prospective '
+    'leaderboard deliberately carries no trigger columns, and the build now fails if either the leaderboard gains a '
+    'trigger column or this register drops a trigger value, so the two sources cannot drift apart again.</p>'
     + _mind_html
 )
 pages["strategy-lab.html"] = (pages["strategy-lab.html"][0], pages["strategy-lab.html"][1] + _mind_add)

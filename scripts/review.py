@@ -144,7 +144,7 @@ PROPOSALS = [
         "area": "Data rights",
         "question": "Is written permission needed to keep publishing NFL.com-derived data?",
         "why_it_matters": ("NFL.com terms prohibit systematic retrieval to compile a collection absent "
-                           "express prior written consent (F16). This repository publishes a 345-row "
+                           "express prior written consent (F16). This repository publishes a 347-row "
                            "injury snapshot transcribed from that site. No permission is recorded."),
         "option_a": "Request written permission and record the response",
         "option_b": "Freeze what exists and expand nothing until A is answered",
