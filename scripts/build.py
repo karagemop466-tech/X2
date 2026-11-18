@@ -2865,7 +2865,8 @@ proves arithmetic and not currency</em>.</p>
 _captures = read_csv("availability_captures.csv")
 _avail_delta = read_csv("availability_delta_2026-11-14_to_2026-11-18.csv")
 _avail_summary = read_csv("availability_delta_summary.csv")
-_reverify18 = read_csv("live_reverification_2026-11-18.csv")
+_reverify18 = read_csv("live_reverification_2026-11-18_cf85d485.csv")
+_reverify75 = read_csv("live_reverification_2026-11-18.csv")
 _xcheck = read_csv("capture_cross_check_2026-11-18.csv")
 _what_changed = read_csv("what_changed_2026-11-14_to_2026-11-18.csv")
 _feed_complete = read_csv("results_feed_completeness_2026-11-18.csv")
@@ -2881,7 +2882,8 @@ for _name, _rows, _id_field in (
         ("availability_captures", _captures, "capture_id"),
         ("availability_delta", _avail_delta, "player"),
         ("availability_delta_summary", _avail_summary, "metric"),
-        ("live_reverification_2026-11-18", _reverify18, "check_id"),
+        ("live_reverification_2026-11-18_cf85d485", _reverify18, "check_id"),
+        ("live_reverification_2026-11-18 (d0ede22d, 75 units)", _reverify75, "check_id"),
         ("capture_cross_check_2026-11-18", _xcheck, "check_id"),
         ("what_changed", _what_changed, "team_abbr"),
         ("results_feed_completeness", _feed_complete, "team_abbr"),
@@ -2903,13 +2905,15 @@ for _name, _rows, _id_field in (
 
 # Pinned row counts: the drift alarm for the published registers themselves.
 _pin = {"availability_captures": 2, "availability_delta": 18, "availability_delta_summary": 14,
-        "live_reverification_2026-11-18": 28, "capture_cross_check_2026-11-18": 5,
+        "live_reverification_2026-11-18_cf85d485": 28, "live_reverification_2026-11-18": 75,
+        "capture_cross_check_2026-11-18": 5,
         "what_changed": 32, "results_feed_completeness": 32, "week_count_reconciliation": 8,
         "games_week10_backfill": 13, "forecast_record_checks": 6, "forecast_records_2026": 178,
         "forecast_records_week11": 26, "international_games_2026": 9, "neutral_site_sensitivity_2026": 7}
 for _nm, _n in (("availability_captures", len(_captures)), ("availability_delta", len(_avail_delta)),
                 ("availability_delta_summary", len(_avail_summary)),
-                ("live_reverification_2026-11-18", len(_reverify18)),
+                ("live_reverification_2026-11-18_cf85d485", len(_reverify18)),
+                ("live_reverification_2026-11-18", len(_reverify75)),
                 ("capture_cross_check_2026-11-18", len(_xcheck)), ("what_changed", len(_what_changed)),
                 ("results_feed_completeness", len(_feed_complete)),
                 ("week_count_reconciliation", len(_feed_recon)), ("games_week10_backfill", len(_backfill)),
@@ -2946,7 +2950,8 @@ pages["capture-integrity.html"] = ("Capture integrity & cross-checks", f"""
 </section>
 {tiles([(len(_captures), "dated reads of one official report"),
         (_captures[1]["rows"] + " / " + _captures[0]["rows"], "players read today / on 2026-11-14"),
-        (_xcheck[0]["disagreements"] + " of " + str(int(_xcheck[0]["compared"]) * 5), "fields two readers disagreed on"),
+        (_xcheck[0]["disagreements"] + " of " + _xcheck[0]["outcome"].split(" of ")[1].split(" compared")[0],
+         "cells two readers disagreed on"),
         (len([r for r in _reverify18 if r["result"] == "match"]), "of 28 club blocks matching today's read")])}
 <h2>Capture ledger — one row per read, with its hash</h2>
 <p class="note">The payload hash is over the canonical rows (sorted
@@ -2983,6 +2988,15 @@ repo side). Every one of the 28 club blocks in the published register matches to
 re-published from the 2026-11-18 read — and the <em>Equals CAP-01</em> column shows which clubs have moved since
 2026-11-14. Whether a move came from the page or from a transcription is recorded in the cross-check above and in
 flag F107: for the older capture it cannot be attributed, because no raw bytes were kept.</p>
+<p class="note"><strong>Coverage, from the other register.</strong> The same morning's other session published a wider
+reverification — <strong>{len(_reverify75)} units</strong> ({sum(1 for r in _reverify75 if r["check_id"].startswith("LR-INJ"))}
+injury blocks plus a total, {sum(1 for r in _reverify75 if r["check_id"].startswith("LR-STD"))} standings lines and
+{sum(1 for r in _reverify75 if r["check_id"].startswith("LR-W11"))} Week 11 game headers), all matching — and labels
+its own limit honestly: the same transcription sits on both sides of that comparison, so it checks the file against
+itself rather than against a second reader. That is exactly the gap the cross-check above closes. The two registers
+are kept as separate files with separate names on purpose: both sessions wrote a file called
+<code>live_reverification_2026-11-18.csv</code> on 2026-11-18, and one of them silently replaced the other. This one
+is <code>data/live_reverification_2026-11-18_cf85d485.csv</code>.</p>
 {table(_reverify18, ["check_id", "unit", "checked_against", "read_detail", "repo_rows", "live_rows",
                      "missing_from_repo", "extra_in_repo", "field_differences", "repo_equals_2026_11_14_capture",
                      "result", "read_utc", "source_url"],
@@ -3157,7 +3171,8 @@ leaderboard, and the leaderboard stays unranked until a prospective window close
 # docs/data/ in their own loop rather than by editing that dict.
 for _nm, _rows in (("availability_captures", _captures), ("availability_delta_summary", _avail_summary),
                    ("availability_delta_2026-11-14_to_2026-11-18", _avail_delta),
-                   ("live_reverification_2026-11-18", _reverify18),
+                   ("live_reverification_2026-11-18_cf85d485", _reverify18),
+                   ("live_reverification_2026-11-18", _reverify75),
                    ("capture_cross_check_2026-11-18", _xcheck),
                    ("what_changed_2026-11-14_to_2026-11-18", _what_changed),
                    ("results_feed_completeness_2026-11-18", _feed_complete),
@@ -3202,7 +3217,8 @@ register was rebuilt from the 2026-11-18 read, and every one of the 28 blocks in
 the 345-vs-347 difference is a source movement (Baltimore added Calais Campbell and Ronnie Stanley), not a repo
 omission, so flag F83 closes for the repo side.</li>
 <li><strong>The double read caught a real error, which is the point of it.</strong> Two independent transcriptions of
-the same render agreed on <strong>346 of 347 players</strong> across all five fields. The one disagreement — JAX
+the same render agreed on <strong>346 of 347 players</strong> across all four compared fields (position, injury
+text, practice status, game status — 1,388 cells). The one disagreement — JAX
 Chris Rodriguez Jr.'s practice status — was this session's own mis-read, settled by a third read of the live page taken later
 on 2026-11-18, after both transcriptions existed and corrected in the derived registers (18 moved players, not 19; 6 practice changes, not 7). The raw
 capture is left exactly as read, and the correcting script refuses to run if the capture stops matching the value it

@@ -2528,7 +2528,7 @@ hand rather than by overwriting. What happened, per collision:
 
 **The one finding worth more than the tidying: a transcription error, caught because a second reader existed.**
 `scripts/capture_cross_check.py` (new) + `data/capture_cross_check_2026-11-18.csv` compare the two transcriptions of
-the same 2026-11-18 render: **346 of 347 players agree on all five fields**. The disagreement was JAX
+the same 2026-11-18 render: **346 of 347 players agree on all four compared fields** (position, injury text, practice status, game status — 1,388 cells). The disagreement was JAX
 **Chris Rodriguez Jr.** practice status — I read `Did Not Participate In Practice`, d0ede22d read
 `Limited Participation in Practice`. A third read of the live page (chunk 1 of 8, 2026-11-18, taken after both transcriptions were written) renders
 `Limited Participation in Practice` with an empty Game Status cell: **my capture was wrong and the published register
@@ -2650,3 +2650,27 @@ npm run build + verify (ALL CHECKS PASSED).
 
 **T102-T105 status: done.** F90 (readiness coverage), F92/F93 (change-our-mind canonicality) resolved;
 PR #48 closed as superseded (T104); final integration merged and Pages confirmed (T105).
+
+### Second collision with `main` (PRs #63/#68, session e2d7b11d) — resolved in `e4dde56`
+
+While PR #67 was open, main gained another re-capture of the same Week 10 report **under a filename this session had
+already used**: `data/live_reverification_2026-11-18.csv`. After the auto-merge that path held e2d7b11d's 75-unit
+register (28 injury blocks + 1 injury total + 32 standings lines + 14 Week 11 game headers, all `match`) and this
+session's 28-club file was gone — and re-running `scripts/availability_captures.py` would have silently replaced
+theirs in turn. Resolved by separating them rather than by choosing a winner:
+
+| Path | Owner | Shape | On the site |
+|---|---|---|---|
+| `data/live_reverification_2026-11-18.csv` | e2d7b11d (kept as published) | 75 units, no CAP-01 column | coverage table + their verification page |
+| `data/live_reverification_2026-11-18_cf85d485.csv` | cf85d485 (renamed) | 28 club blocks, `read_detail` + `repo_equals_2026_11_14_capture` | `capture-integrity.html` |
+
+`scripts/availability_captures.py` writes the `_cf85d485` name only, so no future run can overwrite the other
+register; `data/drift_pins.csv` carries both pins (75 and 28) and `drift_check.py` reports 28/28 passing.
+`capture-integrity.html` now shows both tables and says why they differ: their register checks the file against the
+transcription it was built from (their own note: "same transcription on both sides, so this is not independent
+verification"), while this session's contribution is the *independent* control — two readers of one render,
+`data/capture_cross_check_2026-11-18.csv`.
+
+**Rule for the next session, from two collisions on one day:** a dated register written by a hand-run script must
+carry the session id in its filename until an integration session has merged it. `live_reverification_<date>.csv`
+was claimed twice within an hour because the name encodes the date and nothing else.

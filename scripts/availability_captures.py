@@ -188,7 +188,10 @@ def main():
         hit[0][cor["field"]] = cor["official_value"]
         corrected += 1
     new_rows = derived_rows
-    # 5. published snapshot vs today's read, club by club
+    # 5. published snapshot vs today's read, club by club. Written under this session's own file name:
+    # data/live_reverification_2026-11-18.csv is session d0ede22d's 75-unit register (28 injury blocks + 1 total +
+    # 32 standings lines + 14 Week 11 games), which the site also shows. Same subject, two registers, two names -
+    # the day two sessions wrote one file name and one of them silently replaced the other is the reason for that.
     pub = []
     with open(os.path.join(DATA, SNAPSHOT), encoding="utf-8", newline="") as f:
         for r in csv.DictReader(f):
@@ -317,7 +320,10 @@ def main():
               [{"metric": m, "value": v, "basis": b, "source_url": INJURY_URL} for m, v, b in summary_rows],
               ["metric", "value", "basis", "source_url"])
 
-    # 5. published snapshot vs today's read, club by club
+    # 5. published snapshot vs today's read, club by club. Written under this session's own file name:
+    # data/live_reverification_2026-11-18.csv is session d0ede22d's 75-unit register (28 injury blocks + 1 total +
+    # 32 standings lines + 14 Week 11 games), which the site also shows. Same subject, two registers, two names -
+    # the day two sessions wrote one file name and one of them silently replaced the other is the reason for that.
     new_by_team = defaultdict(list)
     for r in new_rows:
         new_by_team[r["team_abbr"]].append(r)
@@ -355,7 +361,7 @@ def main():
             "read_utc": "2026-11-18T03:46Z",
             "source_url": INJURY_URL,
         })
-    write_csv("live_reverification_2026-11-18.csv", checks, [
+    write_csv("live_reverification_2026-11-18_cf85d485.csv", checks, [
         "check_id", "unit", "checked_against", "read_detail", "repo_rows", "live_rows", "missing_from_repo",
         "extra_in_repo", "field_differences", "repo_equals_2026_11_14_capture", "result",
         "read_utc", "source_url"])
