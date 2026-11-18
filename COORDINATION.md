@@ -2735,3 +2735,53 @@ Cade Mays (C, Ankle) and D.J. Reed (CB, Hip) all show Did Not Participate in Pra
 - **GitHub Pages:** build for `4b42bb0` reached `built` at 2026-11-18T04:46:07Z (`gh api repos/karagemop466-tech/X2/pages/builds/latest`).
 - **Live check:** https://karagemop466-tech.github.io/X2/docs/fixture-context.html now shows the "Venues read from the official game centre" table with all 13 Week 11 venues. The site is served from the repository root, so pages are under `/docs/`; the root URL `/X2/fixture-context.html` returns 404 (this was already the case before this session).
 - **Board:** T108 done, T109 done. Nothing from this session is left unclaimed or half-merged. No other session's file was changed.
+
+## 2026-11-18 · session `5ddea67f` · claim (T110)
+
+**Branch:** `arena/5ddea67f-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67) · **Owner:** `5ddea67f` · **Status:** active
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T110 | Independent re-check of the Week 10 results gap (F95/F96/P09) from the committed raw captures, plus an environment and base-state audit; record the result and the owner decision still open. No data, model or rating changes. | done | 5ddea67f | `COORDINATION.md` only | `data/verification_inputs/standings_2026-11-18_raw.psv` (official standings read), `data/verification_inputs/week10_games_2026-11-18_raw.psv` (official by-week read), `data/games_week10_backfill_2026.csv`, `data/results_feed.csv`; links https://www.nfl.com/standings/ and https://www.nfl.com/schedules/2026/by-week/week-10 |
+
+**Scope note.** Live official pages could not be fetched from this sandbox (`nfl.com` returns no response; the sandbox allow-list is GitHub, npm and PyPI). Every check below therefore runs against the raw captures already committed to the repository, not against a fresh fetch.
+
+### Result — session 5ddea67f (T110)
+
+**Base-state audit (on `main` @ `2db1bd7`, before any edit):**
+
+- `python3 scripts/build.py`: 47 pages, row-source and link guards pass; working tree unchanged after build (reproducible).
+- `scripts/check_links.py`: 47 pages, 2,379 internal links, 0 broken; all external links https on the allow-list.
+- `scripts/drift_check.py`: 28 of 28 registers match their pins.
+- `scripts/verify_snapshot.py`: 103 pass, 0 fail, 1 review (V-PLAYER-ben-brown-2: the official player page and the injury report disagree on Ben Brown's position; flagged, not changed).
+- `scripts/verify_live_injuries.py`: stored rows match the stored live read on every field (the live read itself is the 2026-11-18 committed capture; see scope note).
+- `scripts/verify_results.py`: 137 games; 32 of 32 teams reconcile with the 2026-11-14 standings. This check is **not** a test of the 2026-11-18 standings (see below).
+- `scripts/controls.py`, `scripts/model.py`, `scripts/repo_audit.py`: run to completion.
+- `gh pr list --state open`: no open PRs. GitHub Pages latest build: `built` at commit `2db1bd7`.
+
+**Independent re-check of the Week 10 gap (F95 / F96 / P09):**
+
+| Check | Result |
+|---|---|
+| Official standings read 2026-11-18 (`data/verification_inputs/standings_2026-11-18_raw.psv`, source https://www.nfl.com/standings/): sum of W / L / T | 149 / 149 / 2 → 150 completed games (2 tie entries = 1 tie game) |
+| Same read, sum of PF / PA | 6,923 / 6,923 (equal, as a zero-sum check requires) |
+| Results feed (`data/results_feed.csv`) | 137 games; PF / PA sum 6,291 |
+| Official by-week read 2026-11-18 (`data/verification_inputs/week10_games_2026-11-18_raw.psv`, source https://www.nfl.com/schedules/2026/by-week/week-10): Week 10 games | 14 games, final scores |
+| Week 10 games in the feed | 1 (WAS 24, NYG 21), matching the official read |
+| Week 10 games in the official read but not in the feed | 13 |
+| Backfill file (`data/games_week10_backfill_2026.csv`) vs official by-week read | 13 of 13 scores match, 0 differences |
+| Feed (137) + 13 official Week 10 games = 150, against the 2026-11-18 standings | **32 of 32 teams match on W, L, T, PF and PA** |
+| Feed as published, against the 2026-11-18 standings | 6 of 32 match (matches `results_feed_completeness.py`) |
+
+The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 games short, and the 137-game framing in F88 and the README reflects the 2026-11-14 state, not 2026-11-18.
+
+**Not done, deliberately (owner decision, not a transcription fix):** splicing the 13 games into `data/results_feed.csv` / `data/games_2026_results.csv` changes the ratings fit and every published backtest metric. That is decision P09 on the decision console, and the 137-game corpus stays as published until P09 is recorded.
+
+**Scope and limits (honesty note):**
+
+- `nfl.com` could not be fetched from this sandbox during this session (no response from `https://www.nfl.com/injuries/`, `.../schedules/2026/by-week/week-11`), so nothing above was re-read from the live official pages. Each check uses the raw official transcriptions already committed in `data/verification_inputs/` (read 2026-11-18T03:52Z and 04:00Z). Those transcriptions are the source; they have not been re-verified against the live page in this session.
+- No data file, script, rating, strategy or leaderboard row was changed. The only file edited is this log.
+
+**Irregularities for the Flagged for Review page (already present, not newly raised):** F88 (the 136 / 137 count note is stale for 2026-11-18), F95 (IND Arden Key blank status on the 2026-11-18 read), F96 (results feed frozen at 137 vs 150 official games). Owner decision still open: **P09**.
+
+**Handoff for the next session:** nothing is claimed beyond T110. If P09 is recorded as "adopt", the splice and re-fit must follow `scripts/results_feed_completeness.py` and re-run `scripts/forecast_records.py` (which refuses to run unless every published line reproduces).
