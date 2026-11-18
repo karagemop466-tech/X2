@@ -2810,6 +2810,20 @@ for _r in _fix:
         _lnk(_r["source_url"], "NFL.com game or schedule"),
     ])
 
+# T108 (session 5a5c1a1d): venues read from the official game centre "Game Info" block.
+# Counts are computed from the registers, never typed in.
+_ven = _rd("data/venues_2026.csv")
+_ven_sorted = sorted(_ven, key=lambda r: (int(r["week"]), r["fixture_id"]))
+_ven_rows = [
+    [html.escape(r["week"]), html.escape(f'{r["away_team"]} at {r["home_team"]}'),
+     html.escape(r["stadium"]), html.escape(r["location"]), html.escape(r["read_date_utc"]),
+     _lnk(r["source_url"], "NFL.com game centre")]
+    for r in _ven_sorted
+]
+_ven_w11 = [r for r in _ven if r["week"] == "11"]
+assert len(_ven) == len({r["fixture_id"] for r in _ven}), "venue register: duplicate fixture_id"
+assert all(r["source_url"].startswith("https://www.nfl.com/games/") for r in _ven), "venue register: non-game-centre source"
+
 pages["fixture-context.html"] = ("Fixture context", f"""
 <h1>Fixture context from published schedule facts</h1>
 <p class="note">Built only from published schedule dates and team pairs (scripts/fixture_context.py). No score, result,
@@ -2818,6 +2832,9 @@ means that team has no earlier game in the register (Week 1), never zero. A "bye
 more weeks earlier. The 163 games are weeks 1-11: 136 played games (weeks 1-9), the Week 10 slate, and the Week 11 slate.</p>
 <p class="note">Week 10 Thursday game (WAS at NYG) appears once; the other 13 Week 10 games are listed in data/games_week10_2026.csv (see F96 for the results register).</p>
 {_tbl(["Week", "Date", "Day", "Game (away at home)", "Away rest (days)", "Home rest (days)", "Rest diff (home minus away)", "Bye before game", "Thursday", "Source"], _fix_rows, "fixture")}
+<h2>Venues read from the official game centre</h2>
+<p class="note">{len(_ven)} of {len(_fix)} fixtures read: all {len(_ven_w11)} of {len(week11_sched)} Week 11 fixtures are read (the Week 11 slate is complete). Each row is the Game Info block (location and stadium) of the NFL.com game centre page for that fixture, read 2026-11-18. Unread fixtures are blank and not inferred (F99). Hotel and ticket links on the schedule page are not used as a source.</p>
+{_tbl(["Week", "Game (away at home)", "Stadium", "Location", "Read (UTC date)", "Source"], _ven_rows, "venues")}
 """)
 
 NAV.insert(NAV.index(("results-feed.html", "Results feed")) + 1, ("captures.html", "Captures & changes"))
