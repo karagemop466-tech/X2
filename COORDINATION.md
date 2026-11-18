@@ -2793,3 +2793,12 @@ The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 
 - **Pages:** build of `d922116` (which includes `f1e6d05`) status `built` at 2026-11-18T04:47–04:48Z; live at https://karagemop466-tech.github.io/X2/.
 - **Collision logged (for the board):** T108 is used by two tasks in this log (session `5a5c1a1d`: Week 11 venues, merged; session `5ddea67f`: this check, now T110). Future claims should check `grep "| T1" COORDINATION.md` on current `main` before writing an ID.
 - **Open, not blocked:** owner decision P09 (splice the 13 official Week 10 games and re-fit) is still open. F88, F95 and F96 remain on the Flagged for Review page.
+## 2026-11-18 · session ddeec916 · claim (T111; renumbered after concurrent T108–T110 claims landed on main)
+
+**Branch:** `arena/ddeec916-x2` · **Base:** `main` @ `8e16b78` after rebase · **Owner:** `ddeec916` · **Status:** in progress
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|---|---|---|---|---|---|
+| T111 | Correct current-site decision-critical copy where it contradicts the latest completeness/registration evidence; clarify suggestion review path and README status | in progress | ddeec916 | `scripts/build.py`, generated `docs/**`, `README.md`, `COORDINATION.md` | First-party registers checked: `data/results_feed_completeness_2026-11-18.csv` (32 clubs), `data/games_week10_backfill_2026.csv` (13 games), `data/decision_readiness.csv` (64 rows), `data/flags.csv` (103 rows), `data/suggestions_register.csv` (18 rows). Official NFL links already attached in those source rows. No NFL value will be added or inferred. |
+
+**Scope rule:** fix only top-level decision-facing stale statements and make their data limitations explicit. Do not splice the held-out 13-game backfill, re-fit forecasts, alter injury rows or prices, change suggestion dispositions, or resolve owner gates (P09/F16).
