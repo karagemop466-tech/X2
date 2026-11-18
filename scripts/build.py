@@ -174,6 +174,7 @@ for _row in decision_console:
             "decision_console.csv is stale for %s: page would show %r but "
             "decision_choices.json records %r - re-run scripts/review.py"
             % (_row["proposal_id"], _row["recorded_choice"], _want))
+_decision_queue = read_csv("decision_queue.csv")
 forecast_log = read_csv("prospective_forecast_log.csv")
 with open(os.path.join(DATA, "prospective_forecast_log.sha256"), encoding="utf-8") as f:
     SEAL = f.read().split()[0]
@@ -2418,6 +2419,32 @@ that do exist self-label "unofficial" (F45).</p>
 
 pages["review.html"] = ("Review console", f"""
 <h1>Review console — choose a path before anything is built</h1>
+<h2>Start here: the decisions in the order they pay off</h2>
+<p class="note">Ten decisions are open and all ten are waiting on a human. The table below is derived by
+<code>scripts/decision_queue.py</code> from the two registers that already record the dependency —
+<code>data/decision_options.csv</code> (the decisions) and <code>data/decision_readiness.csv</code> (which requirement
+each blocker holds). A row is <em>released</em> when one of the flags the decision names appears in that requirement's
+blocking gate, so the count is the repository's own record rather than an estimate. Benefit and cost are separate
+columns on purpose: the two biggest releases both need money, and the cheapest reversible moves are near the bottom,
+which is exactly the trade a reviewer has to make rather than something the page should decide for them.</p>
+{table(_decision_queue, ["rank","decision_id","decision_to_make","flags_that_gate_it","readiness_rows_released",
+                        "rows_currently_blocked","rows_currently_missing","rows_partial",
+                        "cheapest_reversible_move","needs_spend_or_licence","needs_legal_review",
+                        "recommended_now","what_unlocks_the_choice","blocked_items","tier_basis","source_url"],
+       {"rank":"#","decision_id":"ID","decision_to_make":"Decision","flags_that_gate_it":"Flags",
+        "readiness_rows_released":"Requirements it releases","rows_currently_blocked":"Blocked now",
+        "rows_currently_missing":"Missing now","rows_partial":"Partial now",
+        "cheapest_reversible_move":"Reversible now?","needs_spend_or_licence":"Needs spend/licence",
+        "needs_legal_review":"Needs legal","recommended_now":"Recommended path",
+        "what_unlocks_the_choice":"What unlocks it","blocked_items":"What stays blocked",
+        "tier_basis":"How it was placed","source_url":"Source"}, table_id="decision-queue", filterable=True)}
+<p class="note"><strong>Reading the queue honestly.</strong> Three rows (DEC-03, DEC-02, DEC-05) need a lawyer before
+they need anything else, and two (DEC-01, DEC-08) need a licensed price feed. Those are the only decisions on the list
+that the project cannot make for itself; the rest are engineering choices a session can execute the moment one is
+picked. Four decisions name no flag that any requirement cites as its blocker — their placement is taken from their own
+subject and the page says so in the last column rather than inventing a dependency. Nothing here is implemented: this
+table only orders the questions.</p>
+
 <p class="note">This is the section the brief asks for: a place to review proposals and
 <strong>choose</strong> a path before any change is implemented. Each row below is a real decision with three
 options, the recommended option, the exact file a session would change, what the choice unblocks, and what
@@ -2542,6 +2569,7 @@ controls_rows = read_csv("control_baselines.csv")
 research_rows = read_csv("strategy_backtest_scores.csv")
 mind_rows = read_csv("strategy_change_rules.csv")
 ready_rows = read_csv("decision_readiness.csv")
+_decision_queue = read_csv("decision_queue.csv")
 # F90: the readiness table must have one row per requirement in the register.
 # Assert the requirement_id column is a bijection onto the register's R-ids.
 _reg_ids = [r["req_id"] for r in reqs]
