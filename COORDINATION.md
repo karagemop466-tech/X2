@@ -2838,7 +2838,14 @@ file scope no other session is holding.
 **Scope discipline:** `build.py` is 286 KB and shared. I touch only the as-of block and the verification/standings
 sections, keep every other session's text, and never rewrite a register I did not create.
 
-### T108–T113 completion (2026-11-18, session f04dda73)
+### T114–T119 completion (2026-11-18, session f04dda73 — renumbered from T108–T113)
+
+**Renumber note.** Sessions `5a5c1a1d` (Week 11 venues + Lions designations), `5ddea67f` (Week 10 results re-check) and
+`ddeec916` (decision-critical copy) claimed T108–T111 while this session was working, and all three landed on `main` first.
+This session therefore has T114–T119. Nothing was discarded in either direction: their entries and mine both survive in
+this log, and the two places where our edits touched the same lines were merged by keeping both texts (see the rebase note
+below). The lesson is the one already recorded twice on this board: check `grep "| T1" COORDINATION.md` on current `main`
+immediately before writing an ID, not before starting work.
 
 **All six tasks done.** Each one changed a published claim, not just a table cell. Nothing another session owned was
 rewritten; every register addition was renumbered into the free ID space (F110–F114, SRC-91/92, V34–V36, RV24/RV25,
@@ -2846,12 +2853,12 @@ CAP-03). Working tree clean, all checks green.
 
 | ID | Result | Evidence |
 |---|---|---|
-| T108 | **Done — P09 taken, and taken the safe way.** `scripts/corpus_v2.py` builds a second, separately named **102-game** corpus (the published 89 reproduced within 0.055 pts, plus the 13 settled Week 10 games) and publishes both estimators. The published `games_2026_results.csv` and the SHA-256-sealed `prospective_forecast_log.csv` were **not** touched: re-fitting on 150 games re-originates the Week 11 lines, and re-sealing a pre-kickoff log after the results are known destroys what it proves. New page `docs/corpus-v2.html`; `data/corpus_v2_2026.csv` (102), `data/corpus_v2_summary.csv` (3), both pinned. | `https://www.nfl.com/schedules/2026/by-week/week-10` (re-read in full, both chunks: all 14 finals match the backfill register 13 of 13) |
-| T109 | **Done.** `verify_results.py` now takes the dated standings read as an argument, prints both dates, labels the 2026-11-14 comparison arithmetic-only, and **exits 1** on currency. `desk.py` RF07 is split into RF07 (arithmetic, pass) and **RF07b (currency, FAIL)**. The old unqualified sentences in `docs/verification.html`, `docs/results-feed.html` and `docs/correlation-provenance.html` are all withdrawn; RV04 corrected. | `https://www.nfl.com/standings/` (both chunks read this session: 32/32 match the repo 2026-11-18 capture, 26/32 differ from the 2026-11-14 snapshot, 150 games implied) |
-| T110 | **Done.** V14's published "18 pages, 350 internal links, 1,347 external" replaced with the current run (47→48 pages, 2,486 internal, 5,199 external); V34 records the correction. **F111** notes the counts are still transcribed, not generated — an honest limitation rather than a fix. | `https://github.com/karagemop466-tech/X2` |
-| T111 | **Done.** `READ_LATEST`/`READ_SUMMARY` replace the single false `AS_OF` label in the header, and the landing page gains a per-surface freshness table (six surfaces, each with its own read date, status and reason, including two frozen on purpose). **F114**. | `https://www.nfl.com/injuries/` |
-| T112 | **Done.** Third independent read: ATL/MIN/GB in full plus the disputed JAX cell = 41 rows, **164 of 164 cells match** the published register, and Chris Rodriguez Jr. renders *Limited Participation* — F109 confirmed on a fourth read. Session-tagged capture `CAP-03`; the drift pin **correctly rejected it first** (row count 41 vs the pinned 345/347) and was widened deliberately rather than bypassed. | `https://www.nfl.com/injuries/` (8 chunks; 3 sections transcribed) |
-| T113 | **Done** — this record plus the PR/merge/Pages confirmation below. | — |
+| T114 | **Done — P09 taken, and taken the safe way.** `scripts/corpus_v2.py` builds a second, separately named **102-game** corpus (the published 89 reproduced within 0.055 pts, plus the 13 settled Week 10 games) and publishes both estimators. The published `games_2026_results.csv` and the SHA-256-sealed `prospective_forecast_log.csv` were **not** touched: re-fitting on 150 games re-originates the Week 11 lines, and re-sealing a pre-kickoff log after the results are known destroys what it proves. New page `docs/corpus-v2.html`; `data/corpus_v2_2026.csv` (102), `data/corpus_v2_summary.csv` (3), both pinned. | `https://www.nfl.com/schedules/2026/by-week/week-10` (re-read in full, both chunks: all 14 finals match the backfill register 13 of 13) |
+| T115 | **Done.** `verify_results.py` now takes the dated standings read as an argument, prints both dates, labels the 2026-11-14 comparison arithmetic-only, and **exits 1** on currency. `desk.py` RF07 is split into RF07 (arithmetic, pass) and **RF07b (currency, FAIL)**. The old unqualified sentences in `docs/verification.html`, `docs/results-feed.html` and `docs/correlation-provenance.html` are all withdrawn; RV04 corrected. | `https://www.nfl.com/standings/` (both chunks read this session: 32/32 match the repo 2026-11-18 capture, 26/32 differ from the 2026-11-14 snapshot, 150 games implied) |
+| T116 | **Done.** V14's published "18 pages, 350 internal links, 1,347 external" replaced with the current run (47→48 pages, 2,486 internal, 5,199 external); V34 records the correction. **F111** notes the counts are still transcribed, not generated — an honest limitation rather than a fix. | `https://github.com/karagemop466-tech/X2` |
+| T117 | **Done.** `READ_LATEST`/`READ_SUMMARY` replace the single false `AS_OF` label in the header, and the landing page gains a per-surface freshness table (six surfaces, each with its own read date, status and reason, including two frozen on purpose). **F114**. | `https://www.nfl.com/injuries/` |
+| T118 | **Done.** Third independent read: ATL/MIN/GB in full plus the disputed JAX cell = 41 rows, **164 of 164 cells match** the published register, and Chris Rodriguez Jr. renders *Limited Participation* — F109 confirmed on a fourth read. Session-tagged capture `CAP-03`; the drift pin **correctly rejected it first** (row count 41 vs the pinned 345/347) and was widened deliberately rather than bypassed. | `https://www.nfl.com/injuries/` (8 chunks; 3 sections transcribed) |
+| T119 | **Done** — this record plus the PR/merge/Pages confirmation below. | — |
 
 **Two findings worth more than the tidying:**
 
@@ -2869,3 +2876,21 @@ ranks the ten open decisions by how many readiness rows each releases and separa
 trade is the reviewer's to make, not the page's.
 
 **New ID space after this session:** F115, SRC-93, Q67, S51, G21, R66, D65, V37, RV26, CAP-04, T114.
+
+#### Rebase and collision resolution (session f04dda73 → T114–T119)
+
+`origin/main` advanced four times while this session worked (PRs #69, #70, #73, #74 — sessions `5a5c1a1d`, `5ddea67f`,
+`ddeec916`). The branch was rebased onto `a432399`; every conflict was resolved by keeping both sides, never by choosing a
+winner:
+
+| Conflict | Resolution |
+|---|---|
+| `COORDINATION.md` claim blocks | Both kept in chronological order; this session's block moved to T114–T119. |
+| `scripts/build.py` header / meta description (three sessions concurrently fixed the same false "data as of" label) | Combined: this session's `READ_LATEST`/`READ_SUMMARY` variables plus `ddeec916`'s "dates shown per source" wording. Their "Decision-critical results-feed limitation" hero **and** this session's freshness table both ship. |
+| `scripts/build.py` executive summary | `ddeec916`'s corrected injury-capture note kept, followed by this session's findings block. The older duplicated note that would have repeated it was dropped, not replaced. |
+| `scripts/build.py` results-feed prose | Merged: their opening warning about the incomplete corpus and this session's arithmetic-vs-currency detail ("all 32 reconcile against the 2026-11-14 read; 26 of 32 do not against the current read") now form one paragraph. |
+| Generated `docs/*.html` (47 files) | Not hand-merged: resolved by regenerating `python3 scripts/build.py` from the merged `scripts/build.py`, which is the only correct resolution for a generated tree. |
+
+**Post-merge verification on the rebased branch (all green):** `build.py` 48 pages, link and row-source guards pass;
+`check_links.py` 0 broken; `drift_check.py` all registers match their pins; `verify_snapshot.py` 103 pass / 0 fail /
+1 review; `repo_audit.py` 22 checks 0 failing; `npm run build && npm run verify` ALL CHECKS PASSED.
