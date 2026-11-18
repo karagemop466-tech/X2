@@ -2683,7 +2683,48 @@ was claimed twice within an hour because the name encodes the date and nothing e
 
 | ID | Task | Status | Owner | Files (scope) | Sources / notes |
 |----|------|--------|-------|---------------|-----------------|
-| T108 | Transcribe the venue of every **Week 11** fixture (13 games) from the official NFL game-centre "Game Info" block (one read per game) and add them to the venue register; record the read date and the verbatim fields. Closes the Week 11 part of D26 / S49. | in progress | 5a5c1a1d | `data/venues_2026.csv` (13 Week 11 rows added), `docs/**` (generated, if a venue view exists), `COORDINATION.md` | Game centre URLs as listed in `data/schedule_week11_2026.csv` (`game_url`), read 2026-11-18. Week 10 and the remaining 2026 fixtures are out of scope and stay blank (F99). |
+| T108 | Transcribe the venue of every **Week 11** fixture (13 games) from the official NFL game-centre "Game Info" block (one read per game) and add them to the venue register; record the read date and the verbatim fields. Closes the Week 11 part of D26 / S49. | done | 5a5c1a1d | `data/venues_2026.csv` (13 Week 11 rows added), `docs/**` (generated, if a venue view exists), `COORDINATION.md` | Game centre URLs as listed in `data/schedule_week11_2026.csv` (`game_url`), read 2026-11-18. Week 10 and the remaining 2026 fixtures are out of scope and stay blank (F99). |
 | T109 | Verify the three Lions Week 10 game-status designations (Kerby Joseph, Cade Mays, D.J. Reed) against the official injury page | done | 5a5c1a1d | `COORDINATION.md` only | Read 2026-11-18 at https://www.nfl.com/injuries/ (Lions block): all three show Out; `data/injuries_week10_2026.csv` already holds Out for all three. No change needed. |
 
 **Not claimed (owner-owned, unchanged):** every pre-existing flag, every `needs review` item, DEC-01…DEC-10, F09, F16, F17, F19, F98 and the strategy/leaderboard decisions.
+
+### T108 close-out (session 5a5c1a1d, 2026-11-18)
+
+**Sources (each read on 2026-11-18, the NFL.com game centre "Game Info" block, chunk 0):** the 13 Week 11 game-centre
+pages listed in `data/schedule_week11_2026.csv` (`game_url`):
+https://www.nfl.com/games/colts-at-texans-2026-reg-11 ·
+https://www.nfl.com/games/dolphins-at-bills-2026-reg-11 ·
+https://www.nfl.com/games/ravens-at-panthers-2026-reg-11 ·
+https://www.nfl.com/games/saints-at-bears-2026-reg-11 ·
+https://www.nfl.com/games/titans-at-cowboys-2026-reg-11 ·
+https://www.nfl.com/games/buccaneers-at-lions-2026-reg-11 ·
+https://www.nfl.com/games/cardinals-at-chiefs-2026-reg-11 ·
+https://www.nfl.com/games/steelers-at-eagles-2026-reg-11 ·
+https://www.nfl.com/games/jets-at-chargers-2026-reg-11 ·
+https://www.nfl.com/games/jaguars-at-giants-2026-reg-11 ·
+https://www.nfl.com/games/raiders-at-broncos-2026-reg-11 ·
+https://www.nfl.com/games/vikings-at-49ers-2026-reg-11 ·
+https://www.nfl.com/games/bengals-at-commanders-2026-reg-11
+
+**Result:** `data/venues_2026.csv` now holds 13 of 13 Week 11 venues (12 added; IND at HOU was already there).
+Every value is the verbatim `Location` and `Stadium` text on the page. Venue for MIN at SF is MEXICO CITY / ESTADIO BANORTE,
+the league's designated neutral-site game.
+
+**Verification performed:** (1) each page's teams matched its schedule row (away and home abbreviations, checked
+against the URL slug and the page's team names); (2) every venue row has a `source_url` on `www.nfl.com/games/`
+(asserted in `scripts/build.py`); (3) rendered table on `docs/fixture-context.html` reproduces the register;
+(4) `D26` (readiness) and `F99` (flag) updated from "1 of 163" to "13 of 163" and the status changed to the 150 still blank.
+Checks green: `scripts/build.py` (47 pages, link and row-source checks), `scripts/drift_check.py` (28/28),
+`scripts/check_links.py` (0 broken internal links), `scripts/verify_results.py` (32/32),
+`scripts/team_view.py`, `npm run build` and `npm run verify` (ALL CHECKS PASSED).
+
+**Irregularities (flagged, not fixed here):**
+- The schedule page's hotel and ticket links name a different arena for at least one game (the existing S49 note). Only
+  the game-centre block is used. Source: https://www.nfl.com/schedules/2026/by-week/week-11
+- The fetch tool returns processed text, not HTTP bytes, so there is no raw-bytes hash for these reads (F100).
+- The live injury hub still shows Week 10 on this read, so no Week 11 injury data is captured here (F101, F104).
+- 150 of 163 fixtures remain blank and unverified (F99). Not inferred.
+
+**T109 (Lions designations):** verified against https://www.nfl.com/injuries/ on 2026-11-18. Kerby Joseph (S, Knee),
+Cade Mays (C, Ankle) and D.J. Reed (CB, Hip) all show Did Not Participate in Practice and Game Status **Out**.
+`data/injuries_week10_2026.csv` holds the same three Out rows. No change was needed.

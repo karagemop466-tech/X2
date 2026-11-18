@@ -830,11 +830,11 @@
  {
   "flag_id": "F99",
   "category": "Coverage gap",
-  "item": "Venue transcription: 1 of 163 fixtures read from the official game centre",
-  "detail": "data/venues_2026.csv holds one venue read on 2026-11-18 from the official game centre (IND at HOU: Reliant Stadium, Houston, TX). The other 162 fixtures are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
+  "item": "Venue transcription: 13 of 163 fixtures read from the official game centre",
+  "detail": "data/venues_2026.csv holds 13 venues read on 2026-11-18 from the official game centre Game Info block: every Week 11 fixture (IND at HOU, Reliant Stadium, Houston, TX; the other 12 Week 11 games are listed on the fixture-context page). The other 150 fixtures are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
   "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
-  "status": "Unverified - most fixtures blank",
-  "action_requested": "Read each game centre page (one request each) and add a row with its URL."
+  "status": "Unverified - 150 of 163 fixtures blank",
+  "action_requested": "Read each remaining game centre page (one request each) and add a row with its URL (Week 10 and earlier, then the rest of the 2026 slate)."
  },
  {
   "flag_id": "F100",
