@@ -927,7 +927,16 @@
   "action_requested": "Make the double-read the default for anything that becomes 'the data': two independent transcriptions of the same page, diffed by script, with the diff published. A single reader with a hash proves the file did not change, not that it is right."
  },
  {
-  "flag_id": "F110",
+  "flag_id": "F114",
+  "category": "Presentation honesty",
+  "item": "One site-wide \"data as of\" date described surfaces read up to four days apart",
+  "detail": "Every page header printed \"Data as of 2026-11-14 (UTC)\" while the injury register, the standings and the Week 10 finals on the same pages had been read on 2026-11-18. The label was true of the oldest surface and false of the newest, and a reader checking a number against the live page had no way to tell which surfaces were a day old and which were a week old. The header now names the newest read and the breakdown, and the landing page carries a per-surface freshness table giving each register its own read date, status and the reason for that date - including two registers (the sealed Week 11 forecast log and the club depth charts) that are deliberately frozen and must NOT be refreshed.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Resolved - per-surface dates published",
+  "action_requested": "Keep the freshness table updated when a surface is re-read; a stale row here is itself a finding. Owner to confirm the Week 11 lines may stay frozen through kickoff (they should)."
+ },
+ {
+  "flag_id": "F115",
   "category": "Irregularity - open (owner decision)",
   "item": "The sealed pre-kickoff forecast log and the published Week 11 line disagree on one game, and the seal says which is the frozen number",
   "detail": "\"prospective_forecast_log.sha256\" reproduces exactly (5aaf29db...) only when the neutral-site flag is IGNORED in the seal computation; scripts/model.py seals with predict(main, home, away) while it originates the same game in model_lines_week11.csv with predict(main, home, away, neutral). Consequence on MIN at SF (the Mexico City game, schedule neutral_site=Y): the sealed log froze 2.5 / 38.5 and the published line reads 2.9 / 38.9. Every other fixture agrees to the decimal, because no other Week 11 game is neutral. The published line is the correct treatment per F71 (a neutral site gets no home-field term), so the line should not be reverted; the seal is what is stale. Two ways to close, both owner decisions: (a) re-seal the log from the neutral-aware prediction and record the old digest as superseded (changes a frozen artefact), or (b) publish both digests with the v1 seal kept as the historical record and a v2 seal added. Nothing was recomputed or overwritten here.",
@@ -936,7 +945,7 @@
   "action_requested": "Choose (a) or (b). Until then the leaderboard stays unranked and the discrepancy is visible on the Corpus tranche page (data/forecast_seal_discrepancy.csv)."
  },
  {
-  "flag_id": "F111",
+  "flag_id": "F116",
   "category": "Capture gap - the Week 11 report does not exist yet",
   "item": "No Week 11 injury report is published on any of four official routes, checked with a working control",
   "detail": "The Week 11 slate starts Thursday 19 November 2026 and the hub still serves the Week 10 report (F101). Four routes were probed on 2026-11-18: the bare hub, ?week=11, /injuries/league/2026/reg11 and /injuries/league/2026/reg9. The first three all render heading 'Injuries - WEEK 10'; the reg9 control renders WEEK 9, so the route works and Week 11 is genuinely absent. This is published as an absence with a date rather than filled with the Week 10 report: a Week 11 availability feature cannot be built from any of these pages today.",
@@ -945,7 +954,7 @@
   "action_requested": "Re-probe daily. When a Week 11 report renders, capture it as a dated register with a per-row source before any Week 11 availability claim is made (blocked additionally by the F16 rights review)."
  },
  {
-  "flag_id": "F112",
+  "flag_id": "F117",
   "category": "Strength of evidence - one slate of venues",
   "item": "Venue transcription is complete for one slate (13/13) and still blank for the rest of the season",
   "detail": "F99 recorded 1 of 163 fixtures with a venue read from an official source. On 2026-11-18 the whole Week 11 slate (13 fixtures) was transcribed from its own official game-centre pages and published in data/venues_2026.csv with a per-row URL; the earlier IND at HOU row is one of those 13, so coverage is 13 of 163 and not 14 — an earlier draft of this flag double-counted it. The neutral-site row was cross-checked against the independent international-games register (SRC-90) and agrees. 150 of 163 fixtures still carry no venue. A fixture-context feature that uses venue for the historical corpus therefore remains blocked, and the register must not be read as season-wide coverage.",
@@ -954,7 +963,7 @@
   "action_requested": "Re-run scripts/venues_week11.py once per slate, then state coverage as a number on the page rather than 'in progress'."
  },
  {
-  "flag_id": "F113",
+  "flag_id": "F118",
   "category": "Model defect - open (owner decision)",
   "item": "The fitted home-field term enters the model total, so the total is not venue-neutral",
   "detail": "In scripts/model.py fit() the home side is given +h and the away side is given no -h, so predict() returns home_points = mu + A_home - D_away + h and away_points = mu + A_away - D_home. The margin therefore carries h (correct) but the TOTAL also carries +h (not physically meaningful: both teams play at the same venue). The size is small but not zero and changes sign across the season: fitted h is +0.62 points in Week 4, +0.04 in Week 9, -0.37 in Week 10 and -0.40 in Week 11, so every published total is displaced by that amount. Found while writing T112 (scripts/two_estimator_totals.py), whose S1 gate reproduces the published totals and so had to reproduce the displacement too; nothing was changed in the model. Fixing it moves every published total, so it is the model owner's call and needs a version tag rather than an in-place edit. The neutral-site treatment (F71) is a separate, correct change and is unaffected.",

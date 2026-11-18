@@ -1,0 +1,4 @@
+subset,games,mae_model_margin,mae_reference_margin,gain_margin_pts,mae_model_total,mae_reference_total,gain_total_pts,games_model_closer,games_reference_closer,ties,reading,source_url
+A. published 89-game corpus (weeks 4-10),89,9.156,10.892,1.736,11.077,10.964,-0.113,58,31,0,model ahead of its own reference line,https://www.nfl.com/schedules/2026/by-week/week-10
+"B. Week 10 holdout (13 games, never scored before)",13,10.099,9.509,-0.591,10.075,8.764,-1.312,5,8,0,model BEHIND its own reference line on this subset,https://www.nfl.com/schedules/2026/by-week/week-10
+C. pooled 102-game corpus (A + B),102,9.276,10.716,1.439,10.949,10.683,-0.266,63,39,0,model ahead of its own reference line,https://www.nfl.com/schedules/2026/by-week/week-10

@@ -10,6 +10,35 @@ separate columns**, a strict **signal-vs-staking split** in the leaderboard, a p
 returns a live strategy to paper, and **replacement-depth tracking** (the 2nd/3rd/4th string of the replacement,
 where a source verifies it).
 
+## Latest session (f04dda73): the corpus, and the number that undercuts the headline
+
+Five things changed on 2026-11-18 and each one moved a published claim rather than a table cell:
+
+- **Pre-registered corpus published twice** (`docs/corpus-v2.html`, `data/corpus_v2_2026.csv`,
+  `python3 scripts/tranche_150game_db00d539.py`). The 89-game walk-forward corpus is reproduced row for row and published beside a pooled
+  **102-game** corpus that adds the 13 settled Week 10 games. On the 89 the model beats its own naive reference line by
+  **1.736 points** of mean absolute error; on the 13 it had never been scored against it is **0.591 points behind**
+  (closer on 5 of 13); pooled the gain is **1.439**. On totals the model loses to the reference in every cut
+  (−0.113 / −1.312 / −0.266). Flag **F110**. The Week 11 lines are deliberately *not* re-originated: they are
+  SHA-256 sealed pre-kickoff evidence and re-fitting would destroy what they prove.
+- **The standings reconciliation now measures currency, not just arithmetic** (`scripts/verify_results.py`). It takes the
+  dated official standings read as an argument, prints both dates, and exits **1** when the 137-game ledger falls behind
+  the current read (it is 13 games behind; 26 of 32 clubs disagree). Desk rows RF07 (arithmetic, pass) and RF07b
+  (currency, **FAIL**) are split so one cannot stand in for the other. V35, flag **F113**.
+- **A stale correlation was published twice under two values.** `data/correlation_audit.csv` held C08 = −0.064 after the
+  canonical register moved to +0.035. Regenerated (V36, **F112**) and `scripts/desk.py` now fails the build if the audit
+  register ever disagrees with `data/correlations_computed.csv` again.
+- **Read dates are published per surface** (landing page, **F114**). The single header "data as of 2026-11-14" was true of
+  the oldest register and false of the newest; the header now names the newest read and a table gives each surface its own
+  date, status and the reason — including two registers frozen on purpose.
+- **The open decisions are ranked by what they release** (`python3 scripts/decision_queue.py`,
+  `data/decision_queue.csv`, `docs/review.html`). Ten decisions wait on a human; the queue is derived from
+  `decision_options.csv` × `decision_readiness.csv`, separates benefit from cost, and flags the three that need a lawyer
+  and the two that need a licensed price feed.
+- **Third independent read of the Week 10 injury report** (`data/verification_inputs/injuries_2026-11-18_ATL-MIN-GB_f04dda73.tsv`,
+  CAP-03): 164 of 164 cells across ATL, MIN and GB match the published register, and the cell two earlier sessions
+  disputed (JAX Chris Rodriguez Jr.) resolves in favour of the published value — F109 confirmed on a fourth read.
+
 ## Read in this order
 
 1. **Review path** (`docs/review-path.html`) — one ordered route through open decisions, showing what is known, missing, and which gate blocks action.
@@ -47,15 +76,15 @@ answer the same question: *what can be measured now, and what is still blocked.*
 
 - **The 13 missing games exist as a published tranche without touching the frozen corpus.** `data/tranche_150game_2026_db00d539.csv`
   holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10 games transcribed from the
-  official by-week page on 2026-11-18. `scripts/corpus_v2.py` writes nothing unless the v1 rows are unchanged (C1),
+  official by-week page on 2026-11-18. `scripts/tranche_150game_db00d539.py` writes nothing unless the v1 rows are unchanged (C1),
   the tranche equals the transcription (C2), v2 reproduces the 2026-11-18 official standings for 32/32 clubs while v1
   fails for 26 (C3), the standings imply 150 games arithmetically (C4) and every row carries an official URL (C5).
   Nothing is adopted: the model still fits the frozen 137, and adoption is proposal P09 (readiness D29, D64).
-- **What adopting it would change is measured, not asserted.** `scripts/corpus_v2_effect.py` shows the backtest cannot
+- **What adopting it would change is measured, not asserted.** `scripts/tranche_effect_db00d539.py` shows the backtest cannot
   move — all 13 added games are in Week 10, so 7/7 walk-forward evaluation weeks have an identical training set,
   checked row set by row set — while the Week 11 line would move up to 2.33 points on the side and 3.74 on the total,
   with 0 pre-registered ±3-point gate decisions changing.
-- **An irregularity the check exposed (F110).** The SHA-256 seal on the pre-kickoff forecast log reproduces only when
+- **An irregularity the check exposed (F115).** The SHA-256 seal on the pre-kickoff forecast log reproduces only when
   the neutral-site flag is *ignored*, while `model_lines_week11.csv` applies it: on MIN at SF the sealed log froze
   2.5/38.5 and the published line reads 2.9/38.9. The published line is the correct treatment under F71, so it was not
   reverted; the seal is what is stale and re-sealing a frozen artefact is an owner decision (two options published).
@@ -63,7 +92,7 @@ answer the same question: *what can be measured now, and what is still blocked.*
   total and the league-average total for all 89 walk-forward games with the gap and which was closer;
   `data/two_estimator_summary.csv` publishes weekly and pooled comparisons. Pooled MAE 11.08 vs 10.96, paired
   difference −0.113 (95% game-cluster bootstrap −0.98 to +0.81, sign-flip p 0.80), mean |gap| 3.52 points — the
-  interval spans zero, so no estimator is collapsed and both stay visible. Writing the S1 gate exposed **F113**: the
+  interval spans zero, so no estimator is collapsed and both stay visible. Writing the S1 gate exposed **F118**: the
   fitted home-field term enters the model *total*, so published totals are not venue-neutral.
 - **A weekly "what changed" diff (T114).** `data/weekly_diff_2026-11-18.csv` gives rank change, rating change and
   availability change for all 32 clubs, computed on the frozen feed and on the 150-game corpus. On the frozen feed one
@@ -71,8 +100,8 @@ answer the same question: *what can be measured now, and what is still blocked.*
   10 → 5). Availability is labelled a re-read delta inside the Week 10 report, never week-over-week news.
 - **Every Week 11 venue, from the official game centre (T110).** `data/venues_2026.csv` carries all 13 fixtures with a
   per-row URL, the away/home pair checked against the official schedule and the neutral-site row cross-checked against
-  the independent international-games register. Coverage of the season is 13 of 163 fixtures — the whole Week 11 slate (F99, F112).
-- **No Week 11 injury report exists yet (F111).** Four routes were read on 2026-11-18 including a control:
+  the independent international-games register. Coverage of the season is 13 of 163 fixtures — the whole Week 11 slate (F99, F117).
+- **No Week 11 injury report exists yet (F116).** Four routes were read on 2026-11-18 including a control:
   `/injuries/league/2026/reg9` renders WEEK 9, proving the route works, while the bare hub, `?week=11` and `/reg11`
   all render WEEK 10. Published as an absence with a date, not filled with the Week 10 report.
 
@@ -186,14 +215,15 @@ The source register includes official NFL, Japanese government, and NIST referen
 ## Build and verification
 
 ```bash
-python3 scripts/corpus_v2.py         # build the 150-game tranche; checks C1-C5 must pass
-python3 scripts/corpus_v2_effect.py  # backtest identity, Week 11 line movement, forecast-seal checks G1-G3
-python3 scripts/two_estimator_totals.py  # both total estimators + the collapse rule; tests S1-S4
-python3 scripts/weekly_diff.py       # the weekly rank/rating/availability diff; tests W1-W4
-python3 scripts/venues_week11.py     # 13 Week 11 venues from the official game centres; tests V1-V6
-python3 scripts/week11_report_probe.py   # the four-route Week 11 availability probe; tests P1-P3
-```bash
-python3 scripts/verify_results.py   # reconcile the 137 games against the official standings
+python3 scripts/verify_results.py   # reconcile the ledger against BOTH dated standings reads; exits 1 on currency
+python3 scripts/corpus_v2.py        # the pre-registered 89/102-game corpora (session f04dda73)
+python3 scripts/tranche_150game_db00d539.py  # the 150-game roster tranche, frozen v1 untouched; checks C1-C5
+python3 scripts/tranche_effect_db00d539.py   # backtest identity, Week 11 line movement, seal checks G1-G3
+python3 scripts/two_estimator_totals.py      # both total estimators + the collapse rule; tests S1-S4
+python3 scripts/weekly_diff.py               # the weekly rank/rating/availability diff; tests W1-W4
+python3 scripts/venues_week11.py             # 13 Week 11 venues from the official game centres; tests V1-V6
+python3 scripts/week11_report_probe.py       # the four-route Week 11 availability probe; tests P1-P3
+python3 scripts/decision_queue.py            # rank the open decisions by what each one releases
 python3 scripts/verify_snapshot.py  # reproducible field-by-field re-check of the Week 10 snapshot
 python3 scripts/verify_live.py      # compare the registers against a fresh independent transcription
 python3 scripts/model.py            # refit ratings, Week 11 lines, backtest, gates, leaderboard,

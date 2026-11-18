@@ -4,18 +4,43 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Executive summary · NFL Research Dashboard</title>
-<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Latest injury capture: 2026-11-18; other source dates are shown per page.">
+<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Latest official read 2026-11-18; other source dates are shown per page.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest injury capture: 2026-11-18 (UTC) · dates shown per source</span></div>
-  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="forecast-records.html">Forecast records</a><a href="corpus-tranche.html">Corpus tranche</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest read 2026-11-18 · injury report, standings and Week 10 slate read 2026-11-18; Week 11 lines and depth charts read 2026-11-14 · dates shown per source</span></div>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="corpus-v2.html">Pre-registered corpus</a><a href="corpus-tranche.html">Corpus tranche</a><a href="forecast-records.html">Forecast records</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
 <h1>Executive summary</h1>
 <p class="note">The injury report was captured 2026-11-18; the other source dates are stated separately. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. The 2026-11-18 transcription check is not independent of its source transcription (F109), and permission for systematic collection/publication is not recorded (F16).</p>
+<h2>What changed in this session, and what it means</h2>
+<ul class="findings">
+<li><strong>The model does not clearly beat the baseline it is graded against.</strong> On the 89 games that have been
+published since the first session, our line beats its own naive reference line by 1.736 points of mean absolute error
+per game. On the 13 settled Week 10 games it had never been scored against, it is <strong>0.591 points behind</strong>
+the same line, and it was closer on only 5 of 13. Pooled over 102 games the side gain is 1.439. On totals it loses to
+the reference in every cut. The honest headline is therefore a range, not a number, and no staking or reward decision can
+be justified on the 1.74 alone (<a href="corpus-v2.html">Pre-registered corpus</a>, flag F110).</li>
+<li><strong>The results feed was 13 games behind, and the check that should have caught it was itself stale.</strong>
+The ledger holds 137 games; the official standings now imply 150. The reconciliation script compared only against a
+2026-11-14 read and printed an unqualified pass. It now prints both read dates, labels the old comparison arithmetic-only,
+and <strong>fails</strong> the currency comparison (<a href="feed-completeness.html">Feed completeness</a>, V35, F113).</li>
+<li><strong>Two numbers for one correlation were published at once.</strong> The audit register still carried C08 =
+-0.064 after the canonical register had moved to +0.035. Regenerated, and a guard now makes that drift a build failure
+(V36, F112).</li>
+<li><strong>Every page carried one "data as of" date that was false for most of its own tables.</strong> Read dates are
+now published per surface, including the two registers that are frozen on purpose
+(<a href="index.html">landing page</a>, F114).</li>
+<li><strong>The open decisions are now ordered by what each one releases.</strong> Ten decisions wait on a human; the
+queue shows how many readiness rows each releases and what it costs
+(<a href="review.html">Review console</a>).</li>
+<li><strong>A third, independent read of the injury report agrees with the published register.</strong> 164 of 164 cells
+across three club sections match, and the one cell two sessions had disputed resolves in favour of the published value
+(F109, <a href="capture-integrity.html">Capture integrity</a>).</li>
+</ul>
 <div class="tiles"><div class="tile"><div class="num">81</div><div class="lbl">Out or Doubtful players</div></div><div class="tile"><div class="num">44</div><div class="lbl">Offense Out or Doubtful</div></div><div class="tile"><div class="num">35</div><div class="lbl">Defense Out or Doubtful</div></div><div class="tile"><div class="num">2</div><div class="lbl">Special teams Out or Doubtful</div></div></div>
 <h2>Key findings</h2>
 <ul class="findings">
@@ -230,7 +255,7 @@ points on the side and <strong>3.74</strong> on the total, with <strong>0</stron
 pre-registered ±3-point gate decisions changing. <a href="corpus-tranche.html">Corpus tranche</a>
 (readiness D29, D64).</li>
 <li><strong>An irregularity found while writing that check: the seal and the published line disagree on one game
-(F110).</strong> The SHA-256 seal on the pre-kickoff forecast log reproduces <em>only</em> when the neutral-site flag is
+(F115).</strong> The SHA-256 seal on the pre-kickoff forecast log reproduces <em>only</em> when the neutral-site flag is
 ignored, while the published Week 11 line applies it. On MIN at SF the sealed log froze 2.5 / 38.5 and the published
 line reads 2.9 / 38.9; all twelve other fixtures agree to the decimal. The published line is the correct treatment
 under F71, so it was not reverted — the seal is what is stale, and re-sealing a frozen artefact is an owner decision
@@ -238,12 +263,12 @@ under F71, so it was not reverted — the seal is what is stale, and re-sealing 
 <li><strong>Venue coverage is no longer "1 of 163" as a hand-wave; it is 13 of 163 (the whole Week 11 slate).</strong>
 All 13 Week 11 fixtures were transcribed from their own official game centre (Location and Stadium, Game Info block)
 with a per-row URL, and the neutral-site row is cross-checked against the independent international-games register and
-agrees. The other 150 fixtures remain blank rather than inferred (F99, F112; readiness D26).</li>
+agrees. The other 150 fixtures remain blank rather than inferred (F99, F117; readiness D26).</li>
 <li><strong>The Week 11 injury report does not exist yet on any official route, and that is now a published
 result rather than an absence of effort.</strong> Four routes were read on 2026-11-18 including a control: the reg9
 control renders WEEK 9, proving the route works, while the bare hub, <code>?week=11</code> and
 <code>/reg11</code> all render the WEEK 10 report. A Week 11 availability feature is therefore blocked by the source,
-not by this repository (F111).</li>
+not by this repository (F116).</li>
 </ul>
 
 </main>

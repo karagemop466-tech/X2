@@ -20,7 +20,7 @@ Two results are published:
      construction, and the published 89-game record is untouched. That is checked row by row,
      not assumed: the script compares the actual training row sets.
 
-Re-run:  python3 scripts/corpus_v2_effect.py
+Re-run:  python3 scripts/tranche_effect_db00d539.py
 """
 
 import csv
