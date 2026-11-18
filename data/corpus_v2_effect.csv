@@ -1,0 +1,14 @@
+game_no,matchup,spread_v1,spread_v2,spread_change_v2_minus_v1,total_v1,total_v2,total_change_v2_minus_v1,reference_spread,passes_3pt_gate_v1,passes_3pt_gate_v2,gate_decision_changed,game_url,source_url
+1,IND at HOU,5.53,4.83,-0.7,50.06,49.79,-0.26,11.8,yes,yes,no,https://www.nfl.com/games/colts-at-texans-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+2,MIA at BUF,9.91,10.62,0.71,48.45,48.49,0.04,20.4,yes,yes,no,https://www.nfl.com/games/dolphins-at-bills-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+3,BAL at CAR,1.79,1.89,0.1,50.61,49.16,-1.46,5.2,yes,yes,no,https://www.nfl.com/games/ravens-at-panthers-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+4,NO at CHI,6.9,6.79,-0.11,51.77,50.95,-0.82,12.7,yes,yes,no,https://www.nfl.com/games/saints-at-bears-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+5,TEN at DAL,4.85,4.68,-0.17,49.44,53.18,3.74,10.5,yes,yes,no,https://www.nfl.com/games/titans-at-cowboys-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+6,TB at DET,-1.0,-1.17,-0.16,46.94,44.63,-2.31,4.0,yes,yes,no,https://www.nfl.com/games/buccaneers-at-lions-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+7,AZ at KC,8.57,10.9,2.33,46.53,46.66,0.14,18.4,yes,yes,no,https://www.nfl.com/games/cardinals-at-chiefs-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+8,PIT at PHI,-8.54,-7.26,1.28,38.33,38.9,0.57,-10.1,no,no,no,https://www.nfl.com/games/steelers-at-eagles-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+9,NYJ at LAC,-4.51,-3.32,1.18,42.25,42.0,-0.25,-5.2,no,no,no,https://www.nfl.com/games/jets-at-chargers-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+10,JAX at NYG,-10.08,-10.47,-0.39,42.9,44.45,1.55,-10.2,no,no,no,https://www.nfl.com/games/jaguars-at-giants-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+11,LV at DEN,3.78,3.83,0.06,50.99,49.87,-1.12,7.2,yes,yes,no,https://www.nfl.com/games/raiders-at-broncos-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+12,MIN at SF,2.86,1.49,-1.37,38.86,42.06,3.21,6.1,yes,yes,no,https://www.nfl.com/games/vikings-at-49ers-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11
+13,CIN at WAS,-8.39,-9.38,-0.99,51.96,52.1,0.14,-8.6,no,no,no,https://www.nfl.com/games/bengals-at-commanders-2026-reg-11,https://www.nfl.com/schedules/2026/by-week/week-11

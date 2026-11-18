@@ -711,6 +711,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('suggestions.html', 'Suggestions', 'Review proposals before future implementation, with a recommended path and the gate that blocks each one.')}
 {card('verification.html', 'Verification', 'What was checked line by line, against which official page, and what the result was.')}
 {card('flagged.html', 'Flagged for review', 'Irregularities, unverified items and missing official data, each with a source link.')}
+{card('corpus-tranche.html', 'Corpus tranche (v1 vs v2)', 'The 13 settled Week 10 games published as a parallel 150-game corpus beside the frozen 137-game feed, what adopting them would change, the Week 11 venues read from the official game centres, and the seal irregularity the check exposed.')}
 {card('sources.html', 'Sources', 'Every official source used, with what it supports.')}
  {card('depth-replacement.html', 'Depth of replacement', 'How far down the roster the replacement comes from: 2nd, 3rd or 4th string, read from official club depth charts.')}
 {card('repo-audit.html', 'Repository audit', 'Twenty-two checks run against live official pages and recomputations, with the result of each one.')}
@@ -2825,6 +2826,7 @@ NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("fixture-con
 NAV.insert(NAV.index(("fixture-context.html", "Fixture context")) + 1, ("capture-integrity.html", "Capture integrity"))
 NAV.insert(NAV.index(("capture-integrity.html", "Capture integrity")) + 1, ("feed-completeness.html", "Feed completeness"))
 NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("forecast-records.html", "Forecast records"))
+NAV.insert(NAV.index(("forecast-records.html", "Forecast records")) + 1, ("corpus-tranche.html", "Corpus tranche"))
 
 _cap_idx = (
     '<h2>Captures, changes and the drift alarm (read 2026-11-18)</h2>'
@@ -3263,6 +3265,166 @@ session's own error, which today happens to be luck rather than design
 </ul>
 """)
 
+
+
+# ---------- session db00d539: dated corpus tranche, Week 11 venue register, Week 11 report probe ----------
+_c2 = read_csv("corpus_v2_2026.csv")
+_c2diff = read_csv("corpus_v2_diff.csv")
+_c2ident = read_csv("corpus_v2_identity.csv")
+_c2eff = read_csv("corpus_v2_effect.csv")
+_sealdisc = read_csv("forecast_seal_discrepancy.csv")
+_venues11 = read_csv("venues_2026.csv")
+_probe11 = read_csv("week11_report_probe.csv")
+_tranche = [r for r in _c2diff if r["in_corpus_v1"] == "no"]
+_ident_ok = [r for r in _c2ident if r["training_sets_identical"] == "yes"]
+_max_sp = max(abs(float(r["spread_change_v2_minus_v1"])) for r in _c2eff)
+_max_tot = max(abs(float(r["total_change_v2_minus_v1"])) for r in _c2eff)
+_gate_flips = [r for r in _c2eff if r["gate_decision_changed"] == "YES"]
+_seal_row = {r["check"]: r["digest_matches_published_seal"] for r in _sealdisc}
+_seal_fixed = _seal_row.get("seal reproduces with the neutral-site flag applied", "no")
+_seal_ignored = _seal_row.get("seal reproduces with the neutral-site flag ignored", "no")
+# --- invariants this page must not publish unless they hold ---
+if len(_c2) != 150:
+    raise SystemExit("BUILD FAILED: corpus_v2_2026.csv is not 150 games")
+if len(_tranche) != 13:
+    raise SystemExit("BUILD FAILED: the tranche is not 13 games")
+if not _ident_ok:
+    raise SystemExit("BUILD FAILED: no evaluation week has an identical training set — the "
+                     "identity claim would be false")
+if _seal_fixed == _seal_ignored:
+    raise SystemExit("BUILD FAILED: the seal check is not discriminating (both treatments "
+                     "agree), so F110 cannot be published")
+
+pages["corpus-tranche.html"] = ("Corpus tranche (v1 vs v2)", f"""
+<h1>The dated corpus tranche: v1 frozen, v2 published beside it</h1>
+<p class="note"><strong>Why this page exists.</strong> The pre-registered backtest corpus is
+<code>data/games_2026_results.csv</code> — 137 games (weeks 1–9 = the brief's 136-game log, plus the Week 10
+Thursday game). Thirteen Week 10 games played on 15 and 16 November 2026 are settled and were transcribed from the
+official by-week page, but editing a pre-registered corpus in place would silently change every published metric.
+So the 13 games are published as a <strong>parallel</strong> corpus (<code>data/corpus_v2_2026.csv</code>, 150 games)
+and v1 is left byte-frozen. This is proposal <strong>P09</strong> / readiness <strong>D29</strong> and
+<strong>D64</strong> finally carrying a number instead of a request.</p>
+
+<h2>What the tranche is, and what it is not</h2>
+{tiles([("150", "games in corpus v2"), ("137", "games in v1, frozen"), (len(_tranche), "games in the 2026-11-18 tranche"),
+        ("32/32", "clubs reconciled by v2"), ("26/32", "clubs v1 fails against today's standings")])}
+<p class="note"><strong>The checks the tranche has to pass before it publishes</strong> (<code>scripts/corpus_v2.py</code>,
+which exits non-zero and writes nothing if any fails): C1 the 137 v1 rows are identical to v1 on every compared field;
+C2 the added rows are exactly the transcription's, no more and no fewer; C3 v2 reproduces the official standings read of
+2026-11-18 for all 32 clubs on W-L-T and points for and against, <em>and</em> v1 does not (the premise); C4 the official
+standings imply 150 games arithmetically (149 W + 149 L + 2 T = 300 team-games); C5 every row carries an official
+NFL.com URL. Sources: <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a>
+and <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">official standings</a>, both read 2026-11-18.</p>
+
+<h2>The 13 games the frozen corpus does not hold</h2>
+{search_box('tranche-table')}
+{table(_tranche, ['week','matchup','tranche','neutral_site','reason','game_url','source_url'],
+       {'week':'Week','matchup':'Matchup','tranche':'Tranche','neutral_site':'Neutral site','reason':'Why it is in v2 only','game_url':'Game centre','source_url':'Official schedule'},
+       table_id='tranche-table', filterable=True)}
+<p class="note">Only one of the 13 carries a neutral-site flag: <strong>NE at DET</strong>, which the official Week 10
+page renders inside an "International Game" section. Every other added row stays blank rather than being filled from a
+stadium guess — the same discipline that leaves the historical feed's column blank (F71).</p>
+
+<h2>Does adding them change anything we publish?</h2>
+<p class="note"><strong>The backtest cannot change, and that is checked rather than asserted.</strong> Every
+walk-forward evaluation week trains only on games strictly before that week, and all 13 added games are in Week 10, so
+for every evaluation week the training set is identical in v1 and v2 — {len(_ident_ok)} of {len(_c2ident)} evaluation
+weeks, compared row set by row set in <code>scripts/corpus_v2_effect.py</code>. The 89-game out-of-sample record is
+therefore untouched by the tranche, and no historical metric is recomputed on this page.</p>
+{table(_c2ident, ['evaluation_week','training_games_v1','training_games_v2','training_sets_identical','out_of_sample_predictions_affected','basis','source_url'],
+       {'evaluation_week':'Evaluation week','training_games_v1':'Training games (v1)','training_games_v2':'Training games (v2)','training_sets_identical':'Identical','out_of_sample_predictions_affected':'OOS predictions affected','basis':'Basis','source_url':'Source'})}
+<p class="note"><strong>The forward-looking number — the one that would change.</strong> The Week 11 line would move
+if the tranche were adopted for fitting: up to <strong>{_max_sp:.2f}</strong> points on the side and
+<strong>{_max_tot:.2f}</strong> points on the total. The pre-registered ±3-point betting gate changes on
+<strong>{len(_gate_flips)}</strong> fixture(s). The script first reproduces the published v1 Week 11 line to one
+decimal on all 13 fixtures (including the neutral-site fixture, which is why it reproduces the published 2.9/38.9
+rather than the sealed 2.5/38.5 — see the irregularity below); that reproduction is the licence to trust the v2 column.</p>
+{table(_c2eff, ['game_no','matchup','spread_v1','spread_v2','spread_change_v2_minus_v1','total_v1','total_v2','total_change_v2_minus_v1','passes_3pt_gate_v1','passes_3pt_gate_v2','gate_decision_changed','game_url','source_url'],
+       {'game_no':'Game','matchup':'Matchup','spread_v1':'Spread v1','spread_v2':'Spread v2','spread_change_v2_minus_v1':'&Delta; spread','total_v1':'Total v1','total_v2':'Total v2','total_change_v2_minus_v1':'&Delta; total','passes_3pt_gate_v1':'Passes ±3 gate (v1)','passes_3pt_gate_v2':'Passes ±3 gate (v2)','gate_decision_changed':'Gate decision changed','game_url':'Game centre','source_url':'Source'})}
+
+<h2>Flagged: the seal and the published line disagree on one game (F110)</h2>
+<p class="note"><strong>This was found while writing the check above, and it is an irregularity, not a rounding
+difference.</strong> The pre-kickoff forecast log is sealed with SHA-256 so a later edit is detectable. Recomputing
+that digest from the v1 fit reproduces the published seal
+(<code>5aaf29db…</code>) <strong>only when the neutral-site flag is ignored</strong>; applying the flag — which is what
+the published Week 11 line does — produces a different digest. The one fixture affected is the Mexico City game,
+MIN at SF: the sealed log froze <strong>2.5 / 38.5</strong> and the published line reads
+<strong>2.9 / 38.9</strong>. All twelve other fixtures agree to the decimal, because no other Week 11 game is neutral.
+The cause is visible in <code>scripts/model.py</code>: the log is sealed with <code>predict(main, home, away)</code>
+while the same game is originated into <code>model_lines_week11.csv</code> with the neutral flag applied.</p>
+<p class="note">Nothing was overwritten. The published line is the <em>correct</em> treatment under F71 (a neutral site
+gets no home-field term), so reverting it would introduce an error; what is stale is the seal. Two ways to close,
+both owner decisions: (a) re-seal from the neutral-aware prediction and record the old digest as superseded, or
+(b) keep the v1 seal as the historical record and add a v2 seal beside it. Until one is chosen, the leaderboard stays
+unranked. Reproduce with <code>python3 scripts/corpus_v2_effect.py</code>; register
+<code>data/forecast_seal_discrepancy.csv</code>.</p>
+{table(_sealdisc, ['check','digest_matches_published_seal','detail','source_url'],
+       {'check':'Check','digest_matches_published_seal':'Reproduces the published seal','detail':'Detail','source_url':'Source'})}
+
+<h2>Week 11 venues, transcribed from the official game centres</h2>
+<p class="note"><strong>Flag F99 is not closed, it is narrowed with a number.</strong> Venue coverage was 1 of 163
+fixtures. All 13 Week 11 fixtures have now been read from their own official game centre (Game Info block: Location,
+Stadium) and published with a per-row URL: coverage is <strong>14 of 163</strong>. The remaining 149 fixtures carry no
+venue and are not inferred from a stadium list (F112). Each row's away/home pair is checked against the official Week 11
+schedule, no venue field may be blank, and the neutral-site row must be outside the designated home team's market.</p>
+{table([r for r in _venues11 if r["week"] == "11"], ['fixture_id','week','away_team','home_team','stadium','location','read_date_utc','verification_status','source_url'],
+       {'fixture_id':'Fixture','week':'Week','away_team':'Away','home_team':'Home','stadium':'Stadium','location':'City','read_date_utc':'Read (UTC)','verification_status':'Verification','source_url':'Official game centre'})}
+
+<h2>Week 11 injury report: verified absence, with a control (F111)</h2>
+<p class="note"><strong>The injury hub has no Week 11 report yet, and a bare "not there" would be untrustworthy because
+the hub ignores its own week parameter (F104).</strong> So four routes were read on 2026-11-18, including a control:
+<code>/injuries/league/2026/reg9</code> renders <em>WEEK 9</em>, which proves the route works. The bare hub,
+<code>?week=11</code> and <code>/reg11</code> all render <em>WEEK 10</em>. The consequence is published as a blank with
+a date rather than filled with the Week 10 report: a Week 11 availability feature cannot be built from any of these
+pages today.</p>
+{table(_probe11, ['probe_id','route_requested','week_requested','rendered_week','renders_a_week_11_report','what_was_seen','consequence','read_utc','source_url'],
+       {'probe_id':'Probe','route_requested':'Route requested','week_requested':'Week requested','rendered_week':'Week rendered','renders_a_week_11_report':'Is a Week 11 report','what_was_seen':'What was seen','consequence':'Consequence','read_utc':'Read (UTC)','source_url':'Source'})}
+
+<h2>What this page does not do</h2>
+<ul class="findings">
+<li>It does not adopt the tranche. v2 is published beside v1; the model still fits on the frozen 137 games, because
+adopting it re-fits every rating and changes published lines. That is the owner's call (P09).</li>
+<li>It does not recompute the backtest. The identity table states a structural fact — the 13 added games are all in
+Week 10, so no evaluation week's training set moves — and checks it row by row.</li>
+<li>It does not fill a single market price. No licensed odds feed exists, so the effect is measured against our own
+v1 line and the naive reference line, never against a market (F07, F32).</li>
+<li>It does not claim season-wide venues or a Week 11 injury report. Both are published as coverage numbers with
+dates and flagged (F111, F112).</li>
+</ul>
+""")
+
+# ---------- session db00d539: executive summary entry ----------
+pages["executive-summary.html"] = (pages["executive-summary.html"][0],
+    pages["executive-summary.html"][1] + f"""
+<h2>Corpus, venue and Week 11 availability (session db00d539, T108&ndash;T110)</h2>
+<ul class="findings">
+<li><strong>The 13 missing games now exist as a published tranche, without touching the frozen corpus.</strong>
+<code>data/corpus_v2_2026.csv</code> holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10
+games transcribed on 2026-11-18. It publishes only if v2 reproduces the official 2026-11-18 standings for
+<strong>32 of 32</strong> clubs while v1 fails for 26 — which is the premise, measured. Nothing was adopted: the model
+still fits the frozen 137, and the owner chooses at P09. The consequence is stated before the choice: the backtest
+cannot move (all 13 added games are in Week 10, so {len(_ident_ok)} of {len(_c2ident)} evaluation weeks have an
+identical training set, checked row by row), while the Week 11 line would move up to <strong>{_max_sp:.2f}</strong>
+points on the side and <strong>{_max_tot:.2f}</strong> on the total, with <strong>{len(_gate_flips)}</strong>
+pre-registered ±3-point gate decisions changing. <a href="corpus-tranche.html">Corpus tranche</a>
+(readiness D29, D64).</li>
+<li><strong>An irregularity found while writing that check: the seal and the published line disagree on one game
+(F110).</strong> The SHA-256 seal on the pre-kickoff forecast log reproduces <em>only</em> when the neutral-site flag is
+ignored, while the published Week 11 line applies it. On MIN at SF the sealed log froze 2.5 / 38.5 and the published
+line reads 2.9 / 38.9; all twelve other fixtures agree to the decimal. The published line is the correct treatment
+under F71, so it was not reverted — the seal is what is stale, and re-sealing a frozen artefact is an owner decision
+(two options published). Nothing was overwritten.</li>
+<li><strong>Venue coverage is no longer "1 of 163" as a hand-wave; it is 14 of 163, with the slate named.</strong>
+All 13 Week 11 fixtures were transcribed from their own official game centre (Location and Stadium, Game Info block)
+with a per-row URL, and the neutral-site row is cross-checked against the independent international-games register and
+agrees. The other 149 fixtures remain blank rather than inferred (F99, F112; readiness D26).</li>
+<li><strong>The Week 11 injury report does not exist yet on any official route, and that is now a published
+result rather than an absence of effort.</strong> Four routes were read on 2026-11-18 including a control: the reg9
+control renders WEEK 9, proving the route works, while the bare hub, <code>?week=11</code> and
+<code>/reg11</code> all render the WEEK 10 report. A Week 11 availability feature is therefore blocked by the source,
+not by this repository (F111).</li>
+</ul>
+""")
 
 # ---------- collision guards ----------
 # Two parallel sessions can register the same page slug, or add two NAV entries

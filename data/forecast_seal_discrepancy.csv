@@ -1,0 +1,3 @@
+check,digest_matches_published_seal,detail,source_url
+seal reproduces with the neutral-site flag applied,no,MIN at SF would be 2.9 / 38.9,https://www.nfl.com/schedules/2026/by-week/week-11
+seal reproduces with the neutral-site flag ignored,yes,MIN at SF is 2.5 / 38.5,https://www.nfl.com/schedules/2026/by-week/week-11

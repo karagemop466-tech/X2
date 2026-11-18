@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of 2026-11-14 (UTC)</span></div>
-  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="forecast-records.html">Forecast records</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="forecast-records.html">Forecast records</a><a href="corpus-tranche.html">Corpus tranche</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
@@ -214,6 +214,35 @@ answered; S49 venue transcription for the remaining fixtures from the game-centr
 <strong>S50</strong>, make every capture that becomes published data a double read — the control that caught this
 session's own error, which today happens to be luck rather than design
 (<a href="decision-path.html">Review path</a>).</li>
+</ul>
+
+<h2>Corpus, venue and Week 11 availability (session db00d539, T108&ndash;T110)</h2>
+<ul class="findings">
+<li><strong>The 13 missing games now exist as a published tranche, without touching the frozen corpus.</strong>
+<code>data/corpus_v2_2026.csv</code> holds 150 games: the 137 pre-registered rows unchanged plus the 13 settled Week 10
+games transcribed on 2026-11-18. It publishes only if v2 reproduces the official 2026-11-18 standings for
+<strong>32 of 32</strong> clubs while v1 fails for 26 — which is the premise, measured. Nothing was adopted: the model
+still fits the frozen 137, and the owner chooses at P09. The consequence is stated before the choice: the backtest
+cannot move (all 13 added games are in Week 10, so 7 of 7 evaluation weeks have an
+identical training set, checked row by row), while the Week 11 line would move up to <strong>2.33</strong>
+points on the side and <strong>3.74</strong> on the total, with <strong>0</strong>
+pre-registered ±3-point gate decisions changing. <a href="corpus-tranche.html">Corpus tranche</a>
+(readiness D29, D64).</li>
+<li><strong>An irregularity found while writing that check: the seal and the published line disagree on one game
+(F110).</strong> The SHA-256 seal on the pre-kickoff forecast log reproduces <em>only</em> when the neutral-site flag is
+ignored, while the published Week 11 line applies it. On MIN at SF the sealed log froze 2.5 / 38.5 and the published
+line reads 2.9 / 38.9; all twelve other fixtures agree to the decimal. The published line is the correct treatment
+under F71, so it was not reverted — the seal is what is stale, and re-sealing a frozen artefact is an owner decision
+(two options published). Nothing was overwritten.</li>
+<li><strong>Venue coverage is no longer "1 of 163" as a hand-wave; it is 14 of 163, with the slate named.</strong>
+All 13 Week 11 fixtures were transcribed from their own official game centre (Location and Stadium, Game Info block)
+with a per-row URL, and the neutral-site row is cross-checked against the independent international-games register and
+agrees. The other 149 fixtures remain blank rather than inferred (F99, F112; readiness D26).</li>
+<li><strong>The Week 11 injury report does not exist yet on any official route, and that is now a published
+result rather than an absence of effort.</strong> Four routes were read on 2026-11-18 including a control: the reg9
+control renders WEEK 9, proving the route works, while the bare hub, <code>?week=11</code> and
+<code>/reg11</code> all render the WEEK 10 report. A Week 11 availability feature is therefore blocked by the source,
+not by this repository (F111).</li>
 </ul>
 
 </main>

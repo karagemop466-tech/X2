@@ -1,0 +1,8 @@
+evaluation_week,training_games_v1,training_games_v2,training_sets_identical,out_of_sample_predictions_affected,basis,source_url
+4,48,48,yes,0,all 13 added games are in Week 10; the fit for week 4 uses weeks < 4,https://www.nfl.com/schedules/2026/by-week/week-11
+5,64,64,yes,0,all 13 added games are in Week 10; the fit for week 5 uses weeks < 5,https://www.nfl.com/schedules/2026/by-week/week-11
+6,79,79,yes,0,all 13 added games are in Week 10; the fit for week 6 uses weeks < 6,https://www.nfl.com/schedules/2026/by-week/week-11
+7,93,93,yes,0,all 13 added games are in Week 10; the fit for week 7 uses weeks < 7,https://www.nfl.com/schedules/2026/by-week/week-11
+8,107,107,yes,0,all 13 added games are in Week 10; the fit for week 8 uses weeks < 8,https://www.nfl.com/schedules/2026/by-week/week-11
+9,121,121,yes,0,all 13 added games are in Week 10; the fit for week 9 uses weeks < 9,https://www.nfl.com/schedules/2026/by-week/week-11
+10,136,136,yes,0,all 13 added games are in Week 10; the fit for week 10 uses weeks < 10,https://www.nfl.com/schedules/2026/by-week/week-11
