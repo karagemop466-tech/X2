@@ -244,7 +244,7 @@ print(f"  PASS {sum(1 for r in rows if r['verdict']=='PASS')}, "
 # ------------------------------------------------------------------ flags ----
 # Existing flag IDs must not be reused; read the highest and continue.
 existing_flags = read("flags.csv")
-next_f = 110
+next_f = 115  # F110-F114 are taken by session f04dda73 on main; IDs must never be reused
 flags = [
     {"flag_id": f"F{next_f}", "category": "Results feed",
      "item": "The published 137-game feed reconciles 6 of 32 clubs, not 32 of 32",
@@ -323,20 +323,20 @@ for r in dstr:
 club_sources.sort()
 
 src_rows = [
-    {"source_id": "SRC-91", "title": "2026 NFL International Games slate",
+    {"source_id": "SRC-93", "title": "2026 NFL International Games slate",
      "publisher": "NFL Football Operations", "url": SRC_INTL, "type": "official league page",
      "accessed_date": AS_OF,
      "used_for": "the nine-game 2026 international slate, its venues and dates; the basis for the eight settled "
                  "neutral-site flags in corpus v2",
      "verification_note": "Lists nine games across seven countries. The ninth (MIN at SF, Estadio Banorte) is "
                           "Week 11 and is not in any settled corpus."},
-    {"source_id": "SRC-92", "title": "2026 Week 11 schedule and byes",
+    {"source_id": "SRC-94", "title": "2026 Week 11 schedule and byes",
      "publisher": "NFL.com", "url": SRC_W11, "type": "official league page",
      "accessed_date": AS_OF,
      "used_for": "the 13 Week 11 fixtures and the six clubs on bye",
      "verification_note": "Byes listed as ATL, CLE, GB, LAR, NE, SEA. Six clubs x 1 bye plus 26 clubs playing = 32."},
 ]
-sid = 93
+sid = 95
 for u in club_sources:
     club = next(r["club"] for r in dstr if r["source_url"] == u)
     name = next(r["club_name"] for r in dstr if r["source_url"] == u)

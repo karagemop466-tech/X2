@@ -32,6 +32,7 @@ _dstr = read_csv_any(("depth_chart_strings_2026.csv",))
 _ddiff = read_csv_any(("depth_chart_diff_2026-11-14_vs_2026-11-18.csv",))
 _dcov = read_csv_any(("chart_rejections.csv",))
 _ver = read_csv_any(("verify_39948feb_2026-11-18.csv",))
+_xest = read_csv_any(("corpus_v2_cross_estimate.csv",))
 
 for _label, _rows, _key in (("corpus_version_comparison", _cmp, "source_url"),
                             ("corpus_reconciliation", _v2recon, "source_url"),
@@ -44,7 +45,9 @@ for _label, _rows, _key in (("corpus_version_comparison", _cmp, "source_url"),
                             ("depth_chart_diff", _ddiff, "stored_source_url"),
                             ("depth_chart_diff.live", _ddiff, "live_source_url"),
                             ("chart_rejections", _dcov, "source_url"),
-                            ("verify_39948feb", _ver, "source_url")):
+                            ("verify_39948feb", _ver, "source_url"),
+                            ("corpus_v2_cross_estimate.a", _xest, "source_a"),
+                            ("corpus_v2_cross_estimate.b", _xest, "source_b")):
     for _r in _rows:
         check_official((_r.get(_key) or "").strip(), _label + "." + _key)
 
@@ -131,7 +134,31 @@ one version tag, not a quiet rewrite.</li>
 (Estadio Banorte, Mexico City) is Week 11 and unplayed, so a settled corpus can carry at most eight. That is the
 number in <code>neutral_games_flagged</code>, not nine.</li>
 </ul>
-<h2>4. Provenance</h2>
+<h2>5. A second pipeline, built independently, reaches the same answer</h2>
+<p class="note">While this page was being written, a separate session (f04dda73) built its own corpus from the same
+13 games by a different route — <code>scripts/corpus_v2.py</code>, 102 games, published on the
+<a href="corpus-v2.html">Pre-registered corpus</a> page. The two pipelines share no code, and they converge:</p>
+<ul class="findings">
+<li><strong>Both score the same 102 out-of-sample games</strong> and both reproduce the published {_c("MAE improvement of M1 over the reference line (pts)", "v1_value_137_games_published")}-point
+gain on the 89-game control before adding anything.</li>
+<li><strong>Both land in the same place once the 13 games are added:</strong> this page reports
+{_c("MAE improvement of M1 over the reference line (pts)")} points of margin gain, the other pipeline reports
+1.439 — a 0.06-point spread between two independent implementations, both far below the 1.74 on the published
+corpus.</li>
+<li><strong>They differ on one modelling choice, and it is not settled here.</strong> This build flags the eight
+settled international games as neutral sites; the other does not. A 0.3-point difference is compatible with that,
+but neither build can establish which treatment is correct without a pre-registered rule. It is put to the owner as
+a question rather than quietly resolved.</li>
+<li><strong>The sharper test is the other page's, not this one's.</strong> It cuts the 13 new games out as a holdout
+and finds the model <em>behind</em> its own naive line on them (−0.591 points). This page's walk-forward scores all
+102 games together, which dilutes exactly that effect. A reader should take the holdout result as the more
+conservative reading of the same evidence.</li>
+</ul>
+{table(_xest, ["quantity","estimate_A_pre_registered","estimate_B_full_corpus","agree","reading","source_a","source_b"],
+       {"quantity":"Quantity","estimate_A_pre_registered":"Pipeline A (pre-registered corpus)",
+        "estimate_B_full_corpus":"Pipeline B (this page)","agree":"Agree","reading":"Reading",
+        "source_a":"A source","source_b":"B source"})}
+<h2>6. Provenance</h2>
 {table([_v2prov], list(_v2prov.keys()), {k: k.replace("_", " ").capitalize() for k in _v2prov.keys()})}
 """)
 

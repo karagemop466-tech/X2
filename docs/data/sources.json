@@ -901,6 +901,26 @@
  },
  {
   "source_id": "SRC-91",
+  "title": "NFL.com 2026 standings, third independent read (session f04dda73)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/standings/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "32 clubs x W/L/T/PF/PA compared with data/captures/standings_2026-11-18.csv and with the 137-game ledger",
+  "verification_note": "Both chunks read. All 32 clubs match the repository 2026-11-18 capture exactly (0 mismatches); 26 of 32 differ from the 2026-11-14 snapshot, and the read implies 150 completed games against the ledger 137. Feeds V35, F113."
+ },
+ {
+  "source_id": "SRC-92",
+  "title": "NFL.com Week 10 2026 by-week schedule, read for the 13 settled finals (session f04dda73)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "The 13 Week 10 finals scored out of sample in data/corpus_v2_2026.csv",
+  "verification_note": "Both chunks read. All 14 Week 10 finals transcribed by hand from the page headline form (e.g. \"Patriots 10, Lions 35, FINAL\") and compared with data/games_week10_backfill_2026.csv: 13 of 13 match exactly. The Thursday WAS-NYG game was already in the feed. Feeds T108, F110."
+ },
+ {
+  "source_id": "SRC-93",
   "title": "2026 NFL International Games slate",
   "publisher": "NFL Football Operations",
   "url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games",
@@ -910,7 +930,7 @@
   "verification_note": "Lists nine games across seven countries. The ninth (MIN at SF, Estadio Banorte) is Week 11 and is not in any settled corpus."
  },
  {
-  "source_id": "SRC-92",
+  "source_id": "SRC-94",
   "title": "2026 Week 11 schedule and byes",
   "publisher": "NFL.com",
   "url": "https://www.nfl.com/schedules/2026/by-week/week-11",
@@ -920,7 +940,7 @@
   "verification_note": "Byes listed as ATL, CLE, GB, LAR, NE, SEA. Six clubs x 1 bye plus 26 clubs playing = 32."
  },
  {
-  "source_id": "SRC-93",
+  "source_id": "SRC-95",
   "title": "Arizona Cardinals depth chart",
   "publisher": "Arizona Cardinals (first-party club site)",
   "url": "https://www.azcardinals.com/team/depth-chart",
@@ -930,7 +950,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-94",
+  "source_id": "SRC-96",
   "title": "Buffalo Bills depth chart",
   "publisher": "Buffalo Bills (first-party club site)",
   "url": "https://www.buffalobills.com/team/depth-chart",
@@ -940,7 +960,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-95",
+  "source_id": "SRC-97",
   "title": "Indianapolis Colts depth chart",
   "publisher": "Indianapolis Colts (first-party club site)",
   "url": "https://www.colts.com/team/depth-chart",
@@ -950,7 +970,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-96",
+  "source_id": "SRC-98",
   "title": "Dallas Cowboys depth chart",
   "publisher": "Dallas Cowboys (first-party club site)",
   "url": "https://www.dallascowboys.com/team/depth-chart",
@@ -960,7 +980,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-97",
+  "source_id": "SRC-99",
   "title": "Detroit Lions depth chart",
   "publisher": "Detroit Lions (first-party club site)",
   "url": "https://www.detroitlions.com/team/depth-chart",
@@ -970,7 +990,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-98",
+  "source_id": "SRC-100",
   "title": "Miami Dolphins depth chart",
   "publisher": "Miami Dolphins (first-party club site)",
   "url": "https://www.miamidolphins.com/team/depth-chart",
@@ -980,7 +1000,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-99",
+  "source_id": "SRC-101",
   "title": "New Orleans Saints depth chart",
   "publisher": "New Orleans Saints (first-party club site)",
   "url": "https://www.neworleanssaints.com/team/depth-chart",
@@ -990,7 +1010,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-100",
+  "source_id": "SRC-102",
   "title": "Green Bay Packers depth chart",
   "publisher": "Green Bay Packers (first-party club site)",
   "url": "https://www.packers.com/team/depth-chart",
@@ -1000,7 +1020,7 @@
   "verification_note": "Read directly on 2026-11-18. Column 1 of each published row is the first string. Shared cells and empty cells are preserved as published; no order is inferred."
  },
  {
-  "source_id": "SRC-101",
+  "source_id": "SRC-103",
   "title": "Tennessee Titans depth chart",
   "publisher": "Tennessee Titans (first-party club site)",
   "url": "https://www.tennesseetitans.com/team/depth-chart",

@@ -25,7 +25,16 @@ _drift = _sp.run([sys.executable, os.path.join(ROOT, "scripts", "drift_check.py"
                  capture_output=True, text=True)
 if _drift.returncode != 0:
     raise SystemExit("BUILD FAILED: drift alarm\n" + _drift.stdout + _drift.stderr)
+# The site carries surfaces read on more than one date. A single "data as of" label
+# cannot be true of all of them: the injury register and the standings were read on
+# 2026-11-18, while the week-11 schedule, the depth charts and the frozen forecast log
+# were read on 2026-11-14 and are deliberately frozen there. AS_OF stays as the frozen
+# baseline that many sections legitimately describe; READ_LATEST and READ_SUMMARY are
+# what the header shows, so the label on every page is true of the newest read rather
+# than of the oldest (T111, flag F114).
 AS_OF = "2026-11-14"
+READ_LATEST = "2026-11-18"
+READ_SUMMARY = "injury report, standings and Week 10 slate read 2026-11-18; Week 11 lines and depth charts read 2026-11-14"
 OFFICIAL_HOSTS = {
     # static.www.nfl.com serves official NFL gamebook PDFs linked from the NFL game
     # centers (T52 takeover). It is a first-party NFL host, not a third-party provider.
@@ -171,6 +180,7 @@ for _row in decision_console:
             "decision_console.csv is stale for %s: page would show %r but "
             "decision_choices.json records %r - re-run scripts/review.py"
             % (_row["proposal_id"], _row["recorded_choice"], _want))
+_decision_queue = read_csv("decision_queue.csv")
 forecast_log = read_csv("prospective_forecast_log.csv")
 with open(os.path.join(DATA, "prospective_forecast_log.sha256"), encoding="utf-8") as f:
     SEAL = f.read().split()[0]
@@ -534,7 +544,9 @@ LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url"
               "schedule_source_url": "Schedule ↗",
               "backfill_source_url": "Week 10 slate ↗", "availability_source_url": "Injury report ↗",
               # session 39948feb: the depth-chart diff compares two dated reads of one page.
-              "stored_source_url": "Club chart ↗", "live_source_url": "Club chart ↗"}
+              "stored_source_url": "Club chart ↗", "live_source_url": "Club chart ↗",
+              # two independently built corpora compared side by side
+              "source_a": "Pipeline A ↗", "source_b": "Pipeline B ↗"}
 
 
 def cell(key, val, row=None):
@@ -634,12 +646,12 @@ def page(slug, title, body, active):
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{html.escape(title)} · NFL Research Dashboard</title>
-<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Data as of {AS_OF}.">
+<meta name="description" content="NFL research dashboard: source-linked injury snapshot, depth exposure, strategy hypotheses, validation gates, questions and flagged items. Latest official read {READ_LATEST}; other source dates are shown per page.">
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Data as of {AS_OF} (UTC)</span></div>
+  <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest read {READ_LATEST} · {READ_SUMMARY} · dates shown per source</span></div>
   <nav aria-label="Main">{nav}</nav>
 </header>
 <main>
@@ -677,18 +689,57 @@ n_competing = len(competing)
 n_qualified = sum(1 for r in scorecard if r["status"].startswith("Qualified"))
 
 # ---------- index ----------
+# T111 / F114. One row per surface, each carrying its own read date. Hand-maintained
+# because the read date is a fact about when a human read the page, not something a
+# script can derive; the build checks the row count and that every row has a source.
+_freshness_rows = [
+    {"surface": "Week 10 injury register (347 rows)", "official_source": "NFL.com injury report",
+     "last_read": "2026-11-18", "status": "current",
+     "why_that_date": "Re-read in full and re-published on 2026-11-18; 13 clubs changed between the two reads (F94, F105).",
+     "source_url": "https://www.nfl.com/injuries/"},
+    {"surface": "Standings (32 clubs, 150 completed games)", "official_source": "NFL.com standings",
+     "last_read": "2026-11-18", "status": "current",
+     "why_that_date": "Read after the Week 10 slate completed. The results ledger still holds 137 games, so the currency check fails (V35, F113).",
+     "source_url": "https://www.nfl.com/standings/"},
+    {"surface": "Week 10 finals (13 games added to the corpus)", "official_source": "NFL.com Week 10 by-week schedule",
+     "last_read": "2026-11-18", "status": "current",
+     "why_that_date": "Transcribed from the official schedule page and reconciled 32 of 32 clubs against the standings (F105).",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"},
+    {"surface": "Week 11 lines and the sealed pre-kickoff forecast log", "official_source": "NFL.com Week 11 schedule",
+     "last_read": "2026-11-14", "status": "frozen on purpose",
+     "why_that_date": "Fitted on the 137-game ledger and SHA-256 sealed before kickoff. Re-fitting on newer results would turn a forecast into a retrodiction, so it is not re-derived (F114).",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"},
+    {"surface": "Club depth charts and replacement depth", "official_source": "Official club depth-chart pages",
+     "last_read": "2026-11-14", "status": "frozen on purpose",
+     "why_that_date": "Club charts are pre-injury and self-labelled unofficial; the capture date is published with every row so a reader can see the lag (F45).",
+     "source_url": "https://www.detroitlions.com/team/depth-chart"},
+    {"surface": "Week 11 schedule", "official_source": "NFL.com Week 11 by-week schedule",
+     "last_read": "2026-11-14", "status": "not yet re-read",
+     "why_that_date": "Confirmed game by game on 2026-11-14. Kickoff times and broadcasters can move, so this is the surface most likely to be stale.",
+     "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"},
+]
+
 pages["index.html"] = ("NFL Research Dashboard", f"""
 <section class="hero">
   <h1>NFL Research Dashboard</h1>
   <p>A source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
   Every table row links to an official NFL, government or statistical source; repository and deployment claims link to first-party project records. Unconfirmed NFL/model values remain blank and flagged.</p>
-  <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (injury report read 2026-11-18; the Week 10 schedule as read 2026-11-14).</p>
+  <p class="note">Source dates are not uniform: the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> was read 2026-11-18; the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> capture cited for the results register is dated 2026-11-14. Other source dates appear beside their tables.</p>
   <p class="note"><strong>Verification status:</strong> the Week 10 injury register ({tot['rows']} rows, {tot['teams']} clubs) was re-read from the official NFL.com page on 2026-11-18 and re-published from that read (347 rows; 32 field values and 2 rows changed since 2026-11-14). The 2026-11-14 "no discrepancies" result is <strong>superseded</strong> (F94). The 2026-11-18 comparison is a consistency check against the same transcription, <strong>not</strong> independent verification. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
 {tiles([(ms['games_transcribed'], 'games transcribed and verified'), (ms['out_of_sample_games'], 'out-of-sample games graded'),
         (ms['mae_improvement'], 'points of forecast gain vs the naive line'), (ms['strategies_tested'], 'strategies tested'),
         (tot['rows'], 'players listed (Week 10)'), (ms['week11_games'], 'Week 11 lines originated')])}
+<section class="hero"><h2>Decision-critical results-feed limitation</h2><p><strong>Do not treat the existing backtest corpus as a complete current-season feed.</strong> The model's published feed contains 137 games; the 2026-11-18 standings imply 150 completed games. A separately transcribed 13-game Week 10 backfill makes all 32 club records and points reconcile, while the feed as published fails for 26 of 32 clubs. The backfill is deliberately not merged into model inputs pending the documented P09 corpus decision. See <a href="feed-completeness.html">Feed completeness</a>, <a href="review-path.html">Review path</a> and <a href="flagged.html">Flagged for review</a>.</p><p>Consequently, the 89-game walk-forward statistics describe the existing historical corpus; they are not a final-season evaluation. No leaderboard strategy is ranked.</p></section>
+<h2>How current is each surface?</h2>
+<p class="note">Each register below was read from its official source on the date in its own row, and several of them
+deliberately are not the newest read. A single site-wide "data as of" date was true of the oldest of these and false of
+the newest, so the date is published per surface instead (flag F114). A frozen register is frozen on purpose: the Week 11
+lines are sealed pre-kickoff evidence and re-deriving them from newer results would destroy what they prove.</p>
+{table(_freshness_rows, ["surface","official_source","last_read","status","why_that_date","source_url"],
+       {"surface":"Surface","official_source":"Official source","last_read":"Last read","status":"Status",
+        "why_that_date":"Why that date","source_url":"Source"}, table_id="freshness")}
 <h2>Start here</h2>
 <div class="cards">
 {card('executive-summary.html', 'Executive summary', 'The key findings, what is verified, and what is not yet known.')}
@@ -698,7 +749,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('price-snapshots.html', 'Price snapshots', 'The price-snapshot store: opening and closing numbers for every market originated. Values are blank and flagged — no licensed odds feed exists (F51).')}
 {card('originated-lines.html', 'Originated lines', 'Side first, then total, then moneyline: our own fair numbers, the reference line and the edge, plus our opening and current number for every market.')}
 {card('backtest.html', 'Backtest', 'All 89 walk-forward out-of-sample predictions against what actually happened, game by game.')}
-{card('leaderboard.html', 'Leaderboard', 'Seven strategies ranked on signal (forecast skill) only — staking is kept separate so luck cannot mask a bad signal — with gates and required sample sizes.')}
+{card('leaderboard.html', 'Leaderboard', 'Prospective-only strategy registry: currently unranked because immutable registrations and graded prospective forecasts are missing. Historical backtests stay on the Backtest page; staking is separate.')}
 {card('validation-gates.html', 'Validation gates', 'Nine gates, what each one tests, and which strategies pass — including the demotion gate that sends a live strategy back to paper.')}
  {card('correlations.html', 'Correlations', 'Nine correlation values computed from official results, with intervals and p-values.')}
 {card('correlation-provenance.html', 'Correlation provenance', 'Every correlation traced to its inputs, the official page behind them and the n it was computed on.')}
@@ -708,7 +759,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('props.html', 'Player props', 'Which prop outcomes are officially obtainable, which are not held here, and the same-game correlation matrix with n on every value.')}
 {card('event-risk.html', 'Event risk', 'Named players, official status words and the exact market each one can invalidate, plus the count of risks whose role is not officially confirmed.')}
 {card('review.html', 'Review console', 'The decision section: eight proposals, three options each, a recommendation, the file each would change, and a recorded-choice mechanism that ships empty.')}
-{card('results.html', 'Season results', 'The verified results feed: all 137 transcribed 2026 games, each reconciled against the official standings — what backtests run on, and why ROI still cannot be computed.')}
+{card('results.html', 'Season results', 'The 137-game model feed is behind the 2026-11-18 official standings by 13 settled Week 10 games. A 13-game source-linked backfill is separate pending the P09 corpus decision.')}
 {card('results-feed.html', 'Results feed', 'The settlement view: the official final score plus how the side, the total and the moneyline we originated actually settled.')}
 {card('injuries.html', 'Injuries', 'All 347 Week 10 injury report rows (read 2026-11-18) with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
@@ -732,12 +783,37 @@ top5 = team_summary[:5]
 top5_txt = ", ".join(f"{t['team']} ({t['out']} Out, {t['doubtful']} Doubtful)" for t in top5)
 pages["executive-summary.html"] = ("Executive summary", f"""
 <h1>Executive summary</h1>
-<p class="note">Snapshot read {AS_OF}. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. Manual transcription spot-check remains open (F10), and permission for systematic collection/publication is not recorded (F16).</p>
+<p class="note">The injury report was captured 2026-11-18; the other source dates are stated separately. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. The 2026-11-18 transcription check is not independent of its source transcription (F109), and permission for systematic collection/publication is not recorded (F16).</p>
+<h2>What changed in this session, and what it means</h2>
+<ul class="findings">
+<li><strong>The model does not clearly beat the baseline it is graded against.</strong> On the 89 games that have been
+published since the first session, our line beats its own naive reference line by 1.736 points of mean absolute error
+per game. On the 13 settled Week 10 games it had never been scored against, it is <strong>0.591 points behind</strong>
+the same line, and it was closer on only 5 of 13. Pooled over 102 games the side gain is 1.439. On totals it loses to
+the reference in every cut. The honest headline is therefore a range, not a number, and no staking or reward decision can
+be justified on the 1.74 alone (<a href="corpus-v2.html">Pre-registered corpus</a>, flag F110).</li>
+<li><strong>The results feed was 13 games behind, and the check that should have caught it was itself stale.</strong>
+The ledger holds 137 games; the official standings now imply 150. The reconciliation script compared only against a
+2026-11-14 read and printed an unqualified pass. It now prints both read dates, labels the old comparison arithmetic-only,
+and <strong>fails</strong> the currency comparison (<a href="feed-completeness.html">Feed completeness</a>, V35, F113).</li>
+<li><strong>Two numbers for one correlation were published at once.</strong> The audit register still carried C08 =
+-0.064 after the canonical register had moved to +0.035. Regenerated, and a guard now makes that drift a build failure
+(V36, F112).</li>
+<li><strong>Every page carried one "data as of" date that was false for most of its own tables.</strong> Read dates are
+now published per surface, including the two registers that are frozen on purpose
+(<a href="index.html">landing page</a>, F114).</li>
+<li><strong>The open decisions are now ordered by what each one releases.</strong> Ten decisions wait on a human; the
+queue shows how many readiness rows each releases and what it costs
+(<a href="review.html">Review console</a>).</li>
+<li><strong>A third, independent read of the injury report agrees with the published register.</strong> 164 of 164 cells
+across three club sections match, and the one cell two sessions had disputed resolves in favour of the published value
+(F109, <a href="capture-integrity.html">Capture integrity</a>).</li>
+</ul>
 {tiles([(tot['out'] + tot['doubtful'], 'Out or Doubtful players'), (tot['off_od'], 'Offense Out or Doubtful'),
         (tot['def_od'], 'Defense Out or Doubtful'), (tot['st_od'], 'Special teams Out or Doubtful')])}
 <h2>Key findings</h2>
 <ul class="findings">
-<li><strong>Verification.</strong> This session re-read the official Week 10 report in full and compared it row by row with the stored data: all {tot['rows']} rows across all {tot['teams']} teams matched, and the 14 game headers matched. The spot-check request in Flag F10 is closed for one reviewer pass; see the <a href="verification.html">Verification record</a>.</li>
+<li><strong>Verification limitation.</strong> The 2026-11-18 register matches the transcription generated from that same live-page capture; this confirms internal consistency, not independent transcription accuracy. An independent reader initially differed on one of 347 player rows; a third read resolved the discrepancy and the stored row was corrected (F109). See <a href="capture-integrity.html">Capture integrity</a> and the <a href="verification.html">Verification record</a>.</li>
 <li><strong>Coverage.</strong> The Week 10 NFL.com report lists {tot['rows']} players across {tot['teams']} teams in {tot['games']} games. The official NFL schedule identifies {', '.join(tot['missing_teams'])} as on bye (Flag F05); this is confirmed from the schedule, not inferred from the injury report.</li>
 <li><strong>Game status.</strong> {tot['out']} players are Out, {tot['doubtful']} Doubtful and {tot['questionable']} Questionable. {tot['no_status']} listed players carry no game-status label on the report.</li>
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
@@ -753,17 +829,18 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <li><strong>Price-snapshot store (new).</strong> All {len(price_snapshots)} originated Week 11 markets — side first, then total, then moneyline — are tracked in a store with opening and closing fields. Every price cell is blank and marked unverified: no authorised, timestamped price source exists (Flags F07, F43). The store is the piece that makes closing-line value and ROI computable the moment real prices land; until then, no ROI is estimated.</li>
 <li><strong>Demotion gate defined (new).</strong> Seven rules (D1-D7, gate G9) define how a live strategy returns to paper: signal-interval collapse, multiplicity failure, sample loss, source revision, lost clearance, and a CLV test once prices exist. Staking results can neither promote nor rescue a strategy. The rules are proposals — thresholds await the owner's statistical plan (Flag F17) — and no strategy is live, so the gate is inert today.</li>
 <li><strong>Depth of the replacement (new).</strong> Replacement events are now tracked with an explicit string depth, not just the fact of a replacement — across two tables: RD01–RD07 (Detroit and New England, where club-published charts verify order: the Patriots' backfield is already down to its 3rd/4th string, the Lions' cornerback room to its 2nd/3rd) and the T42 availability table (session 8a0bf37e), which adds fetched club-chart checks for all eleven availability rows — SEA, MIA, BAL, CLE, AZ and NYG with ranks where an official statement names the replacement, plus GB, LAR, KC and IND (session d2915d86, Flag F53 resolved) where the chart order is recorded but the rank stays blank because no official source names a replacement. Where no chart confirms the order the depth cell is blank and flagged (F06).</li>
-<li><strong>Results verified line by line.</strong> Every one of the {ms['games_transcribed']} transcribed games was reconciled against the official standings: all 32 teams match exactly on wins, losses, ties, points for and points against.</li>
+<li><strong>Results-feed reconciliation is point-in-time.</strong> The 137-game feed reconciles against the official standings snapshot read 2026-11-14. The official 2026-11-18 standings show 13 later Week 10 games missing; the separate backfill reconciles all 32 teams but is not merged into the model corpus pending P09. See <a href="feed-completeness.html">Feed completeness</a>.</li>
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
 <li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
 </ul>
 <h2>The pass that closed the four open market requirements</h2>
 <ul class="findings">
-<li><strong>A settled results feed.</strong> All 137 games now sit in one feed that also records how the side, the total
-and the moneyline we originated actually settled: side {_feed_cover} cover / {_feed_lose} lose / {_feed_push} push,
-totals {_feed_over} over / {_feed_under} under, moneyline 39 home / 49 away / 1 tie. A second feed built independently
-by another session carries the same 137 games; compared row by row on week, away team and home team,
-<strong>137 of 137 scores agree</strong>. Neither carries a price, so neither can produce a return.</li>
+<li><strong>A settled results feed, with a known coverage gap.</strong> The current 137-game feed records how the side,
+total and moneyline originated for those games actually settled: side {_feed_cover} cover / {_feed_lose} lose /
+{_feed_push} push, totals {_feed_over} over / {_feed_under} under, moneyline 39 home / 49 away / 1 tie. A second
+repository feed carries the same 137 rows, and the two agree on scores row by row; this does not establish complete
+season coverage. Thirteen settled Week 10 games are in a separate backfill, not the model input corpus, pending P09.
+Neither feed carries a price, so neither can produce a return.</li>
 <li><strong>Depth of the replacement.</strong> {len(depth_repl)} rows across {', '.join(_covered_names)} record which
 string an Out or Doubtful player held, who the club chart lists next, and how many players are still listed behind
 him; {_named_repl} name a replacement and the rest are blank and flagged. A parallel register covers SEA, MIA, BAL,
@@ -789,7 +866,7 @@ total of 45.9 points. The Week 11 half of the neutral-site defect is confirmed c
 <h2>What is verified</h2>
 <ul>
 <li>The Week 10 injury rows, game list, records, and news headlines (NFL.com, read {AS_OF}).</li>
-<li>All 137 completed 2026 games and the standings they reconcile against (NFL.com, read {AS_OF}).</li>
+<li>The 137-game model feed against the official standings read 2026-11-14; the 2026-11-18 standings show 13 settled Week 10 games missing. The separate 13-game backfill reconciles all 32 clubs but is not yet in model inputs (P09).</li>
 <li>The model outputs: team ratings, Week 11 lines, backtest, gates, correlations and the parlay study; each is recomputed from the games above by <code>scripts/model.py</code>.</li>
 <li>Penal Code Chapter 23 gambling articles (e-Gov Law Search); Japan Sport Council state lottery products.</li>
 </ul>
@@ -1100,9 +1177,13 @@ pages["backtest.html"] = ("Backtest", f"""
 <h1>Backtest — walk-forward, out of sample</h1>
 <p class="note">Every row is a game the model had not seen: the ratings for that week were fitted only on games
 played <em>before</em> that week. {ms['out_of_sample_games']} games, weeks {min(ms['out_of_sample_weeks'])} to
-{max(ms['out_of_sample_weeks'])} of 2026. "Error" columns are absolute errors in points against what actually
-happened, so smaller is better. A bet is only placed when the model and the reference line disagree by at least
-{ms['bet_delta_points']} points.</p>
+{max(ms['out_of_sample_weeks'])} of 2026, from the current 137-game frozen model corpus. This is not a complete
+current-season sample: 13 settled Week 10 games are separately transcribed and source-linked but not incorporated
+pending the P09 corpus decision. The official standings read 2026-11-18 imply 150 games played. These historic
+statistics describe the existing corpus only; they are not final-season results or prospective leaderboard scores.
+See <a href="feed-completeness.html">Feed completeness</a> and <a href="flagged.html">F96</a>. "Error" columns are
+absolute errors in points against what actually happened, so smaller is better. A bet is only placed when the model
+and the reference line disagree by at least {ms['bet_delta_points']} points.</p>
 {tiles([(ms['out_of_sample_games'], 'out-of-sample games'), (ms['mae_m1'], 'model MAE'), (ms['mae_reference'], 'reference MAE'),
         (ms['mae_improvement'], 'improvement (points)')])}
 {search_box('bt-table')}
@@ -1280,15 +1361,8 @@ cells are blank by design (Flag F31).</li>
 
 # ---------- season results ----------
 pages["results.html"] = ("Season results", f"""
-<h1>Season results — the verified results feed</h1>
-<p class="note"><strong>This table is the project's verified results feed</strong> (requirement R38):
-<code>data/games_2026_results.csv</code>, all {ms['games_transcribed']} games of 2026 played through the Week 10
-Thursday game (weeks 1-9 complete, plus the Week 10 Thursday game), transcribed from the official NFL.com by-week
-schedule pages and read {AS_OF}. Every row links to the official schedule and the official game page.
-<strong>Verification:</strong> the wins, losses, ties, points for and points against implied by this feed were
-compared with the <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">official 2026
-standings</a> for all 32 teams and match exactly on every column; a second, independent transcription of the same
-season agrees on every score (<a href="cross-check.html">cross-check</a>).</p>
+<h1>Season results — current completeness is limited</h1>
+<p class="note"><strong>The model input feed is 137 games, not a complete current-season results set.</strong> Those scores were transcribed from linked official NFL schedule pages, with the point-in-time aggregate check recorded against standings read 2026-11-14. The official standings read 2026-11-18 imply 150 completed games: 13 settled Week 10 games are missing from the model input feed. A separate backfill register contains those 13 source-linked games and reconciles all 32 clubs against the later standings; it remains unmerged pending P09. As published, the 137-game feed does not match the 2026-11-18 standings for 26 of 32 clubs. See <a href="feed-completeness.html">Feed completeness</a> and <a href="flagged.html">Flagged for review</a>. The 89-game walk-forward metrics therefore apply to the existing corpus only, not to the complete 2026 season. Do not treat the cross-check between two feeds as independent official verification of every game.</p>
 <p class="note"><strong>What the feed makes computable, and what it does not.</strong> Backtests and forecast-skill
 scores are computed from this feed — that is what the <a href="backtest.html">Backtest</a> and
 <a href="leaderboard.html">Leaderboard</a> pages show. <strong>Return on investment cannot be computed at all</strong>
@@ -1299,12 +1373,7 @@ licensed price source is connected (Flags F07, F32; requirement R37). No ROI val
        {'week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','game_url':'Game','source_url':'Schedule'},
        table_id='res-table', filterable=True)}
 <h2>Canonical verified results feed</h2>
-<p class="note"><code>data/results_feed_2026.csv</code> (session f25d6b55, task T52, advances requirement R38) is the single
-canonical feed this project grades everything against: the backtest, the bets, the gates, the correlations and the price-snapshot
-store all consume exactly these {len(results_feed)} rows and nothing else. Every row carries its verification status (aggregates
-reproduce the official standings exactly &mdash; V01 and RF07), the date verified, the check register it was validated against, and
-links to the official game page and schedule page. ROI itself is still not computed anywhere, because no authorised price source
-exists (Flag F07); the feed makes ROI computable the moment a permitted price is connected.</p>
+<p class="note"><code>data/results_feed_2026.csv</code> is the canonical model feed: {len(results_feed)} rows consumed by the backtest, bets, gates, correlations and price-snapshot store. Its aggregate check was against the 2026-11-14 standings snapshot and must not be described as matching the later 2026-11-18 standings. The separate 13-game backfill at <code>data/games_week10_backfill_2026.csv</code> reconciles all 32 clubs against that later read, but is not part of these model inputs pending the P09 corpus decision. No authorized price source exists, so ROI remains uncomputed (F07).</p>
 {search_box('feed-table')}
 {table(results_feed, ['feed_id','week','date_as_shown','away_team','away_points','home_team','home_points','verification_status','verified_date','checks','game_url','source_url'],
        {'feed_id':'Feed ID','week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','verification_status':'Verification','verified_date':'Verified','checks':'Checks','game_url':'Game','source_url':'Schedule'},
@@ -1920,7 +1989,7 @@ REVIEW_PATH = [
      "reversible": "Yes — the columns are empty, so nothing has to be unwound.",
      "blocks_row": "Steps 5, 6", "evidence_url": "https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL"},
     {"step": "3", "theme": "Finish the results feed before measuring anything more",
-     "why_first": "Skill, correlation and ROI all rest on the results ledger. The ledger reconciles for all 32 teams, but a handful of game-center pages do not display a score, so those rows are verified against the standings rather than game by game.",
+     "why_first": "Skill, correlation and ROI all rest on the results ledger. The frozen 137-game ledger reconciles against the 2026-11-14 standings snapshot, but the 2026-11-18 standings show 13 settled Week 10 games missing; the separate backfill reconciles all 32 clubs and awaits the P09 corpus decision.",
      "recommended": "Get the official Game Book PDFs for the rows that cannot be read on the game center, and store the PDF link per game (DEC-06).",
      "have_now": "137 games; every team's W-L-T and points reconcile exactly with the standings snapshot the "
                 "ledger was frozen on (read 2026-11-14). Today's standings imply 150 completed games and 26 of 32 "
@@ -1950,7 +2019,7 @@ REVIEW_PATH = [
      "reversible": "Yes — it is a presentation rule.",
      "blocks_row": "Step 7", "evidence_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm"},
     {"step": "7", "theme": "Publish only what the sample can support",
-     "why_first": "The honest state today is that a line model beats a naive reference line by 1.74 points of mean absolute error on 89 games, and that this is not yet a decisive sample against a real market. Reward tiers and 'top strategy' language outrun the evidence.",
+     "why_first": "The historical research run shows a 1.74-point mean absolute error improvement over a naive reference on 89 games from the current frozen corpus. It is not a decisive sample against a real market, and the corpus omits 13 settled Week 10 games pending P09. Reward tiers and 'top strategy' language outrun the evidence.",
      "recommended": "Keep the caveats on the same page as the ranking, publish the sample size each claim would need, and keep every reward mechanic inert.",
      "have_now": "Confidence intervals, permutation tests, multiple-comparison control, and a published required-sample-size figure per strategy.",
      "still_missing": "A decisive sample, and any market comparison.",
@@ -2080,12 +2149,17 @@ treats any neutral-site game among them as a home game (<a href="flagged.html">F
 pages["results-feed.html"] = ("Results feed", f"""
 <h1>Results feed — settled markets</h1>
 <p class="note">One row per decided game holding the official final score <strong>and how each market we originate
-settled</strong>. This is the companion to <a href="results.html">Season results</a>: same 137 games, with the
+settled</strong>. This is the companion to <a href="results.html">Season results</a>: the same 137-game feed, with the
 settlement columns a backtest, a closing-line-value study or a return-on-investment figure would be computed from.
-Every score comes from the official NFL.com by-week schedule pages and reconciles against the official standings for all
-32 teams. The settlement columns are computed from that score and the walk-forward line
-<code>scripts/model.py</code> actually published for the game. The market columns are blank: no licensed odds feed, so
-no price, no stake and no return (F07).</p>
+<strong>This is not a complete current-season corpus:</strong> the 2026-11-18 standings imply 13 settled Week 10 games
+that are absent here. Every score comes from the official NFL.com by-week schedule pages. All 32 teams reconcile against
+the official standings <strong>as read on 2026-11-14</strong>, which is a check of arithmetic and not of currency: against
+the current read 26 of 32 clubs do not reconcile (<a href="verification.html">V35</a>, flag F113). The 13 games are
+transcribed and source-linked on the <a href="feed-completeness.html">Feed completeness</a> page and scored out of sample
+on the <a href="corpus-v2.html">Pre-registered corpus</a> page, but they are not spliced into this frozen feed (P09). The
+settlement columns are computed from that score and the walk-forward line <code>scripts/model.py</code> actually published
+for the game, so they are settlement against our own line, not ROI or a market result: the market columns are blank
+because there is no licensed odds feed, so no price, no stake and no return (F07).</p>
 {tiles([(len(feed_settled), 'games in the feed'), (_feed_orig, 'with an originated line'),
         (len(feed_settled) - _feed_orig, 'weeks 1-3, no line fitted'), (0, 'prices recorded')])}
 <h2>Settlement conventions</h2>
@@ -2391,6 +2465,32 @@ that do exist self-label "unofficial" (F45).</p>
 
 pages["review.html"] = ("Review console", f"""
 <h1>Review console — choose a path before anything is built</h1>
+<h2>Start here: the decisions in the order they pay off</h2>
+<p class="note">Ten decisions are open and all ten are waiting on a human. The table below is derived by
+<code>scripts/decision_queue.py</code> from the two registers that already record the dependency —
+<code>data/decision_options.csv</code> (the decisions) and <code>data/decision_readiness.csv</code> (which requirement
+each blocker holds). A row is <em>released</em> when one of the flags the decision names appears in that requirement's
+blocking gate, so the count is the repository's own record rather than an estimate. Benefit and cost are separate
+columns on purpose: the two biggest releases both need money, and the cheapest reversible moves are near the bottom,
+which is exactly the trade a reviewer has to make rather than something the page should decide for them.</p>
+{table(_decision_queue, ["rank","decision_id","decision_to_make","flags_that_gate_it","readiness_rows_released",
+                        "rows_currently_blocked","rows_currently_missing","rows_partial",
+                        "cheapest_reversible_move","needs_spend_or_licence","needs_legal_review",
+                        "recommended_now","what_unlocks_the_choice","blocked_items","tier_basis","source_url"],
+       {"rank":"#","decision_id":"ID","decision_to_make":"Decision","flags_that_gate_it":"Flags",
+        "readiness_rows_released":"Requirements it releases","rows_currently_blocked":"Blocked now",
+        "rows_currently_missing":"Missing now","rows_partial":"Partial now",
+        "cheapest_reversible_move":"Reversible now?","needs_spend_or_licence":"Needs spend/licence",
+        "needs_legal_review":"Needs legal","recommended_now":"Recommended path",
+        "what_unlocks_the_choice":"What unlocks it","blocked_items":"What stays blocked",
+        "tier_basis":"How it was placed","source_url":"Source"}, table_id="decision-queue", filterable=True)}
+<p class="note"><strong>Reading the queue honestly.</strong> Three rows (DEC-03, DEC-02, DEC-05) need a lawyer before
+they need anything else, and two (DEC-01, DEC-08) need a licensed price feed. Those are the only decisions on the list
+that the project cannot make for itself; the rest are engineering choices a session can execute the moment one is
+picked. Four decisions name no flag that any requirement cites as its blocker — their placement is taken from their own
+subject and the page says so in the last column rather than inventing a dependency. Nothing here is implemented: this
+table only orders the questions.</p>
+
 <p class="note">This is the section the brief asks for: a place to review proposals and
 <strong>choose</strong> a path before any change is implemented. Each row below is a real decision with three
 options, the recommended option, the exact file a session would change, what the choice unblocks, and what
@@ -2515,6 +2615,7 @@ controls_rows = read_csv("control_baselines.csv")
 research_rows = read_csv("strategy_backtest_scores.csv")
 mind_rows = read_csv("strategy_change_rules.csv")
 ready_rows = read_csv("decision_readiness.csv")
+_decision_queue = read_csv("decision_queue.csv")
 # F90: the readiness table must have one row per requirement in the register.
 # Assert the requirement_id column is a bijection onto the register's R-ids.
 _reg_ids = [r["req_id"] for r in reqs]
@@ -2790,9 +2891,13 @@ came from. Nothing here is a prediction.</p>
 NFL.com Terms (Section 1.3) prohibit systematic retrieval to compile data without written consent, and gate D22 is not
 cleared, so no automated daily capture runs (see F98). The clock-time history the brief asks for therefore starts with
 two reads, not with a daily series.</p>
-<p class="note"><strong>Results register is behind the official standings (F96).</strong> The verified results feed holds
-137 games (weeks 1-9 plus the Week 10 Thursday game). The 2026-11-18 standings reflect {_games_added} more games played
-in Week 10 (Sunday and Monday), which are not in the frozen register.</p>
+<p class="note"><strong>Results register is behind the official standings (F96, F113).</strong> The verified results
+feed holds 137 games (weeks 1-9 plus the Week 10 Thursday game). The 2026-11-18 standings reflect {_games_added} more
+games played in Week 10 (Sunday and Monday). Those games are transcribed and source-linked on the
+<a href="feed-completeness.html">Feed completeness</a> page and scored out of sample on the
+<a href="corpus-v2.html">Pre-registered corpus</a> page, but they are <em>not</em> in the frozen register, so
+<code>scripts/verify_results.py</code> now reports the currency check as a failure rather than as a pass
+(V35; desk row RF07b).</p>
 <h2>Injury report: capture details</h2>
 {_tbl(["Item", "Value", "Source"], _cap_meta_rows, "cap-meta")}
 <h2>Injury report: changes since 2026-11-14 (publishing the delta, not the level)</h2>
@@ -2818,6 +2923,20 @@ for _r in _fix:
         _lnk(_r["source_url"], "NFL.com game or schedule"),
     ])
 
+# T108 (session 5a5c1a1d): venues read from the official game centre "Game Info" block.
+# Counts are computed from the registers, never typed in.
+_ven = _rd("data/venues_2026.csv")
+_ven_sorted = sorted(_ven, key=lambda r: (int(r["week"]), r["fixture_id"]))
+_ven_rows = [
+    [html.escape(r["week"]), html.escape(f'{r["away_team"]} at {r["home_team"]}'),
+     html.escape(r["stadium"]), html.escape(r["location"]), html.escape(r["read_date_utc"]),
+     _lnk(r["source_url"], "NFL.com game centre")]
+    for r in _ven_sorted
+]
+_ven_w11 = [r for r in _ven if r["week"] == "11"]
+assert len(_ven) == len({r["fixture_id"] for r in _ven}), "venue register: duplicate fixture_id"
+assert all(r["source_url"].startswith("https://www.nfl.com/games/") for r in _ven), "venue register: non-game-centre source"
+
 pages["fixture-context.html"] = ("Fixture context", f"""
 <h1>Fixture context from published schedule facts</h1>
 <p class="note">Built only from published schedule dates and team pairs (scripts/fixture_context.py). No score, result,
@@ -2826,6 +2945,9 @@ means that team has no earlier game in the register (Week 1), never zero. A "bye
 more weeks earlier. The 163 games are weeks 1-11: 136 played games (weeks 1-9), the Week 10 slate, and the Week 11 slate.</p>
 <p class="note">Week 10 Thursday game (WAS at NYG) appears once; the other 13 Week 10 games are listed in data/games_week10_2026.csv (see F96 for the results register).</p>
 {_tbl(["Week", "Date", "Day", "Game (away at home)", "Away rest (days)", "Home rest (days)", "Rest diff (home minus away)", "Bye before game", "Thursday", "Source"], _fix_rows, "fixture")}
+<h2>Venues read from the official game centre</h2>
+<p class="note">{len(_ven)} of {len(_fix)} fixtures read: all {len(_ven_w11)} of {len(week11_sched)} Week 11 fixtures are read (the Week 11 slate is complete). Each row is the Game Info block (location and stadium) of the NFL.com game centre page for that fixture, read 2026-11-18. Unread fixtures are blank and not inferred (F99). Hotel and ticket links on the schedule page are not used as a source.</p>
+{_tbl(["Week", "Game (away at home)", "Stadium", "Location", "Read (UTC date)", "Source"], _ven_rows, "venues")}
 """)
 
 NAV.insert(NAV.index(("results-feed.html", "Results feed")) + 1, ("captures.html", "Captures & changes"))
@@ -2833,6 +2955,7 @@ NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("fixture-con
 NAV.insert(NAV.index(("fixture-context.html", "Fixture context")) + 1, ("capture-integrity.html", "Capture integrity"))
 NAV.insert(NAV.index(("capture-integrity.html", "Capture integrity")) + 1, ("feed-completeness.html", "Feed completeness"))
 NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("forecast-records.html", "Forecast records"))
+NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("corpus-v2.html", "Pre-registered corpus"))
 
 _cap_idx = (
     '<h2>Captures, changes and the drift alarm (read 2026-11-18)</h2>'
@@ -3115,6 +3238,103 @@ as the backfill. The fitted home-field term on the published fit is negative (�
         "source_url": "Source", "game_url": "Game page"}, table_id="neutral-sensitivity")}
 """)
 
+# ---------------------------------------------------------------------------
+# Corpus v2 (T108). The 89-game published corpus and the 102-game corpus that
+# adds the 13 settled Week 10 games are published side by side, as two named
+# estimators, because the two disagree about whether the model beats its own
+# reference line. Neither replaces the other: the published 89 rows are
+# reproduced byte for byte, the 13 new rows are separately named, and the
+# Week 11 numbers already sealed in the prospective forecast log are NOT
+# re-originated (re-fitting would change them, and a sealed pre-kickoff record
+# cannot be re-sealed without destroying what it proves).
+_corpus = read_csv("corpus_v2_2026.csv")
+_corpus_sum = read_csv("corpus_v2_summary.csv")
+_corpus_pub = [r for r in _corpus if r["provenance"] == "published feed"]
+_corpus_new = [r for r in _corpus if r["provenance"] != "published feed"]
+_corpus_by = {r["subset"].split(".")[0].strip(): r for r in _corpus_sum}
+_holdout = _corpus_by["B"]
+_pooled = _corpus_by["C"]
+_pubsum = _corpus_by["A"]
+
+pages["corpus-v2.html"] = ("Pre-registered corpus", f"""
+<section class="hero">
+  <h1>The pre-registered backtest corpus, published twice</h1>
+  <p>The brief asks for the game log to become a pre-registered backtest corpus, and for every model total to be
+  published twice until one wins. Both are done here as one decision: the corpus that has been published since the
+  first session (<strong>{len(_corpus_pub)} games</strong>, weeks 4&ndash;10) and a second corpus that adds the
+  <strong>{len(_corpus_new)} settled Week 10 games</strong> transcribed from the official by-week page
+  (<strong>{len(_corpus)} games</strong> pooled). The two are named separately, the 89 published rows are reproduced
+  before anything is written, and a reader can see which rows are old and which are new in the provenance column.</p>
+  <p class="warn"><strong>The two corpora disagree, and that is the result.</strong> On the published 89 games the
+  model beats its own naive reference line by <strong>{_pubsum['gain_margin_pts']} points</strong> of mean absolute
+  error per game. On the 13 games it had never been scored against it is <strong>{abs(float(_holdout['gain_margin_pts']))}
+  points behind</strong> the same reference line. Pooled, the gain falls to <strong>{_pooled['gain_margin_pts']}
+  points</strong>. The same comparison on <em>totals</em> is worse than that in every cut: the model does not beat
+  the reference total even on the published corpus ({_pubsum['gain_total_pts']} points pooled,
+  {_pooled['gain_total_pts']} on all {_pooled['games']}). Publishing only the first number would be the exact selection the brief forbids, so the holdout
+  number is published beside it and the leadership question stays open (Flag F110).</p>
+</section>
+{tiles([(len(_corpus), 'games in the pooled corpus'), (len(_corpus_pub), 'reproduced from the published register'),
+        (len(_corpus_new), 'new Week 10 holdout games'),
+        (f"{_holdout['games_model_closer']} of {_holdout['games']}", 'holdout games the model was closer')])}
+<h2>Estimator comparison — the honest version</h2>
+<p class="note">Mean absolute error in points per game, computed on identical games with the same construction. The
+reference line is the naive line the corpus is graded against (season scoring differential plus a 2.5-point home
+term); with no licensed odds feed it is not a bookmaker line, so this measures skill against a published baseline,
+not against a market (F07, F51).</p>
+{table(_corpus_sum, ['subset','games','mae_model_margin','mae_reference_margin','gain_margin_pts',
+                    'mae_model_total','mae_reference_total','gain_total_pts','games_model_closer',
+                    'games_reference_closer','ties','reading','source_url'],
+       {'subset':'Corpus','games':'Games','mae_model_margin':'Model MAE (side)','mae_reference_margin':'Reference MAE (side)',
+        'gain_margin_pts':'Gain vs reference (pts)','mae_model_total':'Model MAE (total)',
+        'mae_reference_total':'Reference MAE (total)','gain_total_pts':'Gain (total, pts)',
+        'games_model_closer':'Model closer','games_reference_closer':'Reference closer','ties':'Ties',
+        'reading':'Reading'}, table_id='corpus-summary')}
+<h2>What each row stores</h2>
+<p class="note">Every row is a probability plus the inputs that produced it, not a pick: the model margin, the model
+total, the reference line the probability is measured against, the residual scale and where that scale came from,
+the three probabilities, the realised outcome, both absolute errors, the fit size and the provenance of the game row.
+That is the storage requirement, applied to the corpus itself.</p>
+<h2>The 13 Week 10 holdout games, game by game</h2>
+<p class="note">These games were settled on 2026-11-15 and 2026-11-16, after every published figure on this site was
+fitted. Predictions are made by fitting only on games strictly before Week 10, so the holdout is genuine
+out-of-sample evidence rather than a re-labelled backtest. Source for every score:
+<a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">the official Week 10
+by-week schedule page</a>, transcribed and reconciled against
+<a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">the official standings</a> on 2026-11-18
+(32 of 32 clubs match on W-L-T and points for and against only with these 13 games included).</p>
+{table(_corpus_new, ['record_id','week','matchup','output_margin_home_minus_away_pts','output_total_pts',
+                     'reference_cover_line_pts','reference_over_line_pts','actual_margin','actual_total',
+                     'prob_home_win','prob_home_covers_reference_line','prob_over_reference_total',
+                     'abs_error_model_margin','abs_error_reference_margin','abs_error_model_total',
+                     'abs_error_reference_total','fit_team_games','residual_sd_source','provenance','game_url','source_url'],
+       {'record_id':'Record','week':'Week','matchup':'Game','output_margin_home_minus_away_pts':'Model margin',
+        'output_total_pts':'Model total','reference_cover_line_pts':'Reference line','reference_over_line_pts':
+        'Reference total','actual_margin':'Actual margin','actual_total':'Actual total','prob_home_win':'P(home win)',
+        'prob_home_covers_reference_line':'P(home covers)','prob_over_reference_total':'P(over)',
+        'abs_error_model_margin':'Model |err| side','abs_error_reference_margin':'Reference |err| side',
+        'abs_error_model_total':'Model |err| total','abs_error_reference_total':'Reference |err| total',
+        'fit_team_games':'Fit team-games','residual_sd_source':'Residual scale from','provenance':'Provenance',
+        'game_url':'Game page','source_url':'Source'}, table_id='corpus-holdout', filterable=True)}
+<h2>Why the published feed was not spliced</h2>
+<p class="note">Re-fitting on 150 games instead of 137 changes the Week 11 lines. Those lines are already frozen and
+SHA-256 sealed in <code>data/prospective_forecast_log.csv</code> with a <code>frozen_before_kickoff</code> flag, which
+is the only thing that makes them pre-kickoff evidence. Re-sealing them after the Week 10 results were known would
+convert a forecast into a retrodiction and destroy the log's probative value. So the 13 games enter as a
+<em>second corpus with its own name</em> and the sealed log is untouched. The published Week 11 numbers therefore
+still come from the 137-game fit, and that is stated wherever they appear. The alternative — splice, re-fit,
+re-originate, re-seal — remains available to the owner as a deliberate choice, recorded on the
+<a href="review.html">Review console</a>; it is not a data-capture side effect.</p>
+<h2>Reproducing this page</h2>
+<p class="note"><code>python3 scripts/corpus_v2.py</code> rebuilds both registers. It fails the run if any of the 89
+published rows differs from the published value by more than 0.055 points (the published one-decimal rounding), if the
+backfill register does not hold exactly 13 games, or if the pooled corpus does not hold exactly 102. It imports the
+verified model construction from <code>scripts/forecast_records.py</code> rather than re-typing it, so the two cannot
+drift apart. The residual scale for Week 10 is estimated only on games before Week 10; for Week 4, where no earlier
+scored week exists, the in-sample residual of the training fit is used and the row says so in
+<code>residual_sd_source</code>.</p>
+""")
+
 _fr_m1 = [r for r in _fr_graded if r["model_id"] == "M1"]
 pages["forecast-records.html"] = ("Forecast records", f"""
 <section class="hero">
@@ -3300,6 +3520,7 @@ _dstr = read_csv_any(("depth_chart_strings_2026.csv",))
 _ddiff = read_csv_any(("depth_chart_diff_2026-11-14_vs_2026-11-18.csv",))
 _dcov = read_csv_any(("chart_rejections.csv",))
 _ver = read_csv_any(("verify_39948feb_2026-11-18.csv",))
+_xest = read_csv_any(("corpus_v2_cross_estimate.csv",))
 
 for _label, _rows, _key in (("corpus_version_comparison", _cmp, "source_url"),
                             ("corpus_reconciliation", _v2recon, "source_url"),
@@ -3312,7 +3533,9 @@ for _label, _rows, _key in (("corpus_version_comparison", _cmp, "source_url"),
                             ("depth_chart_diff", _ddiff, "stored_source_url"),
                             ("depth_chart_diff.live", _ddiff, "live_source_url"),
                             ("chart_rejections", _dcov, "source_url"),
-                            ("verify_39948feb", _ver, "source_url")):
+                            ("verify_39948feb", _ver, "source_url"),
+                            ("corpus_v2_cross_estimate.a", _xest, "source_a"),
+                            ("corpus_v2_cross_estimate.b", _xest, "source_b")):
     for _r in _rows:
         check_official((_r.get(_key) or "").strip(), _label + "." + _key)
 
@@ -3335,7 +3558,7 @@ _mm_blank = sum(1 for _r in _mm if _r["empty_slots"] not in ("", "0"))
 _ddiff_defect = sum(1 for _r in _ddiff if _r["assessment"].startswith("defect"))
 _ddiff_drift = len(_ddiff) - _ddiff_defect
 
-pages["corpus-v2.html"] = ("Corpus v2 (150 games) beside a frozen v1", f"""
+pages["corpus-v2-full.html"] = ("Corpus v2 (150 games) beside a frozen v1", f"""
 <h1>Corpus v2: the same model on the complete 150-game log, published beside a frozen v1</h1>
 <p class="note">Proposal <strong>P09</strong> has blocked the results corpus since 2026-11-18T04:00Z. It offers three
 options: splice the 13 settled Week 10 games into the published feed and re-publish every metric (A), publish a
@@ -3399,7 +3622,31 @@ one version tag, not a quiet rewrite.</li>
 (Estadio Banorte, Mexico City) is Week 11 and unplayed, so a settled corpus can carry at most eight. That is the
 number in <code>neutral_games_flagged</code>, not nine.</li>
 </ul>
-<h2>4. Provenance</h2>
+<h2>5. A second pipeline, built independently, reaches the same answer</h2>
+<p class="note">While this page was being written, a separate session (f04dda73) built its own corpus from the same
+13 games by a different route — <code>scripts/corpus_v2.py</code>, 102 games, published on the
+<a href="corpus-v2.html">Pre-registered corpus</a> page. The two pipelines share no code, and they converge:</p>
+<ul class="findings">
+<li><strong>Both score the same 102 out-of-sample games</strong> and both reproduce the published {_c("MAE improvement of M1 over the reference line (pts)", "v1_value_137_games_published")}-point
+gain on the 89-game control before adding anything.</li>
+<li><strong>Both land in the same place once the 13 games are added:</strong> this page reports
+{_c("MAE improvement of M1 over the reference line (pts)")} points of margin gain, the other pipeline reports
+1.439 — a 0.06-point spread between two independent implementations, both far below the 1.74 on the published
+corpus.</li>
+<li><strong>They differ on one modelling choice, and it is not settled here.</strong> This build flags the eight
+settled international games as neutral sites; the other does not. A 0.3-point difference is compatible with that,
+but neither build can establish which treatment is correct without a pre-registered rule. It is put to the owner as
+a question rather than quietly resolved.</li>
+<li><strong>The sharper test is the other page's, not this one's.</strong> It cuts the 13 new games out as a holdout
+and finds the model <em>behind</em> its own naive line on them (−0.591 points). This page's walk-forward scores all
+102 games together, which dilutes exactly that effect. A reader should take the holdout result as the more
+conservative reading of the same evidence.</li>
+</ul>
+{table(_xest, ["quantity","estimate_A_pre_registered","estimate_B_full_corpus","agree","reading","source_a","source_b"],
+       {"quantity":"Quantity","estimate_A_pre_registered":"Pipeline A (pre-registered corpus)",
+        "estimate_B_full_corpus":"Pipeline B (this page)","agree":"Agree","reading":"Reading",
+        "source_a":"A source","source_b":"B source"})}
+<h2>6. Provenance</h2>
 {table([_v2prov], list(_v2prov.keys()), {k: k.replace("_", " ").capitalize() for k in _v2prov.keys()})}
 """)
 
@@ -3503,7 +3750,8 @@ because it is flattering.</p>
         "observed":"Observed","verdict":"Verdict","source_url":"Official source"})}
 """)
 
-NAV.insert(NAV.index(("originated-lines.html", "Originated lines")) + 1, ("corpus-v2.html", "Corpus v2"))
+NAV.insert(NAV.index(("originated-lines.html", "Originated lines")) + 1,
+           ("corpus-v2-full.html", "Corpus v2 (150g)"))
 NAV.insert(NAV.index(("depth-replacement.html", "Depth of replacement")) + 1,
            ("matchup-matrix.html", "Matchup matrix 1st-4th"))
 
@@ -3517,7 +3765,7 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
   run and fails if any changed. The headline result is less flattering than v1 and is published anyway — the model's
   gain over the naive line falls from {_c("MAE improvement of M1 over the reference line (pts)", "v1_value_137_games_published")}
   to {_c("MAE improvement of M1 over the reference line (pts)")} points.
-  <a href="corpus-v2.html">Corpus v2</a> (P09 option B, F96).</li>
+  <a href="corpus-v2-full.html">Corpus v2 (150 games)</a> (F119).</li>
   <li><strong>A 1st-to-4th-string matchup matrix for {len(_mm_clubs)} clubs.</strong> {len(_mm)} club/position rows
   joined to the official injury report, with {_mm_shared} shared cells and {_mm_blank} empty cells kept exactly as
   the club published them, and {len(_dcov) - len(_mm_clubs)} clubs left blank with the reason stated (HOU publishes
