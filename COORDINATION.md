@@ -2457,4 +2457,10 @@ Scheduled or automated capture of nfl.com (D11, D17): NFL Terms Section 1.3 and 
 
 ### PR and merge
 
-PR: pending (recorded below after creation). Merge: pending.
+**PR #59** https://github.com/karagemop466-tech/X2/pull/59 — **MERGED** (merge commit `5e87ae4`, 2026-11-18T03:50:39Z, `--merge`, no auto-merge). Pages: source `main` path `/`; build for `5e87ae4` status **built**, no error (2026-11-18T03:51:33Z). Live check: `https://karagemop466-tech.github.io/X2/docs/captures.html` and `…/docs/flagged.html` serve the new content. Note: `https://karagemop466-tech.github.io/X2/captures.html` (without `docs/`) is a GitHub 404; the site lives under `docs/`.
+
+**Follow-up correction (before close).** The live landing page still said the injury rows were "independently re-verified … on 2026-11-14, with no discrepancies". That is false after F94 (the register changed on the 2026-11-18 re-read). The hero, the "New this session" blurb and flag F10 were corrected, and the build was re-run (44 pages; links passed). The corrected build is in a follow-up PR from the same branch (number recorded below).
+
+**Known remaining narrative (not corrected in this session).** Dated historical pages (for example `verification.html`, `cross-check.html`, `injuries.html`, `executive-summary.html`) still describe the 14 November checks as they were on that date. Those statements are dated, but a reader could take them as current. A full narrative sweep is requested for the next integration owner. Source of truth: this log and `data/flags.csv` F94–F102.
+
+**Follow-up PR:** pending (recorded after creation).

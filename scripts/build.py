@@ -673,8 +673,8 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
   <h1>NFL Research Dashboard</h1>
   <p>A source-linked dashboard for NFL injury tracking, depth exposure, strategy research, open questions and suggestions.
   Every table row links to an official NFL, government or statistical source; repository and deployment claims link to first-party project records. Unconfirmed NFL/model values remain blank and flagged.</p>
-  <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (read {AS_OF}).</p>
-  <p class="note"><strong>Verification status:</strong> all {tot['rows']} injury rows and all {tot['games']} Week 10 games were independently re-verified row by row against the official NFL.com pages on {AS_OF}, with no discrepancies found. See the <a href="verification.html">Verification record</a>.</p>
+  <p class="note">Snapshot: <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL.com Week 10, 2026 injury report</a> and the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official Week 10 schedule</a> (injury report read 2026-11-18; the Week 10 schedule as read 2026-11-14).</p>
+  <p class="note"><strong>Verification status:</strong> the Week 10 injury register ({tot['rows']} rows, {tot['teams']} clubs) was re-read from the official NFL.com page on 2026-11-18 and re-published from that read (347 rows; 32 field values and 2 rows changed since 2026-11-14). The 2026-11-14 "no discrepancies" result is <strong>superseded</strong> (F94). The 2026-11-18 comparison is a consistency check against the same transcription, <strong>not</strong> independent verification. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
 {tiles([(ms['games_transcribed'], 'games transcribed and verified'), (ms['out_of_sample_games'], 'out-of-sample games graded'),
@@ -2468,8 +2468,8 @@ _new_intro = (
     f'{len(decision_console)} decisions, {_decided} recorded, no option pre-filled. '
     '<strong>A market sheet</strong> that keeps the fair line, the market line and the difference in three separate '
     'columns. <strong>A prospective-only leaderboard</strong> that withholds all historical backtest scores until '
-    'frozen prospective outcomes are graded. <strong>A named event-risk register</strong> for Week 11. And a fresh, independent live '
-    f're-read of the official pages: {_lr_ok} of {len(live_reverification)} units matched, {_lr_bad} discrepancies.</p>\n'
+    'frozen prospective outcomes are graded. <strong>A named event-risk register</strong> for Week 11. And a 2026-11-18 re-read of the '
+    f'injury register (347 rows) compared by script: {_lr_ok} of {len(live_reverification)} units consistent, {_lr_bad} inconsistencies (same transcription on both sides, so this is not independent verification).</p>\n'
     '  <p class="note">Start at the <a href="review.html">Review console</a> if you want to decide something, or the '
     '  <a href="market-sheet.html">Market sheet</a> if you want a number.</p>\n'
     '</section>\n'
