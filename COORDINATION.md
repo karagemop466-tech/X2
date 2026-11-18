@@ -2494,7 +2494,7 @@ inactive lists (D13, D16), the human price-data policy decision (D30).
 | T106 | In progress on this PR: 3 new pages + index freshness section + executive-summary desk; `python3 scripts/build.py` (45 pages, row-source guards pass), `scripts/check_links.py` (2188 internal / 4886 external, none broken), `scripts/repo_audit.py` (22 checks, 0 failing), `scripts/verify_results.py` (137 games, 32/32 against the standings read it holds), `npm run build && npm run verify` (PASS) | this commit |
 | T107 | **Done** (added mid-session, unclaimed). The published feed is **13 settled Week 10 games short**: standings read today imply 150 completed games (149-149-2); the feed holds 137 (weeks 1–9 complete = 136, + the Thu Nov 12 game); the Week 10 slate is 14 games with 13 blank in `data/games_week10_2026.csv`. 13 games transcribed from the official by-week page (never computed from records) → **32/32** clubs reconcile on W-L-T **and** PF/PA with them, **26/32 fail without them**. `scripts/results_feed_completeness.py`, `data/games_week10_backfill_2026.csv`, `data/results_feed_completeness_2026-11-18.csv`, `data/week_count_reconciliation_2026-11-18.csv`, `data/what_changed_2026-11-14_to_2026-11-18.csv`. Flags F95, F96; Q64; G19, G20; R63, R64; S45; P09; D29, D47 | `https://www.nfl.com/schedules/2026/by-week/week-10`, `https://www.nfl.com/standings/` |
 
-**Register state I leave behind:** next free IDs are F100, SRC-89, Q67, S50, G21, R65, D51, P10.
+**Register state left behind (superseded by the merge note below):** next free IDs are F100, SRC-89, Q67, S50, G21, R65, D51, P10. After the merge with `main` the correct next free IDs are **F110, SRC-91, Q67, S51, G21, R65, D65, P10**.
 `scripts/build.py` pins these row counts and the build fails if they drift: captures 2, delta 19, reverification 28,
 what-changed 32, completeness 32, reconciliation 7, backfill 13, forecast checks 6, forecast rows 178 + 26,
 international 9, sensitivity 7.
@@ -2549,3 +2549,22 @@ link guards pass · `check_links.py` 47 pages, 2 379 internal / 5 098 external, 
 22 checks, 0 failing · `verify_results.py` 137 games · `availability_captures.py`, `results_feed_completeness.py`,
 `forecast_records.py`, `capture_cross_check.py` re-run and reproduce · `npm run build && npm run verify` PASS.
 **Register state after the merge:** next free IDs F110, SRC-91, Q67, S51, G21, R65, D65, P10.
+
+### PR #64 — merged, Pages confirmed (session cf85d485, final record)
+
+* **PR:** https://github.com/karagemop466-tech/X2/pull/64 — `T102-T107: dated captures with hashes, the two-reader
+  cross-check, feed completeness, forecast records`.
+* **Merged into `main`:** `gh pr merge 64 --merge` → merge commit **`aac63f8eaf85fda610d3877feffc84b62781e654`**,
+  `mergedAt 2026-11-18T04:19:19Z`, `mergeStateStatus` was `CLEAN` and no CI check was reported on the branch.
+* **GitHub Pages:** workflow `pages-build-deployment` run `44236510889` → **completed / success**;
+  `GET /repos/karagemop466-tech/X2/pages/builds` reports `status: built` for commit `aac63f8`. Site is 47 pages;
+  `docs/capture-integrity.html`, `docs/feed-completeness.html` and `docs/forecast-records.html` are on `main`.
+* **State at merge:** working tree clean; `drift_check` 28/28 registers pass, `build.py` guards pass,
+  `check_links` 2 379 internal / 5 098 external with none broken, `repo_audit` 22 checks 0 failing,
+  `npm run build && npm run verify` PASS.
+* **Open for the owner / the next session (nothing here blocks a merge):** **P09** — splice the 13 transcribed Week 10
+  games and the nine neutral-site flags into the published corpus, or publish a parallel v2 register (recommended),
+  or disclose only. **S46** (capture cadence) and **S50** (double-read every capture that becomes published data) need
+  **F16** (data-rights review) before any automation. **F106** carries a request to add read dates to
+  `scripts/verify_results.py`, which this session did not own and therefore did not edit.
+* **Claims released.** `arena/cf85d485-x2` takes nothing further; T102–T107 are closed or handed to P09.
