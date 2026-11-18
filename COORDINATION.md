@@ -2674,3 +2674,16 @@ verification"), while this session's contribution is the *independent* control �
 **Rule for the next session, from two collisions on one day:** a dated register written by a hand-run script must
 carry the session id in its filename until an integration session has merged it. `live_reverification_<date>.csv`
 was claimed twice within an hour because the name encodes the date and nothing else.
+
+## 2026-11-18 · session `5a5c1a1d` · claim (T108)
+
+**Branch:** `arena/5a5c1a1d-x2` (fixed by Arena; base `main` @ `2db1bd7`, PR #67) · **Owner:** `5a5c1a1d` · **Status:** in progress
+
+### Task board (this session)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T108 | Transcribe the venue of every **Week 11** fixture (13 games) from the official NFL game-centre "Game Info" block (one read per game) and add them to the venue register; record the read date and the verbatim fields. Closes the Week 11 part of D26 / S49. | in progress | 5a5c1a1d | `data/venues_2026.csv` (13 Week 11 rows added), `docs/**` (generated, if a venue view exists), `COORDINATION.md` | Game centre URLs as listed in `data/schedule_week11_2026.csv` (`game_url`), read 2026-11-18. Week 10 and the remaining 2026 fixtures are out of scope and stay blank (F99). |
+| T109 | Verify the three Lions Week 10 game-status designations (Kerby Joseph, Cade Mays, D.J. Reed) against the official injury page | done | 5a5c1a1d | `COORDINATION.md` only | Read 2026-11-18 at https://www.nfl.com/injuries/ (Lions block): all three show Out; `data/injuries_week10_2026.csv` already holds Out for all three. No change needed. |
+
+**Not claimed (owner-owned, unchanged):** every pre-existing flag, every `needs review` item, DEC-01…DEC-10, F09, F16, F17, F19, F98 and the strategy/leaderboard decisions.
