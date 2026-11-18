@@ -89,7 +89,8 @@ PIN = {"rows": 347, "teams": 28, "games": 14}
 CORRECTIONS = [
     {"team_abbr": "JAX", "player": "Chris Rodriguez Jr.", "field": "practice_status",
      "as_read": "Did Not Participate In Practice", "official_value": "Limited Participation in Practice",
-     "evidence": "Third read of https://www.nfl.com/injuries/ chunk 1 of 8 at 2026-11-18T04:12Z renders "
+     "evidence": "Third read of https://www.nfl.com/injuries/ (chunk 1 of 8, 2026-11-18, after the two "
+                 "transcriptions were written) renders "
                  "'Chris Rodriguez Jr. | RB |  | Limited Participation in Practice' with an empty Game Status "
                  "cell, which agrees with data/captures/injury_week10_2026-11-18.psv (LP) and with the "
                  "2026-11-14 capture. The 2026-11-18 read in this session's raw PSV mis-transcribed the cell.",
