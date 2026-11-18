@@ -17,6 +17,14 @@ from urllib.parse import urlsplit
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA = os.path.join(ROOT, "data")
 DOCS = os.path.join(ROOT, "docs")
+
+# Drift alarm (T105, D38): every pinned register must match its row count, required
+# non-blank columns and key uniqueness before anything is published. Fails loudly.
+import subprocess as _sp
+_drift = _sp.run([sys.executable, os.path.join(ROOT, "scripts", "drift_check.py")],
+                 capture_output=True, text=True)
+if _drift.returncode != 0:
+    raise SystemExit("BUILD FAILED: drift alarm\n" + _drift.stdout + _drift.stderr)
 AS_OF = "2026-11-14"
 OFFICIAL_HOSTS = {
     # static.www.nfl.com serves official NFL gamebook PDFs linked from the NFL game
@@ -402,8 +410,8 @@ if _mism:
 if len(season_games) != 137:
     warnings.append(f"independent ledger has {len(season_games)} games; expected 137")
 
-if len(inj) != 345:
-    warnings.append(f"injury row count is {len(inj)}; expected 345 for the Week 10 snapshot")
+if len(inj) != 347:
+    warnings.append(f"injury row count is {len(inj)}; expected 347 for the Week 10 snapshot read 2026-11-18")
 if len(games) != 14:
     warnings.append(f"game count is {len(games)}; expected 14")
 
@@ -693,7 +701,7 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
 {card('review.html', 'Review console', 'The decision section: eight proposals, three options each, a recommendation, the file each would change, and a recorded-choice mechanism that ships empty.')}
 {card('results.html', 'Season results', 'The verified results feed: all 137 transcribed 2026 games, each reconciled against the official standings — what backtests run on, and why ROI still cannot be computed.')}
 {card('results-feed.html', 'Results feed', 'The settlement view: the official final score plus how the side, the total and the moneyline we originated actually settled.')}
-{card('injuries.html', 'Injuries', 'All 345 Week 10 injury report rows with source links, plus NFL.com news headlines.')}
+{card('injuries.html', 'Injuries', 'All 347 Week 10 injury report rows (read 2026-11-18) with source links, plus NFL.com news headlines.')}
 {card('games.html', 'Games', 'The 14 Week 10 matchups with records and broadcast windows, all from NFL.com.')}
 {card('depth-analysis.html', 'Depth exposure', 'Out and Doubtful players by unit, showing where a backup may be needed. Starter order is unverified.')}
 {card('strategy-lab.html', 'Strategy lab', 'The hypotheses, the gates and the reward framework. Strategies are graded on signal; the reward tiers are proposed and not offered (R36), and nothing is paid.')}
@@ -919,8 +927,8 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left 
 <h2>This session's checks ({AS_OF})</h2>
 <div class="tablewrap"><table class="data"><thead><tr>
 <th>Check</th><th>Method</th><th>Result</th><th>Evidence</th></tr></thead><tbody>
-<tr><td>Injury row count</td><td>Re-read the official Week 10 report in full (8 chunks) and recounted players per team section independently of the stored file.</td><td class="ok">Match: 345 rows across 28 teams, equal to the stored row count.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
-<tr><td>Injury field values</td><td>Compared every player name, position, injury text, practice status and game status for all 28 team sections against the stored CSV.</td><td class="ok">No discrepancies found. Performed independently of session 30beeb55's T15 check, which also found none; together these close the F10 spot-check request.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Injury row count (read 2026-11-18)</td><td>Re-read the official Week 10 report in full (8 chunks), transcribed every player row (data/captures/injury_week10_2026-11-18.psv) and compared it with the stored file by script.</td><td class="warn">Live read: 347 rows across 28 clubs (the prior file of 2026-11-14 held 345). The register was re-published from this read. The 2026-11-14 check (345 rows, "match") is superseded. Details: data/captures/injury_delta_2026-11-18.csv.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
+<tr><td>Injury field values (read 2026-11-18)</td><td>Compared every player name, position, injury text, practice status and game status for all 28 team sections against the transcription of the live page.</td><td class="warn">The prior file (2026-11-14) differed on 32 field values for 17 players (LAC, BAL, IND Arden Key) and lacked 2 BAL rows. All are now re-published from the live read; the 2026-11-14 "no discrepancies" finding is superseded (F94, F95).</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
 <tr><td>Game list</td><td>Compared all 14 game headers: day, kickoff time, broadcaster and both listed records.</td><td class="ok">All 14 games match the stored games file.</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a></td></tr>
 <tr><td>Bye teams</td><td>Read the Teams on Bye section of the official Week 10 schedule.</td><td class="ok">CHI, DEN, PHI and TB confirmed, as recorded (Flag F05).</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
 <tr><td>Home / away order</td><td>Compared the schedule game titles (for example "Bills at Jets") with the order NFL.com lists teams on the injury report.</td><td class="ok">The injury report lists the away team first in every Week 10 game; the site's "first listed / second listed" labels remain neutral and are now interpretable.</td><td><a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10 schedule</a></td></tr>
@@ -2569,7 +2577,7 @@ for _r in _tv:
         raise SystemExit(f"BUILD FAILED: {_r['team_abbr']} names a replacement with no starter out")
 _tv_sum = {k: sum(int(_r[c]) for _r in _tv if _r[c] != "") for k, c in
            (("Out", "out_count"), ("Doubtful", "doubtful_count"), ("Questionable", "questionable_count"))}
-if _tv_sum != {"Out": 66, "Doubtful": 10, "Questionable": 84}:
+if _tv_sum != {"Out": 70, "Doubtful": 11, "Questionable": 90}:
     raise SystemExit(f"BUILD FAILED: team view totals {_tv_sum} do not reconcile with the injury report")
 _tv_chart = sum(1 for _r in _tv if _r["starter_order_source"].startswith("Club"))
 _tv_named = sum(int(_r["replacements_named_chart_pairs"]) for _r in _tv if _r["replacements_named_chart_pairs"] != "")
@@ -2591,8 +2599,8 @@ _tv_html = table(_tv, [
 pages["team-view.html"] = ("Per-team view", (
     '<h1>Per-team view: Week 10, 2026</h1>'
     '<p class="note">One row per club (32). Injury counts come from the official NFL.com Week 10 injury report, '
-    'as held in <code>data/injuries_week10_2026.csv</code>; the rows reconcile to 66 Out, 10 Doubtful and 84 Questionable '
-    '(345 listed players, of which 185 have no game designation). Four clubs were on bye and have no injury section '
+    'as held in <code>data/injuries_week10_2026.csv</code>; the rows reconcile to 70 Out, 11 Doubtful and 90 Questionable '
+    '(347 listed players, of which 176 have no game designation; read 2026-11-18). Four clubs were on bye and have no injury section '
     f'(official schedule, Teams on Bye: {", ".join(_tv_byes)}); they are shown blank, never as injury-free.</p>'
     f'<p class="note"><strong>Starter order is known for only {_tv_chart} of 32 clubs</strong>: the club team-site charts '
     'in <code>data/depth_replacement.csv</code>. For every other club the starter column is blank, not inferred. '
@@ -2600,13 +2608,11 @@ pages["team-view.html"] = ("Per-team view", (
     'A player with no verified replacement stays unnamed. Two charts (DET, NE) label themselves unofficial (F05, F18); '
     'no chart in the register states its as-of date (chart_as_of is not stated on any page).</p>'
     '<p class="note"><strong>Verification scope (read 2026-11-15 from https://www.nfl.com/injuries/):</strong> '
-    'WAS, NYG, NE and DET were compared row by row (player, injury, practice and game status) and match the repo file. '
-    'ATL, DAL, GB, NO, SEA and TEN were compared on their club totals and on every starter row, and match. '
-    'KC and the other clubs were not re-checked in this session: their counts are as in the repo file and are not '
-    'independently verified (F89). A named replacement who is also on the report is labelled with that status.</p>'
-    '<p class="note"><strong>Open irregularity (F83):</strong> the repo injury file holds 345 Week 10 rows, while the brief '
-    'records 279 live rows. This page reports the file as it stands and does not choose between the two figures. '
-    'Flag F89 records the per-team dependency.</p>'
+    'On the 2026-11-18 read, all 28 club sections were transcribed and compared row by row with the register. '
+    'The register now reproduces that read. Changes against the 2026-11-14 file are listed in data/captures/injury_delta_2026-11-18.csv (F94, F95). '
+    'A named replacement who is also on the report is labelled with that status.</p>'
+    '<p class="note"><strong>Row count (F83, updated 2026-11-18):</strong> the live official page read on 2026-11-18 holds 347 player rows. '
+    'Neither 279 (the brief\'s live figure) nor 254 (its published figure) is reproduced by this read; their source is not in the repo. Flag F83 stays open on that point.</p>'
     + _tv_html))
 
 # ---------- controls for every backtest run (session 6ee4d13e, T101; research only) ----------

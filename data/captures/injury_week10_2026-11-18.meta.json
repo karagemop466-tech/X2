@@ -1,0 +1,22 @@
+{
+  "capture_id": "INJ-W10-2026-11-18",
+  "source_url": "https://www.nfl.com/injuries/",
+  "page_title": "Official Latest NFL Injury Report for Players - Week 10 of the 2026 Season | NFL.com",
+  "page_heading": "Injuries - WEEK 10",
+  "method": "fetch_page tool, chunks 0-7 (totalChunks=8, hasMore=false on chunk 7) read in full; every player row transcribed into injury_week10_2026-11-18.psv by hand, then compared row by row against data/injuries_week10_2026.csv by script",
+  "transcribed_utc": "2026-11-18T03:39:52Z",
+  "fetch_timestamp_note": "The fetch tool returns no per-request timestamp. The read is bounded by the session clock at transcription; chunk reads occurred in the minutes before this time.",
+  "raw_bytes_retained": false,
+  "raw_bytes_note": "The fetch tool returns processed markdown, not the HTTP response body, so no hash of the server's raw bytes exists. The hash below covers the transcription file only.",
+  "transcription_file": "data/captures/injury_week10_2026-11-18.psv",
+  "transcription_sha256": "c2685dd3323b19be2ac72f572bf32b8605f2e91b8b4684341a048b626e66a24a",
+  "rows_transcribed": 347,
+  "clubs_with_section": 28,
+  "bye_clubs_without_section": ["CHI", "DEN", "PHI", "TB"],
+  "game_status_counts": {"Out": 70, "Questionable": 90, "Doubtful": 11, "blank": 176},
+  "delta_file": "data/captures/injury_delta_2026-11-18.csv",
+  "delta_rows": 34,
+  "prior_register": "data/injuries_week10_2026.csv as of commit bd4f469 (345 rows, read 2026-11-14)",
+  "page_records_note": "Team records printed on the page (for example NE (5-5), DET (7-2)) are post-game records, not the pre-game records in data/games_week10_2026.csv.",
+  "page_news_note": "The page's NEWS block lists headlines dated through Tuesday, Nov. 17; the Week 11 injury report is not shown on this read."
+}

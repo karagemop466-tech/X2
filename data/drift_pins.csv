@@ -1,0 +1,18 @@
+register,expected_rows,required_nonblank_columns,unique_key,allowed_values,pinned_on,note
+injuries_week10_2026.csv,347,team_abbr;player;position;practice_status;source_url,team_abbr;player,game_status=|Out|Questionable|Doubtful;practice_status=Full Participation in Practice|Limited Participation in Practice|Did Not Participate In Practice,2026-11-18,"Week 10 injury register, read 2026-11-18 (347 rows). Game status may be blank by design (page cell empty); it is therefore not a required column."
+games_week10_2026.csv,14,kickoff_day;first_listed_team;second_listed_team;source_url,game_no,,2026-11-18,Week 10 game headers (14 games).
+season_games_2026.csv,137,game_date;away_team;home_team;game_url,game_url,,2026-11-18,Official game list (137 rows = weeks 1-9 plus the Week 10 Thursday game; F96).
+games_2026_results.csv,137,away_team;home_team;game_url;source_url,game_url,,2026-11-18,"Result rows, frozen at 137 games (F96). Adding games needs a dated tranche."
+results_feed_2026.csv,137,verification_status;game_url;source_url,feed_id,,2026-11-18,"Verified results feed (frozen at 137 games, F96)."
+standings_2026_official_read_20261114.csv,32,team_abbr;wins;losses;points_for;points_against;source_url,team_abbr,,2026-11-18,Standings read 2026-11-14.
+captures/standings_2026-11-18.csv,32,team_abbr;wins;losses;points_for;points_against;source_url,team_abbr,,2026-11-18,Standings read 2026-11-18.
+schedule_week11_2026.csv,13,kickoff_day;away_team;home_team;game_url;source_url,game_no,,2026-11-18,Week 11 slate (13 games).
+fixture_context_2026.csv,163,fixture_id;game_date;away_team;home_team;source_url,fixture_id,,2026-11-18,"Fixture context from published schedule facts (weeks 1-11, 163 games)."
+captures/injury_delta_2026-11-18.csv,34,change_id;team;player;change_type;source_url,change_id,,2026-11-18,Delta between the 2026-11-14 and 2026-11-18 injury reads (34 changes).
+standings_diff_2026-11-14_to_2026-11-18.csv,32,team_abbr;net_prior;net_current,team_abbr,,2026-11-18,Dated standings diff (32 clubs).
+team_view_week10_2026.csv,32,team_abbr;source_url,team_abbr,,2026-11-18,"Per-team view, one row per club."
+depth_replacement.csv,33,depth_id;team_abbr;player_out;injury_source_url,depth_id,,2026-11-18,"Depth-of-replacement register (33 rows, 6 clubs)."
+price_snapshots_extended.csv,306,snapshot_id;week;matchup;source_url,snapshot_id,,2026-11-18,"Price-snapshot store (306 market rows; opening/closing blank, F07)."
+decision_readiness.csv,45,req_id;status;source_url,req_id,,2026-11-18,Decision-readiness table (45 requirement rows).
+flags.csv,87,flag_id;item;status,flag_id,,2026-11-18,Flagged-for-review register (87 rows at bd4f469; new flags are staged in data/drafts for T107).
+sources.csv,84,source_id;url;accessed_date,source_id,,2026-11-18,Source register (84 rows at bd4f469; new sources are staged in data/drafts for T107).

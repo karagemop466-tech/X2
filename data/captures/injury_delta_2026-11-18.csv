@@ -1,0 +1,35 @@
+change_id,game_no,team,player,change_type,field,prior_value_2026_11_14,live_value_2026_11_18,source_url
+INJ-D001,7,IND,Arden Key,CHANGED_FIELD,injury,Hamstring,,https://www.nfl.com/injuries/
+INJ-D002,7,IND,Arden Key,CHANGED_FIELD,game_status,Questionable,,https://www.nfl.com/injuries/
+INJ-D003,14,LAC,Kayode Awosika,CHANGED_FIELD,injury,,Fibula,https://www.nfl.com/injuries/
+INJ-D004,14,LAC,Kayode Awosika,CHANGED_FIELD,practice_status,Limited Participation in Practice,Full Participation in Practice,https://www.nfl.com/injuries/
+INJ-D005,14,LAC,Kayode Awosika,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D006,14,LAC,Bud Dupree,CHANGED_FIELD,practice_status,Did Not Participate In Practice,Full Participation in Practice,https://www.nfl.com/injuries/
+INJ-D007,14,LAC,Justin Eboigbe,CHANGED_FIELD,injury,,Ankle,https://www.nfl.com/injuries/
+INJ-D008,14,LAC,Justin Eboigbe,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D009,14,LAC,Ladd McConkey,CHANGED_FIELD,injury,,Back,https://www.nfl.com/injuries/
+INJ-D010,14,LAC,Ladd McConkey,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D011,14,LAC,Keaton Mitchell,CHANGED_FIELD,practice_status,Limited Participation in Practice,Full Participation in Practice,https://www.nfl.com/injuries/
+INJ-D012,14,LAC,David Njoku,CHANGED_FIELD,injury,,Fibula,https://www.nfl.com/injuries/
+INJ-D013,14,LAC,David Njoku,CHANGED_FIELD,practice_status,Limited Participation in Practice,Full Participation in Practice,https://www.nfl.com/injuries/
+INJ-D014,14,LAC,David Njoku,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D015,14,LAC,Denzel Perryman,CHANGED_FIELD,injury,,Pectoral,https://www.nfl.com/injuries/
+INJ-D016,14,LAC,Denzel Perryman,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D017,14,LAC,Trey Pipkins,CHANGED_FIELD,injury,,"Not injury related - personal matter, Knee",https://www.nfl.com/injuries/
+INJ-D018,14,LAC,Trey Pipkins,CHANGED_FIELD,practice_status,Did Not Participate In Practice,Limited Participation in Practice,https://www.nfl.com/injuries/
+INJ-D019,14,LAC,Trey Pipkins,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D020,14,LAC,Rodney Shelley,CHANGED_FIELD,practice_status,Limited Participation in Practice,Full Participation in Practice,https://www.nfl.com/injuries/
+INJ-D021,14,LAC,Branson Taylor,CHANGED_FIELD,injury,,Ankle,https://www.nfl.com/injuries/
+INJ-D022,14,LAC,Branson Taylor,CHANGED_FIELD,game_status,,Out,https://www.nfl.com/injuries/
+INJ-D023,14,LAC,Brenen Thompson,CHANGED_FIELD,injury,,Hamstring,https://www.nfl.com/injuries/
+INJ-D024,14,LAC,Brenen Thompson,CHANGED_FIELD,game_status,,Doubtful,https://www.nfl.com/injuries/
+INJ-D025,14,LAC,Isas Waxter,CHANGED_FIELD,injury,,Ankle,https://www.nfl.com/injuries/
+INJ-D026,14,LAC,Isas Waxter,CHANGED_FIELD,game_status,,Out,https://www.nfl.com/injuries/
+INJ-D027,14,LAC,Kendall Williamson,CHANGED_FIELD,injury,,Calf,https://www.nfl.com/injuries/
+INJ-D028,14,LAC,Kendall Williamson,CHANGED_FIELD,game_status,,Out,https://www.nfl.com/injuries/
+INJ-D029,14,BAL,Calais Campbell,ADDED_ROW,row,(no row),DT |  | Did Not Participate In Practice | ,https://www.nfl.com/injuries/
+INJ-D030,14,BAL,Jaylinn Hawkins,CHANGED_FIELD,injury,,Knee,https://www.nfl.com/injuries/
+INJ-D031,14,BAL,Jaylinn Hawkins,CHANGED_FIELD,game_status,,Out,https://www.nfl.com/injuries/
+INJ-D032,14,BAL,Adam Randall,CHANGED_FIELD,injury,,"Neck, Hamstring",https://www.nfl.com/injuries/
+INJ-D033,14,BAL,Adam Randall,CHANGED_FIELD,game_status,,Questionable,https://www.nfl.com/injuries/
+INJ-D034,14,BAL,Ronnie Stanley,ADDED_ROW,row,(no row),T |  | Did Not Participate In Practice | ,https://www.nfl.com/injuries/

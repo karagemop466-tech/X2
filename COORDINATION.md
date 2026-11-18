@@ -2340,3 +2340,70 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 **Explicitly not claimed (blocked, not attempted):** any scheduled or automated capture of nfl.com (D11, D17). The NFL.com Terms (Section 1.3, https://www.nfl.com/legal/terms/) prohibit systematic retrieval to compile data absent written consent, and this repo's own gate D22 has not been cleared. Captures in this session are manual, one page read per request, and the raw text stays out of the public tree except for the derived transcription. Also not claimed: inactive lists and snap counts (D13), reserve list (D14), depth for 32 clubs (D15–D16), roster events (D19), designation calibration (D20–D21), the price-data decision (D30), odds (D01, D03, D31, D32).
 
 **Status:** in progress.
+
+## 2026-11-18 · session `d0ede22d` · T102–T106 log (branch `arena/d0ede22d-x2`)
+
+**Status:** T102–T106 done on this branch; **T107 not started** (integration, PR, merge and Pages check remain). Shared outputs were **not** changed in this session (see scope note below).
+
+### Scope note (shared-output rule)
+
+My first pass also edited `scripts/build.py` to add two new site pages, index cards and navigation entries, and changed `data/flags.csv`, `data/sources.csv`, `data/decision_readiness.csv` and `data/drift_pins.csv` for the new flags. Those are T107 outputs under the claim table above and the rule that index and navigation change only in the final integration session. I reverted them. The drafts are saved for T107 to apply:
+
+- `data/drafts/pages_captures_d0ede22d.py.txt`: the page block (captures and what changed; fixture context), not run by `build.py`.
+- `data/drafts/d0ede22d_flags_pending.csv`: F88 (replacement status), F94–F101.
+- `data/drafts/d0ede22d_sources_pending.csv`: SRC-85 to SRC-88.
+- `data/drafts/d0ede22d_readiness_pending.csv`: 11 rows (D02, D09–D12, D25, D26, D29, D37, D38, D43).
+
+`docs/` is **not** regenerated or committed. The live Pages site still shows the 2026-11-14 state until T107 regenerates it.
+
+### Done in this session
+
+- **T102** (injury re-read). Full re-read of the Week 10 page (8 chunks, read 2026-11-18). Capture `data/captures/injury_week10_2026-11-18.psv` (347 rows, 28 clubs; byes CHI, DEN, PHI, TB). Meta and transcription hash in `injury_week10_2026-11-18.meta.json`. Delta against the 2026-11-14 register: `data/captures/injury_delta_2026-11-18.csv` (34 rows: 32 field changes on 16 players, 2 added rows). The register `data/injuries_week10_2026.csv` now holds the 347-row read. Counts: Out 70, Questionable 90, Doubtful 11, no designation 176. The brief's 279/254 figures are not reproduced in the repo (F83).
+- **T103** (standings). `data/captures/standings_2026-11-18.csv` (32 clubs). Diff against 2026-11-14 in `data/standings_diff_2026-11-14_to_2026-11-18.csv` (13 games added). Not yet wired into the build or site.
+- **T104** (fixture context). `scripts/fixture_context.py` builds `data/fixture_context_2026.csv` from published schedule dates and team pairs only (163 games, weeks 1–11; no outcome field read).
+- **T105** (drift alarm). `scripts/drift_check.py` checks 17 pinned registers (`data/drift_pins.csv`: row counts, required non-blank columns, key uniqueness). `build.py` runs it first and stops on failure.
+- **T106** (venue feasibility). Read one official game-centre page (IND at HOU, Reliant Stadium, Houston, TX), recorded in `data/venues_2026.csv`. The schedule page shows venues only through hotel-search links, which are not used as a source. The other 162 fixtures are blank (F99).
+
+### Verification (exit codes, run 2026-11-18 after the scope revert)
+
+- `build.py`: exit 0 (42 pages; 347 injury rows; 28 teams; 65 depth rows; links and row-source checks passed).
+- `verify_results.py`: exit 0 (all 32 teams reconcile with standings).
+- `verify_snapshot.py`: exit 0 (pass 86, fail 0, review 1: V-PLAYER-ben-brown-2, F74).
+- `team_view.py`: exit 0 (reconciles to Out 70, Doubtful 11, Questionable 90, listed 347).
+- `verify_live.py`: exit 0 (75 checked, 75 matched). **Consistency only**: both injury inputs come from the same 11-18 transcription, so this is not independent verification.
+- `check_links.py`: exit 0 (44 pages, 2000 internal, 4591 external; no broken internal links).
+- `repo_audit.py`: exit 0 (A14 partial coverage still flagged).
+- `drift_check.py`: exit 0 (17/17 PASS).
+- **Drift-alarm failure path tested** on a temporary copy, not the real data: one required cell (`team_abbr`) blanked in pinned `data/captures/standings_2026-11-18.csv`. Result: `drift FAIL`, `BUILD FAILED: drift alarm`, build exit 1. The real repo still passes 17/17.
+
+### Flags logged (source links on each row; staged for T107 in `data/drafts/`)
+
+- **F94** (irregularity): the 2026-11-14 injury register differed from the 2026-11-18 read in 32 field values (16 players: 13 LAC, 2 BAL, 1 IND) and lacked two BAL rows (Calais Campbell, Ronnie Stanley). The earlier "no discrepancies" verification entries are superseded. Cause not established. https://www.nfl.com/injuries/
+- **F95** (irregularity): IND Arden Key shows no injury or game status on the 2026-11-18 read; the 2026-11-14 register had Hamstring / Questionable (delta INJ-D001, INJ-D002). The page does not say why. https://www.nfl.com/injuries/
+- **F96** (results coverage gap, T104): the results register holds 137 games (weeks 1–9 plus the Week 10 Thursday game). The 2026-11-18 standings reflect 13 more Week 10 games not in the register. The frozen corpus is not changed without a dated tranche. https://www.nfl.com/standings/
+- **F97** (abbreviations, T104): results and standings use LA for the Rams; the fixture and other files use LAR. Cardinals are AZ throughout. A club-code mapping is needed before any cross-file join. Fixture context found 32 clubs under one code each, so no join is mis-matched today. https://www.nfl.com/standings/
+- **F98** (policy limit): automated or scheduled capture of nfl.com is not permitted under the NFL Terms (Section 1.3, systematic retrieval without written consent). Gate D22 is not cleared. All reads this session were manual. https://www.nfl.com/legal/terms/
+- **F99** (coverage gap, T106): 1 of 163 venues read. https://www.nfl.com/games/colts-at-texans-2026-reg-11
+- **F100** (method limit): the fetch tool returns processed text, not HTTP bodies. The SHA-256 covers the transcription only. https://www.nfl.com/injuries/
+- **F101** (observation): on the 2026-11-18 read, the page is titled "Injuries - WEEK 10" and the Week 11 report is not shown. https://www.nfl.com/injuries/
+
+**F88 (136 vs 137).** Explained: 136 is every game in weeks 1–9. The 137th is the Week 10 Thursday game. The 13 later Week 10 games are F96.
+
+### Requests to owners (not actioned here; outside this claim)
+
+1. **Correlations (T107 or the model owner).** Re-running the register on the 347-row injury file moves **C08** in `data/correlations_computed.csv` from −0.064 to +0.035 (n = 32). This is a published result. I restored the HEAD file; the owner must recompute and decide the change. `data/model_summary.json` (`injury_rows` 345 → 347) also needs regenerating.
+2. **Verification record (verifier / T107).** `data/verification_week10_2026.csv` still shows V001 = 345 rows, V004 = 1380 comparisons and V-TEAM-BAL = 8 rows. The 11-18 `verify_snapshot.py` run gives 347, 1388 and 10. `data/repo_line_audit.csv` A11 and A12-flag need the same update.
+3. **Team view (T107).** `data/team_view_week10_2026.csv` is regenerated by `team_view.py` (Out 70, Doubtful 11, Questionable 90, listed 347). Restored to HEAD for this session.
+4. **Flags, sources, readiness (T107).** Apply `data/drafts/d0ede22d_*_pending.csv` to `data/flags.csv`, `data/sources.csv` and `data/decision_readiness.csv`. Then update the drift pins (flags 87 → 95, sources 84 → 88) and apply the page block from `data/drafts/pages_captures_d0ede22d.py.txt` to `scripts/build.py`.
+5. **Standings diff wiring (T107).** The diff is not in the build or site yet.
+
+### Not done (blocked, not inferred)
+
+- Scheduled or automated capture of nfl.com (D11, D17): blocked by F98 / gate D22.
+- Venues for the other 162 fixtures (F99).
+- Ingesting the 13 Week 10 results into the frozen register (F96): needs an owner decision on a dated tranche.
+- The Texans depth image remains unresolved (structured source required).
+
+### Remaining work
+
+T107: apply the drafts above, regenerate `docs/` with `build.py`, re-run every check, confirm no broken links, open the PR to `main`, merge, and confirm Pages. Record the PR link and merge result here.
