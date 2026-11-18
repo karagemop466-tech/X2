@@ -10,6 +10,35 @@ separate columns**, a strict **signal-vs-staking split** in the leaderboard, a p
 returns a live strategy to paper, and **replacement-depth tracking** (the 2nd/3rd/4th string of the replacement,
 where a source verifies it).
 
+## Latest session (f04dda73): the corpus, and the number that undercuts the headline
+
+Five things changed on 2026-11-18 and each one moved a published claim rather than a table cell:
+
+- **Pre-registered corpus published twice** (`docs/corpus-v2.html`, `data/corpus_v2_2026.csv`,
+  `python3 scripts/corpus_v2.py`). The 89-game walk-forward corpus is reproduced row for row and published beside a pooled
+  **102-game** corpus that adds the 13 settled Week 10 games. On the 89 the model beats its own naive reference line by
+  **1.736 points** of mean absolute error; on the 13 it had never been scored against it is **0.591 points behind**
+  (closer on 5 of 13); pooled the gain is **1.439**. On totals the model loses to the reference in every cut
+  (−0.113 / −1.312 / −0.266). Flag **F110**. The Week 11 lines are deliberately *not* re-originated: they are
+  SHA-256 sealed pre-kickoff evidence and re-fitting would destroy what they prove.
+- **The standings reconciliation now measures currency, not just arithmetic** (`scripts/verify_results.py`). It takes the
+  dated official standings read as an argument, prints both dates, and exits **1** when the 137-game ledger falls behind
+  the current read (it is 13 games behind; 26 of 32 clubs disagree). Desk rows RF07 (arithmetic, pass) and RF07b
+  (currency, **FAIL**) are split so one cannot stand in for the other. V35, flag **F113**.
+- **A stale correlation was published twice under two values.** `data/correlation_audit.csv` held C08 = −0.064 after the
+  canonical register moved to +0.035. Regenerated (V36, **F112**) and `scripts/desk.py` now fails the build if the audit
+  register ever disagrees with `data/correlations_computed.csv` again.
+- **Read dates are published per surface** (landing page, **F114**). The single header "data as of 2026-11-14" was true of
+  the oldest register and false of the newest; the header now names the newest read and a table gives each surface its own
+  date, status and the reason — including two registers frozen on purpose.
+- **The open decisions are ranked by what they release** (`python3 scripts/decision_queue.py`,
+  `data/decision_queue.csv`, `docs/review.html`). Ten decisions wait on a human; the queue is derived from
+  `decision_options.csv` × `decision_readiness.csv`, separates benefit from cost, and flags the three that need a lawyer
+  and the two that need a licensed price feed.
+- **Third independent read of the Week 10 injury report** (`data/verification_inputs/injuries_2026-11-18_ATL-MIN-GB_f04dda73.tsv`,
+  CAP-03): 164 of 164 cells across ATL, MIN and GB match the published register, and the cell two earlier sessions
+  disputed (JAX Chris Rodriguez Jr.) resolves in favour of the published value — F109 confirmed on a fourth read.
+
 ## Read in this order
 
 1. **Review path** (`docs/review-path.html`) — one ordered route through open decisions, showing what is known, missing, and which gate blocks action.
@@ -150,7 +179,9 @@ The source register includes official NFL, Japanese government, and NIST referen
 ## Build and verification
 
 ```bash
-python3 scripts/verify_results.py   # reconcile the 137 games against the official standings
+python3 scripts/verify_results.py   # reconcile the ledger against BOTH dated standings reads; exits 1 on currency
+python3 scripts/corpus_v2.py        # rebuild the 89-game and 102-game corpora (reproduces all 89 first)
+python3 scripts/decision_queue.py   # rank the open decisions by what each one releases
 python3 scripts/verify_snapshot.py  # reproducible field-by-field re-check of the Week 10 snapshot
 python3 scripts/verify_live.py      # compare the registers against a fresh independent transcription
 python3 scripts/model.py            # refit ratings, Week 11 lines, backtest, gates, leaderboard,

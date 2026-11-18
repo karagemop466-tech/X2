@@ -16,6 +16,31 @@
 
 <h1>Executive summary</h1>
 <p class="note">The injury report was captured 2026-11-18; the other source dates are stated separately. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. The 2026-11-18 transcription check is not independent of its source transcription (F109), and permission for systematic collection/publication is not recorded (F16).</p>
+<h2>What changed in this session, and what it means</h2>
+<ul class="findings">
+<li><strong>The model does not clearly beat the baseline it is graded against.</strong> On the 89 games that have been
+published since the first session, our line beats its own naive reference line by 1.736 points of mean absolute error
+per game. On the 13 settled Week 10 games it had never been scored against, it is <strong>0.591 points behind</strong>
+the same line, and it was closer on only 5 of 13. Pooled over 102 games the side gain is 1.439. On totals it loses to
+the reference in every cut. The honest headline is therefore a range, not a number, and no staking or reward decision can
+be justified on the 1.74 alone (<a href="corpus-v2.html">Pre-registered corpus</a>, flag F110).</li>
+<li><strong>The results feed was 13 games behind, and the check that should have caught it was itself stale.</strong>
+The ledger holds 137 games; the official standings now imply 150. The reconciliation script compared only against a
+2026-11-14 read and printed an unqualified pass. It now prints both read dates, labels the old comparison arithmetic-only,
+and <strong>fails</strong> the currency comparison (<a href="feed-completeness.html">Feed completeness</a>, V35, F113).</li>
+<li><strong>Two numbers for one correlation were published at once.</strong> The audit register still carried C08 =
+-0.064 after the canonical register had moved to +0.035. Regenerated, and a guard now makes that drift a build failure
+(V36, F112).</li>
+<li><strong>Every page carried one "data as of" date that was false for most of its own tables.</strong> Read dates are
+now published per surface, including the two registers that are frozen on purpose
+(<a href="index.html">landing page</a>, F114).</li>
+<li><strong>The open decisions are now ordered by what each one releases.</strong> Ten decisions wait on a human; the
+queue shows how many readiness rows each releases and what it costs
+(<a href="review.html">Review console</a>).</li>
+<li><strong>A third, independent read of the injury report agrees with the published register.</strong> 164 of 164 cells
+across three club sections match, and the one cell two sessions had disputed resolves in favour of the published value
+(F109, <a href="capture-integrity.html">Capture integrity</a>).</li>
+</ul>
 <div class="tiles"><div class="tile"><div class="num">81</div><div class="lbl">Out or Doubtful players</div></div><div class="tile"><div class="num">44</div><div class="lbl">Offense Out or Doubtful</div></div><div class="tile"><div class="num">35</div><div class="lbl">Defense Out or Doubtful</div></div><div class="tile"><div class="num">2</div><div class="lbl">Special teams Out or Doubtful</div></div></div>
 <h2>Key findings</h2>
 <ul class="findings">
