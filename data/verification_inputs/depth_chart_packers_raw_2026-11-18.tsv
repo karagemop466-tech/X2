@@ -1,0 +1,36 @@
+# Raw transcription of https://www.packers.com/team/depth-chart
+# Read: 2026-11-18 (UTC). Page self-label, verbatim: "Unofficial, Nov. 10, 2026"
+# Format: unit <TAB> position cell exactly as rendered <TAB> then each remaining player cell as rendered.
+# Cells are transcribed character for character INCLUDING the prepended jersey number and INCLUDING
+# empty cells. Nothing is stripped or reordered here; normalisation is the parser's job so that the
+# raw string survives for review.
+unit	position	rank1	rank2	rank3
+OFFENSE	WR	9 Christian Watson	16 Bo Melton	
+OFFENSE	WR	0 Matthew Golden	87 J. Michael Sturdivant	
+OFFENSE	LT	77 Jordan Morgan	73 John Williams	
+OFFENSE	LG	65 Aaron Banks	79 Travis Glover	67 Donovan Jennings
+OFFENSE	C	75 Sean Rhyan	52 Jager Burton	
+OFFENSE	RG	72 Laken Tomlinson	70 Kevin Zeitler	
+OFFENSE	RT	71 Anthony Belton	74 Mekhi Becton Sr.	
+OFFENSE	TE	85 Tucker Kraft	18 Jonnu Smith	86 Mark Redman
+OFFENSE	WR	83 Savion Williams		
+OFFENSE	QB	10 Jordan Love	6 Tyrod Taylor	
+OFFENSE	RB	8 Josh Jacobs	32 MarShawn Lloyd	22 Pierre Strong Jr.
+OFFENSE			col4-rendered-on-own-line	26 Kaleb Johnson
+DEFENSE	DT	94 Karl Brooks	97 Jordon Riley	93 Anthony Campbell
+DEFENSE	DT	95 Devonte Wyatt	55 Chris McClellan	
+DEFENSE	EDGE	90 Lukas Van Ness	57 Brenton Cox Jr	
+DEFENSE	LB	44 Zaire Franklin	59 Ty'Ron Hopper	54 Kristian Welch
+DEFENSE	LB	58 Isaiah McDuffie	31 Nick Niemann	
+DEFENSE	EDGE	99 Barryn Sorrell	51 Dani Dennis-Sutton	
+DEFENSE	CB	25 Keisean Nixon	24 Carrington Valentine	
+DEFENSE	CB	2 Brandon Cisse	21 Benjamin St-Juste	
+DEFENSE	S	29 Xavier McKinney	27 Kitan Oladapo	
+DEFENSE	S	33 Evan Williams	27 Kitan Oladapo	
+DEFENSE	NB	7 Javon Bullard	36 Kamal Hadden	
+SPECIAL TEAMS	K	28 Trey Smack		
+SPECIAL TEAMS	P	19 Daniel Whelan		
+SPECIAL TEAMS	H	19 Daniel Whelan		
+SPECIAL TEAMS	PR		0 Matthew Golden	
+SPECIAL TEAMS	KR	16 Bo Melton		
+SPECIAL TEAMS	LS	42 Matt Orzech		

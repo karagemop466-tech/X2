@@ -1,0 +1,61 @@
+# Raw transcription of the STATUS COLUMN of official NFL.com club roster pages.
+# Read 2026-11-18 (UTC). Only clubs actually read this session are present; a club
+# absent from this file was NOT read and its sweep row is left blank and flagged.
+# The roster page renders each player as: name | number | position | STATUS | height | weight | exp | college
+# STATUS codes observed verbatim: ACT, RES, RSR, CUT, DEV, PUP, TRC, TRD, TRT.
+# IMPORTANT — a first pass of this file recorded only the first rendered chunk per club
+# and wrongly concluded that reserve-list players were absent from the pages. The pages
+# DO list them (BAL chunk 2, MIA chunks 1-2, HOU chunk 2). The first pass was discarded
+# and re-transcribed in full; scripts/roster_sweep.py carries the reason in a CORRECTIONS
+# entry and fails if it ever stops matching. Only verbatim-observed rows are below.
+club_abbr	player	status	roster_url
+BAL	Jacoby Brissett	ACT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Calais Campbell	ACT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Ronnie Stanley	ACT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Ryan Neuzil	ACT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Jaylinn Hawkins	ACT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Tyler Huntley	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Lamar Jackson	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Durham Smythe	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Ethan Pocic	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Jovaughn Gwyn	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Danny Pinter	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Tavius Robinson	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Skylar Thompson	RES	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Andrew Vorhees	TRC	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Dominic DeLuca	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Andre James	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Jamon Johnson	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Mike Jordan	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Harrison Mevis	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Austin Reed	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Jonathan Ward	CUT	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Adisa Isaac	DEV	https://www.nfl.com/teams/baltimore-ravens/roster
+BAL	Nick Vannett	DEV	https://www.nfl.com/teams/baltimore-ravens/roster
+MIA	Malik Willis	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	De'Von Achane	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Zeek Biggers	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Ronnie Harrison	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Rene Konga	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Jordan Phillips	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Zach Sieler	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Cole Turner	RES	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Trey Moore	RSR	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Darrell Baker Jr.	PUP	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Jaylen Wright	ACT	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Chop Robinson	ACT	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Cal Adomitis	TRC	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Rob Beal Jr.	TRC	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Jamree Kromah	TRD	https://www.nfl.com/teams/miami-dolphins/roster
+MIA	Andre Jones Jr.	TRT	https://www.nfl.com/teams/miami-dolphins/roster
+HOU	Azeez Al-Shaair	RES	https://www.nfl.com/teams/houston-texans/roster
+HOU	British Brooks	RES	https://www.nfl.com/teams/houston-texans/roster
+HOU	Solomon Byrd	RES	https://www.nfl.com/teams/houston-texans/roster
+HOU	Mario Edwards	RES	https://www.nfl.com/teams/houston-texans/roster
+HOU	Jaylin Smith	RSR	https://www.nfl.com/teams/houston-texans/roster
+HOU	Kyonte Hamilton	CUT	https://www.nfl.com/teams/houston-texans/roster
+HOU	Jacob Hummel	ACT	https://www.nfl.com/teams/houston-texans/roster
+HOU	Jake Andrews	ACT	https://www.nfl.com/teams/houston-texans/roster
+HOU	C.J. Stroud	ACT	https://www.nfl.com/teams/houston-texans/roster
+HOU	E.J. Speed	PUP	https://www.nfl.com/teams/houston-texans/roster
+HOU	Aiden Fisher	TRD	https://www.nfl.com/teams/houston-texans/roster
