@@ -12,28 +12,32 @@ where a source verifies it).
 
 ## Read in this order
 
-0. **Review console** (`docs/review.html`) — the section where a path is actually *chosen*: eight decisions, three
-   options each, a recommendation, the file each would change, and what stays blocked until it is decided. It ships
-   with **zero decisions recorded**, because no human has recorded one.
-
-0. **Review path** (`docs/review.html`) — one ordered route through the open decisions, so a reviewer can choose a direction before anything is built.
-1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
-2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
-3. **Model & Week 11 lines** (`docs/model-lines.html`) — the originated spreads, totals and moneylines, originated side first then total then moneyline, with the fair line, market line and difference as separate columns, the team ratings, and the method.
-4. **Price snapshots** (`docs/price-snapshots.html`) — the price-snapshot store recording opening and closing numbers for every originated market; values blank and flagged because no licensed odds feed exists.
-5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, prospective signal/staking fields (blank until grading), and the proposed demotion gate.
-6. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
-7. **Leaderboard** (`docs/leaderboard.html`) — prospective-only competition registry. It is intentionally unranked until frozen prospective forecasts have been graded; full historical outcome tables are on the Backtest page; the landing-page removal-of-luck panel is explicitly marked as research-only. Signal and staking remain separate.
-8. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
-9. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
-10. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
-11. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
+1. **Review path** (`docs/review-path.html`) — one ordered route through open decisions, showing what is known, missing, and which gate blocks action.
+2. **Review console** (`docs/review.html`) — proposals and options with a mechanism to record decisions; it currently ships with zero recorded decisions.
+4. **Executive summary** (`docs/executive-summary.html`) — key findings, what is verified, and what is deliberately blank.
+5. **Model & Week 11 lines** (`docs/model-lines.html`) — originated spreads, totals and moneylines, in side → total → moneyline order, with fair, market and difference columns.
+6. **Price snapshots** (`docs/price-snapshots.html`) — opening and closing fields for every originated market; values are blank pending a licensed odds feed.
+7. **Market tables** (`docs/markets.html`) — fair versus market lines, signal versus staking, and the proposed demotion gate.
+8. **Backtest** (`docs/backtest.html`) — walk-forward predictions on the existing 89-game evaluation subset; read the corpus-completeness caveat before interpreting results.
+9. **Leaderboard** (`docs/leaderboard.html`) — prospective-only registry, intentionally unranked until frozen registrations and prospective forecasts are graded; historical research remains on the Backtest page.
+10. **Validation gates** (`docs/validation-gates.html`) — the validation and demotion rules.
+11. **Verification** (`docs/verification.html`) — what was checked against which source and with what result.
+12. **Suggestions** (`docs/suggestions.html`) — proposals, options, risks and gate dependencies, for review before implementation.
+13. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
 
+## Current decision state (checked 2026-11-18)
+
+- **Results are not current-season complete.** The model input corpus has 137 games; official NFL standings read 2026-11-18 show 150 completed games. A separate 13-game Week 10 backfill reconciles all 32 clubs against that later standings read, but is deliberately not merged into model inputs pending the documented P09 corpus decision. The existing 89-game walk-forward results therefore describe the current frozen corpus only, not a complete 2026 season. See [Feed completeness](docs/feed-completeness.html), [Flagged for Review](docs/flagged.html) (F96), and the [official NFL standings](https://www.nfl.com/standings/).
+- **No strategy is ranked.** The competition leaderboard is prospective-only and unranked; no immutable pre-registration or graded prospective sample supports a reward or skill ranking. Backtest results remain research-only. See [Leaderboard](docs/leaderboard.html) and [pre-registration flag F87](docs/flagged.html).
+- **Market prices and ROI are blank.** A price-snapshot schema and fair/market/difference columns exist, but there is no licensed, timestamped odds feed. No market CLV or ROI claim is supported. See [Price snapshots](docs/price-snapshots.html) and [Suggestions](docs/suggestions.html) for review options.
+- **The latest injury capture is not an independent verification.** The Week 10 report capture is dated 2026-11-18 and contains 347 rows. The transcription agrees with its source capture; the cross-reader review found and corrected one disagreement. Collection/publication rights remain an open gate (F16); do not expand collection or automate it pending review. See [Capture integrity](docs/capture-integrity.html), [Flagged for Review](docs/flagged.html), and the [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions).
+- **Review before building.** The dedicated [Suggestions](docs/suggestions.html) page presents proposals, options, effort, risks and blocking gates; the [Review path](docs/review-path.html) orders major decisions, and the [Questions](docs/questions.html) page lists what is known, missing and how to resolve each gap. Suggestions are not approvals and no option is implemented just because it is recommended. The readiness register has 64 rows covering 58 requirements.
+
 ### Also new (session 6ee4d13e): per-team view, controls for every run
 
-- **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the official injury counts, the net injury count, starters Out on a club chart and the replacements named there. Bye clubs are shown blank, never as injury-free. Starter order is available for six clubs only. The injury row count is still open (F83; see F89).
+- **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the injury counts, net count, and source-confirmed starter/replacement evidence. Bye clubs are shown blank, never as injury-free. Starter evidence is partial; club-chart coverage is not a league-wide official depth register. The 2026-11-18 injury read contains 347 rows; F83's repo-side recount is closed, but the brief's 279-live / 254-published pair remains unexplained.
 - **Backtest page: controls for every run** (`data/leaderboard_control_runs.csv`, computed by `scripts/baselines.py` from `scripts/model.py`): M1-M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made. Every run must reproduce its published bet count and mean edge, or the build stops. The favourite control is weak on these games (F91).
 
 ### Also new (session b03f4ba1): controls, two-sided triggers, readiness table
@@ -41,7 +45,7 @@ where a source verifies it).
 - **Landing page: removal-of-luck panel and decision-readiness table.** The panel shows each strategy's skill, its
   interval, weeks positive and halves agreement. The luck index is a heuristic built inside the model (flag F85).
   The readiness table has one row per requirement from the brief, with its status, the gate that blocks it and
-  the number that would clear it (45 rows, sourced to the official page or first-party file in each row).
+  the number that would clear it (64 readiness rows covering 58 requirements, with a source link in every row).
 - **Leaderboard: control baselines** (`data/control_baselines.csv`, reproduced by `python3 scripts/controls.py`):
   random picks (seeded), the naive reference line's favourite, and M1, graded on the same 88 decided out-of-sample games.
   No betting-market favourite is measured (flag F32).
