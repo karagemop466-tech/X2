@@ -1,0 +1,74 @@
+[
+ {
+  "metric": "rows_in_capture_2026_11_14",
+  "value": "345",
+  "basis": "data/verification_inputs/injuries_2026-11-14.tsv",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "rows_in_capture_2026_11_18",
+  "value": "347",
+  "basis": "data/verification_inputs/injuries_2026-11-18.tsv",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "rows_added_between_reads",
+  "value": "2",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "rows_removed_between_reads",
+  "value": "0",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "practice_status_changes",
+  "value": "7",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "game_status_changes",
+  "value": "13",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "injury_text_changes",
+  "value": "13",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "players_unchanged",
+  "value": "328",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "clubs_with_any_change",
+  "value": "4",
+  "basis": "two dated reads",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "clubs_listed",
+  "value": "28 of 32",
+  "basis": "Week 10 report: 28 clubs played, 4 were on bye",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "week_label_rendered_on_2026_11_18",
+  "value": "WEEK 10",
+  "basis": "the page heading, four days after the Week 10 games and the day before Week 11 kicks off",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "published_snapshot_rows",
+  "value": "345",
+  "basis": "data/injuries_week10_2026.csv equals CAP-01 exactly",
+  "source_url": "https://www.nfl.com/injuries/"
+ }
+]

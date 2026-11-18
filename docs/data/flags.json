@@ -687,10 +687,10 @@
   "flag_id": "F83",
   "category": "Repo irregularity",
   "item": "Week 10 injury row count does not match the brief's live figure",
-  "detail": "The repo holds 345 Week 10 injury rows (data/injuries_week10_2026.csv). The brief quotes 254 published and 279 live, with 4 and 2 no-injury sections. The live NFL.com page (read 2026-11-15) still shows Week 10. Fourteen rows from four clubs on the first two of eight page chunks (Commanders: Patrick, Yankoff; Giants: Malik Harrison; Patriots: Brown, Davis, Henderson, Rouse, Woods; Lions: Joseph, Mays, Reed, St. Brown; Chiefs: Delane) match the repo on injury, practice status and game status. A full row recount of all eight chunks was not completed, so the 279 and 254 figures are neither confirmed nor refuted.",
+  "detail": "The repo holds 345 Week 10 injury rows (data/injuries_week10_2026.csv). The brief quotes 254 published and 279 live, with 4 and 2 no-injury sections. The live NFL.com page (read 2026-11-15) still shows Week 10. Fourteen rows from four clubs on the first two of eight page chunks (Commanders: Patrick, Yankoff; Giants: Malik Harrison; Patriots: Brown, Davis, Henderson, Rouse, Woods; Lions: Joseph, Mays, Reed, St. Brown; Chiefs: Delane) match the repo on injury, practice status and game status. A full row recount of all eight chunks was not completed, so the 279 and 254 figures are neither confirmed nor refuted. | CLOSED 2026-11-18: the live page was re-read in full (all eight rendered chunks) and recounted: 347 rows in 28 club blocks against the 345 stored, and every stored row matches the read player for player, so the published table is a faithful copy of the 2026-11-14 capture. The two-row difference (BAL: Calais Campbell, Ronnie Stanley) is a source change; see data/live_reverification_2026-11-18.csv and data/availability_delta_2026-11-14_to_2026-11-18.csv. The brief's 279-live/254-published pair still matches neither read and stays unexplained.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Open - recount",
-  "action_requested": "Full row recount of the live Week 10 page, section by section, against the 345 repo rows."
+  "status": "Closed for the repo side (2026-11-18) - source-movement half stays open as F97",
+  "action_requested": "No repo action left. Attribution of the 19-row difference between the two reads moves to F97 (raw-body retention)."
  },
  {
   "flag_id": "F84",
@@ -781,5 +781,59 @@
   "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
   "status": "Open - irregularity (confirmed on main)",
   "action_requested": "Owner decides whether the two-sided triggers belong on the leaderboard at all; if they do, add them to the generator's column list and regenerate, rather than editing the CSV by hand."
+ },
+ {
+  "flag_id": "F94",
+  "category": "Data hazard",
+  "item": "The injury hub ignores its own week URL parameter",
+  "detail": "Read 2026-11-18T03:46Z: https://www.nfl.com/injuries/?season=2026&week=11&type=REG rendered the heading 'Injuries - WEEK 10' and the full Week 10 tables, four days after the Week 10 games and the day before Week 11 kicked off. The week tabs are client-side, so a scheduled capture keyed on the URL would silently store the previous week a second time and record it as the new one. The club records printed beside the tables (BUF 8-1, NE 5-5, KC 7-2) had already moved to post-Week-10 values while the tables had not, so a capture that trusted those numbers would mix two dates in one row.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Hazard - open",
+  "action_requested": "Any capture job must read the rendered 'Injuries - WEEK n' heading, store it, and fail when it is not the week it meant to capture; the drift alarm should pin that label as well as the row count."
+ },
+ {
+  "flag_id": "F95",
+  "category": "Repo irregularity",
+  "item": "The results feed is missing 13 settled Week 10 games",
+  "detail": "data/games_2026_results.csv holds 137 games (weeks 1-9 complete: 136 games, plus the Thursday Nov 12 game). Today's official standings imply 150 completed games through Week 10 (149 wins, 149 losses, 2 ties = 300 team-games). The official Week 10 slate is 14 games; data/games_week10_2026.csv lists all 14 with the result column blank on 13. Consequences measured: 26 of 32 club records in the feed disagree with today's standings; adding the 13 transcribed rows reconciles all 32; the Week 11 line is fitted on 274 team-game observations instead of 300; and the 89-game walk-forward corpus contains exactly one Week 10 game.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Irregularity - open (owner decision to re-run)",
+  "action_requested": "Decide whether to adopt data/games_week10_backfill_2026.csv into the canonical feed and re-publish the corpus metrics as a versioned change (proposal P09 on the Review console). Nothing was re-run here."
+ },
+ {
+  "flag_id": "F96",
+  "category": "Verification integrity",
+  "item": "A 'reconciles against the standings' claim was made against a stale standings read",
+  "detail": "The published claim that all 137 games reconcile with the official standings for all 32 teams was checked on 2026-11-14 against data/standings_2026_official_read_20261114.csv, a read taken before the Week 10 Sunday games (it shows BUF 7-1, NE 5-4, DET 6-2). The feed and the standings read were consistent with each other and both were stale in the same way. Re-read today, the same comparison fails for 26 clubs. Any reconciliation claim must carry the read date of both sides, and a reconciliation between two reads taken from the same day and the same source surface is weaker than it looks.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "Irregularity - open",
+  "action_requested": "Adopt a rule for verification records: state the read timestamp of the checked data and of the checking source, and prefer a source surface that is not the one the data came from."
+ },
+ {
+  "flag_id": "F97",
+  "category": "Attribution gap",
+  "item": "Two dated reads of one official report differ, and no raw capture exists to say why",
+  "detail": "CAP-01 (2026-11-14) and CAP-02 (2026-11-18) are transcriptions of the same Week 10 report and differ on 19 of 347 players: 2 rows added (BAL: Calais Campbell, Ronnie Stanley), 7 practice-designation changes, 13 game-status changes and 13 injury-text changes, concentrated in 4 of 28 club blocks (BAL, LAC, IND, JAX). BAL and LAC are the two clubs of the Monday-night game, which is consistent with the report being extended after Saturday; but IND (Arden Key lost a Questionable designation) and JAX (a practice code moving L to D) move in the other direction. No raw HTML or per-capture hash was retained for CAP-01, so the difference cannot be attributed to a source change or to a transcription error.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Irregularity - open",
+  "action_requested": "Retain the raw response body with every capture and hash it (D12). Until then, treat any single transcription as provisional and never let one become 'the data'."
+ },
+ {
+  "flag_id": "F98",
+  "category": "Model specification",
+  "item": "Seven settled international games in the corpus carry no neutral-site flag",
+  "detail": "The official 2026 international slate names nine games. Eight fall in weeks 1-10; seven of those are in the results feed (the eighth, NE at DET in Munich on Nov 15, is one of the 13 missing Week 10 games). None carries a neutral_site value, so the fit and every prediction for those games applied the home-field term. On the published fit that term is negative (-0.403 points), so on these seven games the mis-flag shifts each model margin by exactly 0.403, flips the side pick on three games (IND at WAS, PIT at NO, CIN at ATL) and crosses the pre-registered +/-3-point betting gate on one (BAL at DAL: 1.13 to 4.03). Effect on absolute error: the published treatment is 2.82 points better summed across the seven, which is coincidence on seven games, not evidence the specification is right.",
+  "source_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games",
+  "status": "Irregularity - open",
+  "action_requested": "Decide with P09: adopt the nine-game register as the neutral_site source for the historical log and re-fit once, as a versioned change (extends S44; also corrects S44's premise - the Week 11 MIN at SF game is already flagged Y in data/schedule_week11_2026.csv and the model already zeroes the home edge for it)."
+ },
+ {
+  "flag_id": "F99",
+  "category": "Source-render limit",
+  "item": "Standings division labels are images, so division names cannot be transcribed from the rendered page",
+  "detail": "https://www.nfl.com/standings/ renders eight per-division tables under two conference headings, but the division name labels are not text in the rendered page. The what-changed table therefore records each club's block and row as published ('AFC block 1 row 2') rather than a division name. Club grouping is corroborated for AFC East by data/standings_2026_week10.csv, which lists BUF, NE, NYJ and MIA in one block.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "Limitation - open",
+  "action_requested": "If division labels are needed, read them from the official division standings pages (one fetch per division) rather than inferring them from the order."
  }
 ]

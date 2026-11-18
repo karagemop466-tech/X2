@@ -520,5 +520,59 @@
   "blocker_or_note": "F74 (home-team bias) is open for monitoring; the neutral-site half of F71 stays open",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "req_id": "R59",
+  "requirement (from brief)": "Store every model output as a probability plus its inputs, not just a pick",
+  "status": "Done for both published models (D27 closed for the ledger; personnel inputs still absent)",
+  "where_addressed": "Forecast records page; data/forecast_records_2026.csv (178 graded rows), data/forecast_records_week11.csv (26 prospective rows), scripts/forecast_records.py",
+  "blocker_or_note": "Each row's inputs are reproduced from the published CSVs before the row is allowed to publish (data/forecast_record_checks.csv); no availability or personnel feature is an input, so the ablation in D24 remains blocked.",
+  "row_type": "requirement",
+  "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "req_id": "R60",
+  "requirement (from brief)": "Injury signal as a surprise, not a level; publish the delta with clock time",
+  "status": "Done for one report pair; cadence still missing",
+  "where_addressed": "Captures & deltas page; data/availability_captures.csv, data/availability_delta_2026-11-14_to_2026-11-18.csv, data/availability_delta_summary.csv",
+  "blocker_or_note": "Two dated reads exist, so a delta exists. Three reads a week needs a scheduler and the rendered-week pin (F94, G18).",
+  "row_type": "requirement",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R61",
+  "requirement (from brief)": "Point-in-time snapshot ledger for injuries, depth charts and inactives",
+  "status": "Partial - injury and standings captures exist with hashes; depth and inactives do not",
+  "where_addressed": "data/availability_captures.csv (payload and file hashes, read times), data/verification_inputs/",
+  "blocker_or_note": "Raw response bodies are not retained (G17); official inactive lists and snap counts are not captured at all (D13); club depth charts remain at 6 of 32 clubs (D15).",
+  "row_type": "requirement",
+  "evidence_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "req_id": "R62",
+  "requirement (from brief)": "Fixture-context feature set built only from published schedule facts; venue of every fixture",
+  "status": "Partial - the nine designated international games, with venues, are now a dataset; 141 venues remain untranscribed",
+  "where_addressed": "data/international_games_2026.csv; sensitivity in data/neutral_site_sensitivity_2026.csv; flags F98, F99",
+  "blocker_or_note": "Not consumed by the model: re-fitting changes published numbers, so it waits on P09. The neutral flag is blank on all 137 feed rows.",
+  "row_type": "requirement",
+  "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "req_id": "R63",
+  "requirement (from brief)": "Publish a weekly 'what changed' diff instead of a static snapshot",
+  "status": "Done as a first instance (record change, net-points change, availability change per club)",
+  "where_addressed": "data/what_changed_2026-11-14_to_2026-11-18.csv on the Captures & deltas page",
+  "blocker_or_note": "Model ratings are deliberately not re-fit in the diff (see F95/G20), so the change column is published points, not a rating change.",
+  "row_type": "requirement",
+  "evidence_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "req_id": "R64",
+  "requirement (from brief)": "Turn the game log into the pre-registered backtest corpus, with the count reconciled",
+  "status": "Irregular - the count is now explained, the choice is open",
+  "where_addressed": "data/week_count_reconciliation_2026-11-18.csv; flags F88 and F95; question Q64",
+  "blocker_or_note": "136 = weeks 1-9, 137 = the published feed, 150 = everything official through Week 10. F88's '136 vs 137' is answered; the remaining question is which corpus to publish on, recorded as P09.",
+  "row_type": "requirement",
+  "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  }
 ]
