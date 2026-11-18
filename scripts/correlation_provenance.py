@@ -33,8 +33,15 @@ AS_OF = "2026-11-14"
 SRC_SCHED = "https://www.nfl.com/schedules/2026/by-week/week-10"
 SRC_STAND = "https://www.nfl.com/standings/"
 SRC_INJ = "https://www.nfl.com/injuries/"
-OFFICIAL = ("Yes - both inputs trace to the official NFL.com results ledger, which "
-            "reconciles to the official standings for all 32 teams with 0 mismatches")
+# The ledger reconciles with the 2026-11-14 standings read (arithmetic, 0 of 32
+# clubs mismatch). It does NOT reconcile with the current read: 13 settled games
+# are absent, so 26 of 32 clubs differ (F106/F113). Saying only the first half was
+# the defect this string used to carry, on every correlation row.
+OFFICIAL = ("Yes - both inputs trace to the official NFL.com results ledger, which reconciles "
+            "to the official standings as read on 2026-11-14 for all 32 teams with 0 mismatches. "
+            "That is a check of arithmetic, not currency: the results feed is 13 settled games "
+            "behind the 2026-11-18 read (V35, F113), which does not affect these correlations "
+            "because every input they use is settled before Week 10")
 
 
 def read(name):
