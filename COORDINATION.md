@@ -2837,3 +2837,35 @@ file scope no other session is holding.
 
 **Scope discipline:** `build.py` is 286 KB and shared. I touch only the as-of block and the verification/standings
 sections, keep every other session's text, and never rewrite a register I did not create.
+
+### T108–T113 completion (2026-11-18, session f04dda73)
+
+**All six tasks done.** Each one changed a published claim, not just a table cell. Nothing another session owned was
+rewritten; every register addition was renumbered into the free ID space (F110–F114, SRC-91/92, V34–V36, RV24/RV25,
+CAP-03). Working tree clean, all checks green.
+
+| ID | Result | Evidence |
+|---|---|---|
+| T108 | **Done — P09 taken, and taken the safe way.** `scripts/corpus_v2.py` builds a second, separately named **102-game** corpus (the published 89 reproduced within 0.055 pts, plus the 13 settled Week 10 games) and publishes both estimators. The published `games_2026_results.csv` and the SHA-256-sealed `prospective_forecast_log.csv` were **not** touched: re-fitting on 150 games re-originates the Week 11 lines, and re-sealing a pre-kickoff log after the results are known destroys what it proves. New page `docs/corpus-v2.html`; `data/corpus_v2_2026.csv` (102), `data/corpus_v2_summary.csv` (3), both pinned. | `https://www.nfl.com/schedules/2026/by-week/week-10` (re-read in full, both chunks: all 14 finals match the backfill register 13 of 13) |
+| T109 | **Done.** `verify_results.py` now takes the dated standings read as an argument, prints both dates, labels the 2026-11-14 comparison arithmetic-only, and **exits 1** on currency. `desk.py` RF07 is split into RF07 (arithmetic, pass) and **RF07b (currency, FAIL)**. The old unqualified sentences in `docs/verification.html`, `docs/results-feed.html` and `docs/correlation-provenance.html` are all withdrawn; RV04 corrected. | `https://www.nfl.com/standings/` (both chunks read this session: 32/32 match the repo 2026-11-18 capture, 26/32 differ from the 2026-11-14 snapshot, 150 games implied) |
+| T110 | **Done.** V14's published "18 pages, 350 internal links, 1,347 external" replaced with the current run (47→48 pages, 2,486 internal, 5,199 external); V34 records the correction. **F111** notes the counts are still transcribed, not generated — an honest limitation rather than a fix. | `https://github.com/karagemop466-tech/X2` |
+| T111 | **Done.** `READ_LATEST`/`READ_SUMMARY` replace the single false `AS_OF` label in the header, and the landing page gains a per-surface freshness table (six surfaces, each with its own read date, status and reason, including two frozen on purpose). **F114**. | `https://www.nfl.com/injuries/` |
+| T112 | **Done.** Third independent read: ATL/MIN/GB in full plus the disputed JAX cell = 41 rows, **164 of 164 cells match** the published register, and Chris Rodriguez Jr. renders *Limited Participation* — F109 confirmed on a fourth read. Session-tagged capture `CAP-03`; the drift pin **correctly rejected it first** (row count 41 vs the pinned 345/347) and was widened deliberately rather than bypassed. | `https://www.nfl.com/injuries/` (8 chunks; 3 sections transcribed) |
+| T113 | **Done** — this record plus the PR/merge/Pages confirmation below. | — |
+
+**Two findings worth more than the tidying:**
+
+1. **The number the whole project rested on does not survive its own holdout (F110).** M1 beats its naive reference
+   line by **1.736** points of MAE on the 89 published games and is **0.591 behind** it on the 13 games it had never
+   been scored against (closer on 5 of 13); pooled **1.439**. On totals it loses in every cut (−0.113 / −1.312 /
+   −0.266). No reward tier or staking claim can rest on the 1.74 alone, and the exec summary and README now say so.
+2. **A published correlation carried two values at once (F112).** `correlation_audit.csv` held C08 = −0.064 after the
+   canonical register moved to +0.035, because `desk.py` had not been re-run. Regenerated (V36) and a hard assertion
+   now makes that class of drift a build failure.
+
+**Also added, unclaimed but free:** `scripts/decision_queue.py` → `data/decision_queue.csv` (10 rows, pinned) and a
+"start here" ordering table on `docs/review.html`, derived from `decision_options.csv` × `decision_readiness.csv`. It
+ranks the ten open decisions by how many readiness rows each releases and separates benefit from cost, because that
+trade is the reviewer's to make, not the page's.
+
+**New ID space after this session:** F115, SRC-93, Q67, S51, G21, R66, D65, V37, RV26, CAP-04, T114.
