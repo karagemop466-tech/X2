@@ -2830,6 +2830,7 @@ NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("fixture-con
 NAV.insert(NAV.index(("fixture-context.html", "Fixture context")) + 1, ("capture-integrity.html", "Capture integrity"))
 NAV.insert(NAV.index(("capture-integrity.html", "Capture integrity")) + 1, ("feed-completeness.html", "Feed completeness"))
 NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("forecast-records.html", "Forecast records"))
+NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("corpus-v2.html", "Pre-registered corpus"))
 
 _cap_idx = (
     '<h2>Captures, changes and the drift alarm (read 2026-11-18)</h2>'
@@ -3110,6 +3111,103 @@ as the backfill. The fitted home-field term on the published fit is negative (�
         "Reference if neutral", "reference_shift_pts": "Reference shift",
         "actual_margin_home_minus_away": "Actual margin", "effect_on_error": "Effect on |error|",
         "source_url": "Source", "game_url": "Game page"}, table_id="neutral-sensitivity")}
+""")
+
+# ---------------------------------------------------------------------------
+# Corpus v2 (T108). The 89-game published corpus and the 102-game corpus that
+# adds the 13 settled Week 10 games are published side by side, as two named
+# estimators, because the two disagree about whether the model beats its own
+# reference line. Neither replaces the other: the published 89 rows are
+# reproduced byte for byte, the 13 new rows are separately named, and the
+# Week 11 numbers already sealed in the prospective forecast log are NOT
+# re-originated (re-fitting would change them, and a sealed pre-kickoff record
+# cannot be re-sealed without destroying what it proves).
+_corpus = read_csv("corpus_v2_2026.csv")
+_corpus_sum = read_csv("corpus_v2_summary.csv")
+_corpus_pub = [r for r in _corpus if r["provenance"] == "published feed"]
+_corpus_new = [r for r in _corpus if r["provenance"] != "published feed"]
+_corpus_by = {r["subset"].split(".")[0].strip(): r for r in _corpus_sum}
+_holdout = _corpus_by["B"]
+_pooled = _corpus_by["C"]
+_pubsum = _corpus_by["A"]
+
+pages["corpus-v2.html"] = ("Pre-registered corpus", f"""
+<section class="hero">
+  <h1>The pre-registered backtest corpus, published twice</h1>
+  <p>The brief asks for the game log to become a pre-registered backtest corpus, and for every model total to be
+  published twice until one wins. Both are done here as one decision: the corpus that has been published since the
+  first session (<strong>{len(_corpus_pub)} games</strong>, weeks 4&ndash;10) and a second corpus that adds the
+  <strong>{len(_corpus_new)} settled Week 10 games</strong> transcribed from the official by-week page
+  (<strong>{len(_corpus)} games</strong> pooled). The two are named separately, the 89 published rows are reproduced
+  before anything is written, and a reader can see which rows are old and which are new in the provenance column.</p>
+  <p class="warn"><strong>The two corpora disagree, and that is the result.</strong> On the published 89 games the
+  model beats its own naive reference line by <strong>{_pubsum['gain_margin_pts']} points</strong> of mean absolute
+  error per game. On the 13 games it had never been scored against it is <strong>{abs(float(_holdout['gain_margin_pts']))}
+  points behind</strong> the same reference line. Pooled, the gain falls to <strong>{_pooled['gain_margin_pts']}
+  points</strong>. The same comparison on <em>totals</em> is worse than that in every cut: the model does not beat
+  the reference total even on the published corpus ({_pubsum['gain_total_pts']} points pooled,
+  {_pooled['gain_total_pts']} on all {_pooled['games']}). Publishing only the first number would be the exact selection the brief forbids, so the holdout
+  number is published beside it and the leadership question stays open (Flag F110).</p>
+</section>
+{tiles([(len(_corpus), 'games in the pooled corpus'), (len(_corpus_pub), 'reproduced from the published register'),
+        (len(_corpus_new), 'new Week 10 holdout games'),
+        (f"{_holdout['games_model_closer']} of {_holdout['games']}", 'holdout games the model was closer')])}
+<h2>Estimator comparison — the honest version</h2>
+<p class="note">Mean absolute error in points per game, computed on identical games with the same construction. The
+reference line is the naive line the corpus is graded against (season scoring differential plus a 2.5-point home
+term); with no licensed odds feed it is not a bookmaker line, so this measures skill against a published baseline,
+not against a market (F07, F51).</p>
+{table(_corpus_sum, ['subset','games','mae_model_margin','mae_reference_margin','gain_margin_pts',
+                    'mae_model_total','mae_reference_total','gain_total_pts','games_model_closer',
+                    'games_reference_closer','ties','reading','source_url'],
+       {'subset':'Corpus','games':'Games','mae_model_margin':'Model MAE (side)','mae_reference_margin':'Reference MAE (side)',
+        'gain_margin_pts':'Gain vs reference (pts)','mae_model_total':'Model MAE (total)',
+        'mae_reference_total':'Reference MAE (total)','gain_total_pts':'Gain (total, pts)',
+        'games_model_closer':'Model closer','games_reference_closer':'Reference closer','ties':'Ties',
+        'reading':'Reading'}, table_id='corpus-summary')}
+<h2>What each row stores</h2>
+<p class="note">Every row is a probability plus the inputs that produced it, not a pick: the model margin, the model
+total, the reference line the probability is measured against, the residual scale and where that scale came from,
+the three probabilities, the realised outcome, both absolute errors, the fit size and the provenance of the game row.
+That is the storage requirement, applied to the corpus itself.</p>
+<h2>The 13 Week 10 holdout games, game by game</h2>
+<p class="note">These games were settled on 2026-11-15 and 2026-11-16, after every published figure on this site was
+fitted. Predictions are made by fitting only on games strictly before Week 10, so the holdout is genuine
+out-of-sample evidence rather than a re-labelled backtest. Source for every score:
+<a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">the official Week 10
+by-week schedule page</a>, transcribed and reconciled against
+<a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">the official standings</a> on 2026-11-18
+(32 of 32 clubs match on W-L-T and points for and against only with these 13 games included).</p>
+{table(_corpus_new, ['record_id','week','matchup','output_margin_home_minus_away_pts','output_total_pts',
+                     'reference_cover_line_pts','reference_over_line_pts','actual_margin','actual_total',
+                     'prob_home_win','prob_home_covers_reference_line','prob_over_reference_total',
+                     'abs_error_model_margin','abs_error_reference_margin','abs_error_model_total',
+                     'abs_error_reference_total','fit_team_games','residual_sd_source','provenance','game_url','source_url'],
+       {'record_id':'Record','week':'Week','matchup':'Game','output_margin_home_minus_away_pts':'Model margin',
+        'output_total_pts':'Model total','reference_cover_line_pts':'Reference line','reference_over_line_pts':
+        'Reference total','actual_margin':'Actual margin','actual_total':'Actual total','prob_home_win':'P(home win)',
+        'prob_home_covers_reference_line':'P(home covers)','prob_over_reference_total':'P(over)',
+        'abs_error_model_margin':'Model |err| side','abs_error_reference_margin':'Reference |err| side',
+        'abs_error_model_total':'Model |err| total','abs_error_reference_total':'Reference |err| total',
+        'fit_team_games':'Fit team-games','residual_sd_source':'Residual scale from','provenance':'Provenance',
+        'game_url':'Game page','source_url':'Source'}, table_id='corpus-holdout', filterable=True)}
+<h2>Why the published feed was not spliced</h2>
+<p class="note">Re-fitting on 150 games instead of 137 changes the Week 11 lines. Those lines are already frozen and
+SHA-256 sealed in <code>data/prospective_forecast_log.csv</code> with a <code>frozen_before_kickoff</code> flag, which
+is the only thing that makes them pre-kickoff evidence. Re-sealing them after the Week 10 results were known would
+convert a forecast into a retrodiction and destroy the log's probative value. So the 13 games enter as a
+<em>second corpus with its own name</em> and the sealed log is untouched. The published Week 11 numbers therefore
+still come from the 137-game fit, and that is stated wherever they appear. The alternative — splice, re-fit,
+re-originate, re-seal — remains available to the owner as a deliberate choice, recorded on the
+<a href="review.html">Review console</a>; it is not a data-capture side effect.</p>
+<h2>Reproducing this page</h2>
+<p class="note"><code>python3 scripts/corpus_v2.py</code> rebuilds both registers. It fails the run if any of the 89
+published rows differs from the published value by more than 0.055 points (the published one-decimal rounding), if the
+backfill register does not hold exactly 13 games, or if the pooled corpus does not hold exactly 102. It imports the
+verified model construction from <code>scripts/forecast_records.py</code> rather than re-typing it, so the two cannot
+drift apart. The residual scale for Week 10 is estimated only on games before Week 10; for Week 4, where no earlier
+scored week exists, the in-sample residual of the training fit is used and the row says so in
+<code>residual_sd_source</code>.</p>
 """)
 
 _fr_m1 = [r for r in _fr_graded if r["model_id"] == "M1"]
