@@ -4109,17 +4109,20 @@ neutral-site flag, although the official 2026 slate lists eight settled internat
 {_v2_spliced} spliced, {_v2_neutral} flagged neutral</strong> — as a parallel, versioned register of
 <em>results</em>. The 137-game files stay exactly as they are; every published metric on the
 <a href="backtest.html">backtest</a> and <a href="leaderboard.html">leaderboard</a> pages still refers to them.</p>
-<p class="note"><strong>Three sessions answered P09 the same day; read all three.</strong>
-<a href="corpus-v2.html">The pre-registered corpus</a> (PR #78) adds the 13 games to the scored
-<em>predictions</em> register and publishes the 89 / 13 / 102 comparison.
-<a href="corpus-v2-full.html">Corpus v2 beside a frozen v1</a> (PR #80) re-runs the entire model on 150 games,
-with hash proof that v1 did not move. This page adds what neither has: results and venue facts row by row with
-the raw official reads retained, the 14 checks, and a control fit that changes <em>only</em> the neutral-site
-flags — the separation that says how much of the movement is the venue correction and how much is the bigger
-sample. The three registers reconcile: <a href="results-v2.html">This page</a>'s register is compared with PR #76's row by row
-(<strong>150 of 150</strong> fixtures and every compared aspect), and with PR #80's figures metric by metric
-(<strong>{_v2_xreg_match} of {len(v2_xreg)}</strong> comparable metrics match exactly). The one definitional
-difference found between builds is named in the delta table below.</p>
+<p class="note"><strong>Four builds of this decision exist, all made on 2026-11-18 by different sessions; read all
+four.</strong> <a href="results.html">Season results</a> carries PR #76's parallel feed
+(<code>data/results_feed_v2_2026.csv</code>, its own checks <code>V2-01..V2-12</code>);
+<a href="corpus-v2.html">the pre-registered corpus</a> (PR #78) adds the 13 games to the scored
+<em>predictions</em> register and publishes the 89 / 13 / 102 comparison;
+<a href="corpus-v2-full.html">Corpus v2 beside a frozen v1</a> (PR #80) re-runs the entire model on 150 games with
+hash proof that v1 did not move. This page adds what none of them has: results and venue facts row by row with the
+raw official reads retained, {len(v2_checks)} checks, and a control fit that changes <em>only</em> the neutral-site
+flags — the separation that says how much of the movement is the venue correction and how much is the bigger sample.
+The registers were then checked against each other rather than merged: this register agrees with PR #76's on
+<strong>150 of 150</strong> fixtures and on every compared aspect (check R2-15, and see
+<a href="flagged.html">F127</a> for why the two keep different filenames), and with PR #80's figures on
+<strong>{_v2_xreg_match} of {len(v2_xreg)}</strong> comparable metrics. The one definitional difference found
+between builds is named in the delta table below.</p>
 {tiles([(len(v2_register), 'games in the v2 register'), (_v2_spliced, 'spliced from the Week 10 backfill'),
         (_v2_neutral, 'official neutral-site rows'), (_v2_pass, f'of {len(v2_checks)} checks passing'),
         (len(_v2_flip_rows), 'published Week 11 picks that flip')])}
@@ -4330,9 +4333,10 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
 """)
 
 pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
-<h2>Also 2026-11-18 (session 82b83a64): the results register completed, the venue fix isolated, and three builds reconciled</h2>
+<h2>Also 2026-11-18 (session 82b83a64): the results register completed, the venue fix isolated, and four builds reconciled</h2>
 <ul class="findings">
-<li><strong>Three sessions answered P09 the same day, and their registers agree.</strong> This session published the
+<li><strong>Four builds of the same decision, made the same day by different sessions, and they agree.</strong>
+This session published the
 results-and-venue half (<a href="results-v2.html">Results register v2</a>, <code>data/results_feed_v2_82b83a64.csv</code>:
 150 games, {_v2_neutral} neutral-site flags, {_v2_pass}/{len(v2_checks)} checks, and 150 of 150 rows agreeing
 with PR #76's independent build (R2-15, <a href="flagged.html">F127</a>); PR #78 published the scored

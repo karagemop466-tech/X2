@@ -3232,3 +3232,25 @@ quoting check ids that no longer described the file next to it.
 `scripts/results_v2.py` exits non-zero if any of R2-01…R2-15 fails, so a future merge that breaks the agreement —
 by re-transcribing a score, or by one build drifting — fails the build rather than publishing quietly. Final state
 of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all other verifiers green.**
+
+### Integration record (T132) — merged, deployed, and verified on the live site
+
+* **PR #84** (`arena/82b83a64-x2` → `main`) merged as **`7e29b0b`** at 2026-11-18T05:20:34Z. No approval sought, per
+  the standing brief. The branch carried two merge parents (`3a8950a` + this session's work), so main's PRs #76, #78
+  and #80–#83 are all ancestors of the merge commit: nothing was dropped on the way in.
+* **GitHub Pages:** workflow `pages-build-and-deployment` run **44243584705** on `main` → **success**. Verified by
+  reading the published page, not just the run status: https://karagemop466-tech.github.io/X2/docs/results-v2.html
+  renders all 15 checks with `R2-01`…`R2-15` results as registered here, and the landing page's
+  freshness table / decision banner are intact. (The site is served from the repo root, so the path is `/X2/docs/…`;
+  `/X2/results-v2.html` 404s by design — F15.)
+* **Post-merge fixes in the follow-up PR:** the new page's intro said "three sessions / 14 checks" and contained a
+  self-link, because an earlier `str.replace` did not match main's text after the merge. Corrected to name all four
+  builds with their real filenames and check namespaces, and to point at `docs/results.html` where PR #76's register
+  is surfaced. Rebuilt; `drift_check` 54/54, `build.py` guards pass on 55 pages, `check_links` clean.
+* **Re-checked after the merge, from the merged tree:** `scripts/results_v2.py` 15/15 · `repo_audit` A05 still
+  reproduces `scripts/model.py`'s published outputs byte for byte, i.e. the 137-game record and the sealed Week 11
+  log survived four inbound merges unmodified · `verify_results.py --games results_feed_v2_82b83a64.csv
+  --target capture` PASS (the register reconciles against the snapshot PR #76 advanced as well as against today's
+  read) · `npm run build && npm run verify` PASS.
+* **Left open on purpose:** P09 promotion, P01 pricing, F16 rights, and the F127 process rules — all owner decisions,
+  none of which an agent may record. `data/decision_choices.json` remains empty.
