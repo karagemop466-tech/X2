@@ -1,0 +1,9 @@
+window,n_games,t1_mae,t2_mae,mean_paired_diff_t2_minus_t1,cluster_boot_lo,cluster_boot_hi,t_interval_lo,t_interval_hi,sign_flip_p,t1_games_closer,t2_games_closer,ties,mean_abs_gap,decision,benchmark,source_url
+Week 4,16,10.829,10.625,-0.206,-2.382,2.252,-2.775,2.364,0.8742,8,8,0,3.548,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-4
+Week 5,15,10.777,12.252,1.475,-0.557,3.461,-0.787,3.738,0.176,10,5,0,3.345,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-5
+Week 6,14,12.131,11.127,-1.004,-3.102,1.633,-3.708,1.701,0.4615,4,10,0,4.041,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-6
+Week 7,14,10.614,9.38,-1.233,-3.471,0.754,-3.691,1.225,0.3099,7,7,0,3.311,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-7
+Week 8,14,11.731,12.077,0.346,-2.03,2.665,-2.312,3.003,0.784,7,7,0,3.658,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-8
+Week 9,15,11.192,10.993,-0.199,-2.011,1.752,-2.291,1.894,0.8448,6,9,0,3.418,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-9
+Week 10,1,0.35,0.93,0.57,0.57,0.57,,,1.0,1,0,0,0.57,T1 (ratings total),realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-10
+Weeks 4-10 (all out-of-sample),89,11.077,10.964,-0.113,-0.982,0.805,-1.025,0.799,0.7986,43,46,0,3.516,no winner — interval spans zero,realised totals (no licensed market price exists — F07/F32),https://www.nfl.com/schedules/2026/by-week/week-4

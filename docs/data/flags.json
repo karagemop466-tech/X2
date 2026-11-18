@@ -952,5 +952,14 @@
   "source_url": "https://www.nfl.com/games/vikings-at-49ers-2026-reg-11",
   "status": "Open - coverage 13 of 163",
   "action_requested": "Re-run scripts/venues_week11.py once per slate, then state coverage as a number on the page rather than 'in progress'."
+ },
+ {
+  "flag_id": "F113",
+  "category": "Model defect - open (owner decision)",
+  "item": "The fitted home-field term enters the model total, so the total is not venue-neutral",
+  "detail": "In scripts/model.py fit() the home side is given +h and the away side is given no -h, so predict() returns home_points = mu + A_home - D_away + h and away_points = mu + A_away - D_home. The margin therefore carries h (correct) but the TOTAL also carries +h (not physically meaningful: both teams play at the same venue). The size is small but not zero and changes sign across the season: fitted h is +0.62 points in Week 4, +0.04 in Week 9, -0.37 in Week 10 and -0.40 in Week 11, so every published total is displaced by that amount. Found while writing T112 (scripts/two_estimator_totals.py), whose S1 gate reproduces the published totals and so had to reproduce the displacement too; nothing was changed in the model. Fixing it moves every published total, so it is the model owner's call and needs a version tag rather than an in-place edit. The neutral-site treatment (F71) is a separate, correct change and is unaffected.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model.py",
+  "status": "Open - owner decision, no published number changed",
+  "action_requested": "Decide whether to make the total venue-neutral in a v2 model, publishing both the old and new totals for one week so the size of the change is visible. Do not edit the frozen Week 11 line in place."
  }
 ]

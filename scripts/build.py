@@ -3393,6 +3393,50 @@ dates and flagged (F111, F112).</li>
 </ul>
 """)
 
+# ---------- session db00d539: two-estimator totals section (appended to the corpus page) ----------
+_te = read_csv("two_estimator_totals.csv")
+_tes = read_csv("two_estimator_summary.csv")
+_te_all = _tes[-1]
+if len(_te) != 89:
+    raise SystemExit("BUILD FAILED: two_estimator_totals.csv is not 89 games")
+if _te_all["decision"] not in ("T1 (ratings total)", "T2 (league-average total)",
+                               "no winner — interval spans zero"):
+    raise SystemExit("BUILD FAILED: the two-estimator collapse rule is not one of the allowed "
+                     "outcomes, so the page cannot state it honestly")
+pages["corpus-tranche.html"] = (pages["corpus-tranche.html"][0], pages["corpus-tranche.html"][1] + f"""
+<h2>Both total estimators, every week, with the gap (T112)</h2>
+<p class="note"><strong>The brief asks for every model total to be published twice until one wins.</strong> The two
+honest competitors for the total in this repository are the <em>ratings total</em> (T1: the same ridge fit that
+originates the side, summed over both teams) and the <em>league-average total</em> (T2: 2 x league points per team per
+game on games strictly before the week — the published naive benchmark). Both are shown for all
+<strong>{len(_te)}</strong> walk-forward games, with the gap, the realised total and which was closer. Neither is a
+market number: with no licensed odds feed (F07/F32) "winning" can only mean closer to what happened.</p>
+<p class="note"><strong>The collapse rule is written down before the result is read, and it did not fire.</strong>
+Pooled mean absolute error: T1 <strong>{_te_all['t1_mae']}</strong> points, T2 <strong>{_te_all['t2_mae']}</strong>.
+The paired difference (T2 error − T1 error, positive favours T1) is <strong>{_te_all['mean_paired_diff_t2_minus_t1']}</strong>
+with a game-cluster bootstrap interval of <strong>[{_te_all['cluster_boot_lo']}, {_te_all['cluster_boot_hi']}]</strong>
+and a sign-flip p of <strong>{_te_all['sign_flip_p']}</strong>; T1 was closer on {_te_all['t1_games_closer']} games,
+T2 on {_te_all['t2_games_closer']}, ties {_te_all['ties']}. The interval spans zero, so the decision is
+<strong>{_te_all['decision']}</strong> and both estimators stay published. The mean absolute gap between them is
+{_te_all['mean_abs_gap']} points — which is the number that makes the choice matter: on a typical game the two methods
+disagree by more than a field goal's worth of total, and neither has earned the right to be the only one shown.</p>
+{table(_tes, ['window','n_games','t1_mae','t2_mae','mean_paired_diff_t2_minus_t1','cluster_boot_lo','cluster_boot_hi','t_interval_lo','t_interval_hi','sign_flip_p','t1_games_closer','t2_games_closer','ties','mean_abs_gap','decision','source_url'],
+       {'window':'Window','n_games':'n','t1_mae':'T1 MAE','t2_mae':'T2 MAE','mean_paired_diff_t2_minus_t1':'Paired diff (T2−T1)','cluster_boot_lo':'95% CI low','cluster_boot_hi':'95% CI high','t_interval_lo':'t-interval low','t_interval_hi':'t-interval high','sign_flip_p':'Sign-flip p','t1_games_closer':'T1 closer','t2_games_closer':'T2 closer','ties':'Ties','mean_abs_gap':'Mean |gap|','decision':'Decision','source_url':'Source'})}
+<details><summary>All {len(_te)} games: both totals, the gap and the realised total</summary>
+{search_box('two-est-table')}
+{table(_te, ['week','matchup','t1_model_total','t2_league_total','gap_t1_minus_t2','fitted_hfa_term_pts','actual_total','t1_abs_error','t2_abs_error','closer','neutral_site','game_url','source_url'],
+       {'week':'Week','matchup':'Matchup','t1_model_total':'T1 ratings total','t2_league_total':'T2 league-average total','gap_t1_minus_t2':'Gap (T1−T2)','fitted_hfa_term_pts':'Fitted home term','actual_total':'Actual total','t1_abs_error':'T1 |error|','t2_abs_error':'T2 |error|','closer':'Closer','neutral_site':'Neutral','game_url':'Game centre','source_url':'Source'},
+       table_id='two-est-table', filterable=True)}
+</details>
+<p class="note"><strong>A property of the published model that this comparison made visible:</strong> the fit gives the
+home side <code>+h</code> and does not subtract <code>h</code> from the away side, so the fitted home-field term enters
+the <em>total</em> as well as the margin (it is {_te[0]['fitted_hfa_term_pts']} points in Week 4 and negative by Week 10;
+the column is published per game). The comparison reproduces the published model rather than quietly correcting it: the
+build refuses to publish unless both estimators match <code>data/model_backtest.csv</code> at one decimal on all 89
+rows, which is how this was noticed in the first place. Making the total venue-neutral is a model change, not a
+display change, and it is flagged for the model owner rather than applied here (F113).</p>
+""")
+
 # ---------- session db00d539: executive summary entry ----------
 pages["executive-summary.html"] = (pages["executive-summary.html"][0],
     pages["executive-summary.html"][1] + f"""
