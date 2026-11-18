@@ -898,5 +898,25 @@
   "accessed_date": "2026-11-18",
   "used_for": "data/international_games_2026.csv: the nine 2026 international games with date, designated home team, venue, city, kickoff and new-market flag; the neutral-site basis for F71 and F105",
   "verification_note": "Opened with fetch_page on 2026-11-18 (SRC-72 records the 2026-11-14 read of the same page). The page states 'a record-breaking nine games played across four continents, seven countries and eight stadiums' and tables all nine. Matched to the feed on (week, team pair): 8 of 9 fall in weeks 1-10, 7 of those are in the 137-game feed, the eighth (NE at DET) is one of the 13 games outside it. Corroborated at game level by SRC-89, which renders NE at DET under 'International Game, November 15th' with the Munich 2026 logo."
+ },
+ {
+  "source_id": "SRC-91",
+  "title": "NFL.com 2026 standings, third independent read (session f04dda73)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/standings/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "32 clubs x W/L/T/PF/PA compared with data/captures/standings_2026-11-18.csv and with the 137-game ledger",
+  "verification_note": "Both chunks read. All 32 clubs match the repository 2026-11-18 capture exactly (0 mismatches); 26 of 32 differ from the 2026-11-14 snapshot, and the read implies 150 completed games against the ledger 137. Feeds V35, F113."
+ },
+ {
+  "source_id": "SRC-92",
+  "title": "NFL.com Week 10 2026 by-week schedule, read for the 13 settled finals (session f04dda73)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-18",
+  "used_for": "The 13 Week 10 finals scored out of sample in data/corpus_v2_2026.csv",
+  "verification_note": "Both chunks read. All 14 Week 10 finals transcribed by hand from the page headline form (e.g. \"Patriots 10, Lions 35, FINAL\") and compared with data/games_week10_backfill_2026.csv: 13 of 13 match exactly. The Thursday WAS-NYG game was already in the feed. Feeds T108, F110."
  }
 ]
