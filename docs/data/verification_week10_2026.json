@@ -40,11 +40,7 @@
   "official_value": "0 mismatches expected",
   "result": "PASS",
   "method": "Manual transcription of the official page compared field by field with the committed CSV (scripts/verify_snapshot.py)",
-<<<<<<< HEAD
   "note": "Four fields compared for every one of the 347 rows (official read 2026-11-18)",
-=======
-  "note": "Four fields compared for every one of the 347 rows",
->>>>>>> 12bf12b (T102: decision-readiness table now one row per requirement (58 rows, F90); T103: change-our-mind sources reconciled and build-guarded (F92/F93))
   "source_url": "https://www.nfl.com/injuries/"
  },
  {

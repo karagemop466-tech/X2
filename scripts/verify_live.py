@@ -38,12 +38,9 @@ ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DATA = os.path.join(ROOT, "data")
 INPUTS = os.path.join(DATA, "verification_inputs")
 
-<<<<<<< HEAD
-AS_OF = "2026-11-14"
+AS_OF = "2026-11-14"  # standings input read date (the committed standings snapshots are dated 2026-11-14)
 INJ_AS_OF = "2026-11-18"  # injury report read date (see data/captures/injury_week10_2026-11-18.meta.json)
-=======
-AS_OF = "2026-11-18"
->>>>>>> 240d9dd (Re-capture Week 10 injury snapshot from the live official page (2026-11-18))
+W11_AS_OF = "2026-11-18"  # Week 11 schedule/bye input read date (refreshed 2026-11-18)
 SRC_INJURIES = "https://www.nfl.com/injuries/"
 SRC_STANDINGS = "https://www.nfl.com/standings/"
 SRC_WEEK11 = "https://www.nfl.com/schedules/2026/by-week/week-11"
@@ -68,11 +65,7 @@ def norm(s):
 
 # --------------------------------------------------------------- injuries ----
 repo_inj = read_csv(os.path.join(DATA, "injuries_week10_2026.csv"))
-<<<<<<< HEAD
 live_inj = read_tsv(os.path.join(INPUTS, "injuries_2026-11-18.tsv"))  # read 2026-11-18; the 2026-11-14 TSV is kept as the prior read
-=======
-live_inj = read_tsv(os.path.join(INPUTS, "injuries_2026-11-18.tsv"))
->>>>>>> 240d9dd (Re-capture Week 10 injury snapshot from the live official page (2026-11-18))
 
 # (team, player, position) is the identity of an injury-report line.
 def inj_key(r, team_fields=("team_abbr",), player="player", position="position"):
@@ -222,7 +215,7 @@ for key in sorted(set(repo_games) | set(live_games)):
         "extra_in_repo": "" if live else label,
         "field_differences": "; ".join(diffs),
         "result": result,
-        "read_utc": AS_OF,
+        "read_utc": W11_AS_OF,
         "source_url": SRC_WEEK11,
     })
 
@@ -242,7 +235,7 @@ rows.append({
     "extra_in_repo": ",".join(sorted(live_byes - expected_byes)),
     "field_differences": "" if bye_match else "live=%s" % ",".join(sorted(live_byes)),
     "result": "match" if bye_match else "DISCREPANCY",
-    "read_utc": AS_OF,
+    "read_utc": W11_AS_OF,
     "source_url": SRC_WEEK11,
 })
 
@@ -257,7 +250,7 @@ with open(out, "w", encoding="utf-8", newline="") as f:
     w.writerows(rows)
 
 matched = sum(1 for r in rows if r["result"] == "match")
-print("Live re-verification, read %s (UTC)" % AS_OF)
+print("Live re-verification (standings read %s; injuries and Week 11 schedule/byes read %s, UTC)" % (AS_OF, INJ_AS_OF))
 print("  units checked : %d" % len(rows))
 print("  matched       : %d" % matched)
 print("  discrepancies : %d" % (len(rows) - matched))

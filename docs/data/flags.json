@@ -750,10 +750,10 @@
   "flag_id": "F90",
   "category": "Register coverage",
   "item": "Decision-readiness table has 45 rows; the requirements register has 58",
-  "detail": "data/decision_readiness.csv now holds 58 rows (R01-R58), one per requirement row in data/requirements.csv, each with status, what the repo shows now, the blocking gate, the number that would clear it, the evidence basis and a source link. The landing-page table is generated from it by scripts/build.py. Counts as of 2026-11-18: 40 Done, 16 Partial, 2 Blocked. The previous 45-row table (D01-D45) covered 45 brief items; its content was carried into the per-requirement rows and 13 previously uncovered requirements were added.",
+  "detail": "data/decision_readiness.csv (45 rows, D01-D45) is the table published on the landing page. data/requirements.csv (58 rows, R01-R58) is the register. Thirteen requirement rows have no readiness row, so the landing table does not show every requirement. No row was added here because the mapping from R-rows to D-rows is the owner's to make.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv",
-  "status": "Resolved - 58-row readiness table published 2026-11-18",
-  "action_requested": "None. Re-check counts if the repo data changes."
+  "status": "Open - reviewer decision",
+  "action_requested": "Owner maps each of the 58 requirement rows to a readiness row, or records which are out of scope, before the landing table is cited as complete."
  },
  {
   "flag_id": "F91",
@@ -768,19 +768,19 @@
   "flag_id": "F92",
   "category": "Register duplication",
   "item": "Duplicate readiness table and duplicate change-our-mind fields on main",
-  "detail": "Resolved in session e2d7b11d (2026-11-18, T103). Owner (the brief's protocol, applied without manual input) confirmed data/strategy_change_rules.csv as the single canonical source of the two-sided triggers. The leaderboard's trigger columns were already removed on main by PR #57; they are deliberately not reinstated, so the leaderboard and the register no longer duplicate the concept. scripts/build.py now enforces the decision: the leaderboard fails the build if it gains either trigger column, and the register fails the build if it drops either trigger value.",
+  "detail": "Two readiness tables appeared on the landing page (data/decision_readiness.csv from PR #55, and a table generated from data/requirements.csv in PR #56), and the leaderboard gained would_change_if_better and would_change_if_worse (PR #56) while data/strategy_change_rules.csv (PR #55) held the same concept. PR #57 (acfebc6e, 'Keep one authoritative readiness table') removed the PR #56 table, so the landing page now shows only the 45-row table; the would_change columns were also dropped from the leaderboard CSV. Still open: the two change-our-mind sources (data/strategy_change_rules.csv and the leaderboard column set) are not reconciled, and the landing table covers 45 of 58 requirements (F90).",
   "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
-  "status": "Resolved - canonical source enforced by build",
-  "action_requested": "None. Re-check only if trigger fields are ever added to the leaderboard."
+  "status": "Partly resolved on main (readiness table); open for change-our-mind source",
+  "action_requested": "Owner confirms data/strategy_change_rules.csv as the single source of two-sided triggers, and records that the leaderboard no longer carries trigger columns."
  },
  {
   "flag_id": "F93",
   "category": "Generator mismatch",
   "item": "scripts/model.py regenerates strategy_leaderboard.csv without the would_change columns",
-  "detail": "Resolved in session e2d7b11d (2026-11-18, T103). Confirmed on main: scripts/model.py regenerates data/strategy_leaderboard.csv from its own fixed column list, which does not include the would_change_* columns, so the file on main is exactly the generator's output. Because the triggers were retired from the leaderboard by decision (F92), there is no mismatch left to fix. The build now guards it: a future hand-edit adding trigger columns to the leaderboard fails the build.",
+  "detail": "scripts/model.py writes data/strategy_leaderboard.csv from a fixed column list that does not include would_change_if_better or would_change_if_worse. Those two columns were added by hand in PR #56. When PR #57 regenerated the file from the generator, they were removed from main. Confirmed in session 6ee4d13e: re-running model.py on the merged branch leaves data/strategy_leaderboard.csv identical to main; the two columns are absent on main.",
   "source_url": "https://github.com/karagemop466-tech/X2/pull/56",
-  "status": "Resolved - generator is canonical; build guards it",
-  "action_requested": "None. If triggers are ever restored to the leaderboard, add them to model.py's column list and regenerate."
+  "status": "Open - irregularity (confirmed on main)",
+  "action_requested": "Owner decides whether the two-sided triggers belong on the leaderboard at all; if they do, add them to the generator's column list and regenerate, rather than editing the CSV by hand."
  },
  {
   "flag_id": "F94",

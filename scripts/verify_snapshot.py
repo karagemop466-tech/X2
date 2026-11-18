@@ -191,11 +191,7 @@ def main():
     add("V004", "Totals", "Field-level comparisons (position, injury, practice status, game status)",
         f"{len(committed) * 4} comparisons, {field_diffs} mismatch(es)", "0 mismatches expected",
         "PASS" if field_diffs == 0 else "FAIL",
-<<<<<<< HEAD
         f"Four fields compared for every one of the {len(committed)} rows (official read 2026-11-18)", INJURY_URL)
-=======
-        "Four fields compared for every one of the 347 rows", INJURY_URL)
->>>>>>> 240d9dd (Re-capture Week 10 injury snapshot from the live official page (2026-11-18))
     add("V005", "Totals", "Duplicate player rows within a team",
         str(len([k for k, v in ci.items() if len(v) > 1])), str(dupes),
         "PASS" if dupes == 0 else "REVIEW", "A duplicated player would double-count exposure", INJURY_URL)
