@@ -581,7 +581,8 @@ LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url"
               # session 39948feb: the depth-chart diff compares two dated reads of one page,
               # and two independently built corpora are compared side by side.
               "stored_source_url": "Club chart ↗", "live_source_url": "Club chart ↗",
-              "source_a": "Pipeline A ↗", "source_b": "Pipeline B ↗"}
+              "source_a": "Pipeline A ↗", "source_b": "Pipeline B ↗",
+              "compute_url": "Code ↗"}
 
 
 def cell(key, val, row=None):
@@ -3469,7 +3470,19 @@ for _nm, _rows in (("availability_captures", _captures), ("availability_delta_su
                    ("week_count_reconciliation_2026-11-18", _feed_recon),
                    ("games_week10_backfill_2026", _backfill), ("forecast_record_checks", _fr_checks),
                    ("forecast_records_2026", _fr_graded), ("forecast_records_week11", _fr_w11),
-                   ("international_games_2026", _intl), ("neutral_site_sensitivity_2026", _neutral)):
+                   ("international_games_2026", _intl), ("neutral_site_sensitivity_2026", _neutral),
+                   ("results_feed_v2_82b83a64", read_csv("results_feed_v2_82b83a64.csv")),
+                   ("results_feed_v2_checks_82b83a64", read_csv("results_feed_v2_checks_82b83a64.csv")),
+                   ("results_feed_v2_two_builds_2026-11-18",
+                    read_csv("results_feed_v2_two_builds_2026-11-18.csv")),
+                   ("model_v2_research_deltas", read_csv("model_v2_research_deltas.csv")),
+                   ("model_v2_research_cross_register", read_csv("model_v2_research_cross_register.csv")),
+                   ("model_v2_research_week11", read_csv("model_v2_research_week11.csv")),
+                   ("model_v2_research_ratings", read_csv("model_v2_research_ratings.csv")),
+                   ("week10_live_read_2026-11-18_82b83a64",
+                    read_csv("week10_live_read_2026-11-18_82b83a64.csv")),
+                   ("standings_live_read_2026-11-18_82b83a64",
+                    read_csv("standings_live_read_2026-11-18_82b83a64.csv"))):
     with open(os.path.join(DOCS, "data", _nm + ".json"), "w", encoding="utf-8") as _f:
         json.dump(_rows, _f, ensure_ascii=False, indent=1)
 
@@ -4050,6 +4063,310 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
   the club published them, and {len(_dcov) - len(_mm_clubs)} clubs left blank with the reason stated (HOU publishes
   an image). No points penalty is invented: the brief asks for an ablation, and the model has no personnel feature.
   <a href="matchup-matrix.html">Matchup matrix</a> (R10, R43, R48, R60).</li>
+</ul>
+""")
+
+# ---------- results register v2 (P09 option B, the results-and-venue half) ----------
+# Added by session 82b83a64 on 2026-11-18. Two other sessions took the same decision on the same day and
+# published different halves of it: PR #78 built the pre-registered *predictions* register
+# (data/corpus_v2_2026.csv, docs/corpus-v2.html) and PR #80 re-ran the whole model on a 150-game corpus
+# (data/corpus_v2/, docs/corpus-v2-full.html). This page is the third half and the only one that holds
+# results and venue facts row by row, with the raw official reads retained, plus the one comparison neither
+# of them makes: a fit that changes the neutral-site flags and nothing else, which is what separates the
+# venue correction from the sample change. Everything here is generated from registers that two commands
+# rebuild; nothing on this page rewrote a published file.
+v2_register = read_csv("results_feed_v2_82b83a64.csv")
+v2_checks = read_csv("results_feed_v2_checks_82b83a64.csv")
+v2_deltas = read_csv("model_v2_research_deltas.csv")
+v2_week11 = read_csv("model_v2_research_week11.csv")
+v2_ratings = read_csv("model_v2_research_ratings.csv")
+v2_xreg = read_csv("model_v2_research_cross_register.csv")
+_v2_live_read = read_csv("week10_live_read_2026-11-18_82b83a64.csv")
+_v2_standings_read = read_csv("standings_live_read_2026-11-18_82b83a64.csv")
+
+_v2_pass = sum(1 for c in v2_checks if c["status"] == "pass")
+_v2_neutral = sum(1 for r in v2_register if r["neutral_site"] == "Y")
+_v2_spliced = sum(1 for r in v2_register if r["in_v1_feed"] == "no")
+_v2_flip_rows = [r for r in v2_week11 if r["pick_flips"] == "yes"]
+_v2_xreg_match = sum(1 for r in v2_xreg if r["agreement"] == "match")
+_v2_by_week = {}
+for _r in v2_register:
+    _v2_by_week[int(_r["week"])] = _v2_by_week.get(int(_r["week"]), 0) + 1
+_d = {r["metric"]: r for r in v2_deltas}
+_hit = _d["Side hit rate vs reference"]
+_bets = _d["Bets at the pre-registered threshold"]
+_seal = _d["Forecast-log seal"]
+_hold = _d["Week 10 holdout: games the model is closer on"]
+
+pages["results-v2.html"] = ("Results register v2", f"""
+<h1>Results register v2 — the completed 2026 results, with the venue facts, beside the published one</h1>
+<p class="note">The site's published backtest has always run on
+<a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">137 games</a>: weeks 1–9
+plus the Week 10 Thursday game. Thirteen more Week 10 games had been settled, transcribed and reconciled but never
+ingested (<a href="flagged.html">F96</a>, <a href="flagged.html">F105</a>), and no completed row carried a
+neutral-site flag, although the official 2026 slate lists eight settled internationals
+(<a href="flagged.html">F71</a>). This page publishes the completed register — <strong>{len(v2_register)} games,
+{_v2_spliced} spliced, {_v2_neutral} flagged neutral</strong> — as a parallel, versioned register of
+<em>results</em>. The 137-game files stay exactly as they are; every published metric on the
+<a href="backtest.html">backtest</a> and <a href="leaderboard.html">leaderboard</a> pages still refers to them.</p>
+<p class="note"><strong>Three sessions answered P09 the same day; read all three.</strong>
+<a href="corpus-v2.html">The pre-registered corpus</a> (PR #78) adds the 13 games to the scored
+<em>predictions</em> register and publishes the 89 / 13 / 102 comparison.
+<a href="corpus-v2-full.html">Corpus v2 beside a frozen v1</a> (PR #80) re-runs the entire model on 150 games,
+with hash proof that v1 did not move. This page adds what neither has: results and venue facts row by row with
+the raw official reads retained, the 14 checks, and a control fit that changes <em>only</em> the neutral-site
+flags — the separation that says how much of the movement is the venue correction and how much is the bigger
+sample. The three registers reconcile: <a href="results-v2.html">This page</a>'s register is compared with PR #76's row by row
+(<strong>150 of 150</strong> fixtures and every compared aspect), and with PR #80's figures metric by metric
+(<strong>{_v2_xreg_match} of {len(v2_xreg)}</strong> comparable metrics match exactly). The one definitional
+difference found between builds is named in the delta table below.</p>
+{tiles([(len(v2_register), 'games in the v2 register'), (_v2_spliced, 'spliced from the Week 10 backfill'),
+        (_v2_neutral, 'official neutral-site rows'), (_v2_pass, f'of {len(v2_checks)} checks passing'),
+        (len(_v2_flip_rows), 'published Week 11 picks that flip')])}
+
+<h2>Why a parallel register and not a correction</h2>
+<ul class="findings">
+<li><strong>A re-run changes published numbers, so it must be a version.</strong> The same method on the completed
+corpus moves the headline side hit rate against the naive reference from <strong>{_hit['published_v1_137']}</strong>
+to <strong>{_hit['corpus_v2_150']}</strong>, and the count of bets clearing the pre-registered threshold from
+<strong>{_bets['published_v1_137']}</strong> to <strong>{_bets['corpus_v2_150']}</strong>. Splicing in place would
+have republished both with no trace of the change.</li>
+<li><strong>The prospective forecast log is sealed.</strong> <code>data/prospective_forecast_log.sha256</code>
+holds a SHA-256 over the pre-kickoff Week 11 lines. Any re-fit would have produced a different seal
+({_seal['published_v1_137']} vs {_seal['corpus_v2_150']}) — which is precisely why a re-registration must be
+announced as one and not performed as a data-capture side effect.</li>
+<li><strong>The choice stays with the owner.</strong> <code>data/decision_choices.json</code> still records no
+decision and <code>scripts/review.py</code> was not re-run, because a choice recorded by an agent would destroy
+what the field proves. What this session supplied instead is the measurement, so P09 can be decided with its cost
+visible.</li>
+<li><strong>Nothing unverified entered the register.</strong> Every one of the {_v2_spliced} added rows came from
+the official by-week page — scores transcribed, never computed from win–loss records — and each row carries the
+minute it was read.</li>
+</ul>
+
+<h2>Checks on the register ({_v2_pass} of {len(v2_checks)} pass)</h2>
+<p class="note">Rebuild them with <code>python3 scripts/results_v2.py</code>; the script exits non-zero if any
+check fails, so the build cannot publish a register that does not reconcile. Two of these are the reason to trust
+the splice: <strong>R2-03</strong> compares every Week 10 row with a third read of the official page taken at a
+different minute by a different session, and <strong>R2-05</strong> reconciles all 150 games against a standings
+read taken by <em>this</em> session in the same minute as the fixture read, not against a file already in the
+repository (<a href="verification.html">V40</a>). <strong>R2-07</strong> is a third official surface again: the
+club record printed beside each fixture equals the standings page for 32 of 32 clubs.</p>
+{table(v2_checks, ['check_id', 'check', 'method', 'result', 'status', 'source_url'],
+       {'check_id': 'ID', 'check': 'Check', 'method': 'How it was checked', 'result': 'Result',
+        'status': 'Status', 'source_url': 'Official source'},
+       table_id='v2-checks', filterable=True)}
+
+<h2>What completing the corpus would do to the published numbers</h2>
+<p class="note">Four fits of <code>scripts/model.py</code>, run unmodified in a temporary directory whose corpus
+file was swapped, compared with what the repository publishes. <strong>Column B is the row this page exists
+for</strong>: the same 137 games, the same fixture list, only the eight settled internationals re-flagged — so the
+movement in column B cannot be a sample effect. Column C adds the 13 games on top. Reproduce with
+<code>python3 scripts/model_v2_research.py</code>. This is also the figure the earlier predictions-only panel
+(<code>data/neutral_site_sensitivity_2026.csv</code>) described as a lower bound, because it held the fit
+fixed.</p>
+{table(v2_deltas, ['metric', 'scope', 'published_v1_137', 'flags_only_137', 'corpus_v2_150',
+                   'delta_flags_only', 'delta_v2', 'reading', 'compute_url', 'source_url'],
+       {'metric': 'Metric', 'scope': 'Scope', 'published_v1_137': 'Published (137, no flags)',
+        'flags_only_137': 'B: flags only (137)', 'corpus_v2_150': 'C: v2 corpus (150)',
+        'delta_flags_only': 'Δ flags', 'delta_v2': 'Δ v2', 'reading': 'How to read it',
+        'compute_url': 'Code ↗', 'source_url': 'Official source'},
+       table_id='v2-deltas', filterable=True)}
+
+<h2>The two parallel v2 builds, compared metric by metric</h2>
+<p class="note">An implementation check, not a courtesy: <code>scripts/model_v2_research.py</code> reads
+<code>data/corpus_v2/corpus_version_comparison.csv</code> — the 150-game corpus another session built independently
+from the same 13 games — and compares every metric both registers publish, at the coarser of the two precisions.
+<strong>{_v2_xreg_match} of {len(v2_xreg)} match on the v2 figures and on the v1 figures.</strong> A disagreement
+here would mean a bug in one of the two scripts, which is why it is written to a register and pinned
+(<code>data/model_v2_research_cross_register.csv</code>, <a href="verification.html">V43</a>); the row-by-row
+comparison with PR #76's build is <a href="verification.html">V44</a>.</p>
+{table(v2_xreg, ['metric', 'this_register_v2_150', 'their_register_v2_150', 'tolerance_pts', 'agreement',
+                 'published_v1_here', 'their_published_v1', 'v1_agreement', 'source_url'],
+       {'metric': 'Metric', 'this_register_v2_150': 'Here, v2 (150)', 'their_register_v2_150': 'PR #80, v2 (150)',
+        'tolerance_pts': 'Tolerance (pts)', 'agreement': 'Verdict', 'published_v1_here': 'Here, v1 (137)',
+        'their_published_v1': 'PR #80, v1 (137)', 'v1_agreement': 'v1 verdict', 'source_url': 'Code ↗'},
+       table_id='v2-xreg')}
+
+<h2>The same corpus, built twice: 150 of 150 rows agree</h2>
+<p class="note">Session 79c9cb37 answered P09 the same day and published its own parallel v2 register at
+<code>data/results_feed_v2_2026.csv</code> (12 checks of its own, <code>V2-01..V2-12</code>), from a read of the
+official page taken an hour before this session's. Check <strong>R2-15</strong> joins the two on
+(week, away, home) and compares every aspect a backtest would consume. This is the strongest control in the whole
+repository, because it is not a script re-checking itself: two transcriptions, two builds, no shared file. It is
+also why the two registers keep separate names — see <a href="flagged.html">F127</a> for the collision and its
+resolution, and <a href="verification.html">V44</a> for the record.</p>
+{table(read_csv("results_feed_v2_two_builds_2026-11-18.csv"), ['aspect','rows_compared','agree','differ','note','source_url'],
+       {'aspect':'Aspect','rows_compared':'Rows compared','agree':'Agree','differ':'Differ','note':'What the aspect is','source_url':'Official source'},
+       table_id='v2-double-read')}
+
+<h2>The Week 11 lines a re-registration would have republished</h2>
+<p class="note">Every published Week 11 side, total and probability beside what each re-fit produces. This is the
+only table on the site that shows a published line moving — and in no case does the <em>pick</em> move, which is
+why the sealed log is left alone and this stays a research panel. PR #80's per-game rows report the same
+deltas from their own fit.</p>
+{search_box('v2-week11')}
+{table(v2_week11, ['game_no', 'matchup', 'published_fair_spread', 'flagged_fair_spread', 'spread_delta_flags',
+                   'v2_fair_spread', 'spread_delta_v2', 'published_fair_total', 'v2_fair_total', 'total_delta_v2',
+                   'published_home_win_prob', 'v2_home_win_prob', 'prob_delta_v2', 'side_pick_published',
+                   'side_pick_v2', 'pick_flips', 'note', 'game_url', 'source_url'],
+       {'game_no': '#', 'matchup': 'Fixture', 'published_fair_spread': 'Published side',
+        'flagged_fair_spread': 'B side', 'spread_delta_flags': 'Δ side (flags)',
+        'v2_fair_spread': 'C side', 'spread_delta_v2': 'Δ side (v2)', 'published_fair_total': 'Published total',
+        'v2_fair_total': 'C total', 'total_delta_v2': 'Δ total (v2)', 'published_home_win_prob': 'Published P(home)',
+        'v2_home_win_prob': 'C P(home)', 'prob_delta_v2': 'Δ P', 'side_pick_published': 'Pick published',
+        'side_pick_v2': 'Pick v2', 'pick_flips': 'Pick flips', 'note': 'Status', 'game_url': 'Game page',
+        'source_url': 'Official source'},
+       table_id='v2-week11', filterable=True)}
+
+<h2>Rating movement per club (published fit → v2 fit)</h2>
+<p class="note">Sorted by the size of the change. A club whose rating barely moved was not affected by the added
+games; a club that moved by more than a point is a club whose Week 10 result the published fit had never seen.
+Largest absolute movement: <strong>{v2_ratings[0]['team']} {v2_ratings[0]['net_delta']}</strong>
+({v2_ratings[0]['games_in_fit_published']} → {v2_ratings[0]['games_in_fit_v2']} games in the fit).</p>
+{search_box('v2-ratings')}
+{table(v2_ratings, ['team', 'published_attack', 'v2_attack', 'attack_delta', 'published_defence', 'v2_defence',
+                    'defence_delta', 'published_net', 'v2_net', 'net_delta', 'games_in_fit_published',
+                    'games_in_fit_v2', 'source_url'],
+       {'team': 'Club', 'published_attack': 'Attack (pub)', 'v2_attack': 'Attack (v2)', 'attack_delta': 'Δ attack',
+        'published_defence': 'Defence (pub)', 'v2_defence': 'Defence (v2)', 'defence_delta': 'Δ defence',
+        'published_net': 'Net (pub)', 'v2_net': 'Net (v2)', 'net_delta': 'Δ net',
+        'games_in_fit_published': 'Games pub', 'games_in_fit_v2': 'Games v2', 'source_url': 'Official source'},
+       table_id='v2-ratings', filterable=True)}
+
+<h2>The register itself</h2>
+<p class="note">Games per week: {", ".join(f"wk {w}: {n}" for w, n in sorted(_v2_by_week.items()))}. Each row's
+<em>Checks</em> cell names the checks above that cover that row; a row whose chain does not include R2-05 has not
+been reconciled against the standings page. The two raw official reads this register was built from are retained
+verbatim — <code>data/week10_live_read_2026-11-18_82b83a64.csv</code> ({len(_v2_live_read)} rows: 14 games, 4 clubs
+on bye) and <code>data/standings_live_read_2026-11-18_82b83a64.csv</code> ({len(_v2_standings_read)} clubs) — so a
+reader can compare the transcription with the derived register, and both are pinned in
+<code>data/drift_pins.csv</code>.</p>
+{search_box('v2-register')}
+{table(v2_register, ['feed_id', 'week', 'date_as_shown', 'away_team', 'away_points', 'home_team', 'home_points',
+                     'home_margin', 'total_points', 'winner', 'neutral_site', 'venue_official', 'in_v1_feed',
+                     'provenance', 'verified_date', 'checks', 'game_url', 'source_url'],
+       {'feed_id': 'ID', 'week': 'Wk', 'date_as_shown': 'Date', 'away_team': 'Away', 'away_points': 'Away pts',
+        'home_team': 'Home', 'home_points': 'Home pts', 'home_margin': 'Home margin', 'total_points': 'Total',
+        'winner': 'Winner', 'neutral_site': 'Neutral', 'venue_official': 'Venue (official slate)',
+        'in_v1_feed': 'In v1?', 'provenance': 'Provenance', 'verified_date': 'Read', 'checks': 'Checks',
+        'game_url': 'Game page', 'source_url': 'Official source'},
+       table_id='v2-register', filterable=True)}
+
+<h2>What this page is not</h2>
+<ul class="findings">
+<li><strong>Not a price.</strong> No row here carries an opening or closing market number, because this project has
+no licensed odds feed (<a href="flagged.html">F07</a>, <a href="flagged.html">F51</a>). The
+<code>neutral_site</code> column is an official fact about where a game was played, not a market opinion.</li>
+<li><strong>Not a graded week.</strong> Week 11 had not been played when any read on this page was taken, so the
+register stops at Week 10 and no Week 11 outcome appears anywhere on the site.</li>
+<li><strong>Not a promotion.</strong> The published corpus, the published backtest and the sealed forecast log are
+unchanged by this page; promoting v2 is one decision on the Review console, and the tables above exist so the
+decision can be taken with its cost visible.</li>
+<li><strong>Not a verdict on the model.</strong> The added slice is where the model looks worst — behind its own
+naive reference on the 13 games the published corpus lacked under either fit
+(<a href="flagged.html">F120</a>, <a href="corpus-v2-full.html">PR #80's headline</a>) — which is a reason to widen
+the sample and keep the leaderboard unranked, not a reason to discard the model or to crown it
+(<a href="flagged.html">F33</a>, <a href="anti-luck.html">removal of luck</a>).</li>
+<li><strong>Not a replacement for the P09 note's claim, which did not survive measurement.</strong> The Review
+console predicts three side picks and one bet-gate crossing turn on the neutral flags; the flags-only column says
+zero and six, and two independent builds agree on that
+(<a href="flagged.html">F125</a>).</li>
+</ul>
+""")
+
+# Reciprocal cross-reference on the two companion v2 pages, appended in the documented form so no
+# session's text is lost.
+pages["corpus-v2-full.html"] = (pages["corpus-v2-full.html"][0], pages["corpus-v2-full.html"][1] + f"""
+<h2>Reconciled with a third parallel build</h2>
+<p class="note"><code>scripts/model_v2_research.py</code> (session 82b83a64, the same day) ran
+<code>scripts/model.py</code> unmodified in a temporary root over four corpora and compared its figures with this
+page's register metric by metric: <strong>{_v2_xreg_match} of {len(v2_xreg)} comparable metrics agree</strong> on
+both the v1 and the v2 columns. It also adds the control this page cannot make: a fit of the unchanged 137 games
+with <em>only</em> the neutral-site flags re-set, which separates the venue correction (side hit rate 0.652 →
+0.629, bets 50 → 54) from the sample change (→ 0.578, → 59). Both readings agree on the finding that matters: on
+the 13 games v1 lacked, the model is behind its naive reference. See <a href="results-v2.html">Results register
+v2</a> and <code>data/model_v2_research_cross_register.csv</code>; the register that page publishes also carries
+the venue facts per row and the raw official reads this build inferred nothing from.</p>
+""")
+
+pages["corpus-v2.html"] = (pages["corpus-v2.html"][0], pages["corpus-v2.html"][1] + f"""
+<h2>Reconciled with the parallel results register</h2>
+<p class="note">On the same day, session 82b83a64 built <a href="results-v2.html">Results register v2</a>
+(<code>data/results_feed_v2_2026.csv</code>) over the same 13 settled games plus the eight completed international
+games, and re-ran <code>scripts/model.py</code> on four corpora in a sandbox. Its <em>unflagged</em> 150-game fit
+reproduces this page's Week 10 holdout count exactly — the model closer on 5 of 13 games — while its flagged fit
+gives {int(_hold['corpus_v2_150'].split(' ')[0])} of 13: the only difference is the neutral-site treatment, which
+re-estimates the ratings and moves rows across the line. The registers therefore do not disagree about the model,
+and both say the model is behind its reference on the slice it had never been scored against
+(<a href="flagged.html">F71</a>, <a href="flagged.html">F125</a>).</p>
+""")
+
+NAV.insert(NAV.index(("results-feed.html", "Results feed")) + 1,
+           ("results-v2.html", "Results register v2"))
+
+# ---------- landing page, executive summary and index card -----------------
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
+<h2>Results register v2 (2026-11-18, session 82b83a64)</h2>
+<ul>
+  <li><strong>The 150-game results register is published, in parallel:</strong>
+  <a href="results-v2.html">Results register v2</a> carries all 150 games through Week 10 with the eight completed
+  international games flagged neutral from the dated official slate, built under <strong>{_v2_pass} of
+  {len(v2_checks)} machine checks</strong> that include a third independent read of the Week 10 page and a 32-of-32
+  club reconciliation against a standings read taken in the same minute by the same session. The published
+  137-game feed is untouched, and its hashes are unchanged
+  (<a href="flagged.html">F96</a>, <a href="flagged.html">F105</a>, <a href="flagged.html">F71</a>).</li>
+  <li><strong>The corpus is now double-read, by accident turned into a control:</strong> PR #76 built the same
+  150-game register independently the same day, and check R2-15 compares the two row by row —
+  <strong>150 of 150 fixtures, and 150 of 150 on scores, winners, neutral-site flags, margins and totals</strong>
+  (<a href="flagged.html">F127</a>, <a href="verification.html">V44</a>).</li>
+  <li><strong>What re-adoption costs, measured on four fits of the same code:</strong> side hit rate 0.652 → 0.629
+  (neutral flags only) → 0.578 (full v2); bets at the pre-registered gate 50 → 54 → 59; reference total 45.9 → 46.2;
+  <strong>0 of 13 published Week 11 side picks flip</strong> in any variant. <strong>{_v2_xreg_match} of
+  {len(v2_xreg)}</strong> comparable metrics agree with the independent 150-game build at
+  <a href="corpus-v2-full.html">Corpus v2</a>. Promotion remains an owner choice on
+  <a href="review.html">the Review console</a> (P09), where no decision is recorded.</li>
+</ul>
+""")
+
+pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
+<h2>Also 2026-11-18 (session 82b83a64): the results register completed, the venue fix isolated, and three builds reconciled</h2>
+<ul class="findings">
+<li><strong>Three sessions answered P09 the same day, and their registers agree.</strong> This session published the
+results-and-venue half (<a href="results-v2.html">Results register v2</a>, <code>data/results_feed_v2_82b83a64.csv</code>:
+150 games, {_v2_neutral} neutral-site flags, {_v2_pass}/{len(v2_checks)} checks, and 150 of 150 rows agreeing
+with PR #76's independent build (R2-15, <a href="flagged.html">F127</a>); PR #78 published the scored
+predictions half (<a href="corpus-v2.html">pre-registered corpus</a>); PR #80 re-ran the whole model on 150 games
+(<a href="corpus-v2-full.html">Corpus v2</a>). The cross-register comparison — two independent implementations of the
+same splice — agrees on <strong>{_v2_xreg_match} of {len(v2_xreg)}</strong> comparable metrics on both the 137-game
+and the 150-game columns (<a href="verification.html">V43</a>).</li>
+<li><strong>The venue correction is now separated from the sample change, which no other page could do.</strong>
+Re-fitting the <em>unchanged</em> 137 games with only the eight settled internationals re-flagged moves the side
+hit rate 0.652 → 0.629 and takes bets across the pre-registered gate 50 → 54; adding the 13 games on top takes the
+hit rate to 0.578 and bets to 59. So roughly a third of the movement is venue treatment and two thirds is the games
+that were missing — and both readings agree that on the missing games the model is <em>behind</em> its naive
+reference. That is the strongest available argument for pre-registration, for an unranked leaderboard, and for
+refusing to rank on ROI (<a href="flagged.html">F33</a>, <a href="flagged.html">F120</a>,
+<a href="anti-luck.html">removal of luck</a>).</li>
+<li><strong>No published pick moved, and nothing sealed was re-sealed.</strong> Across four fits, none of the 13
+Week 11 side picks flips; the forecast log's SHA-256 differs in every variant, which is why the corpus is published
+as a version and the published 137-game record stands until the owner chooses.
+<code>data/decision_choices.json</code> is still empty by design.</li>
+<li><strong>A published claim in this repository failed measurement and is now flagged.</strong> The Review
+console's P09 note asserts that "three side picks plus one bet-gate crossing" turn on the neutral flags; measured,
+it is <strong>zero</strong> side picks and <strong>six</strong> gate crossings, and two independent builds agree on
+that (<a href="flagged.html">F125</a>). The note is the owner's decision surface, so the discrepancy is recorded
+beside it rather than edited into it.</li>
+<li><strong>The stale-pairing defect is fixed for every register, not just the published one.</strong>
+<code>scripts/verify_results.py</code> now prints the ledger size and both read dates, refuses to present an older
+read as currency, and takes <code>--games</code>/<code>--standings</code>/<code>--list</code> so any register can be
+reconciled against any dated read: the 137-game ledger against today's standings read is off for 26 of 32 clubs
+(the corpus gap, dated, and the same fact F119 records as "6 of 32 reconcile"), while the 150-game register is off
+for 0 (<a href="flagged.html">F106</a>, <a href="flagged.html">F113</a>, <a href="verification.html">V42</a>).</li>
+<li><strong>Still blank, still blocked, unchanged by this build:</strong> every market price
+(<a href="flagged.html">F07</a>, <a href="flagged.html">F51</a>), written NFL permission for systematic capture
+(<a href="flagged.html">F16</a>), and any Week 11 outcome — because Week 11 had not been played when these reads were
+taken, and because the hub still renders Week 10 (<a href="flagged.html">F126</a>).</li>
 </ul>
 """)
 

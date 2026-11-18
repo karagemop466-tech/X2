@@ -1,0 +1,122 @@
+[
+ {
+  "check_id": "R2-01",
+  "check": "Register shape",
+  "method": "150 rows; the eleven decision-relevant columns of every row non-blank",
+  "result": "150 rows; 0 rows with a blank required column",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-02",
+  "check": "No duplicate fixtures",
+  "method": "Unique (week, away, home) triples",
+  "result": "150 unique of 150",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-03",
+  "check": "Week 10 completeness (independent read)",
+  "method": "This session re-read the official Week 10 by-week page on 2026-11-18T05:05Z and compared every game the register carries for that week, fixture by fixture and score by score",
+  "result": "14 games in the register, 14 FINAL games rendered on the page, 0 mismatches",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-04",
+  "check": "Winner column equals the page's winner indicator",
+  "method": "For each of the 14 Week 10 games, the team the register marks as winner must be the team the official page puts the Winner Indicator beside",
+  "result": "14 of 14 agree",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-05",
+  "check": "Standings reconciliation of the whole 150-game register",
+  "method": "Recompute W, L, T, points for, points against and net for all 32 clubs from the register and compare with the official standings page as read by this session at 2026-11-18T05:05Z (not with a file already in the repository)",
+  "result": "32 of 32 clubs reconcile exactly",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "check_id": "R2-06",
+  "check": "The committed 2026-11-18 standings capture is still what the page says",
+  "method": "Field-by-field comparison of this session's live read against data/captures/standings_2026-11-18.csv, the read the v1 feed's RF07 check relied on",
+  "result": "32 of 32 rows identical on all six fields",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "check_id": "R2-07",
+  "check": "Two official pages agree on every club's record",
+  "method": "The record rendered beside each fixture and beside each bye entry on the Week 10 schedule page must equal the record on the standings page, for all 32 clubs",
+  "result": "32 of 32 club records agree (14 game rows + 4 clubs on bye = 32 clubs)",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-08",
+  "check": "Neutral-site flag coverage",
+  "method": "Every completed game on the official 2026 international slate must carry neutral_site = Y in the register, and no other row may carry it",
+  "result": "8 rows flagged, matching the 8 slate games played through Week 10; the slate's 9th game (Week 11, MIN at SF, Estadio Banorte) is not in the register because it has not been played",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-09",
+  "check": "v1 registers untouched",
+  "method": "Every v2 row carried from v1 must hold the same two scores, and the canonical files must keep their pinned row counts",
+  "result": "137 of 137 carried rows identical to v1; data/results_feed_2026.csv still 137 rows; data/games_2026_results.csv still 137 rows",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-10",
+  "check": "Ties reconcile",
+  "method": "A two-way moneyline settles these as pushes, so the tie count matters to settlement: every club's tie total in the register must equal the official standings",
+  "result": "1 tied game(s) in the register (NYG at WAS wk5); 2 clubs affected; 32 of 32 tie counts reconcile",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-11",
+  "check": "Points identity",
+  "method": "Sum of official points for must equal sum of official points against, and both must equal the register's total of total points",
+  "result": "official PF 6923 = official PA 6923 = register sum 6923",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-12",
+  "check": "Every row links to its own official game page",
+  "method": "Rebuild the expected nfl.com/games slug from the row's own matchup and week and compare with the URL stored on the row",
+  "result": "150 of 150 rows carry the slug for their own fixture",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-13",
+  "check": "No future fixture recorded as a result",
+  "method": "Every row must be week 10 or earlier with two integer scores; the register holds no forecast",
+  "result": "150 of 150 rows qualify; highest week 10",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-14",
+  "check": "Spliced rows carry a read stamp",
+  "method": "Each of the 13 rows the v1 feed lacked must state when it was read, so the point-in-time rule (a row is only ever usable after its read time) survives the splice",
+  "result": "13 of 13 spliced rows carry verified_date",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "R2-15",
+  "check": "Two independent v2 builds compared row by row",
+  "method": "Every fixture, score, winner, neutral-site flag, margin and total in this register compared with data/results_feed_v2_2026.csv, the parallel register session 79c9cb37 built from the same official page on the same day",
+  "result": "150 of 150 fixtures shared, 0 only here, 0 only in PR #76; scores agree 150/150, winners 150/150, neutral-site flags 150/150, margins 150/150, totals 150/150",
+  "status": "pass",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ }
+]

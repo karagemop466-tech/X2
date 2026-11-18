@@ -336,8 +336,8 @@
   "req_id": "R38",
   "requirement (from brief)": "Verified results feed so backtests and ROI can be computed",
   "status": "Partially done - verified results feed published; ROI not computable without prices",
-  "where_addressed": "Season results page (the verified results feed); Market tables page",
-  "blocker_or_note": "The feed contains 137 official results, each linked to the NFL schedule/game page and reconciled against all 32 official standings rows. It supports historical backtests. Those historical scores are explicitly excluded from the prospective leaderboard. ROI is not computable without authorized opening/closing prices and settlement rules; no return is inferred.",
+  "where_addressed": "Season results page (the verified results feed); Market tables page; parallel v2 register data/results_feed_v2_82b83a64.csv (scripts/results_v2.py; 15 checks R2-01..R2-15 in data/results_feed_v2_checks_82b83a64.csv), 2026-11-18",
+  "blocker_or_note": "The feed contains 137 official results, each linked to the NFL schedule/game page and reconciled against all 32 official standings rows. It supports historical backtests. Those historical scores are explicitly excluded from the prospective leaderboard. ROI is not computable without authorized opening/closing prices and settlement rules; no return is inferred. Completeness is no longer the gap and it is now double-read: two sessions built the 150-game register independently and check R2-15 compares them row by row - 150 of 150 on scores, winners, neutral flags, margins and totals. The published feed stays at 137 until the owner records the P09 choice, and ROI still cannot be computed because no row carries a price (F07, F51).",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
@@ -551,9 +551,9 @@
  {
   "req_id": "R62",
   "requirement (from brief)": "Fixture-context feature set built only from published schedule facts; venue of every fixture",
-  "status": "Partial - the nine designated international games, with venues, are now a dataset; 141 venues remain untranscribed",
-  "where_addressed": "data/international_games_2026.csv; sensitivity in data/neutral_site_sensitivity_2026.csv; flags F98, F99",
-  "blocker_or_note": "Not consumed by the model: re-fitting changes published numbers, so it waits on P09. The neutral flag is blank on all 137 feed rows.",
+  "status": "Done in the parallel register - the eight completed international games carry a verified neutral-site flag on data/results_feed_v2_82b83a64.csv and on PR #76's build; 141 venues remain untranscribed",
+  "where_addressed": "data/international_games_2026.csv; sensitivity in data/neutral_site_sensitivity_2026.csv; flags F98, F99; flags F71 (now measured in full), F125, F127; data/model_v2_research_deltas.csv; data/results_feed_v2_two_builds_2026-11-18.csv",
+  "blocker_or_note": "Not consumed by the model: re-fitting changes published numbers, so it waits on P09. The neutral flag is blank on all 137 feed rows. Measured rather than awaited: re-fitting scripts/model.py on the same 137 games with only the neutral flags honoured moves the side hit rate 0.652 to 0.629 and crosses the 3-point bet gate on six games, and flips no published Week 11 pick. Promotion stays a recorded owner choice (P09); the published 137-row feed keeps its blank neutral flag by design, so the difference stays visible instead of being absorbed.",
   "row_type": "requirement",
   "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
  },
@@ -569,9 +569,9 @@
  {
   "req_id": "R64",
   "requirement (from brief)": "Turn the game log into the pre-registered backtest corpus, with the count reconciled",
-  "status": "Done - the count is reconciled; a frozen v2 150-game parallel register is published",
-  "where_addressed": "data/week_count_reconciliation_2026-11-18.csv; flags F88 and F95; question Q64",
-  "blocker_or_note": "136 = weeks 1-9, 137 = the frozen published feed, 150 = everything official through Week 10. F88's '136 vs 137' is answered; the v2 150-game register (data/results_feed_v2_2026.csv) is published in parallel. The remaining choice - which corpus the published metrics grade on - is owner decision P09.",
+  "status": "Explained, published and measured - four parallel v2 artifacts exist and the cost of each is on the site",
+  "where_addressed": "data/week_count_reconciliation_2026-11-18.csv; flags F88 and F95; question Q64; data/results_feed_v2_82b83a64.csv; data/results_feed_v2_2026.csv (PR #76); data/corpus_v2_2026.csv (PR #78); data/corpus_v2/ (PR #80); data/model_v2_research_deltas.csv",
+  "blocker_or_note": "136 = weeks 1-9, 137 = the frozen published feed, 150 = everything official through Week 10. F88's '136 vs 137' is answered; the v2 150-game register (data/results_feed_v2_2026.csv) is published in parallel. The remaining choice - which corpus the published metrics grade on - is owner decision P09. Four independent builds of the same decision now coexist, deliberately un-pooled, and they reconcile: 150 of 150 rows between the two results registers (R2-15) and 7 of 7 comparable metrics between the two model builds (data/model_v2_research_cross_register.csv). Which corpus is the pre-registered backtest corpus remains a human choice on the Review console, and no strategy has been pre-registered by commit hash (F87).",
   "row_type": "requirement",
   "evidence_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },

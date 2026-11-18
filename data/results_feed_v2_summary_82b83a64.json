@@ -1,0 +1,46 @@
+{
+  "built_utc": "2026-11-18T05:05Z",
+  "builder": "scripts/results_v2.py",
+  "session": "82b83a64",
+  "rows": 150,
+  "weeks": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10
+  ],
+  "games_per_week": {
+    "1": 16,
+    "2": 16,
+    "3": 16,
+    "4": 16,
+    "5": 15,
+    "6": 14,
+    "7": 14,
+    "8": 14,
+    "9": 15,
+    "10": 14
+  },
+  "neutral_site_rows": 8,
+  "tied_games": 1,
+  "checks": 15,
+  "two_build_comparison": {
+    "status": "pass",
+    "summary": "150 of 150 fixtures shared, 0 only here, 0 only in PR #76; scores agree 150/150, winners 150/150, neutral-site flags 150/150, margins 150/150, totals 150/150",
+    "their_register": "data/results_feed_v2_2026.csv (PR #76, session 79c9cb37)",
+    "this_register": "data/results_feed_v2_82b83a64.csv"
+  },
+  "checks_failed": 0,
+  "canonical_files_changed": "none \u2014 v1 registers stay at 137 rows",
+  "official_sources": [
+    "https://www.nfl.com/schedules/2026/by-week/week-10",
+    "https://www.nfl.com/standings/",
+    "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+  ]
+}

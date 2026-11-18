@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest read 2026-11-18 · injury report, standings and Week 10 slate read 2026-11-18; Week 11 lines and depth charts read 2026-11-14 · dates shown per source</span></div>
-  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="corpus-v2-full.html">Corpus v2 (150g)</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="corpus-v2.html">Pre-registered corpus</a><a href="forecast-records.html">Forecast records</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="matchup-matrix.html">Matchup matrix 1st-4th</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html" class=active aria-current=page>Home</a><a href="executive-summary.html">Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="corpus-v2-full.html">Corpus v2 (150g)</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="results-v2.html">Results register v2</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="corpus-v2.html">Pre-registered corpus</a><a href="forecast-records.html">Forecast records</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="matchup-matrix.html">Matchup matrix 1st-4th</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
@@ -105,6 +105,27 @@ lines are sealed pre-kickoff evidence and re-deriving them from newer results wo
   the club published them, and 22 clubs left blank with the reason stated (HOU publishes
   an image). No points penalty is invented: the brief asks for an ablation, and the model has no personnel feature.
   <a href="matchup-matrix.html">Matchup matrix</a> (R10, R43, R48, R60).</li>
+</ul>
+
+<h2>Results register v2 (2026-11-18, session 82b83a64)</h2>
+<ul>
+  <li><strong>The 150-game results register is published, in parallel:</strong>
+  <a href="results-v2.html">Results register v2</a> carries all 150 games through Week 10 with the eight completed
+  international games flagged neutral from the dated official slate, built under <strong>15 of
+  15 machine checks</strong> that include a third independent read of the Week 10 page and a 32-of-32
+  club reconciliation against a standings read taken in the same minute by the same session. The published
+  137-game feed is untouched, and its hashes are unchanged
+  (<a href="flagged.html">F96</a>, <a href="flagged.html">F105</a>, <a href="flagged.html">F71</a>).</li>
+  <li><strong>The corpus is now double-read, by accident turned into a control:</strong> PR #76 built the same
+  150-game register independently the same day, and check R2-15 compares the two row by row —
+  <strong>150 of 150 fixtures, and 150 of 150 on scores, winners, neutral-site flags, margins and totals</strong>
+  (<a href="flagged.html">F127</a>, <a href="verification.html">V44</a>).</li>
+  <li><strong>What re-adoption costs, measured on four fits of the same code:</strong> side hit rate 0.652 → 0.629
+  (neutral flags only) → 0.578 (full v2); bets at the pre-registered gate 50 → 54 → 59; reference total 45.9 → 46.2;
+  <strong>0 of 13 published Week 11 side picks flip</strong> in any variant. <strong>7 of
+  7</strong> comparable metrics agree with the independent 150-game build at
+  <a href="corpus-v2-full.html">Corpus v2</a>. Promotion remains an owner choice on
+  <a href="review.html">the Review console</a> (P09), where no decision is recorded.</li>
 </ul>
 
 </main>

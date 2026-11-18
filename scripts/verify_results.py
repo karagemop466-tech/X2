@@ -89,20 +89,79 @@ def compare(rec, standings):
     return problems
 
 
+def file_read_date(name):
+    """The read date a standings file states about itself, or None.
+
+    TARGETS hard-codes the two reads the site publishes. Any other file passed with --standings
+    has to carry its own date, because an undated read is what made the original F106 claim
+    unverifiable: it is impossible to tell whether a reconciliation is arithmetic or currency.
+    """
+    rows = read(name)
+    for col in ("read_date_utc", "read_date", "read_utc", "verified_date", "accessed_date"):
+        if rows and (rows[0].get(col) or "").strip():
+            return rows[0][col].strip()[:10]
+    return None
+
+
+def list_reads():
+    print("Dated official standings reads available under data/:")
+    found = 0
+    for dirpath, _dirs, files in os.walk(DATA):
+        for fn in sorted(files):
+            if "standings" not in fn or not fn.endswith((".csv", ".psv")):
+                continue
+            rel = os.path.relpath(os.path.join(dirpath, fn), DATA)
+            try:
+                rows = read(rel)
+            except Exception:  # noqa: BLE001 - a listing must not die on one file
+                continue
+            if not rows or "wins" not in rows[0]:
+                continue
+            found += 1
+            print(f"  {rel}  ({len(rows)} clubs, read {file_read_date(rel) or 'UNDATED - refuses as a --standings target'})")
+    if not found:
+        print("  (none found)")
+    return 0
+
+
 def main(argv=None):
     ap = argparse.ArgumentParser(description="Reconcile the results ledger with a dated official standings read.")
     ap.add_argument("--target", choices=sorted(TARGETS) + ["both"], default="both",
                     help="which dated official standings read to compare against")
+    ap.add_argument("--games", default="games_2026_results.csv",
+                    help="results register under data/ to reconcile (any file with week, "
+                         "away_team, away_points, home_team, home_points), e.g. "
+                         "results_feed_v2_2026.csv")
+    ap.add_argument("--standings", default=None,
+                    help="compare against this standings read instead of a published target; it "
+                         "must state its own read date (F106)")
+    ap.add_argument("--list", action="store_true", help="list the dated standings reads under data/ and exit")
+    ap.add_argument("--allow-future-weeks", action="store_true",
+                    help="report a ledger that is behind the read without failing (used to date the gap)")
     args = ap.parse_args(argv)
 
-    games = read("games_2026_results.csv")
+    if args.list:
+        return list_reads()
+
+    if args.standings:
+        d = file_read_date(args.standings)
+        if d is None:
+            print(f"REFUSED: data/{args.standings} states no read date, so a reconciliation "
+                  f"against it cannot be checked for currency (F106).")
+            return 2
+        TARGETS["ad-hoc"] = (args.standings, d, "read date taken from the file itself")
+
+    games = read(args.games)
     rec, per_week = tally(games)
 
-    print(f"Ledger: data/games_2026_results.csv - {len(games)} games")
+    print(f"Ledger: data/{args.games} - {len(games)} games")
     print("Games per week:", ", ".join(f"wk {w}: {n}" for w, n in sorted(per_week.items())))
     print(f"Teams compared: {len(rec)}")
 
-    targets = ["snapshot", "capture"] if args.target == "both" else [args.target]
+    if args.standings:
+        targets = ["ad-hoc"]
+    else:
+        targets = ["snapshot", "capture"] if args.target == "both" else [args.target]
     behind_current = False
     # How many settled games a fresher read holds that an older one cannot. Used
     # only to word the snapshot verdict honestly; never to change a number.
@@ -129,6 +188,8 @@ def main(argv=None):
         else:
             print("  0 mismatches on W, L, T, points for and points against.")
 
+        if key in ("ad-hoc",) and not problems:
+            print("  VERDICT: PASS - this register reconciles with the read named above.")
         if key == "snapshot":
             if problems:
                 print(f"  VERDICT: FAIL - the ledger does not reconcile with the 2026-11-14 read "
@@ -141,7 +202,7 @@ def main(argv=None):
                       f"({newer_games} later settled games are absent from the ledger).")
         else:
             if problems:
-                behind_current = True
+                behind_current = not args.allow_future_weeks
                 print(f"  VERDICT: FAIL - the ledger is {implied - len(games):g} games behind the current")
                 print(f"  official read, so {len(problems)} of {len(rec)} clubs do not reconcile with it.")
                 print("  See Flag F106 and the Feed completeness page.")

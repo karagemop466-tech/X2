@@ -3198,3 +3198,37 @@ No other session's work was discarded.
   https://karagemop466-tech.github.io/X2/.
 - **Open, not blocking:** owner decision P09 (which corpus the published backtest grades on) and flag F110. No price,
   ROI, closing line, player-prop outcome, depth ordinal or legal conclusion was added.
+
+### Same-session addendum: the fourth collision was a filename collision, not an id collision
+
+While integrating `origin/main` at `3a8950a` (PR #76, session 79c9cb37 — opened before PR #78, merged after PR #83)
+this session found that **both sessions had created the same two brand-new files** for the same decision:
+`data/results_feed_v2_2026.csv` and `data/results_feed_v2_checks.csv`, each 150 rows, each with checks numbered
+`V2-01…` — and the ids meant different things in the two builds (their V2-03 is the neutral-site join; mine was the
+Week 10 completeness read). Had this branch committed as planned, it would have silently replaced a register that
+`main` already pins, links from `docs/results.html`, and describes in its README, and would have left that page
+quoting check ids that no longer described the file next to it.
+
+**Resolution, and no data was harmonised:**
+* `main`'s names stay exactly as they are — the later branch yields the name, never the data.
+* This session's artifacts are renamed to `data/results_feed_v2_82b83a64.csv`,
+  `data/results_feed_v2_checks_82b83a64.csv`, `data/results_feed_v2_summary_82b83a64.json`, and its checks move to a
+  separate namespace, **R2-01…R2-15**, so the two sets cannot be confused on a shared page. Pins updated to match;
+  PR #76's pins were left untouched.
+* The collision became a control instead of a loss. New check **R2-15** joins the two registers on
+  (week, away, home) and compares the five aspects a backtest consumes: **150 of 150 shared fixtures, 0 only in
+  either register, and 150/150 agreement on scores, winners, neutral-site flags, margins and totals** — written to
+  `data/results_feed_v2_two_builds_2026-11-18.csv`, pinned, published on `docs/results-v2.html`, recorded as
+  **V44**, and the collision itself recorded as **F127** with two process proposals for the owner (session-suffix
+  any *new* filename until an integration pass merges it; have board task rows name the files a task will create,
+  not just the task).
+* Counted across the day, **four** independent builds of P09 now coexist un-pooled — PR #76 (results feed + 12
+  checks), PR #78 (scored predictions, 89+13), PR #80 (full model re-run under `data/corpus_v2/`), and this one
+  (results + venue facts + raw retained reads + the flags-only control fit). The two results registers agree row by
+  row (R2-15) and the two model builds agree metric by metric (7 of 7,
+  `data/model_v2_research_cross_register.csv`). Nothing was merged into a single "consensus" file: the value is in
+  the agreement, not in the consolidation.
+
+`scripts/results_v2.py` exits non-zero if any of R2-01…R2-15 fails, so a future merge that breaks the agreement —
+by re-transcribing a score, or by one build drifting — fails the build rather than publishing quietly. Final state
+of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all other verifiers green.**

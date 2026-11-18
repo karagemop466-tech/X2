@@ -10,7 +10,57 @@ separate columns**, a strict **signal-vs-staking split** in the leaderboard, a p
 returns a live strategy to paper, and **replacement-depth tracking** (the 2nd/3rd/4th string of the replacement,
 where a source verifies it).
 
-## Latest session (f04dda73): the corpus, and the number that undercuts the headline
+## Latest session (82b83a64): the results register completed, the venue fix isolated, and three parallel builds reconciled
+
+Everything below was built on 2026-11-18 in parallel with the published record; none of it rewrote a number the site
+had already published, and no sealed record was re-sealed:
+
+- **Results register v2** (`docs/results-v2.html`, `data/results_feed_v2_82b83a64.csv`, `python3 scripts/results_v2.py`).
+  All **150** games through Week 10: the 137-game published feed plus the 13 settled Week 10 games, each score
+  transcribed from the official by-week page and never computed from a record. It is the first register in the
+  repository where the completed international games carry `neutral_site = Y` — **8** rows, sourced from the dated
+  NFL Football Operations slate rather than inferred. **14 machine checks, all passing**
+  (`data/results_feed_v2_checks_82b83a64.csv`, ids `R2-01..R2-15` so they cannot be confused with PR #76's
+  `V2-01..V2-12`), including a third independent read of the Week 10 page at 2026-11-18T05:05Z
+  (14 of 14 fixtures, scores *and* winner indicators) and a 32-of-32 club reconciliation against a standings read
+  taken by the same session in the same minute — not against a file already in the repository.
+- **The cost of re-adoption, measured** (`data/model_v2_research_deltas.csv`, `python3 scripts/model_v2_research.py`).
+  `scripts/model.py` was executed **unmodified** in a temporary directory on four corpora: the published 137, the same
+  137 with the neutral flags honoured, the 150 flagged, and the 150 unflagged. Side hit rate against the naive
+  reference **0.652 → 0.629 → 0.578**; bets clearing the pre-registered 3-point gate **50 → 54 → 59**; calibration
+  slope 0.885 → 0.978 → 1.129; reference total 45.9 → 46.2; **0 of 13 published Week 11 side picks flip** in any
+  variant, and the forecast-log SHA-256 would change in all of them — which is why this is a version and not a
+  correction, and why no published model output was touched. The 150-unflagged fit reproduces PR #78's Week 10
+  holdout count exactly (5 of 13), so the two registers reconcile and the 2-row difference is venue treatment alone
+  (**F125**).
+- **`scripts/verify_results.py` made general** (on top of the PR #78 fix): `--games` takes any register, `--standings`
+  takes any dated read, `--list` enumerates the reads available, a read that states no date is refused, and
+  `--allow-future-weeks` reports a ledger that is behind without failing. The published ledger against today's
+  standings read is off for **26 of 32** clubs — the corpus gap, dated, not suppressed (**F106**, **F113**,
+  `docs/verification.html` V40–V43).
+- **Three parallel v2 builds, reconciled rather than merged** (this is the part a reader is most likely to trip
+  over). On 2026-11-18 three sessions each answered P09 from the same 13 settled games: PR #78 published the scored
+  *predictions* register (`data/corpus_v2_2026.csv`, `docs/corpus-v2.html`), PR #80 re-ran the whole model on a
+  150-game corpus with hash proof that v1 did not move (`data/corpus_v2/`, `docs/corpus-v2-full.html`), and this
+  session published the *results-and-venue* register plus the flags-only control fit (`docs/results-v2.html`).
+  `scripts/model_v2_research.py` now compares this build with PR #80's register metric by metric and writes
+  `data/model_v2_research_cross_register.csv`: **7 of 7 comparable metrics match** on both the 137-game and the
+  150-game columns. The three registers are deliberately kept separate — pooling them would destroy the only
+  reason any of them is trustworthy, which is that each was built independently and then checked against the others.
+  The one sub-0.01 difference found is definitional, not numeric: scoring MAE against the rounded published line
+  (`model_backtest.csv`) versus the unrounded prediction (`model_summary.json`); both figures are printed so no
+  reader has to guess which is which.
+- **Two new flags.** **F125**: the Review console's P09 note publishes a prediction — "three side picks plus one
+  bet-gate crossing" — that measurement contradicts (zero and six), and two independent builds now agree on that;
+  the console text is the owner's surface, so the discrepancy is recorded beside it rather than edited into it.
+  **F126**: a third read of the injury hub inside 24 hours still renders Week 10 while its own selector lists
+  Week 11, so a Wednesday/Thursday/Friday capture timer has nothing to fire on (the same mechanism PR #78 found from
+  the URL side).
+- **Nothing was chosen on the owner's behalf.** `data/decision_choices.json` is still empty, `review.py` was not
+  re-run, and the 137-game register, its pins and its hashes are byte-identical to the merge base (`drift_check`
+  50/50 registers; `repo_audit` A05 confirms `model.py` still reproduces its published outputs exactly).
+
+## Also 2026-11-18 (session f04dda73, PR #78): the corpus, and the number that undercuts the headline
 
 Five things changed on 2026-11-18 and each one moved a published claim rather than a table cell:
 
@@ -48,6 +98,7 @@ Five things changed on 2026-11-18 and each one moved a published claim rather th
 6. **Price snapshots** (`docs/price-snapshots.html`) — opening and closing fields for every originated market; values are blank pending a licensed odds feed.
 7. **Market tables** (`docs/markets.html`) — fair versus market lines, signal versus staking, and the proposed demotion gate.
 8. **Backtest** (`docs/backtest.html`) — walk-forward predictions on the existing 89-game evaluation subset; read the corpus-completeness caveat before interpreting results.
+8b. **Results register v2** (`docs/results-v2.html`) — the completed 150-game results register through Week 10 with the eight official neutral-site flags, beside the frozen 137-game published one, with the cost of adopting it measured on four fits of the same code.
 9. **Leaderboard** (`docs/leaderboard.html`) — prospective-only registry, intentionally unranked until frozen registrations and prospective forecasts are graded; historical research remains on the Backtest page.
 10. **Validation gates** (`docs/validation-gates.html`) — the validation and demotion rules.
 11. **Verification** (`docs/verification.html`) — what was checked against which source and with what result.
