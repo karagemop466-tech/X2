@@ -535,7 +535,7 @@
   "effort": "Medium - the transcription and the reconciliation are already done (data/games_week10_backfill_2026.csv, data/international_games_2026.csv); the work is re-running the pipeline and versioning the outputs",
   "main_risk": "Published numbers change. Mitigated only by keeping the frozen v1 register and a version tag on every page that shows a metric.",
   "options": "A splice into the canonical feed and re-publish | B publish a v2 research register without touching v1 | C keep 137 and disclose the gap",
-  "status": "Proposed - awaiting the owner (P09)",
+  "status": "Implemented as option B on 2026-11-18 (session 60c8c865, T111): v1 frozen, parallel v2 research corpus published side by side",
   "row_type": "suggestion",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/week_count_reconciliation_2026-11-18.csv"
  },

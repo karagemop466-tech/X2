@@ -3370,8 +3370,9 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
   346 of 347 players; the single differing cell was an error in this session's capture, settled by a third read of
   the live page and corrected in the register — never in the raw capture. <a href="capture-integrity.html">Cross-check</a> (F109).</li>
   <li><strong>Results feed:</strong> 13 settled Week 10 games are absent from the corpus the backtests grade on;
-  adding the transcribed rows reconciles all 32 clubs against today's standings.
-  <a href="feed-completeness.html">Feed completeness</a> (F96, F105, P09).</li>
+  adding the transcribed rows reconciles all 32 clubs against today's standings. Decision P09 = B publishes them
+  as a <a href="corpus-v2.html">parallel v2 research corpus</a> without touching the frozen v1 record
+  (F96, F105).</li>
   <li><strong>Forecast outputs:</strong> every model line is stored with its inputs and its win/cover/over
   probabilities, and reproduces from the published CSVs before it is allowed to publish.
   <a href="forecast-records.html">Forecast records</a>.</li>
@@ -3411,9 +3412,10 @@ losses, 2 ties); <code>data/games_2026_results.csv</code> holds 137, of which on
 so both sides were stale in the same direction (F106). The 13 games were transcribed from the official Week 10
 by-week page — never computed from records — and with them <strong>32 of 32</strong> clubs reconcile on W-L-T
 <em>and</em> points for and against; without them 26 of 32 do not.
-<a href="feed-completeness.html">Feed completeness</a>. Nothing was re-run: adopting the rows changes every
-published metric, so it is proposal <strong>P09</strong> on the <a href="decisions.html">Review console</a>
-(F96, F105; readiness D29).</li>
+<a href="feed-completeness.html">Feed completeness</a>. Decision <strong>P09</strong> was recorded as
+<strong>option B</strong> on 2026-11-18: the rows were not spliced into the published feed, and a
+<a href="corpus-v2.html">parallel v2 research corpus</a> publishes the 150-game re-fit beside the frozen
+v1 record instead (F96, F105; readiness D29).</li>
 <li><strong>Every model output is now stored with its inputs and its probabilities.</strong> {len(_fr_graded)}
 graded rows and {len(_fr_w11)} Week 11 rows carry win, cover and over probabilities against the naive reference
 price (no licensed market price exists, F07/F51), the reference line itself, the residual sd used, Brier and log
