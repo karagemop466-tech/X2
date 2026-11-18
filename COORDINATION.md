@@ -2345,3 +2345,32 @@ value filled unless it is read from an official page in this session; anything u
 **Not claimed here** (still blocked on inputs this session cannot obtain): licensed market prices (F07/F51 → D01,
 D03, D32), off-site storage and alerting (D17), prior-season archives (D08, D20, D21, D45), official snap counts /
 inactive lists (D13, D16), the human price-data policy decision (D30).
+
+## 2026-11-18 · session cf85d485 · T102–T107 close-out
+
+**Branch:** `arena/cf85d485-x2` (Arena fixes the branch name; the `session-<id>/<task>` convention is not available here).
+**Commits:** `3c32029` (claim) · `5b470db` (T102/T103/T107 data + scripts) · `641ffd8` (T104/T105 outputs, site wiring, registers).
+
+| ID | Result | Evidence |
+|---|---|---|
+| T102 | **Done.** Full recount of the live Week 10 report (all 8 chunks, 2026-11-18T03:46Z): 347 rows / 28 club blocks vs 345 stored; every stored row matches the read for all 28 blocks, 0 rows missing from the repo → F83 closed for the repo side. Dated capture ledger with clock time + payload/file sha256 per capture: `data/availability_captures.csv`, `data/live_reverification_2026-11-18.csv`, `scripts/availability_captures.py` | `https://www.nfl.com/injuries/` |
+| T103 | **Done.** First delta in the repository: 19 of 347 players moved in 4 days (2 added, 7 practice codes, 13 game-status, 13 injury-text; 0 removed; 4 of 28 clubs). New hazard recorded as **F94**: `?season=2026&week=11&type=REG` renders the **Week 10** tables four days after Week 10, while the club records printed beside it are already post-Week-10 — so a URL-keyed capture job stores the old week and labels it the new one. `data/availability_delta_2026-11-14_to_2026-11-18.csv`, `_summary.csv`; Q63, G17, G18, S46, S47, D46, D49, D50 | `https://www.nfl.com/injuries/?season=2026&week=11&type=REG` |
+| T104 | **Done.** `scripts/forecast_records.py` → `data/forecast_records_2026.csv` (178 graded rows), `data/forecast_records_week11.csv` (26), `data/forecast_record_checks.csv` (6/6 pass). Each row stores `prob_home_win`, `prob_home_covers_reference_line`, `prob_over_reference_total`, the reference price it is measured against, residual sd used, Brier + log loss, and `inputs_json` (mu/attack/defence/home, ridge lambda, n_obs, weeks, per-game reference PF/PA). The script re-derives the published fit and **refuses to run** unless all 89 graded and all 26 Week-11 lines reproduce (tolerance 0.055 = the published 1-decimal rounding). Cover/over are measured against the naive reference line, not a market price (F07/F51) | repo: `data/model_backtest.csv`, `data/model_lines_week11.csv` |
+| T105 | **Done, with a deliberate non-change.** `data/international_games_2026.csv` (9 games, venue/city/kickoff/new-market) + `data/neutral_site_sensitivity_2026.csv` (7 settled feed games, predictions-only): each shifts 0.403 pts = the fitted home-field term, which is **negative**; 3 side picks flip; BAL at DAL crosses the pre-registered ±3-pt gate (1.13 → 4.03); summed \|margin error\| change −2.821. **`data/games_2026_results.csv` was NOT edited** — filling `neutral_site` re-fits the published ratings, which is an owner decision (P09), not a transcription. This narrows the claim in my table above ("`data/games_2026_results.csv` (`neutral_site` column)") to the two new registers | `https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games` |
+| T106 | In progress on this PR: 3 new pages + index freshness section + executive-summary desk; `python3 scripts/build.py` (45 pages, row-source guards pass), `scripts/check_links.py` (2188 internal / 4886 external, none broken), `scripts/repo_audit.py` (22 checks, 0 failing), `scripts/verify_results.py` (137 games, 32/32 against the standings read it holds), `npm run build && npm run verify` (PASS) | this commit |
+| T107 | **Done** (added mid-session, unclaimed). The published feed is **13 settled Week 10 games short**: standings read today imply 150 completed games (149-149-2); the feed holds 137 (weeks 1–9 complete = 136, + the Thu Nov 12 game); the Week 10 slate is 14 games with 13 blank in `data/games_week10_2026.csv`. 13 games transcribed from the official by-week page (never computed from records) → **32/32** clubs reconcile on W-L-T **and** PF/PA with them, **26/32 fail without them**. `scripts/results_feed_completeness.py`, `data/games_week10_backfill_2026.csv`, `data/results_feed_completeness_2026-11-18.csv`, `data/week_count_reconciliation_2026-11-18.csv`, `data/what_changed_2026-11-14_to_2026-11-18.csv`. Flags F95, F96; Q64; G19, G20; R63, R64; S45; P09; D29, D47 | `https://www.nfl.com/schedules/2026/by-week/week-10`, `https://www.nfl.com/standings/` |
+
+**Register state I leave behind:** next free IDs are F100, SRC-89, Q67, S50, G21, R65, D51, P10.
+`scripts/build.py` pins these row counts and the build fails if they drift: captures 2, delta 19, reverification 28,
+what-changed 32, completeness 32, reconciliation 7, backfill 13, forecast checks 6, forecast rows 178 + 26,
+international 9, sensitivity 7.
+
+**Cross-scope request (I did not edit these files).** `scripts/verify_results.py` still prints "All teams reconcile
+exactly with the official standings" while comparing against `data/standings_2026_official_read_20261114.csv`, a read
+taken **before** the Week 10 Sunday games — the reconciliation is real only against a stale opponent (F96). Suggested
+one-line fix for whoever owns it: print the standings-read date next to the verdict, and fail (or warn) when the
+read is older than the newest game in the feed. `data/games_2026_results.csv` and `data/games_week10_2026.csv` are
+likewise owned outside my scope; the backfill rows sit in a new file for the integration session or the owner to splice
+under P09.
+
+**Claims released:** T102–T107 are closed or handed to P09; this session takes nothing further.
