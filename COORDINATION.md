@@ -2674,3 +2674,27 @@ verification"), while this session's contribution is the *independent* control �
 **Rule for the next session, from two collisions on one day:** a dated register written by a hand-run script must
 carry the session id in its filename until an integration session has merged it. `live_reverification_<date>.csv`
 was claimed twice within an hour because the name encodes the date and nothing else.
+
+## 2026-11-18 · session 82b83a64 · claim (T108–T111)
+
+**Branch:** `arena/82b83a64-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged) · **Owner:** `82b83a64` · **Status:** active
+
+### Task board (this session)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T108 | P09 executed as the recommended option: publish a **parallel v2 results register** (150 games through Week 10) carrying the nine official neutral-site flags, with an independent third read of the official Week 10 schedule page and a 32-team standings reconciliation | in progress | 82b83a64 | NEW `scripts/results_v2.py`, NEW `data/results_feed_v2_2026.csv`, NEW `data/results_feed_v2_checks.csv`, NEW `data/week10_live_read_2026-11-18_82b83a64.csv`, NEW `data/standings_live_read_2026-11-18_82b83a64.csv`; append-only to `data/drift_pins.csv`, `data/flags.csv` (F96, F105, F33, F106 status text); generated `docs/**` | https://www.nfl.com/schedules/2026/by-week/week-10 · https://www.nfl.com/standings/ — both read by this session on 2026-11-18. Canonical v1 registers are **not** rewritten: `data/results_feed_2026.csv` and `data/games_2026_results.csv` stay at 137 rows with their pins, so no published number and no sealed hash changes. |
+| T109 | Re-fit the published walk-forward method on the 150-game corpus **in a sandbox copy** and publish the deltas as a labelled research panel (no canonical file, no sealed forecast log touched) | in progress | 82b83a64 | NEW `scripts/model_v2_research.py`, NEW `data/model_v2_research_deltas.csv`, NEW `data/model_v2_research_runs/` (git-ignored scratch); section on generated `docs/results-v2.html` | `scripts/model.py` executed unmodified against a temp DATA root; code path unchanged, only the input corpus differs. Reported as research, not as a re-registration. |
+| T110 | F106 fix: `scripts/verify_results.py` stops reconciling against a stale standings read — standings file becomes an explicit argument, the read date is printed, and a corpus/newer-standings mismatch fails the check | in progress | 82b83a64 | `scripts/verify_results.py`, `data/flags.csv` (F106) | Requested by session cf85d485 (F106) and left undone because that session did not own the file. Verified against the 2026-11-18 standings read this session took. |
+| T111 | Final integration: rebuild, run every check, PR `arena/82b83a64-x2` → `main`, merge, confirm GitHub Pages, record | pending | 82b83a64 | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+
+### Deliberately out of scope for this session (left for the owner or a later session)
+
+- **F16 / F79 / F98 / D22** — written NFL permission for systematic capture. Still absent; nothing here automates a capture.
+- **F51 / F07** — no licensed odds feed exists, so every opening/closing price column stays blank.
+- **F84 / F85 / F86 / F90 / F92** — register-wide renumbering, the luck-share heuristic, column renames and duplicate tables. These change many published rows at once; they are a single owner decision, not an incremental edit.
+- Week 11 has not been played at the time of this session's reads, so no Week 11 outcome is stated anywhere and the sealed prospective log is neither graded nor amended.
+
+### Collision notes read before claiming
+
+`live_reverification_2026-11-18.csv` (e2d7b11d) and `..._cf85d485.csv` (cf85d485) collide by date-only naming; this session writes **session-suffixed** filenames only, per the rule e2d7b11d recorded.
