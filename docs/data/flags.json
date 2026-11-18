@@ -830,11 +830,11 @@
  {
   "flag_id": "F99",
   "category": "Coverage gap",
-  "item": "Venue transcription: 1 of 163 fixtures read from the official game centre",
-  "detail": "F99 recorded that 1 of 163 fixtures had a venue read from an official source. On 2026-11-18 the whole Week 11 slate (13 fixtures) was transcribed from its own official game-centre pages and published in data/venues_2026.csv with a per-row URL, so coverage is now 14 of 163 fixtures (the Colts at Texans row from the earlier read is included). The other 149 fixtures still carry no venue and are not inferred from a stadium list; see F112 for the strength-of-evidence note.",
+  "item": "Venue transcription: 13 of 163 fixtures read from the official game centre",
+  "detail": "data/venues_2026.csv holds 13 venues read on 2026-11-18 from the official game centre Game Info block: every Week 11 fixture (IND at HOU, Reliant Stadium, Houston, TX; the other 12 Week 11 games are listed on the fixture-context page). The other 150 fixtures are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
   "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
-  "status": "Open - coverage now 14 of 163",
-  "action_requested": "Read each game centre page (one request each) and add a row with its URL."
+  "status": "Unverified - 150 of 163 fixtures blank",
+  "action_requested": "Read each remaining game centre page (one request each) and add a row with its URL (Week 10 and earlier, then the rest of the 2026 slate)."
  },
  {
   "flag_id": "F100",
@@ -849,7 +849,7 @@
   "flag_id": "F101",
   "category": "Observation",
   "item": "On the 2026-11-18 read the injury page still shows the Week 10 report; no Week 11 report was visible",
-  "detail": "The read (data/captures/injury_week10_2026-11-18.meta.json) found the page titled \"Injuries - WEEK 10\". The NEWS block lists headlines through Tuesday, Nov. 17. The Week 11 report is therefore not confirmed as published at the read time. Team records printed on the page are post-game records. T109 resolved the part of this that a repeat read can resolve: four routes were probed on 2026-11-18 including a working control week, and the absence is now a published result with a date (data/week11_report_probe.csv, SRC-93, F111).",
+  "detail": "The read (data/captures/injury_week10_2026-11-18.meta.json) found the page titled \"Injuries - WEEK 10\". The NEWS block lists headlines through Tuesday, Nov. 17. The Week 11 report is therefore not confirmed as published at the read time. Team records printed on the page are post-game records.",
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Observation - open",
   "action_requested": "Check the page again on the next Wednesday, Thursday and Friday."
@@ -925,41 +925,5 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Resolved by a third read - mechanism worth keeping",
   "action_requested": "Make the double-read the default for anything that becomes 'the data': two independent transcriptions of the same page, diffed by script, with the diff published. A single reader with a hash proves the file did not change, not that it is right."
- },
- {
-  "flag_id": "F110",
-  "category": "Irregularity - open (owner decision)",
-  "item": "The sealed pre-kickoff forecast log and the published Week 11 line disagree on one game, and the seal says which is the frozen number",
-  "detail": "\"prospective_forecast_log.sha256\" reproduces exactly (5aaf29db...) only when the neutral-site flag is IGNORED in the seal computation; scripts/model.py seals with predict(main, home, away) while it originates the same game in model_lines_week11.csv with predict(main, home, away, neutral). Consequence on MIN at SF (the Mexico City game, schedule neutral_site=Y): the sealed log froze 2.5 / 38.5 and the published line reads 2.9 / 38.9. Every other fixture agrees to the decimal, because no other Week 11 game is neutral. The published line is the correct treatment per F71 (a neutral site gets no home-field term), so the line should not be reverted; the seal is what is stale. Two ways to close, both owner decisions: (a) re-seal the log from the neutral-aware prediction and record the old digest as superseded (changes a frozen artefact), or (b) publish both digests with the v1 seal kept as the historical record and a v2 seal added. Nothing was recomputed or overwritten here.",
-  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11",
-  "status": "Irregularity - open (owner decision)",
-  "action_requested": "Choose (a) or (b). Until then the leaderboard stays unranked and the discrepancy is visible on the Corpus tranche page (data/forecast_seal_discrepancy.csv)."
- },
- {
-  "flag_id": "F111",
-  "category": "Capture gap - the Week 11 report does not exist yet",
-  "item": "No Week 11 injury report is published on any of four official routes, checked with a working control",
-  "detail": "The Week 11 slate starts Thursday 19 November 2026 and the hub still serves the Week 10 report (F101). Four routes were probed on 2026-11-18: the bare hub, ?week=11, /injuries/league/2026/reg11 and /injuries/league/2026/reg9. The first three all render heading 'Injuries - WEEK 10'; the reg9 control renders WEEK 9, so the route works and Week 11 is genuinely absent. This is published as an absence with a date rather than filled with the Week 10 report: a Week 11 availability feature cannot be built from any of these pages today.",
-  "source_url": "https://www.nfl.com/injuries/league/2026/reg11",
-  "status": "Open - absence verified, feature blocked",
-  "action_requested": "Re-probe daily. When a Week 11 report renders, capture it as a dated register with a per-row source before any Week 11 availability claim is made (blocked additionally by the F16 rights review)."
- },
- {
-  "flag_id": "F112",
-  "category": "Strength of evidence - one slate of venues",
-  "item": "Venue transcription is complete for one slate (13/13) and still blank for the rest of the season",
-  "detail": "F99 recorded 1 of 163 fixtures with a venue read from an official source. T110 transcribed all 13 Week 11 fixtures from their own official game-centre pages, and IND at HOU had already been read, and the neutral-site row was cross-checked against the independent international-games register (SRC-90) and agrees. 149 of 163 fixtures still carry no venue (14 of 163 now read: 13 Week 11 fixtures plus IND at HOU). A fixture-context feature that uses venue for the historical corpus therefore remains blocked, and the register must not be read as season-wide coverage.",
-  "source_url": "https://www.nfl.com/games/vikings-at-49ers-2026-reg-11",
-  "status": "Open - coverage 14 of 163",
-  "action_requested": "Re-run scripts/venues_week11.py once per slate, then state coverage as a number on the page rather than 'in progress'."
- },
- {
-  "flag_id": "F113",
-  "category": "Model defect - open (owner decision)",
-  "item": "The fitted home-field term enters the model total, so the total is not venue-neutral",
-  "detail": "In scripts/model.py fit() the home side is given +h and the away side is given no -h, so predict() returns home_points = mu + A_home - D_away + h and away_points = mu + A_away - D_home. The margin therefore carries h (correct) but the TOTAL also carries +h (not physically meaningful: both teams play at the same venue). The size is small but not zero and changes sign across the season: fitted h is +0.62 points in Week 4, +0.04 in Week 9, -0.37 in Week 10 and -0.40 in Week 11, so every published total is displaced by that amount. Found while writing T112 (scripts/two_estimator_totals.py), whose S1 gate reproduces the published totals and so had to reproduce the displacement too; nothing was changed in the model. Fixing it moves every published total, so it is the model owner's call and needs a version tag rather than an in-place edit. The neutral-site treatment (F71) is a separate, correct change and is unaffected.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model.py",
-  "status": "Open - owner decision, no published number changed",
-  "action_requested": "Decide whether to make the total venue-neutral in a v2 model, publishing both the old and new totals for one week so the size of the change is visible. Do not edit the frozen Week 11 line in place."
  }
 ]

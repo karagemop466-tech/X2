@@ -2717,3 +2717,146 @@ check in this repository that had to reproduce the model's *total* rather than i
 showed that the fitted home-field term is added to the home side only, so it displaces the total by ±0.4–0.6
 points depending on the week (F113). No published number was changed: fixing it re-fits every total, which is a
 model version, not a display fix.
+
+## 2026-11-18 · session `5a5c1a1d` · claim (T108)
+
+**Branch:** `arena/5a5c1a1d-x2` (fixed by Arena; base `main` @ `2db1bd7`, PR #67) · **Owner:** `5a5c1a1d` · **Status:** in progress
+
+### Task board (this session)
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T108 | Transcribe the venue of every **Week 11** fixture (13 games) from the official NFL game-centre "Game Info" block (one read per game) and add them to the venue register; record the read date and the verbatim fields. Closes the Week 11 part of D26 / S49. | done | 5a5c1a1d | `data/venues_2026.csv` (13 Week 11 rows added), `docs/**` (generated, if a venue view exists), `COORDINATION.md` | Game centre URLs as listed in `data/schedule_week11_2026.csv` (`game_url`), read 2026-11-18. Week 10 and the remaining 2026 fixtures are out of scope and stay blank (F99). |
+| T109 | Verify the three Lions Week 10 game-status designations (Kerby Joseph, Cade Mays, D.J. Reed) against the official injury page | done | 5a5c1a1d | `COORDINATION.md` only | Read 2026-11-18 at https://www.nfl.com/injuries/ (Lions block): all three show Out; `data/injuries_week10_2026.csv` already holds Out for all three. No change needed. |
+
+**Not claimed (owner-owned, unchanged):** every pre-existing flag, every `needs review` item, DEC-01…DEC-10, F09, F16, F17, F19, F98 and the strategy/leaderboard decisions.
+
+### T111 close-out (session 5a5c1a1d, 2026-11-18)
+
+**Sources (each read on 2026-11-18, the NFL.com game centre "Game Info" block, chunk 0):** the 13 Week 11 game-centre
+pages listed in `data/schedule_week11_2026.csv` (`game_url`):
+https://www.nfl.com/games/colts-at-texans-2026-reg-11 ·
+https://www.nfl.com/games/dolphins-at-bills-2026-reg-11 ·
+https://www.nfl.com/games/ravens-at-panthers-2026-reg-11 ·
+https://www.nfl.com/games/saints-at-bears-2026-reg-11 ·
+https://www.nfl.com/games/titans-at-cowboys-2026-reg-11 ·
+https://www.nfl.com/games/buccaneers-at-lions-2026-reg-11 ·
+https://www.nfl.com/games/cardinals-at-chiefs-2026-reg-11 ·
+https://www.nfl.com/games/steelers-at-eagles-2026-reg-11 ·
+https://www.nfl.com/games/jets-at-chargers-2026-reg-11 ·
+https://www.nfl.com/games/jaguars-at-giants-2026-reg-11 ·
+https://www.nfl.com/games/raiders-at-broncos-2026-reg-11 ·
+https://www.nfl.com/games/vikings-at-49ers-2026-reg-11 ·
+https://www.nfl.com/games/bengals-at-commanders-2026-reg-11
+
+**Result:** `data/venues_2026.csv` now holds 13 of 13 Week 11 venues (12 added; IND at HOU was already there).
+Every value is the verbatim `Location` and `Stadium` text on the page. Venue for MIN at SF is MEXICO CITY / ESTADIO BANORTE,
+the league's designated neutral-site game.
+
+**Verification performed:** (1) each page's teams matched its schedule row (away and home abbreviations, checked
+against the URL slug and the page's team names); (2) every venue row has a `source_url` on `www.nfl.com/games/`
+(asserted in `scripts/build.py`); (3) rendered table on `docs/fixture-context.html` reproduces the register;
+(4) `D26` (readiness) and `F99` (flag) updated from "1 of 163" to "13 of 163" and the status changed to the 150 still blank.
+Checks green: `scripts/build.py` (47 pages, link and row-source checks), `scripts/drift_check.py` (28/28),
+`scripts/check_links.py` (0 broken internal links), `scripts/verify_results.py` (32/32),
+`scripts/team_view.py`, `npm run build` and `npm run verify` (ALL CHECKS PASSED).
+
+**Irregularities (flagged, not fixed here):**
+- The schedule page's hotel and ticket links name a different arena for at least one game (the existing S49 note). Only
+  the game-centre block is used. Source: https://www.nfl.com/schedules/2026/by-week/week-11
+- The fetch tool returns processed text, not HTTP bytes, so there is no raw-bytes hash for these reads (F100).
+- The live injury hub still shows Week 10 on this read, so no Week 11 injury data is captured here (F101, F104).
+- 150 of 163 fixtures remain blank and unverified (F99). Not inferred.
+
+**T109 (Lions designations):** verified against https://www.nfl.com/injuries/ on 2026-11-18. Kerby Joseph (S, Knee),
+Cade Mays (C, Ankle) and D.J. Reed (CB, Hip) all show Did Not Participate in Practice and Game Status **Out**.
+`data/injuries_week10_2026.csv` holds the same three Out rows. No change was needed.
+
+### PR, merge and deployment record — session 5a5c1a1d (T108, T109)
+
+- **PR #69** (`arena/5a5c1a1d-x2` → `main`): merged with a merge commit, `4b42bb0f9e7532dee5d472e76b3503cf736c9090`, at 2026-11-18T04:45:25Z. The PR had no CI checks configured; it was mergeable and clean.
+- **GitHub Pages:** build for `4b42bb0` reached `built` at 2026-11-18T04:46:07Z (`gh api repos/karagemop466-tech/X2/pages/builds/latest`).
+- **Live check:** https://karagemop466-tech.github.io/X2/docs/fixture-context.html now shows the "Venues read from the official game centre" table with all 13 Week 11 venues. The site is served from the repository root, so pages are under `/docs/`; the root URL `/X2/fixture-context.html` returns 404 (this was already the case before this session).
+- **Board:** T108 done, T109 done. Nothing from this session is left unclaimed or half-merged. No other session's file was changed.
+
+## 2026-11-18 · session `5ddea67f` · claim (T110)
+
+**Branch:** `arena/5ddea67f-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67) · **Owner:** `5ddea67f` · **Status:** active
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T110 | Independent re-check of the Week 10 results gap (F95/F96/P09) from the committed raw captures, plus an environment and base-state audit; record the result and the owner decision still open. No data, model or rating changes. | done | 5ddea67f | `COORDINATION.md` only | `data/verification_inputs/standings_2026-11-18_raw.psv` (official standings read), `data/verification_inputs/week10_games_2026-11-18_raw.psv` (official by-week read), `data/games_week10_backfill_2026.csv`, `data/results_feed.csv`; links https://www.nfl.com/standings/ and https://www.nfl.com/schedules/2026/by-week/week-10 |
+
+**Scope note.** Live official pages could not be fetched from this sandbox (`nfl.com` returns no response; the sandbox allow-list is GitHub, npm and PyPI). Every check below therefore runs against the raw captures already committed to the repository, not against a fresh fetch.
+
+### Result — session 5ddea67f (T110)
+
+**Base-state audit (on `main` @ `2db1bd7`, before any edit):**
+
+- `python3 scripts/build.py`: 47 pages, row-source and link guards pass; working tree unchanged after build (reproducible).
+- `scripts/check_links.py`: 47 pages, 2,379 internal links, 0 broken; all external links https on the allow-list.
+- `scripts/drift_check.py`: 28 of 28 registers match their pins.
+- `scripts/verify_snapshot.py`: 103 pass, 0 fail, 1 review (V-PLAYER-ben-brown-2: the official player page and the injury report disagree on Ben Brown's position; flagged, not changed).
+- `scripts/verify_live_injuries.py`: stored rows match the stored live read on every field (the live read itself is the 2026-11-18 committed capture; see scope note).
+- `scripts/verify_results.py`: 137 games; 32 of 32 teams reconcile with the 2026-11-14 standings. This check is **not** a test of the 2026-11-18 standings (see below).
+- `scripts/controls.py`, `scripts/model.py`, `scripts/repo_audit.py`: run to completion.
+- `gh pr list --state open`: no open PRs. GitHub Pages latest build: `built` at commit `2db1bd7`.
+
+**Independent re-check of the Week 10 gap (F95 / F96 / P09):**
+
+| Check | Result |
+|---|---|
+| Official standings read 2026-11-18 (`data/verification_inputs/standings_2026-11-18_raw.psv`, source https://www.nfl.com/standings/): sum of W / L / T | 149 / 149 / 2 → 150 completed games (2 tie entries = 1 tie game) |
+| Same read, sum of PF / PA | 6,923 / 6,923 (equal, as a zero-sum check requires) |
+| Results feed (`data/results_feed.csv`) | 137 games; PF / PA sum 6,291 |
+| Official by-week read 2026-11-18 (`data/verification_inputs/week10_games_2026-11-18_raw.psv`, source https://www.nfl.com/schedules/2026/by-week/week-10): Week 10 games | 14 games, final scores |
+| Week 10 games in the feed | 1 (WAS 24, NYG 21), matching the official read |
+| Week 10 games in the official read but not in the feed | 13 |
+| Backfill file (`data/games_week10_backfill_2026.csv`) vs official by-week read | 13 of 13 scores match, 0 differences |
+| Feed (137) + 13 official Week 10 games = 150, against the 2026-11-18 standings | **32 of 32 teams match on W, L, T, PF and PA** |
+| Feed as published, against the 2026-11-18 standings | 6 of 32 match (matches `results_feed_completeness.py`) |
+
+The arithmetic therefore confirms T107 and F96: the feed is 13 official Week 10 games short, and the 137-game framing in F88 and the README reflects the 2026-11-14 state, not 2026-11-18.
+
+**Not done, deliberately (owner decision, not a transcription fix):** splicing the 13 games into `data/results_feed.csv` / `data/games_2026_results.csv` changes the ratings fit and every published backtest metric. That is decision P09 on the decision console, and the 137-game corpus stays as published until P09 is recorded.
+
+**Scope and limits (honesty note):**
+
+- `nfl.com` could not be fetched from this sandbox during this session (no response from `https://www.nfl.com/injuries/`, `.../schedules/2026/by-week/week-11`), so nothing above was re-read from the live official pages. Each check uses the raw official transcriptions already committed in `data/verification_inputs/` (read 2026-11-18T03:52Z and 04:00Z). Those transcriptions are the source; they have not been re-verified against the live page in this session.
+- No data file, script, rating, strategy or leaderboard row was changed. The only file edited is this log.
+
+**Irregularities for the Flagged for Review page (already present, not newly raised):** F88 (the 136 / 137 count note is stale for 2026-11-18), F95 (IND Arden Key blank status on the 2026-11-18 read), F96 (results feed frozen at 137 vs 150 official games). Owner decision still open: **P09**.
+
+**Handoff for the next session:** nothing is claimed beyond T110. If P09 is recorded as "adopt", the splice and re-fit must follow `scripts/results_feed_completeness.py` and re-run `scripts/forecast_records.py` (which refuses to run unless every published line reproduces).
+
+### PR and deployment record — session 5ddea67f (T110), recorded 2026-11-18
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/70 — "T108: Week 10 results re-check and session record" (`arena/5ddea67f-x2` → `main`; COORDINATION.md only). Its title still reads T108 because the title edit did not apply; the content is T110.
+- **Merge result:** merged with a merge commit (`gh pr merge 70 --merge`) at 2026-11-18T04:46:14Z → `f1e6d05`. The first merge attempt failed (mergeable: CONFLICTING) because PR #69 (session `5a5c1a1d`) had landed a different task also numbered T108; the claim was renumbered to T110 and rebased onto `main` with both entries kept. No other session's work was discarded.
+- **Pages:** build of `d922116` (which includes `f1e6d05`) status `built` at 2026-11-18T04:47–04:48Z; live at https://karagemop466-tech.github.io/X2/.
+- **Collision logged (for the board):** T108 is used by two tasks in this log (session `5a5c1a1d`: Week 11 venues, merged; session `5ddea67f`: this check, now T110). Future claims should check `grep "| T1" COORDINATION.md` on current `main` before writing an ID.
+- **Open, not blocked:** owner decision P09 (splice the 13 official Week 10 games and re-fit) is still open. F88, F95 and F96 remain on the Flagged for Review page.
+## 2026-11-18 · session ddeec916 · claim (T111; renumbered after concurrent T108–T110 claims landed on main)
+
+**Branch:** `arena/ddeec916-x2` · **Base:** `main` @ `8e16b78` after rebase · **Owner:** `ddeec916` · **Status:** done
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|---|---|---|---|---|---|
+| T111 | Correct current-site decision-critical copy where it contradicts the latest completeness/registration evidence; clarify suggestion review path and README status | done | ddeec916 | `scripts/build.py`, generated `docs/**`, `README.md`, `COORDINATION.md` | First-party registers checked: `data/results_feed_completeness_2026-11-18.csv` (32 clubs), `data/games_week10_backfill_2026.csv` (13 games), `data/decision_readiness.csv` (64 rows), `data/flags.csv` (103 rows), `data/suggestions_register.csv` (18 rows). Official NFL links already attached in those source rows. No NFL value will be added or inferred. |
+
+**Scope rule:** fix only top-level decision-facing stale statements and make their data limitations explicit. Do not splice the held-out 13-game backfill, re-fit forecasts, alter injury rows or prices, change suggestion dispositions, or resolve owner gates (P09/F16).
+
+### T111 close-out
+
+**Status: done (content, checks, PR, merge and Pages deployment complete).** Updated the site generator and regenerated `docs/` so the landing page, executive summary, backtest, season-results, results-feed and review-path pages distinguish the 137-game model corpus from the 150 games reflected in the 2026-11-18 standings. The site now states that 13 source-linked Week 10 games are held in a separate backfill, that the 137-game feed fails the current standings comparison for 26/32 clubs, and that the 89-game walk-forward results describe only the existing corpus pending P09. It also removes a false “seven strategies ranked” home-card description, makes the injury verification limitation explicit, and labels the site-wide date as the latest injury capture rather than implying every source is from that date. README now has a current decision-state summary, a corrected 64-row/58-requirement count, and usable Suggestions / Review path / Questions entry points.
+
+**Sources:** official [NFL standings](https://www.nfl.com/standings/) and [Week 10 schedule](https://www.nfl.com/schedules/2026/by-week/week-10); repository evidence `data/results_feed_completeness_2026-11-18.csv` (32 clubs), `data/games_week10_backfill_2026.csv` (13 games), `data/decision_readiness.csv` (64 rows), `data/flags.csv` (F16/F87/F94/F96/F109), and `data/suggestions_register.csv` (18 options for review). No new NFL result or injury value was transcribed.
+
+**Verification:** `python3 scripts/build.py` (47 pages; row-source and link guards pass); `python3 scripts/check_links.py` (47 pages, 2,387 internal / 5,145 approved HTTPS external links, no broken internal links); `python3 scripts/repo_audit.py` (22 checks, 0 failing); `python3 scripts/verify_results.py` (137 games reconcile to the committed 2026-11-14 standings snapshot only; the site now states that this does not reconcile to the newer 2026-11-18 read); `python3 scripts/verify_snapshot.py` (103 pass, 0 fail, 1 review); `npm run build && npm run verify` (all pass); `git diff --check` (pass). No price, odds, ROI, depth rank or new NFL statistic was filled in.
+
+### T111 integration record — session ddeec916
+
+- **PR:** https://github.com/karagemop466-tech/X2/pull/73 — `arena/ddeec916-x2` → `main`, “T111: clarify decision-critical corpus and leaderboard status”.
+- **Merge:** merged with a merge commit at 2026-11-18T04:48:59Z; merge commit `8788d870de8e83b5dae0db0dd9b4941c20d61edf`.
+- **GitHub Pages:** deployment run [44239920578](https://github.com/karagemop466-tech/X2/actions/runs/44239920578) completed successfully; the Pages API reports `built` for the merged commit at 2026-11-18T04:49:47Z. Published site: https://karagemop466-tech.github.io/X2/.
+- **State:** T111 is merged and deployed. Owner gates P09 (choose/freeze corpus), F16 (data rights), and F87 (future pre-registration) remain explicitly open; they were not resolved by this documentation correction.
