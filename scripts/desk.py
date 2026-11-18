@@ -109,10 +109,28 @@ add("RF06", "Second transcription agrees",
     f"{len(results) - len(mism)} of {len(results)} rows match after LAR/LA normalisation; {len(season)} rows in second file",
     "pass" if not mism and len(season) == len(results) else "FAIL", "https://www.nfl.com/schedules/2026/by-week/week-1")
 
-proc = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "verify_results.py")], capture_output=True, text=True)
-rec = (proc.stdout.strip().splitlines() or ["(no output)"])[-1]
-add("RF07", "Standings reconciliation", "scripts/verify_results.py recomputes W-L-T and points for/against for all 32 teams",
-    rec, "pass" if proc.returncode == 0 else "FAIL", "https://www.nfl.com/standings/")
+# RF07 asks two different questions and the earlier version answered only the
+# first while publishing the answer to both (F106): does the ledger add up
+# against the read it was transcribed beside (arithmetic), and does it agree
+# with the CURRENT official read (currency)? The script now exits non-zero on
+# the second, so both are run and both results are published separately.
+def _run_verify(target):
+    p = subprocess.run([sys.executable, os.path.join(ROOT, "scripts", "verify_results.py"),
+                        "--target", target], capture_output=True, text=True)
+    lines = p.stdout.strip().splitlines() or ["(no output)"]
+    verdict = next((l.strip() for l in lines if "VERDICT" in l), lines[-1].strip())
+    return verdict, p.returncode
+
+_arith, _rc_a = _run_verify("snapshot")
+_curr, _rc_c = _run_verify("capture")
+add("RF07", "Standings reconciliation (arithmetic)",
+    "scripts/verify_results.py recomputes W-L-T and points for/against for all 32 teams and compares "
+    "with data/standings_2026_snapshot.csv, the official read taken on 2026-11-14",
+    _arith, "pass" if _rc_a == 0 else "FAIL", "https://www.nfl.com/standings/")
+add("RF07b", "Standings reconciliation (currency)",
+    "The same recomputation compared with data/captures/standings_2026-11-18.csv, the official read "
+    "taken after the Week 10 slate was complete",
+    _curr, "pass" if _rc_c == 0 else "FAIL", "https://www.nfl.com/standings/")
 
 spot = [
     ("RF08", "Sample: Arizona at Los Angeles Chargers, week 1", "Official game center final score (AZ-LAC)",
@@ -252,4 +270,21 @@ audit.sort(key=lambda r: r["corr_id"])
 write("correlation_audit.csv", audit,
       ["corr_id", "question", "value", "ci_low", "ci_high", "p_value", "sample_n", "input_A", "input_B",
        "officially_sourced_inputs_only", "qualifies_under_owner_rule", "audit_note", "source_url"])
+# F102 guard (added by session f04dda73, T109). C08 moved from -0.064 to +0.035
+# when the Week 10 injury register was re-captured on 2026-11-18. The canonical
+# value now lives in data/correlations_computed.csv (written by scripts/model.py)
+# and in flag F102, but data/correlation_audit.csv sat one merge behind and still
+# published -0.064 on the site while the Correlations page published +0.035: two
+# numbers for one quantity, on one site, with no flag saying so. desk.py derives
+# the audit register straight from the canonical file, so the drift cannot be
+# repaired by hand without recurring on the next merge. This asserts the two
+# agree and names the flag when they do not.
+_computed = {r["corr_id"]: r["value"] for r in read("correlations_computed.csv")}
+_drifted = [r for r in audit if r["value"] != _computed.get(r["corr_id"], r["value"])]
+if _drifted:
+    raise SystemExit("BUILD FAILED: correlation_audit.csv would publish a value that disagrees "
+                     "with correlations_computed.csv: " +
+                     ", ".join(f'{r["corr_id"]} audit={r["value"]} canonical={_computed[r["corr_id"]]}'
+                               for r in _drifted))
+
 print("desk outputs written.")

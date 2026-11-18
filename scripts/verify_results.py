@@ -131,11 +131,14 @@ def main(argv=None):
 
         if key == "snapshot":
             if problems:
-                print("  VERDICT: the ledger does not reconcile with the 2026-11-14 read.")
+                print(f"  VERDICT: FAIL - the ledger does not reconcile with the 2026-11-14 read "
+                      f"({len(problems)} of {len(rec)} clubs).")
             else:
-                print("  VERDICT: internal arithmetic PASSES against the 2026-11-14 read.")
-                print("  Arithmetic only. NOT a statement of currency: the 2026-11-18 read "
-                      f"holds {newer_games} more settled games than this one does.")
+                print("  Arithmetic only: the 2026-11-18 read holds "
+                      f"{newer_games} more settled games than this one.")
+                print(f"  VERDICT: arithmetic PASSES against the 2026-11-14 read "
+                      f"(0 of {len(rec)} clubs mismatch); NOT a currency statement "
+                      f"({newer_games} later settled games are absent from the ledger).")
         else:
             if problems:
                 behind_current = True
