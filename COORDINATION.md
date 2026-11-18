@@ -2600,3 +2600,21 @@ link guards pass · `check_links.py` 47 pages, 2 379 internal / 5 098 external, 
   (weeks 1–9: 16+16+16+16+15+14+14+14+15) + the one Week 10 Thursday game (WAS at NYG) that was played before
   the 2026-11-14 snapshot. The brief's "136-game log" is the Weeks 1–9 corpus; the extra game is the verified
   Thursday result (F22). F88 updated to resolved-with-explanation.
+
+### T104 resolution (2026-11-18, session e2d7b11d): PR #48 closed as superseded
+
+PR #48 ("Final integration: fold PRs #14, #31, #37, #38", branch `arena/a47ccbb1-x2`) had been open with no commits
+since 2026-11-14 20:22 UTC, so it exceeded the 60-minute takeover rule by more than three days.
+
+Verified against git before acting:
+
+- The four PRs it folded (#14, #31, #37, #38) were merged to `main` independently through the normal PR sequence;
+  merged PRs #49–#58 followed, so the folded content is already on `main`.
+- The branch has an empty merge-base with `main` and a net diff of -9,624 / +1,382 lines. Merging it now would
+  regress `main`: 48 modern files would be deleted (scripts/verify_live.py, scripts/controls.py,
+  scripts/baselines.py, data/decision_readiness.csv, data/event_risk_week11.csv, and more) and build.py/model.py
+  rewritten to older versions.
+- No work was discarded: every file the branch changed is covered by the merged per-feature PRs.
+
+Action: a comment was posted on PR #48 recording the disposition and the git evidence, then the PR was closed as
+superseded. No open PRs remain on the repository.
