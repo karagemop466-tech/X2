@@ -1,0 +1,42 @@
+{
+  "purpose": "prices the P09 re-registration decision; publishes no model output and overwrites no canonical file",
+  "variants": {
+    "A_published": {
+      "corpus_rows": 137,
+      "neutral_flags": 0,
+      "seal": "5aaf29db31d18129ea0e6990c880716135d8db38568ec0db947396ceb8d1aef0"
+    },
+    "B_flags_only_137": {
+      "corpus_rows": 137,
+      "neutral_flags": 7,
+      "seal": "8ebfdc851be46be6a0d3bc46237baf031de373383e4f4d5addd67ddb067be99e"
+    },
+    "C_corpus_v2_150": {
+      "corpus_rows": 150,
+      "neutral_flags": 8,
+      "seal": "b32752af2aa7dc5ea1ac0df47050807aa0ae7b48bd38087f4fdcb42fedf601e5"
+    }
+  },
+  "controls": {
+    "shared_ab": 89,
+    "hit_a_on_ab": 0.651685393258427,
+    "hit_b_on_ab": 0.6292134831460674,
+    "hit_a_on_ac": 0.651685393258427,
+    "hit_c_on_ac": 0.6292134831460674,
+    "shared_ac": 89,
+    "added_rows": 13,
+    "hit_c_on_added": 0.23076923076923078,
+    "bet_changed_ab": 6,
+    "side_flip_ab": 0,
+    "bet_changed_ac": 6,
+    "side_flip_ac": 0
+  },
+  "week11_picks_flipped_flags_only": 0,
+  "week11_picks_flipped_v2": 0,
+  "canonical_files_written": "none \u2014 the three model_v2_research_*.csv registers and this summary only",
+  "reproduce": "python3 scripts/results_v2.py && python3 scripts/model_v2_research.py",
+  "official_sources": [
+    "https://www.nfl.com/schedules/2026/by-week/week-10",
+    "https://www.nfl.com/standings/"
+  ]
+}
