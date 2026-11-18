@@ -3000,3 +3000,15 @@ Each is referenced as a dependency where it blocks a number.
 - **Verification on the merged state:** `build.py` 52 pages, row-source and link guards pass · `drift_check.py` **43/43 registers** · `repo_audit.py` 22 checks, 0 failing · `verify_snapshot.py` 103 pass / 0 fail / 1 review · `verify_live_injuries.py` 347/347 · `check_links.py` 2 691 internal / 5 448 external, 0 broken · `npm run build && npm run verify` PASS.
 - **A pre-existing flag on `main`, not introduced here:** `verify_results.py` passes arithmetically against the 2026-11-14 snapshot (32/32 clubs) but **fails against the 2026-11-18 capture**, because the ledger holds 137 games and the current official standings imply 150. That is F106 (feed completeness) and is carried by the fourth session's feed work; it is noted here only so the next reader does not attribute it to this branch.
 - **Register IDs used (free on `main` at merge time):** **F115–F118**, **SRC-93–SRC-97**, **R65 / D65**. Three earlier collisions — F110–F113, SRC-91–92 — were resolved by re-deriving the next free ID from `main`, never by overwriting another session's rows.
+
+**Follow-up PR #79 merged and deployed.** https://github.com/karagemop466-tech/X2/pull/79 → merge commit
+**`6539aa7`** (`6539aa754de25af2168e7bf2d7b3a00c2fb75587`) at 2026-11-18T04:57:13Z; Pages build for `6539aa7`
+reported `built`. Live confirmation required a cache-busting query string (`?v=6539aa7`) because GitHub Pages' CDN
+served the previous HTML for several minutes after the build finished — worth knowing for the next session: a
+`built` status is not the same as a propagated page, and a deploy check that reads the bare URL can report stale
+content as current, which is the same failure mode this session spent its time fixing in the data layer.
+`docs/verification.html` now shows V18 as *"Verified as a transcription of the 2026-11-14 read (not a currency
+claim)"*.
+
+**Session f04dda73 is closed.** T114–T119 done and merged (PR #77 + #79), Pages live at
+https://karagemop466-tech.github.io/X2/, working tree clean, nothing claimed.
