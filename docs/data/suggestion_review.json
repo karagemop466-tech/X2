@@ -375,5 +375,18 @@
   "main_trade_off": "141 page reads for a column the model does not yet use.",
   "current_evidence_state": "Nine venues transcribed (data/international_games_2026.csv); one game-centre block read in the repository's history (SRC-73)",
   "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "suggestion_id": "S50",
+  "area": "Verification",
+  "topic": "Double-read every capture that becomes published data",
+  "depends_on_decision": "F16 (data rights) for who may read at all; the control itself needs no decision",
+  "recommended_path": "A now (model inputs double-read), move to B if a second divergence is ever found",
+  "recommendation_strength": "Strong - it is the only control that catches a mis-transcription, and it fired on first use",
+  "paths_available": "A double read for model inputs | B double read for every capture | C single read plus raw-body store",
+  "why_recommended": "346 of 347 players agreed between two readers of the same render; the one field that disagreed was a real error in this session's own capture, found only because a second reader existed. No hash or row-count pin would have caught it.",
+  "main_trade_off": "Twice the reads per capture, and it cannot fix a shared misreading of an ambiguous cell.",
+  "current_evidence_state": "scripts/capture_cross_check.py (5 checks, all pass) and data/capture_cross_check_2026-11-18.csv; F109",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/capture_cross_check_2026-11-18.csv"
  }
 ]

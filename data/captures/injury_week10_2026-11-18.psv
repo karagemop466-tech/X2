@@ -1,0 +1,349 @@
+# Transcription of https://www.nfl.com/injuries/ (page titled "Injuries - WEEK 10", 2026 season), 8 chunks read by hand from the fetch tool on 2026-11-18 (UTC). Practice: FP = Full Participation in Practice, LP = Limited Participation in Practice, DNP = Did Not Participate In Practice. Game status blank = page cell empty.
+game|team|player|position|injury|practice|game_status
+THU-NOV12|WAS|John Bates|TE||FP|
+THU-NOV12|WAS|Treylon Burks|WR||DNP|
+THU-NOV12|WAS|Jayden Daniels|QB||FP|
+THU-NOV12|WAS|Matt Gulbin|C||FP|
+THU-NOV12|WAS|Chig Okonkwo|TE||FP|
+THU-NOV12|WAS|Lucas Patrick|C|Concussion|DNP|Out
+THU-NOV12|WAS|Amik Robertson|CB||LP|
+THU-NOV12|WAS|Shy Tuttle|DT||FP|
+THU-NOV12|WAS|Colson Yankoff|TE|Knee|DNP|Out
+THU-NOV12|NYG|Abdul Carter|LB||FP|
+THU-NOV12|NYG|Jermaine Eluemunor|T||FP|
+THU-NOV12|NYG|Malik Harrison|LB|Groin|LP|Questionable
+THU-NOV12|NYG|Colton Hood|CB||FP|
+THU-NOV12|NYG|Theo Johnson|TE||FP|
+THU-NOV12|NYG|Charlie Jones|WR||FP|
+THU-NOV12|NYG|J.J. McCarthy|QB||FP|
+THU-NOV12|NYG|Darnell Mooney|WR||FP|
+THU-NOV12|NYG|Malik Nabers|WR||FP|
+THU-NOV12|NYG|Cam Skattebo|RB||FP|
+THU-NOV12|NYG|Andrew Thomas|T||FP|
+SUN-NOV15-0930|NE|Ben Brown|C|Knee|DNP|Out
+SUN-NOV15-0930|NE|A.J. Brown|WR|Ankle, Knee|LP|Questionable
+SUN-NOV15-0930|NE|Kevin Byard|S|Chest|FP|Questionable
+SUN-NOV15-0930|NE|Carlton Davis III|CB|Knee|DNP|Out
+SUN-NOV15-0930|NE|Reggie Gilliam|FB|Knee|LP|Questionable
+SUN-NOV15-0930|NE|TreVeyon Henderson|RB|Illness|DNP|Out
+SUN-NOV15-0930|NE|Hunter Henry|TE||LP|
+SUN-NOV15-0930|NE|Cameron Latu|TE|Back|LP|Questionable
+SUN-NOV15-0930|NE|Drake Maye|QB||FP|
+SUN-NOV15-0930|NE|Morgan Moses|T||FP|
+SUN-NOV15-0930|NE|Walter Rouse|T|Concussion|LP|Questionable
+SUN-NOV15-0930|NE|Brenden Schooler|S|Hamstring|LP|Questionable
+SUN-NOV15-0930|NE|Rhamondre Stevenson|RB|Knee|LP|Questionable
+SUN-NOV15-0930|NE|Greg Van Roten|G|Hamstring|FP|Questionable
+SUN-NOV15-0930|NE|Charles Woods|CB|Hamstring|FP|Questionable
+SUN-NOV15-0930|DET|Brian Branch|S||FP|
+SUN-NOV15-0930|DET|Jared Goff|QB||FP|
+SUN-NOV15-0930|DET|Kerby Joseph|S|Knee|DNP|Out
+SUN-NOV15-0930|DET|Cade Mays|C|Ankle|DNP|Out
+SUN-NOV15-0930|DET|D.J. Reed|CB|Hip|DNP|Out
+SUN-NOV15-0930|DET|Jacob Saylors|RB||FP|
+SUN-NOV15-0930|DET|Amon-Ra St. Brown|WR|Rib|LP|Questionable
+SUN-NOV15-0930|DET|Sione Vaki|RB|Ankle|LP|Questionable
+SUN-NOV15-0930|DET|DJ Wonnum|DE||FP|
+SUN-NOV15-1300|KC|Jeffrey Bassa|LB||FP|
+SUN-NOV15-1300|KC|Mansoor Delane|CB|Shoulder|FP|Questionable
+SUN-NOV15-1300|KC|Justin Fields|QB||FP|
+SUN-NOV15-1300|KC|Jaden Hicks|S||FP|
+SUN-NOV15-1300|KC|Travis Kelce|TE||FP|
+SUN-NOV15-1300|KC|Patrick Mahomes|QB||FP|
+SUN-NOV15-1300|KC|Jaylon Moore|T|Ankle|DNP|Out
+SUN-NOV15-1300|KC|Omarr Norman-Lott|DT|Knee|LP|Out
+SUN-NOV15-1300|KC|Jaydn Ott|RB|Hamstring|LP|Questionable
+SUN-NOV15-1300|KC|Rashee Rice|WR||FP|
+SUN-NOV15-1300|KC|Kenneth Walker III|RB|Groin|DNP|Questionable
+SUN-NOV15-1300|KC|Peter Woods|DT|Neck|DNP|Out
+SUN-NOV15-1300|KC|Xavier Worthy|WR||FP|
+SUN-NOV15-1300|ATL|Zachariah Branch|WR|Hamstring|DNP|Out
+SUN-NOV15-1300|ATL|Kendal Daniels|LB||FP|
+SUN-NOV15-1300|ATL|Divine Deablo|LB|Forearm|DNP|Doubtful
+SUN-NOV15-1300|ATL|Gervon Dexter Sr.|DT|Illness|LP|Questionable
+SUN-NOV15-1300|ATL|Jake Matthews|T||LP|
+SUN-NOV15-1300|ATL|Liam McCullough|LS||DNP|
+SUN-NOV15-1300|ATL|James Pearce Jr.|DE|Back|LP|Questionable
+SUN-NOV15-1300|ATL|Za'Darius Smith|DE||FP|
+SUN-NOV15-1300|ATL|Jawaan Taylor|T||LP|
+SUN-NOV15-1300|ATL|Cameron Thomas|DE||FP|
+SUN-NOV15-1300|ATL|Josh Woods|LB|Ankle|FP|Questionable
+SUN-NOV15-1300|MIN|Jordan Addison|WR|Thumb|LP|Questionable
+SUN-NOV15-1300|MIN|Blake Cashman|LB|Concussion|LP|Out
+SUN-NOV15-1300|MIN|Christian Darrisaw|T||DNP|
+SUN-NOV15-1300|MIN|T.J. Hockenson|TE|Wrist, Chest|DNP|Out
+SUN-NOV15-1300|MIN|Tyrion Ingram-Dawkins|DT|Ankle|DNP|Out
+SUN-NOV15-1300|MIN|Theo Jackson|S||FP|
+SUN-NOV15-1300|MIN|Jauan Jennings|WR|Calf|DNP|Out
+SUN-NOV15-1300|MIN|Josh Metellus|S|Shoulder|LP|Questionable
+SUN-NOV15-1300|MIN|Kyler Murray|QB|Hamstring|DNP|Out
+SUN-NOV15-1300|MIN|Harrison Smith|S||LP|
+SUN-NOV15-1300|MIN|Kyle Van Noy|LB|Calf|LP|Questionable
+SUN-NOV15-1300|MIN|Jay Ward|S||FP|
+SUN-NOV15-1300|MIN|Carson Wentz|QB||FP|
+SUN-NOV15-1300|GB|Aaron Banks|G||LP|
+SUN-NOV15-1300|GB|Chris Brooks|RB|Ankle|LP|Questionable
+SUN-NOV15-1300|GB|Javon Bullard|S|Ankle, Knee|LP|Questionable
+SUN-NOV15-1300|GB|Zaire Franklin|LB|Shin|DNP|Doubtful
+SUN-NOV15-1300|GB|Travis Glover|G|Knee|LP|Questionable
+SUN-NOV15-1300|GB|Ty'Ron Hopper|LB||FP|
+SUN-NOV15-1300|GB|Josh Jacobs|RB|Finger|DNP|Out
+SUN-NOV15-1300|GB|Xavier McKinney|S|Foot|LP|Questionable
+SUN-NOV15-1300|GB|Bo Melton|WR||FP|
+SUN-NOV15-1300|GB|Skyy Moore|WR|Ankle|LP|Questionable
+SUN-NOV15-1300|GB|Micah Parsons|LB|Knee, Illness|LP|Out
+SUN-NOV15-1300|GB|Sean Rhyan|C|Ankle|DNP|Out
+SUN-NOV15-1300|GB|Trey Smack|K||FP|
+SUN-NOV15-1300|GB|Lukas Van Ness|LB|Back|LP|Questionable
+SUN-NOV15-1300|GB|Josh Whyle|TE|Concussion|DNP|Out
+SUN-NOV15-1300|GB|Savion Williams|WR||LP|
+SUN-NOV15-1300|GB|Kevin Zeitler|G|Ankle, Triceps|DNP|Questionable
+SUN-NOV15-1300|JAX|Jessie Bates|S|Not injury related - resting player|LP|Out
+SUN-NOV15-1300|JAX|Ezra Cleveland|G||FP|
+SUN-NOV15-1300|JAX|Branson Combs|LB||FP|
+SUN-NOV15-1300|JAX|Jordan Davis|DT|Not injury related - resting player|LP|Out
+SUN-NOV15-1300|JAX|BJ Green II|DE|Forearm|FP|Out
+SUN-NOV15-1300|JAX|Robert Hainsey|C|Concussion|LP|Questionable
+SUN-NOV15-1300|JAX|Antonio Johnson|S||LP|
+SUN-NOV15-1300|JAX|Jakobi Meyers|WR||LP|
+SUN-NOV15-1300|JAX|Chris Rodriguez Jr.|RB||LP|
+SUN-NOV15-1300|JAX|Bhayshul Tuten|RB||LP|
+SUN-NOV15-1300|JAX|Travon Walker|DE||LP|
+SUN-NOV15-1300|TEN|Cody Barton|LB|Concussion|DNP|Out
+SUN-NOV15-1300|TEN|John Franklin-Myers|DE||FP|
+SUN-NOV15-1300|TEN|Marcus Harris|CB||FP|
+SUN-NOV15-1300|TEN|Anthony Hill Jr.|LB|Neck|DNP|Out
+SUN-NOV15-1300|TEN|Jaylon Jones|CB||FP|
+SUN-NOV15-1300|TEN|JC Latham|T||FP|
+SUN-NOV15-1300|TEN|Tony Pollard|RB||FP|
+SUN-NOV15-1300|TEN|Peter Skoronski|G|Hamstring|DNP|Out
+SUN-NOV15-1300|TEN|Tyjae Spears|RB|Knee|FP|Questionable
+SUN-NOV15-1300|TEN|Carnell Tate|WR|Shoulder|DNP|Out
+SUN-NOV15-1300|TEN|Tommy Townsend|P|Knee, Achilles|DNP|Out
+SUN-NOV15-1300|TEN|Kevin Winston Jr.|S||FP|
+SUN-NOV15-1300|BUF|Alec Anderson|G||FP|
+SUN-NOV15-1300|BUF|Christian Benford|CB|Wrist|FP|Questionable
+SUN-NOV15-1300|BUF|Terrel Bernard|LB||DNP|
+SUN-NOV15-1300|BUF|Spencer Brown|T|Ankle|DNP|Doubtful
+SUN-NOV15-1300|BUF|Dion Dawkins|T||FP|
+SUN-NOV15-1300|BUF|Sam Franklin Jr.|S|Shoulder|LP|Questionable
+SUN-NOV15-1300|BUF|Greg Gaines|DT||FP|
+SUN-NOV15-1300|BUF|Jordan Hancock|CB|Hamstring|FP|Questionable
+SUN-NOV15-1300|BUF|Dalton Kincaid|TE||FP|
+SUN-NOV15-1300|BUF|Connor McGovern|C||FP|
+SUN-NOV15-1300|BUF|Ed Oliver|DE||DNP|
+SUN-NOV15-1300|BUF|Ar'maj Reed-Adams|G||FP|
+SUN-NOV15-1300|BUF|T.J. Sanders|DE||FP|
+SUN-NOV15-1300|BUF|Tyrell Shavers|WR|Knee|FP|Questionable
+SUN-NOV15-1300|NYJ|Jarvis Brownlee Jr.|CB|Illness|LP|Questionable
+SUN-NOV15-1300|NYJ|Omar Cooper Jr.|WR|Ankle|FP|Questionable
+SUN-NOV15-1300|NYJ|Adonai Mitchell|WR|Knee|FP|Questionable
+SUN-NOV15-1300|NYJ|Joseph Ossai|DE|Ankle|FP|Questionable
+SUN-NOV15-1300|NYJ|VJ Payne|S|Knee|FP|Questionable
+SUN-NOV15-1300|NYJ|Harrison Phillips|DT|Ankle|FP|Questionable
+SUN-NOV15-1300|NYJ|Trevin Wallace|LB|Groin|DNP|Out
+SUN-NOV15-1300|NYJ|Garrett Wilson|WR|Concussion|FP|Questionable
+SUN-NOV15-1300|NYJ|Nahshon Wright|CB|Back|FP|Questionable
+SUN-NOV15-1300|MIA|Tucker Addington|LS||LP|
+SUN-NOV15-1300|MIA|Kaytron Allen|RB||FP|
+SUN-NOV15-1300|MIA|Darrell Baker Jr.|CB|Knee|FP|Questionable
+SUN-NOV15-1300|MIA|Chris Bell|WR|Knee|DNP|Doubtful
+SUN-NOV15-1300|MIA|Aaron Brewer|C|Concussion|DNP|Out
+SUN-NOV15-1300|MIA|Malik Herring|DE||FP|
+SUN-NOV15-1300|MIA|Will Kacmarek|TE||FP|
+SUN-NOV15-1300|MIA|Michael Taaffe|S||FP|
+SUN-NOV15-1300|MIA|Dante Trader Jr.|S||FP|
+SUN-NOV15-1300|MIA|Jared Wayne|WR|Quadricep|DNP|Out
+SUN-NOV15-1300|MIA|Jaylen Wright|RB||FP|
+SUN-NOV15-1300|IND|Mo Alie-Cox|TE|Groin|DNP|Out
+SUN-NOV15-1300|IND|CJ Allen|LB||FP|
+SUN-NOV15-1300|IND|Jaylon Carlies|LB|Neck|DNP|Out
+SUN-NOV15-1300|IND|Akeem Davis-Gaither|LB|Knee|DNP|Out
+SUN-NOV15-1300|IND|A.J. Haulcy|S||FP|
+SUN-NOV15-1300|IND|Arden Key|DE||FP|
+SUN-NOV15-1300|IND|Will Mallory|TE|Hamstring|LP|Questionable
+SUN-NOV15-1300|IND|Luke Rhodes|LS|Hamstring|DNP|Out
+SUN-NOV15-1300|IND|Grover Stewart|DT||FP|
+SUN-NOV15-1300|IND|Jonathan Taylor|RB||FP|
+SUN-NOV15-1300|IND|Jerry Tillery|DT|Calf|DNP|Out
+SUN-NOV15-1300|IND|Jalen Travis|T|Knee|DNP|Out
+SUN-NOV15-1300|IND|Justin Walley|CB||FP|
+SUN-NOV15-1300|IND|Charvarius Ward|CB||FP|
+SUN-NOV15-1300|CAR|Jonathon Brooks|RB|Groin|LP|Doubtful
+SUN-NOV15-1300|CAR|Brady Christensen|G|Hamstring|FP|Questionable
+SUN-NOV15-1300|CAR|Trevor Etienne|RB||FP|
+SUN-NOV15-1300|CAR|Chuba Hubbard|RB||FP|
+SUN-NOV15-1300|CAR|Lee Hunter|DT||FP|
+SUN-NOV15-1300|CAR|Mike Jackson|CB|Groin|LP|Doubtful
+SUN-NOV15-1300|CAR|Will Lee III|CB|Hamstring|LP|Questionable
+SUN-NOV15-1300|CAR|Xavier Legette|WR|Knee|FP|Questionable
+SUN-NOV15-1300|CAR|Damien Lewis|G||FP|
+SUN-NOV15-1300|CAR|Bobby Okereke|LB|Foot|DNP|Out
+SUN-NOV15-1300|CAR|Jaelan Phillips|LB|Hamstring|FP|Questionable
+SUN-NOV15-1300|CAR|Torricelli Simpkins III|G||FP|
+SUN-NOV15-1300|NO|Kelvin Banks Jr.|T||FP|
+SUN-NOV15-1300|NO|CJ Donaldson|RB|Shoulder|DNP|Out
+SUN-NOV15-1300|NO|David Edwards|G||FP|
+SUN-NOV15-1300|NO|Martin Emerson|CB|Shin|LP|Questionable
+SUN-NOV15-1300|NO|Travis Etienne|RB|Hamstring|FP|Questionable
+SUN-NOV15-1300|NO|Noah Fant|TE||FP|
+SUN-NOV15-1300|NO|Taliese Fuaga|T|Knee|DNP|Out
+SUN-NOV15-1300|NO|Alvin Kamara|RB||FP|
+SUN-NOV15-1300|NO|Erik McCoy|C|Biceps|DNP|Out
+SUN-NOV15-1300|NO|Christen Miller|DT|Knee|DNP|Out
+SUN-NOV15-1300|NO|Asim Richards|T||FP|
+SUN-NOV15-1300|NO|Quincy Riley|CB||FP|
+SUN-NOV15-1300|HOU|Azeez Al-Shaair|LB|Groin, Not injury related - personal matter|DNP|Out
+SUN-NOV15-1300|HOU|Will Anderson Jr.|DE|Ankle|DNP|Questionable
+SUN-NOV15-1300|HOU|Reed Blankenship|S||FP|
+SUN-NOV15-1300|HOU|Trent Brown|T|Wrist, Illness|DNP|Questionable
+SUN-NOV15-1300|HOU|Tank Dell|WR||FP|
+SUN-NOV15-1300|HOU|Blake Fisher|T||FP|
+SUN-NOV15-1300|HOU|Marvin Harrison Jr.|WR|Hamstring|DNP|Out
+SUN-NOV15-1300|HOU|Jacob Hummel|LB|Groin|FP|Questionable
+SUN-NOV15-1300|HOU|Danielle Hunter|DE|Hamstring|DNP|Out
+SUN-NOV15-1300|HOU|Brevin Jordan|TE|Finger, Foot|DNP|Out
+SUN-NOV15-1300|HOU|Woody Marks|RB||FP|
+SUN-NOV15-1300|HOU|David Montgomery|RB|Groin|FP|Questionable
+SUN-NOV15-1300|HOU|Keylan Rutledge|G|Neck, Shoulder|DNP|Out
+SUN-NOV15-1300|HOU|Jaylin Smith|CB|Hamstring|FP|Questionable
+SUN-NOV15-1300|HOU|Wyatt Teller|G|Illness, Back|LP|Questionable
+SUN-NOV15-1300|HOU|Tommy Togiai|DT||FP|
+SUN-NOV15-1300|CLE|Austin Barber|T||FP|
+SUN-NOV15-1300|CLE|Denzel Boston|WR|Toe|LP|Questionable
+SUN-NOV15-1300|CLE|Michael Burton|FB|Calf|DNP|Out
+SUN-NOV15-1300|CLE|Maliek Collins|DT||FP|
+SUN-NOV15-1300|CLE|Harold Fannin Jr.|TE||FP|
+SUN-NOV15-1300|CLE|Ronnie Hickman Jr.|S|Concussion|DNP|Out
+SUN-NOV15-1300|CLE|Tytus Howard|T||FP|
+SUN-NOV15-1300|CLE|Elgton Jenkins|C||FP|
+SUN-NOV15-1300|CLE|Donovan McMillon|S||LP|
+SUN-NOV15-1300|CLE|Carson Schwesinger|LB||FP|
+SUN-NOV15-1300|CLE|Denzel Ward|CB||LP|
+SUN-NOV15-1300|CLE|Quincy Williams|LB||FP|
+SUN-NOV15-1605|LAR|Davis Allen|TE|Oblique|LP|Questionable
+SUN-NOV15-1605|LAR|Steve Avila|G|Hamstring|DNP|Out
+SUN-NOV15-1605|LAR|Joe Cardona|LS|Ankle|LP|Questionable
+SUN-NOV15-1605|LAR|Kam Curl|S|Toe|LP|Questionable
+SUN-NOV15-1605|LAR|Aaron Donald|DT||DNP|
+SUN-NOV15-1605|LAR|Terrance Ferguson|TE|Ankle, Hamstring|DNP|Out
+SUN-NOV15-1605|LAR|Braden Fiske|DT||DNP|
+SUN-NOV15-1605|LAR|Myles Garrett|LB|Knee, Not injury related - resting player|DNP|Questionable
+SUN-NOV15-1605|LAR|Tyler Higbee|TE||LP|
+SUN-NOV15-1605|LAR|Trent McDuffie|CB|Back|LP|Questionable
+SUN-NOV15-1605|LAR|Puka Nacua|WR||DNP|
+SUN-NOV15-1605|LAR|Colby Parkinson|TE||FP|
+SUN-NOV15-1605|LAR|Matthew Stafford|QB||FP|
+SUN-NOV15-1605|LAR|Byron Young|LB||DNP|
+SUN-NOV15-1605|AZ|Budda Baker|S||FP|
+SUN-NOV15-1605|AZ|Zachary Carter|DT|Knee|LP|Out
+SUN-NOV15-1605|AZ|Hjalte Froholdt|C|Concussion|DNP|Out
+SUN-NOV15-1605|AZ|Jon Gaines II|G|Ankle|DNP|Out
+SUN-NOV15-1605|AZ|Bam Knight|RB||FP|
+SUN-NOV15-1605|AZ|Hunter Long|TE|Knee|LP|Questionable
+SUN-NOV15-1605|AZ|Roy Lopez|DT|Toe, Ankle|LP|Questionable
+SUN-NOV15-1605|AZ|Max Melton|CB|Knee, Hand|LP|Questionable
+SUN-NOV15-1605|AZ|Darius Robinson|DT|Wrist|LP|Questionable
+SUN-NOV15-1605|AZ|Isaac Seumalo|G||FP|
+SUN-NOV15-1605|AZ|Dante Stills|DT||FP|
+SUN-NOV15-1605|AZ|Josh Sweat|LB||FP|
+SUN-NOV15-1605|AZ|Jayden Williams|T|Knee|LP|Questionable
+SUN-NOV15-1605|AZ|Mack Wilson|LB||FP|
+SUN-NOV15-1605|AZ|Andrew Wingard|S|Groin|DNP|Questionable
+SUN-NOV15-1605|SEA|AJ Barner|TE||FP|
+SUN-NOV15-1605|SEA|Anthony Bradford|G||FP|
+SUN-NOV15-1605|SEA|Charles Cross|T|Ankle|DNP|Out
+SUN-NOV15-1605|SEA|Sam Darnold|QB|Ribs, Quadricep|DNP|Out
+SUN-NOV15-1605|SEA|Derick Hall|LB||DNP|
+SUN-NOV15-1605|SEA|Drew Lock|QB||LP|
+SUN-NOV15-1605|SEA|Quenton Nelson|G|Knee|DNP|Out
+SUN-NOV15-1605|SEA|Uchenna Nwosu|LB||FP|
+SUN-NOV15-1605|SEA|Patrick O'Connell|LB||FP|
+SUN-NOV15-1605|SEA|Connor O'Toole|LB||FP|
+SUN-NOV15-1605|SEA|Brandon Pili|DT||FP|
+SUN-NOV15-1605|SEA|Jarran Reed|DT||FP|
+SUN-NOV15-1605|SEA|Rashid Shaheed|WR||FP|
+SUN-NOV15-1605|SEA|Jaxon Smith-Njigba|WR||FP|
+SUN-NOV15-1605|SEA|Leonard Williams|DT|Stinger|DNP|Out
+SUN-NOV15-1605|LV|Thomas Booker|DT|Ankle|FP|Questionable
+SUN-NOV15-1605|LV|Foley Fatukasi|DT||FP|
+SUN-NOV15-1605|LV|Ian Thomas|TE||FP|
+SUN-NOV15-1605|LV|Dont'e Thornton Jr.|WR|Back|DNP|Questionable
+SUN-NOV15-1605|LV|Trey Zuhn III|C||FP|
+SUN-NOV15-1625|SF|Mike Evans|WR|Achilles|DNP|Out
+SUN-NOV15-1625|SF|Renardo Green|CB|Back|LP|Questionable
+SUN-NOV15-1625|SF|Dre Greenlaw|LB|Knee|LP|Questionable
+SUN-NOV15-1625|SF|Nate Hobbs|CB|Groin|FP|Questionable
+SUN-NOV15-1625|SF|Deommodore Lenoir|CB|Foot|LP|Questionable
+SUN-NOV15-1625|SF|Christian McCaffrey|RB||FP|
+SUN-NOV15-1625|SF|Siran Neal|S||FP|
+SUN-NOV15-1625|SF|Demarcus Robinson|WR||FP|
+SUN-NOV15-1625|SF|Deebo Samuel Sr.|WR||FP|
+SUN-NOV15-1625|SF|Upton Stout|CB|Shoulder, Neck|LP|Questionable
+SUN-NOV15-1625|SF|C.J. West|DT|Knee|FP|Questionable
+SUN-NOV15-1625|SF|Trent Williams|T|Shoulder|DNP|Questionable
+SUN-NOV15-1625|DAL|DaRon Bland|CB|Ankle|LP|Questionable
+SUN-NOV15-1625|DAL|Jonathan Bullard|DT|Calf|FP|Questionable
+SUN-NOV15-1625|DAL|Alijah Clark|S|Illness|DNP|Questionable
+SUN-NOV15-1625|DAL|Donovan Ezeiruaku|LB|Ankle|DNP|Out
+SUN-NOV15-1625|DAL|Jake Ferguson|TE|Knee, Ankle|DNP|Out
+SUN-NOV15-1625|DAL|Tyler Goodson|RB|Ankle, Knee|DNP|Out
+SUN-NOV15-1625|DAL|Malik Hooker|S||DNP|
+SUN-NOV15-1625|DAL|Marist Liufau|LB||FP|
+SUN-NOV15-1625|DAL|P.J. Locke|S|Concussion|DNP|Out
+SUN-NOV15-1625|DAL|Von Miller|LB||DNP|
+SUN-NOV15-1625|DAL|Jonathan Mingo|WR|Ankle|DNP|Out
+SUN-NOV15-1625|DAL|Devin Moore|CB|Hip|FP|Questionable
+SUN-NOV15-1625|DAL|DeMarvion Overshown|LB||FP|
+SUN-NOV15-1625|DAL|George Pickens|WR||FP|
+SUN-NOV15-1625|DAL|Joey Porter Jr.|CB|Ankle, Foot|LP|Questionable
+SUN-NOV15-1625|DAL|Luke Schoonmaker|TE||FP|
+SUN-NOV15-1625|DAL|Brevyn Spann-Ford|TE||FP|
+SUN-NOV15-1625|DAL|Juanyeh Thomas|S|Hamstring|DNP|Doubtful
+SUN-NOV15-1625|DAL|KaVontae Turpin|WR||FP|
+SUN-NOV15-2020|PIT|Brandin Echols|CB||FP|
+SUN-NOV15-2020|PIT|DeShon Elliott|S||FP|
+SUN-NOV15-2020|PIT|Derrick Harmon|DT|Foot|FP|Questionable
+SUN-NOV15-2020|PIT|Cameron Heyward|DT||FP|
+SUN-NOV15-2020|PIT|Ben Skowronek|WR||FP|
+SUN-NOV15-2020|PIT|Doneiko Slaughter|CB||FP|
+SUN-NOV15-2020|PIT|Darnell Washington|TE||FP|
+SUN-NOV15-2020|PIT|T.J. Watt|LB||FP|
+SUN-NOV15-2020|CIN|Jonathan Allen|DT||LP|
+SUN-NOV15-2020|CIN|Jalen Davis|CB|Hamstring|FP|Doubtful
+SUN-NOV15-2020|CIN|Kyle Dugger|S|Quadricep|DNP|Out
+SUN-NOV15-2020|CIN|Dylan Fairchild|G||FP|
+SUN-NOV15-2020|CIN|B.J. Hill|DT||DNP|
+SUN-NOV15-2020|CIN|Andrei Iosivas|WR|Thumb|FP|Doubtful
+SUN-NOV15-2020|CIN|Dexter Lawrence|DT||DNP|
+SUN-NOV15-2020|CIN|Brian Parker II|G|Knee|FP|Doubtful
+SUN-NOV15-2020|CIN|DJ Turner II|CB||FP|
+MON-NOV16|LAC|Kayode Awosika|G|Fibula|FP|Questionable
+MON-NOV16|LAC|Bud Dupree|DE||FP|
+MON-NOV16|LAC|Justin Eboigbe|DE|Ankle|LP|Questionable
+MON-NOV16|LAC|Alex Harkey|G||FP|
+MON-NOV16|LAC|Tre Harris|WR||FP|
+MON-NOV16|LAC|Cam Hart|CB||FP|
+MON-NOV16|LAC|Daiyan Henley|LB||FP|
+MON-NOV16|LAC|Deane Leonard|CB||FP|
+MON-NOV16|LAC|Khalil Mack|LB||FP|
+MON-NOV16|LAC|Ladd McConkey|WR|Back|DNP|Questionable
+MON-NOV16|LAC|Keaton Mitchell|RB||FP|
+MON-NOV16|LAC|David Njoku|TE|Fibula|FP|Questionable
+MON-NOV16|LAC|Denzel Perryman|LB|Pectoral|FP|Questionable
+MON-NOV16|LAC|Trey Pipkins|T|Not injury related - personal matter, Knee|LP|Questionable
+MON-NOV16|LAC|Rodney Shelley|CB||FP|
+MON-NOV16|LAC|Branson Taylor|G|Ankle|DNP|Out
+MON-NOV16|LAC|Brenen Thompson|WR|Hamstring|DNP|Doubtful
+MON-NOV16|LAC|Isas Waxter|CB|Ankle|DNP|Out
+MON-NOV16|LAC|Kendall Williamson|S|Calf|DNP|Out
+MON-NOV16|BAL|Rasheen Ali|RB||FP|
+MON-NOV16|BAL|Rashod Bateman|WR||FP|
+MON-NOV16|BAL|Calais Campbell|DT||DNP|
+MON-NOV16|BAL|Kyle Hamilton|S||FP|
+MON-NOV16|BAL|Jaylinn Hawkins|S|Knee|LP|Out
+MON-NOV16|BAL|Matthew Hibner|TE||FP|
+MON-NOV16|BAL|Olaivavega Ioane|G||FP|
+MON-NOV16|BAL|Adam Randall|RB|Neck, Hamstring|FP|Questionable
+MON-NOV16|BAL|Ronnie Stanley|T||DNP|
+MON-NOV16|BAL|Nate Wiggins|CB||FP|

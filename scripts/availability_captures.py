@@ -65,18 +65,36 @@ CAPTURES = [
     },
     {
         "capture_id": "CAP-02",
-        "file": "injuries_2026-11-18.tsv",
+        "file": "injuries_2026-11-18_cf85d485.tsv",
         "week_label": "WEEK 10",
         "read_utc": "2026-11-18T03:46Z",
         "read_precision": "minute — transcription time of the same fetch session that read all eight chunks",
         "method": "manual transcription of every rendered chunk of the live page, plus the "
                   "?season=2026&week=11&type=REG render, which returned the Week 10 tables unchanged",
-        "note": "First second-read of one report in this repository, which is what makes a delta possible.",
+        "note": "Second read of one report in this repository, which is what makes a delta possible. One field "
+                "of the 347 rows was mis-transcribed and is corrected below by a third read: JAX Chris Rodriguez "
+                "Jr., practice status. The raw PSV and the session TSV keep the value as read; the derived "
+                "registers use the corrected value.",
     },
 ]
 
 # Pinned expectations for today's read. Change them only with a fresh official read.
 PIN = {"rows": 347, "teams": 28, "games": 14}
+
+# Transcription corrections. The raw capture and its TSV are left exactly as read; the correction is applied
+# only when the derived registers (delta, summary, reverification) are built, and every correction carries the
+# official read that overrides it. Found by cross-checking this capture against the independent transcription
+# session d0ede22d made of the same page seven minutes earlier (data/captures/injury_week10_2026-11-18.psv):
+# 346 of 347 rows agreed, and the single disagreement is this row.
+CORRECTIONS = [
+    {"team_abbr": "JAX", "player": "Chris Rodriguez Jr.", "field": "practice_status",
+     "as_read": "Did Not Participate In Practice", "official_value": "Limited Participation in Practice",
+     "evidence": "Third read of https://www.nfl.com/injuries/ chunk 1 of 8 at 2026-11-18T04:12Z renders "
+                 "'Chris Rodriguez Jr. | RB |  | Limited Participation in Practice' with an empty Game Status "
+                 "cell, which agrees with data/captures/injury_week10_2026-11-18.psv (LP) and with the "
+                 "2026-11-14 capture. The 2026-11-18 read in this session's raw PSV mis-transcribed the cell.",
+     "source_url": INJURY_URL},
+]
 
 PRACTICE = {"F": "Full Participation in Practice",
             "L": "Limited Participation in Practice",
@@ -99,9 +117,14 @@ def read_tsv(path):
 
 
 def normalise_new_capture():
-    """injuries_2026-11-18_raw.psv -> injuries_2026-11-18.tsv (six columns, tab separated)."""
+    """injuries_2026-11-18_raw.psv -> injuries_2026-11-18_cf85d485.tsv (six columns, tab separated).
+
+    The path carries this session's id on purpose: session d0ede22d transcribed the same page independently
+    on the same morning and writes data/verification_inputs/injuries_2026-11-18.tsv. Two files, two readers,
+    one page — that is the only way the disagreement below was ever findable.
+    """
     src = os.path.join(VER, "injuries_2026-11-18_raw.psv")
-    dst = os.path.join(VER, "injuries_2026-11-18.tsv")
+    dst = os.path.join(VER, "injuries_2026-11-18_cf85d485.tsv")
     rows = []
     with open(src, encoding="utf-8") as f:
         for ln, line in enumerate(f, start=1):
@@ -152,14 +175,44 @@ def main():
             if not r[c]:
                 fail(f"required field {c} blank for {r['team_abbr']} {r['player']}")
 
+    derived_rows = [dict(r) for r in new_rows]
+    corrected = 0
+    for cor in CORRECTIONS:
+        hit = [r for r in derived_rows if r["team_abbr"] == cor["team_abbr"] and r["player"] == cor["player"]]
+        if len(hit) != 1:
+            fail(f"correction for {cor['team_abbr']} {cor['player']} matches {len(hit)} rows, expected exactly 1")
+        if hit[0][cor["field"]] != cor["as_read"]:
+            fail(f"correction for {cor['team_abbr']} {cor['player']}.{cor['field']}: the capture already holds "
+                 f"{hit[0][cor['field']]!r}, not {cor['as_read']!r} — the correction is stale, delete it")
+        hit[0][cor["field"]] = cor["official_value"]
+        corrected += 1
+    new_rows = derived_rows
+    # 5. published snapshot vs today's read, club by club
+    pub = []
+    with open(os.path.join(DATA, SNAPSHOT), encoding="utf-8", newline="") as f:
+        for r in csv.DictReader(f):
+            pub.append({c: (r.get(c) or "").strip() for c in COLS})
+    pub_by = defaultdict(list)
+    for r in pub:
+        pub_by[r["team_abbr"]].append(r)
+    def _payload(rows):
+        return sorted("|".join(r[c] for c in COLS) for r in rows)
+    _pub_p, _old_p, _new_p = _payload(pub), _payload(old_rows), _payload(new_rows)
+    if _pub_p == _new_p:
+        equals_label = "CAP-02 (the 2026-11-18 read, after the correction)"
+    elif _pub_p == _old_p:
+        equals_label = "CAP-01 (the 2026-11-14 read)"
+    else:
+        equals_label = ""
+
     # 2. capture ledger
     ledger = []
     for cap in CAPTURES:
         path = os.path.join(VER, cap["file"])
-        rows = new_rows if cap["file"].endswith("2026-11-18.tsv") else old_rows
+        rows = new_rows if cap["capture_id"] == "CAP-02" else old_rows
         if not os.path.exists(path):
             fail(f"capture payload {cap['file']} is missing")
-        tsv_bytes = open(path, "rb").read()
+        tsv_bytes = open(path, "rb").read()  # hash of the file as read, before any correction
         ledger.append({
             "capture_id": cap["capture_id"],
             "source_url": INJURY_URL,
@@ -173,6 +226,7 @@ def main():
             "doubtful_designations": str(sum(1 for r in rows if r["game_status"] == "Doubtful")),
             "questionable_designations": str(sum(1 for r in rows if r["game_status"] == "Questionable")),
             "undesignated_rows": str(sum(1 for r in rows if not r["game_status"])),
+            "fields_corrected": str(corrected if cap["capture_id"] == "CAP-02" else 0),
             "sha256_payload": payload_sha256(rows),
             "sha256_capture_file": hashlib.sha256(tsv_bytes).hexdigest(),
             "delta_capable": "yes — two dated reads of the same report exist" if cap["capture_id"] == "CAP-02" else "yes — paired with CAP-02",
@@ -181,8 +235,8 @@ def main():
     write_csv("availability_captures.csv", ledger, [
         "capture_id", "source_url", "week_label_as_rendered", "read_utc", "read_time_precision",
         "capture_method", "rows", "clubs", "out_designations", "doubtful_designations",
-        "questionable_designations", "undesignated_rows", "sha256_payload", "sha256_capture_file",
-        "delta_capable", "note"])
+        "questionable_designations", "undesignated_rows", "fields_corrected", "sha256_payload",
+        "sha256_capture_file", "delta_capable", "note"])
 
     # 3/4. the delta: change between the two reads, per player
     def key(r):
@@ -239,7 +293,9 @@ def main():
     teams_changed = sorted({d["team_abbr"] for d in delta})
     summary_rows = [
         ("rows_in_capture_2026_11_14", str(len(old_rows)), "data/verification_inputs/injuries_2026-11-14.tsv"),
-        ("rows_in_capture_2026_11_18", str(len(new_rows)), "data/verification_inputs/injuries_2026-11-18.tsv"),
+        ("rows_in_capture_2026_11_18", str(len(new_rows)), "data/verification_inputs/injuries_2026-11-18_cf85d485.tsv "
+         "(as read) — session d0ede22d's independent transcription of the same page is "
+         "data/verification_inputs/injuries_2026-11-18.tsv"),
         ("rows_added_between_reads", str(by_change.get("row_added", 0)), "two dated reads"),
         ("rows_removed_between_reads", str(by_change.get("row_removed", 0)), "two dated reads"),
         ("practice_status_changes", str(sum(1 for d in delta if "practice_status" in d["change"])), "two dated reads"),
@@ -249,20 +305,18 @@ def main():
         ("clubs_with_any_change", str(len(teams_changed)), "two dated reads"),
         ("clubs_listed", f"{len({r['team_abbr'] for r in new_rows})} of 32", "Week 10 report: 28 clubs played, 4 were on bye"),
         ("week_label_rendered_on_2026_11_18", "WEEK 10", "the page heading, four days after the Week 10 games and the day before Week 11 kicks off"),
-        ("published_snapshot_rows", str(len(old_rows)), "data/injuries_week10_2026.csv equals CAP-01 exactly"),
+        ("published_snapshot_rows", str(len(pub)), "row count of data/injuries_week10_2026.csv as it stands now"),
+        ("published_snapshot_equals",
+         equals_label or "neither capture — the published table matches no read on file",
+         "computed by comparing the published file with CAP-01 and with the corrected CAP-02, row for row"),
+        ("fields_corrected_in_this_capture", str(corrected),
+         "one field of 347 rows, settled by a third read; see the correction evidence in this script"),
     ]
     write_csv("availability_delta_summary.csv",
               [{"metric": m, "value": v, "basis": b, "source_url": INJURY_URL} for m, v, b in summary_rows],
               ["metric", "value", "basis", "source_url"])
 
     # 5. published snapshot vs today's read, club by club
-    pub = []
-    with open(os.path.join(DATA, SNAPSHOT), encoding="utf-8", newline="") as f:
-        for r in csv.DictReader(f):
-            pub.append({c: (r.get(c) or "").strip() for c in COLS})
-    pub_by = defaultdict(list)
-    for r in pub:
-        pub_by[r["team_abbr"]].append(r)
     new_by_team = defaultdict(list)
     for r in new_rows:
         new_by_team[r["team_abbr"]].append(r)
@@ -287,7 +341,9 @@ def main():
         checks.append({
             "check_id": f"LR18-{t}",
             "unit": f"{t} Week 10 injury block",
-            "checked_against": "https://www.nfl.com/injuries/ (all 8 rendered chunks, read 2026-11-18)",
+            "checked_against": INJURY_URL,
+            "read_detail": "all 8 rendered chunks of the live page, read 2026-11-18; the published table is "
+                            "compared with the corrected CAP-02 payload",
             "repo_rows": str(len(pub_by[t])),
             "live_rows": str(len(new_by_team[t])),
             "missing_from_repo": "; ".join(f"{m[1]}" for m in missing),
@@ -299,7 +355,7 @@ def main():
             "source_url": INJURY_URL,
         })
     write_csv("live_reverification_2026-11-18.csv", checks, [
-        "check_id", "unit", "checked_against", "repo_rows", "live_rows", "missing_from_repo",
+        "check_id", "unit", "checked_against", "read_detail", "repo_rows", "live_rows", "missing_from_repo",
         "extra_in_repo", "field_differences", "repo_equals_2026_11_14_capture", "result",
         "read_utc", "source_url"])
 

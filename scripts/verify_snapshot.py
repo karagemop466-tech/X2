@@ -100,23 +100,28 @@ def slugify(value):
 
 
 def load_official():
+    """Official read of 2026-11-18 (data/captures/injury_week10_2026-11-18.psv).
+
+    The 2026-11-14 batches (official_batch1/2.txt) are kept as the prior read and
+    are compared in the delta file, not used as the source of truth.
+    """
+    path = os.path.join(DATA, "captures", "injury_week10_2026-11-18.psv")
     rows = []
-    for name in ("official_batch1.txt", "official_batch2.txt"):
-        path = os.path.join(VER, name)
-        with open(path, encoding="utf-8") as handle:
-            for lineno, line in enumerate(handle, 1):
-                line = line.rstrip("\n")
-                if not line.strip():
-                    continue
-                parts = line.split("|")
-                if len(parts) != 6:
-                    sys.exit(f"{name}:{lineno}: expected 6 fields, got {len(parts)}")
-                team, player, pos, injury, st, gs = parts
-                if st not in STATUS:
-                    sys.exit(f"{name}:{lineno}: unknown practice code {st!r}")
-                rows.append({"team": team, "player": player, "position": pos,
-                             "injury": injury, "practice_status": STATUS[st],
-                             "game_status": gs})
+    with open(path, encoding="utf-8") as handle:
+        for lineno, line in enumerate(handle, 1):
+            line = line.rstrip("\n")
+            if not line.strip() or line.startswith("#") or line.startswith("game|"):
+                continue
+            parts = line.split("|")
+            if len(parts) != 7:
+                sys.exit(f"{path}:{lineno}: expected 7 fields, got {len(parts)}")
+            _game, team, player, pos, injury, st, gs = parts
+            st = {"FP": "F", "LP": "L", "DNP": "D"}.get(st, st)
+            if st not in STATUS:
+                sys.exit(f"{path}:{lineno}: unknown practice code {st!r}")
+            rows.append({"team": team, "player": player, "position": pos,
+                         "injury": injury, "practice_status": STATUS[st],
+                         "game_status": gs})
     return rows
 
 
@@ -184,7 +189,7 @@ def main():
     add("V004", "Totals", "Field-level comparisons (position, injury, practice status, game status)",
         f"{len(committed) * 4} comparisons, {field_diffs} mismatch(es)", "0 mismatches expected",
         "PASS" if field_diffs == 0 else "FAIL",
-        "Four fields compared for every one of the 345 rows", INJURY_URL)
+        f"Four fields compared for every one of the {len(committed)} rows (official read 2026-11-18)", INJURY_URL)
     add("V005", "Totals", "Duplicate player rows within a team",
         str(len([k for k, v in ci.items() if len(v) > 1])), str(dupes),
         "PASS" if dupes == 0 else "REVIEW", "A duplicated player would double-count exposure", INJURY_URL)

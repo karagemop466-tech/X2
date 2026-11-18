@@ -31,6 +31,7 @@ DATA = os.path.join(ROOT, "data")
 INPUTS = os.path.join(DATA, "verification_inputs")
 
 AS_OF = "2026-11-14"
+INJ_AS_OF = "2026-11-18"  # injury report read date (see data/captures/injury_week10_2026-11-18.meta.json)
 SRC_INJURIES = "https://www.nfl.com/injuries/"
 SRC_STANDINGS = "https://www.nfl.com/standings/"
 SRC_WEEK11 = "https://www.nfl.com/schedules/2026/by-week/week-11"
@@ -55,7 +56,7 @@ def norm(s):
 
 # --------------------------------------------------------------- injuries ----
 repo_inj = read_csv(os.path.join(DATA, "injuries_week10_2026.csv"))
-live_inj = read_tsv(os.path.join(INPUTS, "injuries_2026-11-14.tsv"))
+live_inj = read_tsv(os.path.join(INPUTS, "injuries_2026-11-18.tsv"))  # read 2026-11-18; the 2026-11-14 TSV is kept as the prior read
 
 # (team, player, position) is the identity of an injury-report line.
 def inj_key(r, team_fields=("team_abbr",), player="player", position="position"):
@@ -106,7 +107,7 @@ for team in all_teams:
         "extra_in_repo": "; ".join("%s %s" % (e[1], e[2]) for e in extra),
         "field_differences": "; ".join(field_diffs),
         "result": result,
-        "read_utc": AS_OF,
+        "read_utc": INJ_AS_OF,
         "source_url": SRC_INJURIES,
     })
 
@@ -121,7 +122,7 @@ rows.append({
     "extra_in_repo": "",
     "field_differences": "",
     "result": "match" if len(repo_inj) == len(live_inj) else "DISCREPANCY",
-    "read_utc": AS_OF,
+    "read_utc": INJ_AS_OF,
     "source_url": SRC_INJURIES,
 })
 if len(repo_inj) != len(live_inj):

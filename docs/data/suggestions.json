@@ -555,9 +555,9 @@
   "suggestion_id": "S47",
   "area": "Availability signal",
   "suggestion": "Publish the delta as the injury feature and keep the level as display only: score a change (DNP to FP, Questionable to Out), never a designation",
-  "benefit_for_decisions": "The brief's rule is that the injury signal is a surprise. Today's two reads give the first real test of that rule: 19 of 347 players moved in four days, and 13 of the moves are a game designation appearing or disappearing rather than a practice code - exactly the signal a level-based feature would miss.",
+  "benefit_for_decisions": "The brief's rule is that the injury signal is a surprise. Today's two reads give the first test of that rule: 18 of 347 players moved in four days, and 10 of the moves are a game designation appearing where the earlier capture left the cell blank rather than a practice code changing - exactly the signal a level-based feature would miss, and exactly the row that must be labelled a capture-completeness difference instead of news.",
   "effort": "Low - the delta table and its summary counts are built (data/availability_delta_2026-11-14_to_2026-11-18.csv); what remains is wiring it into a feature once three or more captures exist",
-  "main_risk": "With two captures the movement rate is measured on one report; do not calibrate a coefficient on it (D20, D21 stay blocked until a multi-week series exists).",
+  "main_risk": "With two captures the movement rate is measured on one report, and one of the two transcriptions already contained an error (F109); do not calibrate a coefficient on it (D20, D21 stay blocked until a multi-week series exists and each link in it is double-read).",
   "options": "A delta-only feature | B level and delta as separate columns | C keep it display-only until a series exists",
   "status": "Proposed",
   "row_type": "suggestion",
@@ -586,5 +586,17 @@
   "status": "Proposed",
   "row_type": "suggestion",
   "evidence_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "suggestion_id": "S50",
+  "area": "Verification",
+  "suggestion": "Make every capture that becomes 'the data' a double read: two independent transcriptions of the same render, diffed by script, diff published",
+  "benefit_for_decisions": "It is the only check in this repository that catches a transcription error, as opposed to a source change or an arithmetic slip. Found today by accident - two sessions happened to read the same page seven minutes apart - and it caught one wrong cell of 2,082 (F109). Making it a rule converts a lucky catch into a standing control, and the same script (scripts/capture_cross_check.py) can key on the render rather than the day.",
+  "effort": "Medium - doubles the reading work per capture; the comparison side is already written and fails loudly",
+  "main_risk": "Two readers of the same render share a systematic risk (both may misread a truncated cell the same way), so it narrows but does not eliminate the error; a third read settles only what the source has not moved on.",
+  "options": "A double read for registers that feed the model, single read for display | B double read for every capture | C single read plus the raw-body store",
+  "status": "Proposed",
+  "row_type": "suggestion",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/capture_cross_check_2026-11-18.csv"
  }
 ]

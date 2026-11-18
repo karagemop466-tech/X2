@@ -70,20 +70,6 @@
   "source_url": "https://www.nfl.com/injuries/"
  },
  {
-  "team_abbr": "JAX",
-  "player": "Chris Rodriguez Jr.",
-  "position": "RB",
-  "practice_2026_11_14": "Limited Participation in Practice",
-  "practice_2026_11_18": "Did Not Participate In Practice",
-  "game_status_2026_11_14": "",
-  "game_status_2026_11_18": "",
-  "injury_2026_11_14": "",
-  "injury_2026_11_18": "",
-  "change": "changed:practice_status",
-  "player_url": "",
-  "source_url": "https://www.nfl.com/injuries/"
- },
- {
   "team_abbr": "LAC",
   "player": "Branson Taylor",
   "position": "G",

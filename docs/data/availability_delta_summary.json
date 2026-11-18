@@ -8,7 +8,7 @@
  {
   "metric": "rows_in_capture_2026_11_18",
   "value": "347",
-  "basis": "data/verification_inputs/injuries_2026-11-18.tsv",
+  "basis": "data/verification_inputs/injuries_2026-11-18_cf85d485.tsv (as read) — session d0ede22d's independent transcription of the same page is data/verification_inputs/injuries_2026-11-18.tsv",
   "source_url": "https://www.nfl.com/injuries/"
  },
  {
@@ -25,7 +25,7 @@
  },
  {
   "metric": "practice_status_changes",
-  "value": "7",
+  "value": "6",
   "basis": "two dated reads",
   "source_url": "https://www.nfl.com/injuries/"
  },
@@ -43,13 +43,13 @@
  },
  {
   "metric": "players_unchanged",
-  "value": "328",
+  "value": "329",
   "basis": "two dated reads",
   "source_url": "https://www.nfl.com/injuries/"
  },
  {
   "metric": "clubs_with_any_change",
-  "value": "4",
+  "value": "3",
   "basis": "two dated reads",
   "source_url": "https://www.nfl.com/injuries/"
  },
@@ -67,8 +67,20 @@
  },
  {
   "metric": "published_snapshot_rows",
-  "value": "345",
-  "basis": "data/injuries_week10_2026.csv equals CAP-01 exactly",
+  "value": "347",
+  "basis": "row count of data/injuries_week10_2026.csv as it stands now",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "published_snapshot_equals",
+  "value": "CAP-02 (the 2026-11-18 read, after the correction)",
+  "basis": "computed by comparing the published file with CAP-01 and with the corrected CAP-02, row for row",
+  "source_url": "https://www.nfl.com/injuries/"
+ },
+ {
+  "metric": "fields_corrected_in_this_capture",
+  "value": "1",
+  "basis": "one field of 347 rows, settled by a third read; see the correction evidence in this script",
   "source_url": "https://www.nfl.com/injuries/"
  }
 ]

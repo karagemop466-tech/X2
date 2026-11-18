@@ -1,0 +1,135 @@
+# DRAFT for T107 (final integration). Not run by build.py. Apply in T107 after the shared-output rule allows it.
+# ---------- session d0ede22d (T102-T105): captures, what changed, fixture context, drift alarm ----------
+# Adds three pages and index cards. Reads only the files written by scripts/capture_* logic and the
+# registers named in each table; every row carries an official NFL.com source link (row-source check).
+import csv as _csv
+import sys as _sys
+_sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import drift_check as _drift_mod  # noqa: E402  (same checks as the build-time alarm above)
+
+def _rd(rel):
+    with open(os.path.join(ROOT, rel), encoding="utf-8", newline="") as _fh:
+        return list(_csv.DictReader(_fh))
+
+def _lnk(url, label="NFL.com"):
+    return f'<a href="{html.escape(url)}" target="_blank" rel="noopener">{html.escape(label)}</a>'
+
+def _tbl(headers, rows, tid):
+    head = "".join(f"<th>{html.escape(h)}</th>" for h in headers)
+    body = "".join("<tr>" + "".join(f"<td>{c}</td>" for c in r) + "</tr>" for r in rows)
+    return (f'<div class="tablewrap"><table class="data" id="{tid}"><thead><tr>{head}</tr></thead>'
+            f'<tbody>{body}</tbody></table></div>')
+
+_inj_delta = _rd("data/captures/injury_delta_2026-11-18.csv")
+_stand = _rd("data/standings_diff_2026-11-14_to_2026-11-18.csv")
+_fix = _rd("data/fixture_context_2026.csv")
+_pins = _rd("data/drift_pins.csv")
+_meta = json.load(open(os.path.join(ROOT, "data/captures/injury_week10_2026-11-18.meta.json"), encoding="utf-8"))
+_games_added = sum(int(r["games_added"]) for r in _stand) // 2
+
+_cap_meta_rows = [
+    ["Capture", f"Week 10 injury report, {_meta['rows_transcribed']} player rows, {_meta['clubs_with_section']} club sections; "
+                f"bye clubs without a section: {', '.join(_meta['bye_clubs_without_section'])}",
+     _lnk(_meta["source_url"], "NFL.com injury report")],
+    ["Read time (UTC)", _meta["transcribed_utc"] + " (session clock; the fetch tool returns no per-request time)",
+     _lnk(_meta["source_url"], "NFL.com injury report")],
+    ["Transcription SHA-256", _meta["transcription_sha256"] + " (covers the transcription file only; the raw page bytes were not retained, see note)",
+     _lnk(_meta["source_url"], "NFL.com injury report")],
+    ["Status counts (read 2026-11-18)", "Out 70 · Questionable 90 · Doubtful 11 · no game designation 176",
+     _lnk(_meta["source_url"], "NFL.com injury report")],
+    ["Changes against the 2026-11-14 register", f"{len(_inj_delta)} changes (32 field values on 16 players, 2 added rows); each listed below",
+     _lnk(_meta["source_url"], "NFL.com injury report")],
+]
+
+_stand_rows = []
+for _r in _stand:
+    _stand_rows.append([
+        html.escape(_r["team_abbr"]), html.escape(_r["team_name"]), html.escape(_r["record_prior"]),
+        html.escape(_r["record_current"]), html.escape(_r["games_added"]), html.escape(_r["net_prior"]),
+        html.escape(_r["net_current"]), html.escape(_r["net_rank_prior"]), html.escape(_r["net_rank_current"]),
+        html.escape(_r["rank_change_up_is_positive"]),
+        _lnk("https://www.nfl.com/standings/", "NFL.com standings (2026-11-18 read)"),
+    ])
+
+_inj_rows = []
+for _r in _inj_delta:
+    _inj_rows.append([
+        html.escape(_r["change_id"]), html.escape(_r["team"]), html.escape(_r["player"]),
+        html.escape(_r["change_type"]), html.escape(_r["field"]),
+        html.escape(_r["prior_value_2026_11_14"] or "(blank)"), html.escape(_r["live_value_2026_11_18"] or "(blank)"),
+        _lnk(_r["source_url"], "NFL.com injury report"),
+    ])
+
+_pin_rows = []
+for _p in _pins:
+    _probs = _drift_mod.check(_p)
+    _pin_rows.append([
+        html.escape(_p["register"]), html.escape(_p["expected_rows"]), html.escape(_p["required_nonblank_columns"]),
+        ('<span class="ok">PASS</span>' if not _probs else '<span class="warn">FAIL: ' + html.escape("; ".join(_probs)) + '</span>'),
+        html.escape(_p["note"]),
+        _lnk("https://www.nfl.com/injuries/", "NFL.com injury report") if "injur" in _p["register"]
+        else _lnk("https://www.nfl.com/standings/", "NFL.com standings") if "standings" in _p["register"]
+        else _lnk("https://www.nfl.com/schedules/2026/by-week/week-10", "NFL.com schedule"),
+    ])
+
+pages["captures.html"] = ("Official captures and what changed", f"""
+<h1>Official captures and what changed</h1>
+<p class="note"><strong>Read 2026-11-18.</strong> This page holds the dated official reads that replace the single
+2026-11-14 snapshot. It publishes changes, not levels, wherever two reads exist. Each row links to the official page it
+came from. Nothing here is a prediction.</p>
+<p class="note"><strong>Not a scheduled capture.</strong> These reads were made by hand, one page request per chunk. The
+NFL.com Terms (Section 1.3) prohibit systematic retrieval to compile data without written consent, and gate D22 is not
+cleared, so no automated daily capture runs (see F98). The clock-time history the brief asks for therefore starts with
+two reads, not with a daily series.</p>
+<p class="note"><strong>Results register is behind the official standings (F96).</strong> The verified results feed holds
+137 games (weeks 1-9 plus the Week 10 Thursday game). The 2026-11-18 standings reflect {_games_added} more games played
+in Week 10 (Sunday and Monday), which are not in the frozen register.</p>
+<h2>Injury report: capture details</h2>
+{_tbl(["Item", "Value", "Source"], _cap_meta_rows, "cap-meta")}
+<h2>Injury report: changes since 2026-11-14 (publishing the delta, not the level)</h2>
+<p class="note">Prior value is the 2026-11-14 register; live value is the 2026-11-18 read. A blank is shown as "(blank)" and means the page cell was empty.</p>
+{_tbl(["Change", "Club", "Player", "Type", "Field", "Prior (2026-11-14)", "Live (2026-11-18)", "Source"], _inj_rows, "inj-delta")}
+<h2>Standings: what changed between the two reads</h2>
+<p class="note">Net rank: clubs sorted by points for minus points against (ties share a rank). Rank change is prior rank minus current rank, so a positive value means the club moved up. Derived only from the two official reads (scripts/standings_diff.py).</p>
+{_tbl(["Club", "Name", "Record 2026-11-14", "Record 2026-11-18", "Games added", "Net pts prior", "Net pts now", "Net rank prior", "Net rank now", "Rank change (+ = up)", "Source"], _stand_rows, "stand-diff")}
+<h2>Drift alarm: pinned checks on every register</h2>
+<p class="note">Each register is pinned to a row count, required non-blank columns and key uniqueness (data/drift_pins.csv). The build stops if any check fails.</p>
+{_tbl(["Register", "Pinned rows", "Required non-blank columns", "Status", "Note", "Source"], _pin_rows, "drift")}
+""")
+
+_fix_rows = []
+for _r in _fix:
+    _fix_rows.append([
+        html.escape(_r["week"]), html.escape(_r["game_date"]), html.escape(_r["weekday"]),
+        html.escape(f'{_r["away_team"]} at {_r["home_team"]}'),
+        html.escape(_r["away_days_since_last_game"] or "(none)"), html.escape(_r["home_days_since_last_game"] or "(none)"),
+        html.escape(_r["rest_diff_home_minus_away"] or "(blank)"),
+        html.escape(("away bye" if _r["away_bye_before_game"] == "1" else "") + (" / " if _r["away_bye_before_game"] == "1" and _r["home_bye_before_game"] == "1" else "") + ("home bye" if _r["home_bye_before_game"] == "1" else "")) or "-",
+        html.escape(_r["thursday_game"]),
+        _lnk(_r["source_url"], "NFL.com game or schedule"),
+    ])
+
+pages["fixture-context.html"] = ("Fixture context", f"""
+<h1>Fixture context from published schedule facts</h1>
+<p class="note">Built only from published schedule dates and team pairs (scripts/fixture_context.py). No score, result,
+injury or market field is read. Rest is calendar days since each team's previous scheduled game in this file; a blank
+means that team has no earlier game in the register (Week 1), never zero. A "bye" flag means the previous game was two or
+more weeks earlier. The 163 games are weeks 1-11: 136 played games (weeks 1-9), the Week 10 slate, and the Week 11 slate.</p>
+<p class="note">Week 10 Thursday game (WAS at NYG) appears once; the other 13 Week 10 games are listed in data/games_week10_2026.csv (see F96 for the results register).</p>
+{_tbl(["Week", "Date", "Day", "Game (away at home)", "Away rest (days)", "Home rest (days)", "Rest diff (home minus away)", "Bye before game", "Thursday", "Source"], _fix_rows, "fixture")}
+""")
+
+NAV.insert(NAV.index(("results-feed.html", "Results feed")) + 1, ("captures.html", "Captures & changes"))
+NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("fixture-context.html", "Fixture context"))
+
+_cap_idx = (
+    '<h2>Captures, changes and the drift alarm (read 2026-11-18)</h2>'
+    '<p class="note">Two dated official reads now exist for the injury report and the standings, so changes can be shown. '
+    'Drift checks run on every build.</p>'
+    '<div class="cards">'
+    + card("captures.html", "Captures & what changed", f"Week 10 injury re-read (347 rows, {len(_inj_delta)} changes vs 2026-11-14), standings diff ({_games_added} games added), drift alarm status.")
+    + card("fixture-context.html", "Fixture context", "Rest days, bye flags and Thursday games for 163 scheduled games (weeks 1-11), from schedule facts only.")
+    + '</div>'
+)
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + _cap_idx)
+
