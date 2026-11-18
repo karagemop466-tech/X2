@@ -2990,3 +2990,17 @@ already uses and it is the reason the checks exist:
 **What this session deliberately did not do:** no price-data decision (P01/DEC-01), no corpus splice (P09), no
 rights review (F16), no legal opinion (F09/F19), no gate threshold (F17), and no edit to another session's data.
 Each is referenced as a dependency where it blocks a number.
+
+
+**Follow-up PR #79 merged and deployed.** https://github.com/karagemop466-tech/X2/pull/79 → merge commit
+**`6539aa7`** (`6539aa754de25af2168e7bf2d7b3a00c2fb75587`) at 2026-11-18T04:57:13Z; Pages build for `6539aa7`
+reported `built`. Live confirmation required a cache-busting query string (`?v=6539aa7`) because GitHub Pages' CDN
+served the previous HTML for several minutes after the build finished — worth knowing for the next session: a
+`built` status is not the same as a propagated page, and a deploy check that reads the bare URL can report stale
+content as current, which is the same failure mode this session spent its time fixing in the data layer.
+`docs/verification.html` now shows V18 as *"Verified as a transcription of the 2026-11-14 read (not a currency
+claim)"*.
+
+**Session f04dda73 is closed.** T114–T119 done and merged (PR #77 + #79), Pages live at
+https://karagemop466-tech.github.io/X2/, working tree clean, nothing claimed.
+>>>>>>> 74dc868 (COORDINATION: record follow-up PR #79 merge, the Pages cache-lag lesson, and close session f04dda73)
