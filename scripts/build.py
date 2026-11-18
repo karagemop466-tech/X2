@@ -159,6 +159,9 @@ replacement_depth = read_csv("replacement_depth.csv")
 price_snapshots_extended = read_csv("price_snapshots_extended.csv")
 # ---- session f25d6b55 (T52): canonical verified results feed ----
 results_feed = read_csv("results_feed_2026.csv")
+# ---- session 79c9cb37 (T108): parallel v2 results feed (closes P09 as a parallel register) ----
+results_feed_v2 = read_csv("results_feed_v2_2026.csv")
+results_feed_v2_checks = read_csv("results_feed_v2_checks.csv")
 with open(os.path.join(DATA, "model_summary.json"), encoding="utf-8") as f:
     ms = json.load(f)
 # ---- session e208ba6d: decision console, market sheet, live re-verification ----
@@ -1410,6 +1413,25 @@ licensed price source is connected (Flags F07, F32; requirement R37). No ROI val
 {table(results_feed, ['feed_id','week','date_as_shown','away_team','away_points','home_team','home_points','verification_status','verified_date','checks','game_url','source_url'],
        {'feed_id':'Feed ID','week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','verification_status':'Verification','verified_date':'Verified','checks':'Checks','game_url':'Game','source_url':'Schedule'},
        table_id='feed-table', filterable=True)}
+<h2>v2 verified results feed — the 150-game corpus (parallel register, decision P09)</h2>
+<p class="note">The 137-game corpus above is frozen (weeks 1-9 complete plus the Week 10 Thursday game). The
+official standings read of <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">2026-11-18</a>
+implies 150 games through Week 10: the 13 remaining Week 10 games were played and their finals were transcribed
+from the official <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">Week 10
+by-week schedule page</a>. Decision <strong>P09</strong> leaves the published corpus untouched and asks for a splice,
+a parallel register, or disclosure; this is the <strong>parallel v2 register</strong> (the recommended option). It does
+not replace the 137-game corpus — the owner still chooses which corpus the backtest grades on. Every v2 row carries the
+eight played international games with <code>neutral_site = Y</code> (the ninth, Week 11 Mexico City, is prospective),
+a per-row verification status, and links to the official game and schedule pages. Reconciled against the official
+2026-11-18 standings for all 32 clubs (V2-05).</p>
+{search_box('feed-v2-table')}
+{table(results_feed_v2, ['feed_id','week','date_as_shown','away_team','away_points','home_team','home_points','neutral_site','origin','verification_status','verified_date','game_url','source_url'],
+       {'feed_id':'Feed ID','week':'Wk','date_as_shown':'Date (as shown)','away_team':'Away','away_points':'Away pts','home_team':'Home','home_points':'Home pts','neutral_site':'Neutral','origin':'Origin','verification_status':'Verification','verified_date':'Verified','game_url':'Game','source_url':'Schedule'},
+       table_id='feed-v2-table', filterable=True)}
+<h3>v2 feed checks (built and independently verified 2026-11-18)</h3>
+{table(results_feed_v2_checks, ['check_id','check','method','result','status','source_url'],
+       {'check_id':'ID','check':'Check','method':'Method','result':'Result','status':'Status','source_url':'Source'},
+       table_id='feed-v2-checks')}
 <h2>Week 11 — the games the lines cover</h2>
 <p class="note">Scheduled but unplayed: no results exist yet, so no prediction on this page is graded. Six teams are
 on bye (ATL, CLE, GB, LA, NE, SEA).</p>
@@ -3040,6 +3062,9 @@ _fr_graded = read_csv("forecast_records_2026.csv")
 _fr_w11 = read_csv("forecast_records_week11.csv")
 _intl = read_csv("international_games_2026.csv")
 _neutral = read_csv("neutral_site_sensitivity_2026.csv")
+# session 79c9cb37 (T108): the parallel v2 results feed and its check register
+_feed_v2 = read_csv("results_feed_v2_2026.csv")
+_feed_v2_checks = read_csv("results_feed_v2_checks.csv")
 
 for _name, _rows, _id_field in (
         ("availability_captures", _captures, "capture_id"),
@@ -3056,7 +3081,9 @@ for _name, _rows, _id_field in (
         ("forecast_records_2026", _fr_graded, "record_id"),
         ("forecast_records_week11", _fr_w11, "record_id"),
         ("international_games_2026", _intl, "week"),
-        ("neutral_site_sensitivity_2026", _neutral, "matchup")):
+        ("neutral_site_sensitivity_2026", _neutral, "matchup"),
+        ("results_feed_v2_2026", _feed_v2, "feed_id"),
+        ("results_feed_v2_checks", _feed_v2_checks, "check_id")):
     if not _rows:
         errors.append(f"{_name}: no rows — the register is empty, publish nothing from it")
     for _r in _rows:
@@ -3072,7 +3099,8 @@ _pin = {"availability_captures": 2, "availability_delta": 18, "availability_delt
         "capture_cross_check_2026-11-18": 5,
         "what_changed": 32, "results_feed_completeness": 32, "week_count_reconciliation": 8,
         "games_week10_backfill": 13, "forecast_record_checks": 6, "forecast_records_2026": 178,
-        "forecast_records_week11": 26, "international_games_2026": 9, "neutral_site_sensitivity_2026": 7}
+        "forecast_records_week11": 26, "international_games_2026": 9, "neutral_site_sensitivity_2026": 7,
+        "results_feed_v2_2026": 150, "results_feed_v2_checks": 12}
 for _nm, _n in (("availability_captures", len(_captures)), ("availability_delta", len(_avail_delta)),
                 ("availability_delta_summary", len(_avail_summary)),
                 ("live_reverification_2026-11-18_cf85d485", len(_reverify18)),
@@ -3082,7 +3110,9 @@ for _nm, _n in (("availability_captures", len(_captures)), ("availability_delta"
                 ("week_count_reconciliation", len(_feed_recon)), ("games_week10_backfill", len(_backfill)),
                 ("forecast_record_checks", len(_fr_checks)), ("forecast_records_2026", len(_fr_graded)),
                 ("forecast_records_week11", len(_fr_w11)), ("international_games_2026", len(_intl)),
-                ("neutral_site_sensitivity_2026", len(_neutral))):
+                ("neutral_site_sensitivity_2026", len(_neutral)),
+                ("results_feed_v2_2026", len(_feed_v2)),
+                ("results_feed_v2_checks", len(_feed_v2_checks))):
     if _n != _pin[_nm]:
         errors.append(f"{_nm}: {_n} rows, pinned expectation {_pin[_nm]} — re-run the capture script against "
                       f"the official page before publishing this table")
