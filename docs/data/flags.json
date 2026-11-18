@@ -934,5 +934,14 @@
   "source_url": "https://www.nfl.com/games/patriots-at-lions-2026-reg-10",
   "status": "Open - reviewer decision",
   "action_requested": "Owner: pick which official spelling is canonical for display, or keep both labelled by source (recommended: keep both, labelled)."
+ },
+ {
+  "flag_id": "F111",
+  "category": "Coverage gap",
+  "item": "Reserve-list month pages render exactly 25 rows each - register is capped, not complete",
+  "detail": "data/reserve_list_2026.csv holds 100 rows transcribed on 2026-11-18 from the official NFL.com reserve-list transaction pages for August, September, October and November 2026. Each month page rendered exactly 25 rows and stopped mid-month (August ends 08/31, September ends 09/26, October ends 10/24, November ends 11/10), with carousel arrows after the table - the pages paginate at 25 rows and this transcription captured only the first rendered page of each month. Earlier transactions in each month are therefore MISSING, not absent from the league: the register is a lower bound. 31 of 32 clubs appear; Seattle has no row in any captured page. No row is inferred - blank position stays blank because the official page shows no position value.",
+  "source_url": "https://www.nfl.com/transactions/league/reserve-list/2026/11",
+  "status": "Open - coverage capped at 25 rows per month page",
+  "action_requested": "Find the pagination parameter or an alternate official view that returns ALL rows per month, re-transcribe each month to completion, and only then mark D14 done. Until then treat the register as the most recent 25 transactions per month, not the full reserve list."
  }
 ]

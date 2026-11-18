@@ -2871,6 +2871,36 @@ proves arithmetic and not currency</em>.</p>
 """)
 
 
+# ---------- reserve list (session 60c8c865, T114) ----------
+# Readiness D14: "not listed" on the weekly injury report must never mean "available". The official
+# reserve-list transaction pages are the source that explains an absence (VR-25 / VQ-06: Malik Willis).
+# The month pages render exactly 25 rows each and stop mid-month, so this register is a lower bound (F111) -
+# the page says so rather than claiming completeness.
+_reserve = _rd("data/reserve_list_2026.csv")
+assert len(_reserve) == len({r["reserve_id"] for r in _reserve}), "reserve list: duplicate reserve_id"
+assert all(r["source_url"].startswith("https://www.nfl.com/transactions/league/reserve-list/")
+           for r in _reserve), "reserve list: non-transaction source"
+_reserve_clubs = sorted({r["club"] for r in _reserve})
+_reserve_by_month = {m: sum(1 for r in _reserve if r["month_2026"] == m)
+                     for m in ("August", "September", "October", "November")}
+pages["injuries.html"] = (pages["injuries.html"][0], pages["injuries.html"][1] + f"""
+<h2>Official reserve-list transactions (so "not listed" never means "available")</h2>
+<p class="note">Readiness D14. Reserve-list placements do not appear on the weekly injury report, so a player
+missing from the report above may be on reserve rather than available. Source: the official
+<a href="https://www.nfl.com/transactions/league/reserve-list/2026/11" target="_blank" rel="noopener">NFL.com
+reserve-list transaction pages</a> for August through November 2026, read 2026-11-18; {len(_reserve)} rows,
+{len(_reserve_clubs)} of 32 clubs represented (no Seattle row in any captured page).
+<strong>Coverage is capped:</strong> each month page rendered exactly 25 rows and stopped mid-month
+(August ends 08/31, September 09/26, October 10/24, November 11/10), so earlier transactions in each month are
+missing from this register — it is a lower bound, not the complete list (flag F111). The
+<em>Position</em> column is blank because the official page shows no position value; it is never inferred.
+Malik Willis (Miami, Reserve/Injured 11/10) is the row that closes the concrete gap flagged in VR-25/VQ-06.</p>
+{table(_reserve, ['month_2026', 'date_as_shown', 'club', 'player', 'position', 'transaction', 'player_url', 'source_url'],
+       {'month_2026': 'Month', 'date_as_shown': 'Date', 'club': 'Club', 'player': 'Player', 'position': 'Position',
+        'transaction': 'Transaction', 'player_url': 'Player page', 'source_url': 'Transactions page'},
+       table_id='reserve-table', filterable=True)}
+""")
+
 # ---------- capture integrity, feed completeness and forecast records (session cf85d485, T102-T107) ----------
 # Three pages built from the registers this session wrote. Nothing here re-derives a number: the tables render
 # exactly what scripts/availability_captures.py, scripts/capture_cross_check.py,
@@ -3196,7 +3226,8 @@ for _nm, _rows in (("availability_captures", _captures), ("availability_delta_su
                    ("week_count_reconciliation_2026-11-18", _feed_recon),
                    ("games_week10_backfill_2026", _backfill), ("forecast_record_checks", _fr_checks),
                    ("forecast_records_2026", _fr_graded), ("forecast_records_week11", _fr_w11),
-                   ("international_games_2026", _intl), ("neutral_site_sensitivity_2026", _neutral)):
+                   ("international_games_2026", _intl), ("neutral_site_sensitivity_2026", _neutral),
+                   ("reserve_list_2026", _reserve)):
     with open(os.path.join(DOCS, "data", _nm + ".json"), "w", encoding="utf-8") as _f:
         json.dump(_rows, _f, ensure_ascii=False, indent=1)
 
