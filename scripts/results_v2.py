@@ -153,25 +153,25 @@ checks = []
 def check(cid, what, method, result, ok):
     checks.append({"check_id": cid, "check": what, "method": method,
                    "result": result, "status": "pass" if ok else "FAIL",
-                   "source_url": SRC_WEEK10 if cid not in ("V2-05", "V2-06") else SRC_STANDINGS})
+                   "source_url": SRC_WEEK10 if cid not in ("R2-05", "R2-06") else SRC_STANDINGS})
 
 
-# V2-01 register shape
+# R2-01 register shape
 bad = [r["feed_id"] for r in rows_out
        if not all(r[c] != "" for c in ("season", "week", "away_team", "away_points",
                                        "home_team", "home_points", "winner",
                                        "game_url", "source_url"))]
-check("V2-01", "Register shape",
+check("R2-01", "Register shape",
       "150 rows; the eleven decision-relevant columns of every row non-blank",
       f"{len(rows_out)} rows; {len(bad)} rows with a blank required column", not bad and len(rows_out) == 150)
 
-# V2-02 no duplicate fixtures
+# R2-02 no duplicate fixtures
 keys = [(int(r["week"]), r["away_team"], r["home_team"]) for r in rows_out]
-check("V2-02", "No duplicate fixtures",
+check("R2-02", "No duplicate fixtures",
       "Unique (week, away, home) triples",
       f"{len(set(keys))} unique of {len(keys)}", len(set(keys)) == len(keys) == 150)
 
-# V2-03 Week 10 completeness against the live page
+# R2-03 Week 10 completeness against the live page
 live_games = [r for r in live_w10 if r["record_type"] == "game"]
 w10 = [r for r in rows_out if r["week"] == "10"]
 mismatch = []
@@ -184,14 +184,14 @@ for r in w10:
           or int(lr["home_points"]) != int(r["home_points"])):
         mismatch.append(f"{r['away_team']} at {r['home_team']}: register "
                         f"{r['away_points']}-{r['home_points']} vs page {lr['away_points']}-{lr['home_points']}")
-check("V2-03", "Week 10 completeness (independent read)",
+check("R2-03", "Week 10 completeness (independent read)",
       f"This session re-read the official Week 10 by-week page on {READ_UTC} and compared "
       "every game the register carries for that week, fixture by fixture and score by score",
       f"{len(w10)} games in the register, {len(live_games)} FINAL games rendered on the page, "
       + ("0 mismatches" if not mismatch else "MISMATCHES: " + "; ".join(mismatch)),
       not mismatch and len(w10) == len(live_games) == 14)
 
-# V2-04 winner column equals the page's winner indicator
+# R2-04 winner column equals the page's winner indicator
 bad = []
 for r in w10:
     lr = live_by_key[(r["away_team"], r["home_team"])]
@@ -206,12 +206,12 @@ for r in w10:
                        "NYG": "GIANTS"}[r["winner"]]
     if ind != exp:
         bad.append(f"{r['feed_id']}: indicator '{ind}' but register winner {r['winner']}")
-check("V2-04", "Winner column equals the page's winner indicator",
+check("R2-04", "Winner column equals the page's winner indicator",
       "For each of the 14 Week 10 games, the team the register marks as winner must be the team "
       "the official page puts the Winner Indicator beside",
       f"{14 - len(bad)} of 14 agree" + ("" if not bad else "; " + "; ".join(bad)), not bad)
 
-# V2-05 standings reconciliation against this session's own live read
+# R2-05 standings reconciliation against this session's own live read
 rec = defaultdict(lambda: {"W": 0, "L": 0, "T": 0, "PF": 0, "PA": 0})
 for g in rows_out:
     a, h = int(g["away_points"]), int(g["home_points"])
@@ -231,14 +231,14 @@ for t, s in sorted(live_map.items()):
 for t in rec:
     if t not in live_map:
         bad.append(f"{t}: game rows but no official standings row")
-check("V2-05", "Standings reconciliation of the whole 150-game register",
+check("R2-05", "Standings reconciliation of the whole 150-game register",
       "Recompute W, L, T, points for, points against and net for all 32 clubs from the register and "
       f"compare with the official standings page as read by this session at {READ_UTC} "
       "(not with a file already in the repository)",
       f"{32 - len(bad)} of 32 clubs reconcile exactly" + ("" if not bad else "; " + "; ".join(bad)),
       not bad and len(live_map) == 32 and len(rec) == 32)
 
-# V2-06 the live standings read equals the committed capture of the same date
+# R2-06 the live standings read equals the committed capture of the same date
 cap_map = {r["team_abbr"]: r for r in cap_standings}
 bad = []
 for t, s in sorted(live_map.items()):
@@ -251,13 +251,13 @@ for t, s in sorted(live_map.items()):
                  ("net_points", "net_points")):
         if s[a] != c[b]:
             bad.append(f"{t}.{a}: live {s[a]} vs capture {c[b]}")
-check("V2-06", "The committed 2026-11-18 standings capture is still what the page says",
+check("R2-06", "The committed 2026-11-18 standings capture is still what the page says",
       "Field-by-field comparison of this session's live read against "
       "data/captures/standings_2026-11-18.csv, the read the v1 feed's RF07 check relied on",
       f"{32 - len(bad)} of 32 rows identical on all six fields" + ("" if not bad else "; " + "; ".join(bad)),
       not bad and len(cap_map) == 32)
 
-# V2-07 the records shown beside each fixture on the schedule page equal the standings page
+# R2-07 the records shown beside each fixture on the schedule page equal the standings page
 bye_rows = [r for r in live_w10 if r["record_type"] == "bye"]
 shown = {}
 for r in live_games:
@@ -274,21 +274,21 @@ for t, rec_str in sorted(shown.items()):
     exp = f"{s['wins']}-{s['losses']}" + (f"-{s['ties']}" if int(s["ties"]) else "")
     if rec_str != exp:
         bad.append(f"{t}: schedule page {rec_str} vs standings {exp}")
-check("V2-07", "Two official pages agree on every club's record",
+check("R2-07", "Two official pages agree on every club's record",
       "The record rendered beside each fixture and beside each bye entry on the Week 10 schedule page "
       "must equal the record on the standings page, for all 32 clubs",
       f"{len(shown) - len(bad)} of {len(shown)} club records agree ({len(live_games)} game rows + "
       f"{len(bye_rows)} clubs on bye = {len(shown)} clubs)" + ("" if not bad else "; " + "; ".join(bad)),
       not bad and len(shown) == 32)
 
-# V2-08 neutral-site flags follow the dated official slate
+# R2-08 neutral-site flags follow the dated official slate
 in_corpus = [r for r in rows_out if r["neutral_site"] == "Y"]
 slate_completed = {int(r["week"]) for r in intl if int(r["week"]) <= 10}
 expected = {(int(r["week"]), r["away_designated"], r["home_designated"]) for r in intl
             if int(r["week"]) <= 10}
 got = {(int(r["week"]), r["away_team"], r["home_team"]) for r in in_corpus}
 bad = expected ^ got
-check("V2-08", "Neutral-site flag coverage",
+check("R2-08", "Neutral-site flag coverage",
       "Every completed game on the official 2026 international slate must carry neutral_site = Y in the "
       "register, and no other row may carry it",
       f"{len(in_corpus)} rows flagged, matching the {len(expected)} slate games played through Week 10; "
@@ -296,7 +296,7 @@ check("V2-08", "Neutral-site flag coverage",
       f"not been played" + ("" if not bad else f"; SET DIFFERENCE {sorted(bad)}"),
       not bad and len(in_corpus) == len(expected) == len(slate_completed))
 
-# V2-09 the splice added rows; it changed no value and left v1 intact
+# R2-09 the splice added rows; it changed no value and left v1 intact
 v1_rows = read("results_feed_2026.csv")
 by_key_v1 = as_records(v1_rows)
 changed = []
@@ -308,14 +308,14 @@ for r in rows_out:
             or int(o["home_points"]) != int(r["home_points"])):
         changed.append(r["feed_id"])
 canon = read("games_2026_results.csv")
-check("V2-09", "v1 registers untouched",
+check("R2-09", "v1 registers untouched",
       "Every v2 row carried from v1 must hold the same two scores, and the canonical files must keep "
       "their pinned row counts",
       f"{len(v1_rows) - len(changed)} of {len(v1_rows)} carried rows identical to v1; "
       f"data/results_feed_2026.csv still {len(v1_rows)} rows; data/games_2026_results.csv still {len(canon)} rows",
       not changed and len(v1_rows) == 137 and len(canon) == 137)
 
-# V2-10 ties reconcile
+# R2-10 ties reconcile
 ties_games = [r for r in rows_out if r["winner"] == "tie"]
 tie_teams = {t for r in ties_games for t in (r["away_team"], r["home_team"])}
 bad = []
@@ -323,66 +323,125 @@ for t in live_map:
     n_reg = sum(1 for r in rows_out if r["winner"] == "tie" and t in (r["away_team"], r["home_team"]))
     if int(live_map[t]["ties"]) != n_reg:
         bad.append(f"{t}: register {n_reg} vs official {live_map[t]['ties']}")
-check("V2-10", "Ties reconcile",
+check("R2-10", "Ties reconcile",
       "A two-way moneyline settles these as pushes, so the tie count matters to settlement: every club's "
       "tie total in the register must equal the official standings",
       f"{len(ties_games)} tied game(s) in the register ({', '.join(r['away_team'] + ' at ' + r['home_team'] + ' wk' + r['week'] for r in ties_games)}); "
       f"{len(tie_teams)} clubs affected; 32 of 32 tie counts reconcile"
       + ("" if not bad else "; " + "; ".join(bad)), not bad)
 
-# V2-11 league-wide points identity
+# R2-11 league-wide points identity
 pf = sum(int(r["points_for"]) for r in live_map.values())
 pa = sum(int(r["points_against"]) for r in live_map.values())
 tot = sum(int(r["total_points"]) for r in rows_out)
-check("V2-11", "Points identity",
+check("R2-11", "Points identity",
       "Sum of official points for must equal sum of official points against, and both must equal the "
       "register's total of total points",
       f"official PF {pf} = official PA {pa} = register sum {tot}", pf == pa == tot)
 
-# V2-12 per-row provenance: the game URL must name that fixture and that week
+# R2-12 per-row provenance: the game URL must name that fixture and that week
 bad = []
 for r in rows_out:
     want = f"{TEAM_SLUG[r['away_team']]}-at-{TEAM_SLUG[r['home_team']]}-2026-reg-{r['week']}"
     if not r["game_url"].endswith("/games/" + want):
         bad.append(f"{r['feed_id']}: {r['game_url']}")
-check("V2-12", "Every row links to its own official game page",
+check("R2-12", "Every row links to its own official game page",
       "Rebuild the expected nfl.com/games slug from the row's own matchup and week and compare with the "
       "URL stored on the row",
       f"{len(rows_out) - len(bad)} of {len(rows_out)} rows carry the slug for their own fixture"
       + ("" if not bad else "; " + "; ".join(bad)), not bad)
 
-# V2-13 nothing unplayed is recorded as a result
+# R2-13 nothing unplayed is recorded as a result
 bad = [r["feed_id"] for r in rows_out
        if int(r["week"]) > 10 or not r["away_points"].isdigit() or not r["home_points"].isdigit()]
-check("V2-13", "No future fixture recorded as a result",
+check("R2-13", "No future fixture recorded as a result",
       "Every row must be week 10 or earlier with two integer scores; the register holds no forecast",
       f"{len(rows_out) - len(bad)} of {len(rows_out)} rows qualify; highest week {max(int(r['week']) for r in rows_out)}",
       not bad)
 
-# V2-14 the thirteen spliced rows each carry their own read stamp
+# R2-14 the thirteen spliced rows each carry their own read stamp
 bad = [r["feed_id"] for r in rows_out if r["in_v1_feed"] == "no" and not r["verified_date"]]
-check("V2-14", "Spliced rows carry a read stamp",
+check("R2-14", "Spliced rows carry a read stamp",
       "Each of the 13 rows the v1 feed lacked must state when it was read, so the point-in-time rule "
       "(a row is only ever usable after its read time) survives the splice",
       f"{len(backfill) - len(bad)} of {len(backfill)} spliced rows carry verified_date"
       + ("" if not bad else f"; missing on {bad}"), not bad)
 
+# R2-15: the same decision, built twice by two sessions on one day. PR #76 (session 79c9cb37) published
+# its own parallel v2 register at data/results_feed_v2_2026.csv from the same official page. Compared
+# fixture by fixture: agreement here is a second independent transcription of every scoreline in the
+# corpus, which is worth more than any number of self-checks; disagreement would be a bug in one build.
+THEIR_V2 = "results_feed_v2_2026.csv"
+theirs_path = os.path.join(DATA, THEIR_V2)
+xrows, xdiffs = [], []
+x_status, x_summary = "not run", f"{THEIR_V2} absent on this checkout"
+if os.path.exists(theirs_path):
+    with open(theirs_path, encoding="utf-8", newline="") as f:
+        theirs = list(csv.DictReader(f))
+    key = lambda r: (r["week"], r["away_team"], r["home_team"])
+    T = {key(r): r for r in theirs}
+    M = {key(r): r for r in rows_out}
+    shared = sorted(set(M) & set(T))
+    only_mine, only_theirs = sorted(set(M) - set(T)), sorted(set(T) - set(M))
+    agree = {"scores": 0, "winner": 0, "neutral_site": 0, "margin": 0, "total": 0}
+    for k in shared:
+        a, b = M[k], T[k]
+        for name, ka, kb in (("scores", "away_points", "home_points"),
+                             ("winner", "winner", "winner"),
+                             ("neutral_site", "neutral_site", "neutral_site"),
+                             ("margin", "home_margin", "home_margin"),
+                             ("total", "total_points", "total_points")):
+            va = (a.get(ka, ""), a.get(kb, "")) if name == "scores" else (a.get(ka, "") or "")
+            vb = (b.get(ka, ""), b.get(kb, "")) if name == "scores" else (b.get(ka, "") or "")
+            if va == vb:
+                agree[name] += 1
+            elif len(xdiffs) < 40:
+                xdiffs.append(f"{'/'.join(k)} {name}: this build {va!r} vs PR #76 {vb!r}")
+    n_shared = len(shared)
+    for name in agree:
+        xrows.append({"aspect": name, "rows_compared": n_shared, "agree": agree[name],
+                      "differ": n_shared - agree[name],
+                      "note": ("score and winner are transcribed facts; the neutral flag is the official-slate "
+                               "join; margin and total are derived from the two scores"
+                               if name in ("scores", "winner", "neutral_site") else
+                               "derived column, agrees iff the two scores agree"),
+                      "source_url": SRC_WEEK10})
+    x_status = ("pass" if (n_shared == 150 and not xdiffs and not only_mine and not only_theirs) else "FAIL")
+    x_summary = (f"{n_shared} of 150 fixtures shared, {only_mine and len(only_mine) or 0} only here, "
+                 f"{only_theirs and len(only_theirs) or 0} only in PR #76; "
+                 f"scores agree {agree['scores']}/{n_shared}, winners {agree['winner']}/{n_shared}, "
+                 f"neutral-site flags {agree['neutral_site']}/{n_shared}, margins {agree['margin']}/{n_shared}, "
+                 f"totals {agree['total']}/{n_shared}"
+                 + ("" if not xdiffs else f"; {len(xdiffs)} DIFFERENCES: " + "; ".join(xdiffs[:3])))
+    with open(os.path.join(DATA, "results_feed_v2_two_builds_2026-11-18.csv"), "w",
+              encoding="utf-8", newline="") as f:
+        w = csv.DictWriter(f, fieldnames=["aspect", "rows_compared", "agree", "differ", "note", "source_url"])
+        w.writeheader()
+        for r in xrows:
+            w.writerow(r)
+check("R2-15", "Two independent v2 builds compared row by row",
+      f"Every fixture, score, winner, neutral-site flag, margin and total in this register compared with "
+      f"data/{THEIR_V2}, the parallel register session 79c9cb37 built from the same official page on the same day",
+      x_summary, x_status == "pass")
+
 # Per-row check chain: which of these checks cover this row.
 for r in rows_out:
-    base = ["V2-01", "V2-02", "V2-05", "V2-09", "V2-10", "V2-11", "V2-12", "V2-13"]
+    base = ["R2-01", "R2-02", "R2-05", "R2-09", "R2-10", "R2-11", "R2-12", "R2-13"]
+    if x_status == "pass":
+        base.append("R2-15")
     if r["week"] == "10":
-        base += ["V2-03", "V2-04", "V2-07"]
+        base += ["R2-03", "R2-04", "R2-07"]
     if r["neutral_site"] == "Y":
-        base.append("V2-08")
+        base.append("R2-08")
     if r["in_v1_feed"] == "no":
-        base.append("V2-14")
+        base.append("R2-14")
     r["checks"] = ",".join(base)
     r["verification_status"] = (
         "Verified — final score transcribed from the official by-week schedule page and reconciled to "
-        "the official standings read of " + READ_UTC + " (V2-05); see the check chain on this row")
+        "the official standings read of " + READ_UTC + " (R2-05); see the check chain on this row")
 
-write("results_feed_v2_2026.csv", rows_out, FIELDS)
-write("results_feed_v2_checks.csv", checks,
+write("results_feed_v2_82b83a64.csv", rows_out, FIELDS)
+write("results_feed_v2_checks_82b83a64.csv", checks,
       ["check_id", "check", "method", "result", "status", "source_url"])
 
 fails = [c for c in checks if c["status"] != "pass"]
@@ -397,11 +456,14 @@ summary = {
     "neutral_site_rows": sum(1 for r in rows_out if r["neutral_site"] == "Y"),
     "tied_games": sum(1 for r in rows_out if r["winner"] == "tie"),
     "checks": len(checks),
+    "two_build_comparison": {"status": x_status, "summary": x_summary,
+                             "their_register": f"data/{THEIR_V2} (PR #76, session 79c9cb37)",
+                             "this_register": "data/results_feed_v2_82b83a64.csv"},
     "checks_failed": len(fails),
     "canonical_files_changed": "none — v1 registers stay at 137 rows",
     "official_sources": [SRC_WEEK10, SRC_STANDINGS, SRC_INTL],
 }
-with open(os.path.join(DATA, "results_feed_v2_summary.json"), "w", encoding="utf-8") as f:
+with open(os.path.join(DATA, "results_feed_v2_summary_82b83a64.json"), "w", encoding="utf-8") as f:
     json.dump(summary, f, indent=2)
 
 print(json.dumps(summary, indent=2))

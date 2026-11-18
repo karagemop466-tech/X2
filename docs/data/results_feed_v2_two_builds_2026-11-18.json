@@ -1,0 +1,42 @@
+[
+ {
+  "aspect": "scores",
+  "rows_compared": "150",
+  "agree": "150",
+  "differ": "0",
+  "note": "score and winner are transcribed facts; the neutral flag is the official-slate join; margin and total are derived from the two scores",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "aspect": "winner",
+  "rows_compared": "150",
+  "agree": "150",
+  "differ": "0",
+  "note": "score and winner are transcribed facts; the neutral flag is the official-slate join; margin and total are derived from the two scores",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "aspect": "neutral_site",
+  "rows_compared": "150",
+  "agree": "150",
+  "differ": "0",
+  "note": "score and winner are transcribed facts; the neutral flag is the official-slate join; margin and total are derived from the two scores",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "aspect": "margin",
+  "rows_compared": "150",
+  "agree": "150",
+  "differ": "0",
+  "note": "derived column, agrees iff the two scores agree",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "aspect": "total",
+  "rows_compared": "150",
+  "agree": "150",
+  "differ": "0",
+  "note": "derived column, agrees iff the two scores agree",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ }
+]

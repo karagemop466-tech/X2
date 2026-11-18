@@ -759,7 +759,7 @@
   "question_id": "Q64",
   "area": "Backtest corpus",
   "question": "Which log is the pre-registered backtest corpus: 136, 137 or 150 games?",
-  "status": "Open - decision required before any metric is re-published",
+  "status": "Open - v2 150-game parallel register now published; the owner decision P09 (which corpus grades the published metrics) is still required",
   "known_facts_verified": "136 = weeks 1-9 as held in the feed (16+16+16+16+15+14+14+14+15). 137 = that log plus the Thursday Nov 12 game. 150 = everything the official standings now show as completed through Week 10 (149+149+2 team-games). The Week 10 slate itself is 14 games, listed in data/games_week10_2026.csv with 13 blank results.",
   "missing_information": "Whether the owner wants published metrics recomputed on a longer corpus (which changes every error, interval and gate number on the site) or frozen at 137 with the gap disclosed.",
   "how_to_discover_official_first": "Nothing further to read: the 13 scores are transcribed and reconciled (data/games_week10_backfill_2026.csv). This is a choice about versioning, recorded as proposal P09 on the Review console.",

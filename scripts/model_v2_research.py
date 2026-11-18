@@ -70,7 +70,7 @@ def write(name, rows, fields):
 
 # ------------------------------------------------------- the two corpora ----
 v1_corpus = read("games_2026_results.csv")
-v2_register = read("results_feed_v2_2026.csv")
+v2_register = read("results_feed_v2_82b83a64.csv")
 if len(v1_corpus) != 137:
     sys.exit(f"the published corpus is {len(v1_corpus)} rows, expected 137 — stop, a canonical file moved")
 if len(v2_register) != 150:

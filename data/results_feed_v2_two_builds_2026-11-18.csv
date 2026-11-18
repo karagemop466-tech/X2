@@ -1,0 +1,6 @@
+aspect,rows_compared,agree,differ,note,source_url
+scores,150,150,0,score and winner are transcribed facts; the neutral flag is the official-slate join; margin and total are derived from the two scores,https://www.nfl.com/schedules/2026/by-week/week-10
+winner,150,150,0,score and winner are transcribed facts; the neutral flag is the official-slate join; margin and total are derived from the two scores,https://www.nfl.com/schedules/2026/by-week/week-10
+neutral_site,150,150,0,score and winner are transcribed facts; the neutral flag is the official-slate join; margin and total are derived from the two scores,https://www.nfl.com/schedules/2026/by-week/week-10
+margin,150,150,0,"derived column, agrees iff the two scores agree",https://www.nfl.com/schedules/2026/by-week/week-10
+total,150,150,0,"derived column, agrees iff the two scores agree",https://www.nfl.com/schedules/2026/by-week/week-10
