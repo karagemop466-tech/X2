@@ -2321,3 +2321,22 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 **Rebase/conflict log:** `origin/main` advanced from `a78f7bf` to `2ab6ea5` (PR #54 and #55) while this task was active. The rebase conflicted in `COORDINATION.md` because session `b03f4ba1` had claimed and completed T96. Preserved the entire T96 record, renumbered this session's claim and work to T97, and kept all file additions from both sides. No other file conflicted and no work was discarded. After rebasing, integrated the new dashboard controls/removal-of-luck panel without putting historical metrics on the leaderboard; moved the two-sided fields to Strategy Lab and corrected readiness rows D04/D06/D35/D36/D39/D41 to match the generated pages.
 
 **PR / Pages:** pending; this session is on Arena's fixed branch `arena/acfebc6e-x2` and will not switch branches.
+
+## 2026-11-18 · session `d0ede22d` · claim (T102–T107) — current session, branch `arena/d0ede22d-x2`
+
+**Branch note.** This session works only on its assigned branch, `arena/d0ede22d-x2` (from `main` @ `bd4f469`). The `session-<id>/<task>` naming in this board is superseded for this session by the single-branch rule. Nothing is pushed to any other branch. No other session holds an open claim on the board (T97–T101 are done or superseded).
+
+**Scope and claims** (IDs are the next free after T101; F/SRC/R/D numbering continues from the registers):
+
+| ID | Task | Files (owned by this session) | Readiness rows |
+|----|------|-------------------------------|----------------|
+| T102 | Full re-capture of the official NFL.com Week 10 injury page (8 chunks, read 2026-11-18), transcription kept in `data/captures/`, row-by-row delta against `data/injuries_week10_2026.csv`, resolution of the 254/279/345 row-count conflict (F83) | `data/captures/injury_week10_2026-11-18.*`, `data/captures/injury_delta_2026-11-18.csv`, `scripts/capture_delta.py` (new) | D09, D10, D43 |
+| T103 | Standings re-capture from https://www.nfl.com/standings/ (read 2026-11-18) and a dated "what changed" diff against the 2026-11-14 read | `data/captures/standings_2026-11-18.csv`, `data/standings_diff_2026-11-14_to_2026-11-18.csv`, `scripts/standings_diff.py` (new) | D37 |
+| T104 | Fixture-context features built only from published schedule dates and teams (rest days, bye gap, short-week flag); no score or outcome field is read | `scripts/fixture_context.py` (new), `data/fixture_context_2026.csv` (new) | D25 |
+| T105 | Drift alarm on every register: pinned row counts and required fields, build fails loudly on a missing field | `scripts/drift_check.py` (new), `data/drift_pins.csv` (new), `scripts/build.py` (one call added) | D38 |
+| T106 | Feasibility check of venue transcription from the official schedule / game-centre pages; transcribe only what is read on the page | `data/venues_2026.csv` (new, only if read) | D26 |
+| T107 | Readiness table, requirements, flags, executive summary, README, sources, integration, PR, merge, Pages check | `data/decision_readiness.csv`, `data/requirements.csv`, `data/flags.csv`, `data/sources.csv`, `README.md`, `docs/**` (generated), `COORDINATION.md` | all touched rows |
+
+**Explicitly not claimed (blocked, not attempted):** any scheduled or automated capture of nfl.com (D11, D17). The NFL.com Terms (Section 1.3, https://www.nfl.com/legal/terms/) prohibit systematic retrieval to compile data absent written consent, and this repo's own gate D22 has not been cleared. Captures in this session are manual, one page read per request, and the raw text stays out of the public tree except for the derived transcription. Also not claimed: inactive lists and snap counts (D13), reserve list (D14), depth for 32 clubs (D15–D16), roster events (D19), designation calibration (D20–D21), the price-data decision (D30), odds (D01, D03, D31, D32).
+
+**Status:** in progress.
