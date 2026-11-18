@@ -1,0 +1,98 @@
+[
+ {
+  "metric": "corpus_games",
+  "v1_published_137": "137",
+  "v2_research_150": "150",
+  "delta_v2_minus_v1": "13",
+  "note": "v1 is the frozen published record; v2 adds the 13 official Week 10 finals (P09=B)",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "neutral_flagged_games",
+  "v1_published_137": "0",
+  "v2_research_150": "8",
+  "delta_v2_minus_v1": "8",
+  "note": "v1 publishes blank neutral_site on every row; v2 flags the settled international games from the official slate",
+  "source_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "metric": "out_of_sample_games_weeks_4_10",
+  "v1_published_137": "89",
+  "v2_research_150": "102",
+  "delta_v2_minus_v1": "13",
+  "note": "v2 adds 13 Week 10 games to the walk-forward",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "mae_reference_common_89",
+  "v1_published_137": "10.892",
+  "v2_research_150": "10.751",
+  "delta_v2_minus_v1": "-0.140",
+  "note": "same 89 games under both corpora: isolates the neutral-flag + refit effect",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "mae_m1_common_89",
+  "v1_published_137": "9.156",
+  "v2_research_150": "9.082",
+  "delta_v2_minus_v1": "-0.074",
+  "note": "same 89 games under both corpora",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "mae_improvement_common_89",
+  "v1_published_137": "1.736",
+  "v2_research_150": "1.669",
+  "delta_v2_minus_v1": "-0.066",
+  "note": "model minus reference, positive = model closer",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "mae_reference_v2_full_102",
+  "v1_published_137": "10.892",
+  "v2_research_150": "10.618",
+  "delta_v2_minus_v1": "-0.274",
+  "note": "v1 column is its own 89-game value; v2 covers 102 games - not like for like",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "mae_m1_v2_full_102",
+  "v1_published_137": "9.156",
+  "v2_research_150": "9.236",
+  "delta_v2_minus_v1": "0.080",
+  "note": "v1 column is its own 89-game value; v2 covers 102 games - not like for like",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "calibration_slope_common_89",
+  "v1_published_137": "0.885",
+  "v2_research_150": "0.978",
+  "delta_v2_minus_v1": "0.093",
+  "note": "OLS slope of actual on predicted margin, same 89 games",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "sd_margin_residual_common_89",
+  "v1_published_137": "12.254",
+  "v2_research_150": "12.136",
+  "delta_v2_minus_v1": "-0.118",
+  "note": "residual scale used for prices-free probabilities",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "fitted_home_field_term",
+  "v1_published_137": "-0.403",
+  "v2_research_150": "-0.286",
+  "delta_v2_minus_v1": "0.117",
+  "note": "ridge estimate of the home-field term; v2 zeroes it on 8 flagged games",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "reference_total_week11",
+  "v1_published_137": "45.9",
+  "v2_research_150": "46.2",
+  "delta_v2_minus_v1": "0.2",
+  "note": "2 x league avg points/team/game over games strictly before Week 11 (F44)",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ }
+]

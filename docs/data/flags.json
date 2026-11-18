@@ -734,7 +734,7 @@
   "item": "Brief says 136 games; repo holds 137",
   "detail": "The brief's backtest corpus is 'the 136-game log'. The repo's games_2026_results.csv holds 137 completed games (model_summary.json games_transcribed = 137). The 137 count is consistent across files, but the brief's 136 has not been reconciled against the official schedule.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Explained (session d0ede22d): 136 = all games in weeks 1-9; the repo's 137th row is the Week 10 Thursday game. See F96 for the 13 later Week 10 games.",
+  "status": "Explained (session d0ede22d): 136 = all games in weeks 1-9; the repo's 137th row is the Week 10 Thursday game. See F96 for the 13 later Week 10 games. 2026-11-18 (session 60c8c865): the 137-vs-150 count is now published both ways under decision P09=B - v1 (137) remains the frozen published record and v2 (150) is the parallel research corpus.",
   "action_requested": "Compare the 137 rows with the official weekly schedule pages, week by week, and record any difference."
  },
  {
@@ -806,8 +806,8 @@
   "item": "Verified results feed is frozen at 137 games; the official standings on 2026-11-18 reflect 150",
   "detail": "The results register (data/games_2026_results.csv, data/results_feed_2026.csv) holds 137 games: weeks 1-9 (136 games) plus the Week 10 Thursday game (the Week 10 Thursday game). Thirteen Week 10 games played on Sunday 15 and Monday 16 November are not in the register. The 2026-11-18 standings include them (data/standings_diff_2026-11-14_to_2026-11-18.csv: 13 games added). They are not ingested here because the backtest corpus is pre-registered and must not change silently; ingestion needs a dated tranche with the owner's approval.",
   "source_url": "https://www.nfl.com/standings/",
-  "status": "Irregularity - open (decision)",
-  "action_requested": "Owner to approve a dated tranche for the 13 Week 10 results (per-game scores from the official game centres), then re-freeze."
+  "status": "Resolved by decision P09=B (2026-11-18): v1 frozen, v2 published in parallel",
+  "action_requested": "Done: P09 recorded as option B. data/games_2026_results_v2.csv holds all 150 official games (137 published + the 13 Week 10 finals) with the settled international games flagged neutral; scripts/corpus_v2.py reproduces every published v1 number before writing anything and sha256-proves the v1 files unchanged afterwards. The published record stays v1 (137); the v2 corpus and its re-fit are research registers only. No action remains on this flag."
  },
  {
   "flag_id": "F97",
@@ -887,8 +887,8 @@
   "item": "The 13 missing Week 10 games are now transcribed and reconcile 32 of 32 clubs",
   "detail": "Closes the evidence half of F96 (the ingestion decision stays open). All 14 Week 10 finals were read from the official by-week page on 2026-11-18T04:00Z (SRC-89) and the 13 the feed does not hold were written to data/games_week10_backfill_2026.csv - scores transcribed, never computed from records. Verification is on two independent official surfaces: with the 13 rows added, all 32 clubs match today's standings read on W-L-T and points for/against; without them 26 of 32 clubs disagree. Second check: 149 wins + 149 losses + 2 ties = 300 team-games = 150 games, against 137 in the feed and 14 on the Week 10 slate. Consequence measured for the published research: the Week 11 line is fitted on 137 of 150 games, and the 89-game walk-forward corpus contains exactly one Week 10 game. Tables: data/results_feed_completeness_2026-11-18.csv (32 checks), data/week_count_reconciliation_2026-11-18.csv (7 checks), page feed-completeness.html.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Transcribed - ingestion awaits P09",
-  "action_requested": "Owner to choose on the Review console (P09): A splice into the canonical feed and re-publish every metric as v2; B publish a parallel v2 research register and keep v1 (137 games) frozen; C keep 137 and disclose. This session changed no published feed row."
+  "status": "Ingested into the parallel v2 corpus (P09=B); v1 feed unchanged by design",
+  "action_requested": "Done for option B: the 13 rows are ingested into data/games_2026_results_v2.csv and reconcile 32 of 32 clubs against the 2026-11-18 official standings inside scripts/corpus_v2.py. They are deliberately NOT spliced into data/games_2026_results.csv: that would re-publish every v1 metric, which is option A and was not chosen. No action remains on this flag."
  },
  {
   "flag_id": "F106",

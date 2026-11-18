@@ -2842,6 +2842,7 @@ NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("fixture-con
 NAV.insert(NAV.index(("fixture-context.html", "Fixture context")) + 1, ("capture-integrity.html", "Capture integrity"))
 NAV.insert(NAV.index(("capture-integrity.html", "Capture integrity")) + 1, ("feed-completeness.html", "Feed completeness"))
 NAV.insert(NAV.index(("feed-completeness.html", "Feed completeness")) + 1, ("forecast-records.html", "Forecast records"))
+NAV.insert(NAV.index(("forecast-records.html", "Forecast records")) + 1, ("corpus-v2.html", "Corpus v2 (research)"))
 
 _cap_idx = (
     '<h2>Captures, changes and the drift alarm (read 2026-11-18)</h2>'
@@ -3214,6 +3215,127 @@ leaderboard, and the leaderboard stays unranked until a prospective window close
 """)
 
 
+# ---------- parallel v2 research corpus (decision P09=B, session 60c8c865, T111) ----------
+# The published record stays v1 (137 games). This page publishes the parallel v2
+# research corpus (150 games + neutral flags) and the re-fit differences, each
+# table rendered exactly from the registers scripts/corpus_v2.py wrote. That
+# script refuses to write anything unless it first reproduces every published
+# v1 backtest row, rating and headline metric, and it sha256-proves the v1
+# files unchanged afterwards - the page states both facts because the whole
+# point of option B is that nothing published moves.
+_cv2_corpus = _rd("data/games_2026_results_v2.csv")
+_cv2_check = _rd("data/corpus_v2_selfcheck.csv")
+_cv2_metrics = _rd("data/corpus_v2_metrics.csv")
+_cv2_ratings = _rd("data/corpus_v2_ratings.csv")
+_cv2_diffs = _rd("data/corpus_v2_pick_diffs.csv")
+_cv2_w11 = _rd("data/corpus_v2_week11_lines.csv")
+_cv2_back = _rd("data/corpus_v2_backtest.csv")
+_cv2_flagged = sum(1 for r in _cv2_corpus if r["neutral_site"] == "Y")
+_cv2_flips = sum(1 for r in _cv2_diffs if r["side_pick_flipped"] == "yes")
+_cv2_cross = sum(1 for r in _cv2_diffs if r["bet_gate_crossed"] == "yes")
+_cv2_failed = [r for r in _cv2_check if r["result"] != "pass"]
+if _cv2_failed:
+    errors.append("corpus v2 self-check register contains a non-passing check: "
+                  + ", ".join(r["check_id"] for r in _cv2_failed))
+assert len(_cv2_corpus) == 150, "v2 corpus must hold 150 rows"
+assert _cv2_flagged == 8, "v2 corpus must flag 8 settled international games"
+assert all(r["source_url"].startswith("https://www.nfl.com/") for r in _cv2_corpus), \
+    "v2 corpus row without an official source"
+
+pages["corpus-v2.html"] = ("Corpus v2 (research)", f"""
+<section class="hero">
+  <h1>Parallel v2 research corpus — decision P09 = option B</h1>
+  <p>The published record is <strong>v1: 137 games, frozen</strong>. Decision <strong>P09</strong> asked whether to
+  adopt the 13 official Week 10 finals and the settled international neutral-site flags into it. The recorded answer
+  is <strong>option B</strong> — the console's own recommendation: publish the adoption as a
+  <strong>parallel research corpus</strong> and leave every published number alone. Nothing on any other page of
+  this site changed because of this decision.</p>
+  <p class="note"><strong>Self-check before any write.</strong> <code>scripts/corpus_v2.py</code> re-runs its own
+  copy of the model code on the v1 corpus first and must reproduce the published backtest (89 rows), ratings
+  (32 clubs) and headline metrics before a single v2 file exists; it then hashes the eight immutable v1 files
+  before and after the run and fails if any changed. Both guarantees are published as
+  <code>data/corpus_v2_selfcheck.csv</code> below.</p>
+</section>
+{tiles([(str(len(_cv2_corpus)), "games in the v2 corpus (v1 publishes 137)"),
+        (str(_cv2_flagged), "settled international games flagged neutral"),
+        (str(len(_cv2_back)), "v2 out-of-sample rows, weeks 4-10 (v1: 89)"),
+        (str(_cv2_flips), f"side picks that flip vs v1 (of {len(_cv2_diffs)} common games)"),
+        (str(_cv2_cross), "pre-registered 3-pt bet-gate crossings"),
+        (str(len(_cv2_check)), "self-checks, all pass")])}
+<h2>Self-check: v1 reproduced before anything was written</h2>
+{table(_cv2_check, ["check_id", "what_was_checked", "result", "detail", "source_url"],
+       {"check_id": "Check", "what_was_checked": "What was checked", "result": "Result",
+        "detail": "Detail", "source_url": "Source"}, table_id="cv2-checks")}
+<h2>Headline metrics: v1 published vs v2 research</h2>
+<p class="note">The <em>common-89</em> rows compare the <strong>same 89 games</strong> under both corpora, which is
+the only like-for-like view of what the neutral flags and the re-fit change. The <em>v2 full-102</em> rows add the
+13 Week 10 games and are explicitly <strong>not</strong> like for like against the v1 column. Positive
+MAE improvement means the model is closer than the naive reference line.</p>
+{table(_cv2_metrics, ["metric", "v1_published_137", "v2_research_150", "delta_v2_minus_v1", "note", "source_url"],
+       {"metric": "Metric", "v1_published_137": "v1 (published, 137)", "v2_research_150": "v2 (research, 150)",
+        "delta_v2_minus_v1": "Δ (v2 − v1)", "note": "Note", "source_url": "Source"},
+       table_id="cv2-metrics")}
+<h2>Side picks and the pre-registered bet gate, game by game</h2>
+<p class="note">All {len(_cv2_diffs)} games graded out-of-sample under both corpora. A flip is a change of side
+lean; a crossing is a change of the pre-registered gate status (|model − reference| ≥ 3 points, BET_DELTA in
+<code>scripts/model.py</code>). Research comparison only: no bet is placed, and the published backtest remains
+<a href="backtest.html">v1</a>.</p>
+{search_box("cv2-diffs")}
+{table(_cv2_diffs, ["week", "matchup", "v1_m1_spread", "v2_m1_spread", "delta_m1_spread",
+                    "v1_reference_spread", "v2_reference_spread", "v1_side_pick", "v2_side_pick",
+                    "side_pick_flipped", "v1_at_bet_gate", "v2_at_bet_gate", "bet_gate_crossed",
+                    "actual_margin", "source_url"],
+       {"week": "Wk", "matchup": "Game", "v1_m1_spread": "v1 M1", "v2_m1_spread": "v2 M1",
+        "delta_m1_spread": "Δ M1", "v1_reference_spread": "v1 ref", "v2_reference_spread": "v2 ref",
+        "v1_side_pick": "v1 lean", "v2_side_pick": "v2 lean", "side_pick_flipped": "Flipped",
+        "v1_at_bet_gate": "v1 ≥3", "v2_at_bet_gate": "v2 ≥3", "bet_gate_crossed": "Crossed",
+        "actual_margin": "Actual (H−A)", "source_url": "Source"},
+       table_id="cv2-diffs", filterable=True)}
+<h2>Week 11 lines under v2 — research only, the published line is v1</h2>
+<p class="note">Side first, then total, then moneyline, in the pre-registered origination order. The published
+Week 11 lines on <a href="model-lines.html">Model &amp; Week 11 lines</a> are unchanged and remain the v1 numbers;
+this table shows what the same construction produces on the v2 corpus. The moneyline is implied by the v2
+residual scale with no market price (F07).</p>
+{table(_cv2_w11, ["game_no", "matchup", "neutral_site", "v1_fair_spread", "v2_fair_spread", "delta_spread",
+                  "v1_fair_total", "v2_fair_total", "delta_total", "v1_reference_spread",
+                  "v2_reference_spread", "v2_moneyline_home", "v2_moneyline_away", "game_url", "source_url"],
+       {"game_no": "#", "matchup": "Game", "neutral_site": "Neutral", "v1_fair_spread": "v1 spread",
+        "v2_fair_spread": "v2 spread", "delta_spread": "Δ spread", "v1_fair_total": "v1 total",
+        "v2_fair_total": "v2 total", "delta_total": "Δ total", "v1_reference_spread": "v1 ref",
+        "v2_reference_spread": "v2 ref", "v2_moneyline_home": "v2 ML home", "v2_moneyline_away": "v2 ML away",
+        "game_url": "Game page", "source_url": "Source"}, table_id="cv2-w11")}
+<h2>Rating changes, club by club</h2>
+<p class="note">Ridge attack/defence ratings under each corpus. The largest movement is a direct consequence of
+the flags: {max(_cv2_ratings, key=lambda r: abs(float(r['delta_net'])))['team']} moves
+{max(_cv2_ratings, key=lambda r: abs(float(r['delta_net'])))['delta_net']} net points because its games include
+international fixtures the published fit treated as home games.</p>
+{search_box("cv2-ratings")}
+{table(_cv2_ratings, ["team", "v1_attack", "v2_attack", "delta_attack", "v1_defence", "v2_defence",
+                      "delta_defence", "v1_net", "v2_net", "delta_net", "v2_games_played", "source_url"],
+       {"team": "Club", "v1_attack": "v1 attack", "v2_attack": "v2 attack", "delta_attack": "Δ attack",
+        "v1_defence": "v1 defence", "v2_defence": "v2 defence", "delta_defence": "Δ defence",
+        "v1_net": "v1 net", "v2_net": "v2 net", "delta_net": "Δ net", "v2_games_played": "v2 games",
+        "source_url": "Source"}, table_id="cv2-ratings", filterable=True)}
+<h2>The v2 corpus itself</h2>
+<p class="note">{len(_cv2_corpus)} rows: the 137 published games plus the 13
+official Week 10 finals transcribed from
+<a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">the official Week 10
+schedule</a> (read 2026-11-18), with <code>neutral_site=Y</code> on the {_cv2_flagged} settled international
+games matched from
+<a href="https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games" target="_blank" rel="noopener">NFL
+Football Operations</a>. The register is exported to <code>docs/data/games_2026_results_v2.json</code>.</p>
+{search_box("cv2-corpus")}
+{table(_cv2_corpus, ["week", "date_as_shown", "away_team", "away_points", "home_team", "home_points",
+                     "neutral_site", "game_url", "source_url"],
+       {"week": "Wk", "date_as_shown": "Date", "away_team": "Away", "away_points": "A pts",
+        "home_team": "Home", "home_points": "H pts", "neutral_site": "Neutral", "game_url": "Game page",
+        "source_url": "Source"}, table_id="cv2-corpus", filterable=True)}
+<p class="note">What this page is <strong>not</strong>: it is not the published backtest, not a leaderboard entry
+and not a re-publication. The leaderboard stays unranked, the gates stay as proposed (F17), and no reward exists
+(F09/F19). Full v2 walk-forward rows are in <code>data/corpus_v2_backtest.csv</code>
+({len(_cv2_back)} rows), also exported as JSON.</p>
+""")
+
 # The exports dict above runs earlier in this file than this block, so the registers added here are exported to
 # docs/data/ in their own loop rather than by editing that dict.
 for _nm, _rows in (("availability_captures", _captures), ("availability_delta_summary", _avail_summary),
@@ -3227,7 +3349,11 @@ for _nm, _rows in (("availability_captures", _captures), ("availability_delta_su
                    ("games_week10_backfill_2026", _backfill), ("forecast_record_checks", _fr_checks),
                    ("forecast_records_2026", _fr_graded), ("forecast_records_week11", _fr_w11),
                    ("international_games_2026", _intl), ("neutral_site_sensitivity_2026", _neutral),
-                   ("reserve_list_2026", _reserve)):
+                   ("reserve_list_2026", _reserve),
+                   ("games_2026_results_v2", _cv2_corpus), ("corpus_v2_selfcheck", _cv2_check),
+                   ("corpus_v2_metrics", _cv2_metrics), ("corpus_v2_ratings", _cv2_ratings),
+                   ("corpus_v2_pick_diffs", _cv2_diffs), ("corpus_v2_week11_lines", _cv2_w11),
+                   ("corpus_v2_backtest", _cv2_back)):
     with open(os.path.join(DOCS, "data", _nm + ".json"), "w", encoding="utf-8") as _f:
         json.dump(_rows, _f, ensure_ascii=False, indent=1)
 

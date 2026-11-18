@@ -1,0 +1,51 @@
+[
+ {
+  "check_id": "SC1",
+  "what_was_checked": "v1 walk-forward reproduces data/model_backtest.csv (89 rows, 7 numeric columns, 1dp)",
+  "result": "pass",
+  "detail": "89 rows; largest absolute difference 0.0500 pts (tolerance 0.055); no mismatches",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_backtest.csv"
+ },
+ {
+  "check_id": "SC2",
+  "what_was_checked": "v1 final ridge fit reproduces data/model_ratings.csv (32 clubs, 2dp)",
+  "result": "pass",
+  "detail": "32 clubs; largest absolute difference 0.00498 pts (tolerance 0.006); no mismatches",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_ratings.csv"
+ },
+ {
+  "check_id": "SC3",
+  "what_was_checked": "v1 headline metrics reproduce data/model_summary.json (MAE, improvement, slope, residual sd)",
+  "result": "pass",
+  "detail": "MAE ref 10.892 vs 10.89; MAE M1 9.156 vs 9.16; slope 0.8851 vs 0.885; sd 12.254 vs 12.25",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_summary.json"
+ },
+ {
+  "check_id": "SC4",
+  "what_was_checked": "every one of the 150 v2 rows carries an official nfl.com source link",
+  "result": "pass",
+  "detail": "150 of 150 rows source-linked",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "SC5",
+  "what_was_checked": "each of the 8 v2 neutral flags matches a settled game on the official international slate",
+  "result": "pass",
+  "detail": "8 flagged games, all present in data/international_games_2026.csv",
+  "source_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games"
+ },
+ {
+  "check_id": "SC6",
+  "what_was_checked": "v2 walk-forward covers weeks 4-10 with the 14-game Week 10 slate",
+  "result": "pass",
+  "detail": "102 out-of-sample rows (v1: 89); Week 10 rows: 14 (v1: 1)",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "check_id": "SC7",
+  "what_was_checked": "every v2 prediction for week W is fitted only on games strictly before week W",
+  "result": "pass",
+  "detail": "training weeks asserted strictly earlier inside walk_forward for all 7 evaluated weeks",
+  "source_url": "https://www.itl.nist.gov/div898/handbook/pmd/section4/pmd44.htm"
+ }
+]

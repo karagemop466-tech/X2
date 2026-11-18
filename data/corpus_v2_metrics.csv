@@ -1,0 +1,13 @@
+metric,v1_published_137,v2_research_150,delta_v2_minus_v1,note,source_url
+corpus_games,137,150,13,v1 is the frozen published record; v2 adds the 13 official Week 10 finals (P09=B),https://www.nfl.com/schedules/2026/by-week/week-10
+neutral_flagged_games,0,8,8,v1 publishes blank neutral_site on every row; v2 flags the settled international games from the official slate,https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games
+out_of_sample_games_weeks_4_10,89,102,13,v2 adds 13 Week 10 games to the walk-forward,https://www.nfl.com/schedules/2026/by-week/week-10
+mae_reference_common_89,10.892,10.751,-0.140,same 89 games under both corpora: isolates the neutral-flag + refit effect,https://www.nfl.com/standings/
+mae_m1_common_89,9.156,9.082,-0.074,same 89 games under both corpora,https://www.nfl.com/standings/
+mae_improvement_common_89,1.736,1.669,-0.066,"model minus reference, positive = model closer",https://www.nfl.com/standings/
+mae_reference_v2_full_102,10.892,10.618,-0.274,v1 column is its own 89-game value; v2 covers 102 games - not like for like,https://www.nfl.com/schedules/2026/by-week/week-10
+mae_m1_v2_full_102,9.156,9.236,0.080,v1 column is its own 89-game value; v2 covers 102 games - not like for like,https://www.nfl.com/schedules/2026/by-week/week-10
+calibration_slope_common_89,0.885,0.978,0.093,"OLS slope of actual on predicted margin, same 89 games",https://www.nfl.com/standings/
+sd_margin_residual_common_89,12.254,12.136,-0.118,residual scale used for prices-free probabilities,https://www.nfl.com/standings/
+fitted_home_field_term,-0.403,-0.286,0.117,ridge estimate of the home-field term; v2 zeroes it on 8 flagged games,https://www.nfl.com/standings/
+reference_total_week11,45.9,46.2,0.2,2 x league avg points/team/game over games strictly before Week 11 (F44),https://www.nfl.com/schedules/2026/by-week/week-10

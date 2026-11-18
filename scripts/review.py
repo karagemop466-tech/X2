@@ -199,6 +199,37 @@ PROPOSALS = [
         "cost": "A: deletion, low risk. C: large refactor",
         "source_url": "https://github.com/karagemop466-tech/X2",
     },
+    # P09 was appended to data/decision_console.csv directly by session cf85d485
+    # (T107) instead of through this file, so review.py used to drop it on the next
+    # run. Registered here on 2026-11-18 (session 60c8c865, T111) so the console
+    # round-trips; its recorded choice lives in data/decision_choices.json.
+    {
+        "id": "P09",
+        "area": "Backtest corpus",
+        "question": "Adopt the 13 settled Week 10 games and the nine neutral-site flags, and re-publish the corpus metrics?",
+        "why_it_matters": ("The published results feed holds 137 games while today's official "
+                           "standings imply 150 through Week 10; every published metric is computed "
+                           "on the 137-game corpus, and the international games carry no neutral flag, "
+                           "so the fitted home-field term is applied at venues the official slate says "
+                           "are neutral. Both facts change published numbers if adopted quietly."),
+        "option_a": "Splice into data/games_2026_results.csv, re-fit, and re-publish every metric as v2",
+        "option_b": "Publish a parallel v2 research register and keep v1 (137 games) frozen as the published record",
+        "option_c": "Keep 137 games and disclose the 13-game gap on every table that uses the corpus",
+        "recommended": "B",
+        "why": ("The transcription is already reconciled (32 of 32 clubs match today's official "
+                "standings once the 13 rows are added), and three side picks plus one bet-gate "
+                "crossing turn on the neutral flags. A re-run therefore changes published numbers, "
+                "so it should be visible as a version, not a quiet correction; C alone leaves a "
+                "known-wrong corpus as the only number the site shows."),
+        "files_changed": ("data/games_2026_results.csv, data/model_backtest.csv, "
+                          "data/model_bets.csv, data/strategy_backtest_scores.csv, "
+                          "data/control_baselines*.csv, data/leaderboard_control_runs.csv, "
+                          "docs/** (generated)"),
+        "unblocks": "D29 (corpus definition), and a corpus that matches the official standings",
+        "blocks": "Nothing is blocked by waiting; the gap is disclosed on this build",
+        "cost": "One re-run plus a version tag on the pages that show metrics",
+        "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/week_count_reconciliation_2026-11-18.csv",
+    },
 ]
 
 
