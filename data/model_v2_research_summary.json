@@ -31,6 +31,12 @@
     "bet_changed_ac": 6,
     "side_flip_ac": 0
   },
+  "week10_holdout_closer": {
+    "published": 0,
+    "v2_unflagged": 5,
+    "v2_flagged": 3,
+    "pr78_register": "5 of 13 (data/corpus_v2_summary.csv subset B)"
+  },
   "week11_picks_flipped_flags_only": 0,
   "week11_picks_flipped_v2": 0,
   "canonical_files_written": "none \u2014 the three model_v2_research_*.csv registers and this summary only",

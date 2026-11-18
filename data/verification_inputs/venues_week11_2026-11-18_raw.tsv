@@ -1,0 +1,19 @@
+# Venue transcription from the official NFL.com Game Center "Game Info" block,
+# read 2026-11-18 (UTC). The block publishes exactly two venue fields:
+#   LocationLOCATION<city, state|country>   and   StadiumSTADIUM<name>
+# It publishes NO roof and NO surface field, on any of the 13 Week 11 pages read.
+# That absence is recorded as an absence, not filled from another site.
+game_no	away	home	location_as_rendered	stadium_as_rendered	source_url
+1	IND	HOU	HOUSTON, TX	RELIANT STADIUM	https://www.nfl.com/games/colts-at-texans-2026-reg-11
+2	MIA	BUF	ORCHARD PARK, NY	HIGHMARK STADIUM	https://www.nfl.com/games/dolphins-at-bills-2026-reg-11
+3	BAL	CAR	CHARLOTTE, NC	BANK OF AMERICA STADIUM	https://www.nfl.com/games/ravens-at-panthers-2026-reg-11
+4	NO	CHI	CHICAGO, IL	SOLDIER FIELD	https://www.nfl.com/games/saints-at-bears-2026-reg-11
+5	TEN	DAL	ARLINGTON, TX	AT&T STADIUM	https://www.nfl.com/games/titans-at-cowboys-2026-reg-11
+6	TB	DET	DETROIT, MI	FORD FIELD	https://www.nfl.com/games/buccaneers-at-lions-2026-reg-11
+7	AZ	KC	KANSAS CITY, MO	ARROWHEAD STADIUM	https://www.nfl.com/games/cardinals-at-chiefs-2026-reg-11
+8	PIT	PHI	PHILADELPHIA, PA	LINCOLN FINANCIAL FIELD	https://www.nfl.com/games/steelers-at-eagles-2026-reg-11
+9	NYJ	LAC	INGLEWOOD, CA	SOFI STADIUM	https://www.nfl.com/games/jets-at-chargers-2026-reg-11
+10	JAX	NYG	EAST RUTHERFORD, NJ	METLIFE STADIUM	https://www.nfl.com/games/jaguars-at-giants-2026-reg-11
+11	LV	DEN	DENVER, CO	EMPOWER FIELD AT MILE HIGH	https://www.nfl.com/games/raiders-at-broncos-2026-reg-11
+12	MIN	SF	MEXICO CITY	ESTADIO BANORTE	https://www.nfl.com/games/vikings-at-49ers-2026-reg-11
+13	CIN	WAS	LANDOVER, MD	NORTHWEST STADIUM	https://www.nfl.com/games/bengals-at-commanders-2026-reg-11

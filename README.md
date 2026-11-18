@@ -10,56 +10,100 @@ separate columns**, a strict **signal-vs-staking split** in the leaderboard, a p
 returns a live strategy to paper, and **replacement-depth tracking** (the 2nd/3rd/4th string of the replacement,
 where a source verifies it).
 
+## Latest session (82b83a64): the results register completed, and the price of adopting it
+
+Four things were built on 2026-11-18, all in parallel with the published record, and none of them rewrote a number
+the site had already published:
+
+- **Results register v2** (`docs/results-v2.html`, `data/results_feed_v2_2026.csv`, `python3 scripts/results_v2.py`).
+  All **150** games through Week 10: the 137-game published feed plus the 13 settled Week 10 games, each score
+  transcribed from the official by-week page and never computed from a record. It is the first register in the
+  repository where the completed international games carry `neutral_site = Y` — **8** rows, sourced from the dated
+  NFL Football Operations slate rather than inferred. **14 machine checks, all passing**
+  (`data/results_feed_v2_checks.csv`), including a third independent read of the Week 10 page at 2026-11-18T05:05Z
+  (14 of 14 fixtures, scores *and* winner indicators) and a 32-of-32 club reconciliation against a standings read
+  taken by the same session in the same minute — not against a file already in the repository.
+- **The cost of re-adoption, measured** (`data/model_v2_research_deltas.csv`, `python3 scripts/model_v2_research.py`).
+  `scripts/model.py` was executed **unmodified** in a temporary directory on four corpora: the published 137, the same
+  137 with the neutral flags honoured, the 150 flagged, and the 150 unflagged. Side hit rate against the naive
+  reference **0.652 → 0.629 → 0.578**; bets clearing the pre-registered 3-point gate **50 → 54 → 59**; calibration
+  slope 0.885 → 0.978 → 1.129; reference total 45.9 → 46.2; **0 of 13 published Week 11 side picks flip** in any
+  variant, and the forecast-log SHA-256 would change in all of them — which is why this is a version and not a
+  correction, and why no published model output was touched. The 150-unflagged fit reproduces PR #78's Week 10
+  holdout count exactly (5 of 13), so the two registers reconcile and the 2-row difference is venue treatment alone
+  (**F119**).
+- **`scripts/verify_results.py` made general** (on top of the PR #78 fix): `--games` takes any register, `--standings`
+  takes any dated read, `--list` enumerates the reads available, a read that states no date is refused, and
+  `--allow-future-weeks` reports a ledger that is behind without failing. The published ledger against today's
+  standings read is off for **26 of 32** clubs — the corpus gap, dated, not suppressed (**F106**, **F113**,
+  `docs/verification.html` V39).
+- **Two new flags.** **F119**: the Review console's P09 note publishes a prediction — "three side picks plus one
+  bet-gate crossing" — that measurement contradicts (zero and six); the console text is the owner's surface, so the
+  discrepancy is recorded beside it rather than edited into it. **F120**: a third read of the injury hub inside 24
+  hours still renders Week 10 while its own selector lists Week 11, so a Wednesday/Thursday/Friday capture timer has
+  nothing to fire on.
+- **Nothing was chosen on the owner's behalf.** `data/decision_choices.json` is still empty, `review.py` was not
+  re-run, and the 137-game register, its pins and its hashes are byte-identical to the merge base (`drift_check`
+  50/50 registers; `repo_audit` A05 confirms `model.py` still reproduces its published outputs exactly).
+
+## Also 2026-11-18 (session f04dda73, PR #78): the corpus, and the number that undercuts the headline
+
+Five things changed on 2026-11-18 and each one moved a published claim rather than a table cell:
+
+- **Pre-registered corpus published twice** (`docs/corpus-v2.html`, `data/corpus_v2_2026.csv`,
+  `python3 scripts/corpus_v2.py`). The 89-game walk-forward corpus is reproduced row for row and published beside a pooled
+  **102-game** corpus that adds the 13 settled Week 10 games. On the 89 the model beats its own naive reference line by
+  **1.736 points** of mean absolute error; on the 13 it had never been scored against it is **0.591 points behind**
+  (closer on 5 of 13); pooled the gain is **1.439**. On totals the model loses to the reference in every cut
+  (−0.113 / −1.312 / −0.266). Flag **F110**. The Week 11 lines are deliberately *not* re-originated: they are
+  SHA-256 sealed pre-kickoff evidence and re-fitting would destroy what they prove.
+- **The standings reconciliation now measures currency, not just arithmetic** (`scripts/verify_results.py`). It takes the
+  dated official standings read as an argument, prints both dates, and exits **1** when the 137-game ledger falls behind
+  the current read (it is 13 games behind; 26 of 32 clubs disagree). Desk rows RF07 (arithmetic, pass) and RF07b
+  (currency, **FAIL**) are split so one cannot stand in for the other. V35, flag **F113**.
+- **A stale correlation was published twice under two values.** `data/correlation_audit.csv` held C08 = −0.064 after the
+  canonical register moved to +0.035. Regenerated (V36, **F112**) and `scripts/desk.py` now fails the build if the audit
+  register ever disagrees with `data/correlations_computed.csv` again.
+- **Read dates are published per surface** (landing page, **F114**). The single header "data as of 2026-11-14" was true of
+  the oldest register and false of the newest; the header now names the newest read and a table gives each surface its own
+  date, status and the reason — including two registers frozen on purpose.
+- **The open decisions are ranked by what they release** (`python3 scripts/decision_queue.py`,
+  `data/decision_queue.csv`, `docs/review.html`). Ten decisions wait on a human; the queue is derived from
+  `decision_options.csv` × `decision_readiness.csv`, separates benefit from cost, and flags the three that need a lawyer
+  and the two that need a licensed price feed.
+- **Third independent read of the Week 10 injury report** (`data/verification_inputs/injuries_2026-11-18_ATL-MIN-GB_f04dda73.tsv`,
+  CAP-03): 164 of 164 cells across ATL, MIN and GB match the published register, and the cell two earlier sessions
+  disputed (JAX Chris Rodriguez Jr.) resolves in favour of the published value — F109 confirmed on a fourth read.
+
 ## Read in this order
 
-0. **Review console** (`docs/review.html`) — the section where a path is actually *chosen*: eight decisions, three
-   options each, a recommendation, the file each would change, and what stays blocked until it is decided. It ships
-   with **zero decisions recorded**, because no human has recorded one.
-
-0. **Review path** (`docs/review.html`) — one ordered route through the open decisions, so a reviewer can choose a direction before anything is built.
-1. **Decision path** (`docs/decision-path.html`) — the ten ordered gates that block progress, each with the question, the answer required, the owner and the official source.
-2. **Executive summary** (`docs/executive-summary.html`) — key findings and what is deliberately blank.
-3. **Model & Week 11 lines** (`docs/model-lines.html`) — the originated spreads, totals and moneylines, originated side first then total then moneyline, with the fair line, market line and difference as separate columns, the team ratings, and the method.
-4. **Price snapshots** (`docs/price-snapshots.html`) — the price-snapshot store recording opening and closing numbers for every originated market; values blank and flagged because no licensed odds feed exists.
-5. **Market tables** (`docs/markets.html`) — the market layer: Week 11 price store (opening/closing per market), fair vs market lines with the difference column, prospective signal/staking fields (blank until grading), and the proposed demotion gate.
-6. **Backtest** (`docs/backtest.html`) — every walk-forward out-of-sample prediction against what actually happened.
-6b. **Results corpus v2** (`docs/results-v2.html`) — the completed 150-game register through Week 10, published in parallel with the frozen 137-game record, with the eight completed international games flagged neutral and the cost of a re-registration measured (0 published Week 11 picks flip; side hit rate 0.652 → 0.578).
-7. **Leaderboard** (`docs/leaderboard.html`) — prospective-only competition registry. It is intentionally unranked until frozen prospective forecasts have been graded; full historical outcome tables are on the Backtest page; the landing-page removal-of-luck panel is explicitly marked as research-only. Signal and staking remain separate.
-8. **Validation gates** (`docs/validation-gates.html`) — the nine gates, including the demotion gate (G9) that sends a live strategy back to paper.
-9. **Verification** (`docs/verification.html`) — what was checked line by line, against which official page, with the result.
-10. **Suggestions** (`docs/suggestions.html`) — proposals plus a review matrix naming a recommended path and the gate that blocks each one.
-11. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
+1. **Review path** (`docs/review-path.html`) — one ordered route through open decisions, showing what is known, missing, and which gate blocks action.
+2. **Review console** (`docs/review.html`) — proposals and options with a mechanism to record decisions; it currently ships with zero recorded decisions.
+4. **Executive summary** (`docs/executive-summary.html`) — key findings, what is verified, and what is deliberately blank.
+5. **Model & Week 11 lines** (`docs/model-lines.html`) — originated spreads, totals and moneylines, in side → total → moneyline order, with fair, market and difference columns.
+6. **Price snapshots** (`docs/price-snapshots.html`) — opening and closing fields for every originated market; values are blank pending a licensed odds feed.
+7. **Market tables** (`docs/markets.html`) — fair versus market lines, signal versus staking, and the proposed demotion gate.
+8. **Backtest** (`docs/backtest.html`) — walk-forward predictions on the existing 89-game evaluation subset; read the corpus-completeness caveat before interpreting results.
+8b. **Results register v2** (`docs/results-v2.html`) — the completed 150-game results register through Week 10 with the eight official neutral-site flags, beside the frozen 137-game published one, with the cost of adopting it measured on four fits of the same code.
+9. **Leaderboard** (`docs/leaderboard.html`) — prospective-only registry, intentionally unranked until frozen registrations and prospective forecasts are graded; historical research remains on the Backtest page.
+10. **Validation gates** (`docs/validation-gates.html`) — the validation and demotion rules.
+11. **Verification** (`docs/verification.html`) — what was checked against which source and with what result.
+12. **Suggestions** (`docs/suggestions.html`) — proposals, options, risks and gate dependencies, for review before implementation.
+13. **Flagged for review** (`docs/flagged.html`) — irregularities and unverified items, each with a source link.
 
 **Published GitHub Pages site:** https://karagemop466-tech.github.io/X2/
 
-### Also new (session 82b83a64): the corpus completed in parallel, and its cost measured
+## Current decision state (checked 2026-11-18)
 
-- **Results corpus v2** (`docs/results-v2.html`, built by `python3 scripts/results_v2.py` from
-  `data/results_feed_v2_2026.csv`): all 150 games through Week 10 — the 13 settled Week 10 games spliced from the
-  official by-week page, plus the eight completed international games flagged `neutral_site = Y` from the dated
-  NFL Football Operations slate. 14 machine checks (`data/results_feed_v2_checks.csv`) all pass, including a third
-  independent read of the Week 10 page at 2026-11-18T05:05Z (14 of 14 fixtures, scores and winner indicators) and a
-  32-club reconciliation against this session's own standings read of the same minute (V2-05), not against a file
-  already in the repository. `data/results_feed_2026.csv` and `data/games_2026_results.csv` stay frozen at 137 rows.
-- **What a re-registration would cost** (`data/model_v2_research_deltas.csv`, reproduced by
-  `python3 scripts/model_v2_research.py`): `scripts/model.py` run unmodified in a temporary directory on three
-  corpora — published, published-plus-neutral-flags, and the full v2 register. No published Week 11 pick flips; the
-  side hit rate moves 0.652 → 0.629 → 0.578; bets at the pre-registered threshold move 50 → 54 → 59; the forecast
-  log's SHA-256 would change, which is why this is a version and not a correction. Nothing in `data/` published by
-  the model was rewritten by this work.
-- **F106 fixed where it lived**: `scripts/verify_results.py` now takes the standings read as an argument, prints the
-  read date on both sides, lists the dated reads available (`--list`), warns on an undated standings file, and fails
-  loudly when the standings read post-dates the corpus (137 games vs the 2026-11-18 read: 26 of 32 clubs off — the
-  gap, not an error; the v2 register: 0 off).
-- New flags **F110** (the Review console's P09 note publishes a prediction — three side picks, one bet-gate
-  crossing — that measurement contradicts: zero and six) and **F111** (a third read of the injury hub inside 24
-  hours still renders Week 10 while its own selector lists Week 11, so a Wednesday timer has nothing to fire on).
-- Verification record **V34–V36** in `data/verification_report.csv`; source register **SRC-91–SRC-94** in
-  `data/sources.csv`; drift pins for the seven new registers in `data/drift_pins.csv`.
+- **Results are not current-season complete.** The model input corpus has 137 games; official NFL standings read 2026-11-18 show 150 completed games. A separate 13-game Week 10 backfill reconciles all 32 clubs against that later standings read, but is deliberately not merged into model inputs pending the documented P09 corpus decision. The existing 89-game walk-forward results therefore describe the current frozen corpus only, not a complete 2026 season. See [Feed completeness](docs/feed-completeness.html), [Flagged for Review](docs/flagged.html) (F96), and the [official NFL standings](https://www.nfl.com/standings/).
+- **No strategy is ranked.** The competition leaderboard is prospective-only and unranked; no immutable pre-registration or graded prospective sample supports a reward or skill ranking. Backtest results remain research-only. See [Leaderboard](docs/leaderboard.html) and [pre-registration flag F87](docs/flagged.html).
+- **Market prices and ROI are blank.** A price-snapshot schema and fair/market/difference columns exist, but there is no licensed, timestamped odds feed. No market CLV or ROI claim is supported. See [Price snapshots](docs/price-snapshots.html) and [Suggestions](docs/suggestions.html) for review options.
+- **The latest injury capture is not an independent verification.** The Week 10 report capture is dated 2026-11-18 and contains 347 rows. The transcription agrees with its source capture; the cross-reader review found and corrected one disagreement. Collection/publication rights remain an open gate (F16); do not expand collection or automate it pending review. See [Capture integrity](docs/capture-integrity.html), [Flagged for Review](docs/flagged.html), and the [NFL.com terms](https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions).
+- **Review before building.** The dedicated [Suggestions](docs/suggestions.html) page presents proposals, options, effort, risks and blocking gates; the [Review path](docs/review-path.html) orders major decisions, and the [Questions](docs/questions.html) page lists what is known, missing and how to resolve each gap. Suggestions are not approvals and no option is implemented just because it is recommended. The readiness register has 64 rows covering 58 requirements.
 
 ### Also new (session 6ee4d13e): per-team view, controls for every run
 
-- **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the official injury counts, the net injury count, starters Out on a club chart and the replacements named there. Bye clubs are shown blank, never as injury-free. Starter order is available for six clubs only. The injury row count is still open (F83; see F89).
+- **Per-team view** (`docs/team-view.html`, built from `data/team_view_week10_2026.csv` by `python3 scripts/team_view.py`): one row per club for Week 10, with the injury counts, net count, and source-confirmed starter/replacement evidence. Bye clubs are shown blank, never as injury-free. Starter evidence is partial; club-chart coverage is not a league-wide official depth register. The 2026-11-18 injury read contains 347 rows; F83's repo-side recount is closed, but the brief's 279-live / 254-published pair remains unexplained.
 - **Backtest page: controls for every run** (`data/leaderboard_control_runs.csv`, computed by `scripts/baselines.py` from `scripts/model.py`): M1-M4, T1, R1 and P1 against seeded random picks and the reference-line favourite, on the exact bets each run made. Every run must reproduce its published bet count and mean edge, or the build stops. The favourite control is weak on these games (F91).
 
 ### Also new (session b03f4ba1): controls, two-sided triggers, readiness table
@@ -67,7 +111,7 @@ where a source verifies it).
 - **Landing page: removal-of-luck panel and decision-readiness table.** The panel shows each strategy's skill, its
   interval, weeks positive and halves agreement. The luck index is a heuristic built inside the model (flag F85).
   The readiness table has one row per requirement from the brief, with its status, the gate that blocks it and
-  the number that would clear it (45 rows, sourced to the official page or first-party file in each row).
+  the number that would clear it (64 readiness rows covering 58 requirements, with a source link in every row).
 - **Leaderboard: control baselines** (`data/control_baselines.csv`, reproduced by `python3 scripts/controls.py`):
   random picks (seeded), the naive reference line's favourite, and M1, graded on the same 88 decided out-of-sample games.
   No betting-market favourite is measured (flag F32).
@@ -172,7 +216,9 @@ The source register includes official NFL, Japanese government, and NIST referen
 ## Build and verification
 
 ```bash
-python3 scripts/verify_results.py   # reconcile the 137 games against the official standings
+python3 scripts/verify_results.py   # reconcile the ledger against BOTH dated standings reads; exits 1 on currency
+python3 scripts/corpus_v2.py        # rebuild the 89-game and 102-game corpora (reproduces all 89 first)
+python3 scripts/decision_queue.py   # rank the open decisions by what each one releases
 python3 scripts/verify_snapshot.py  # reproducible field-by-field re-check of the Week 10 snapshot
 python3 scripts/verify_live.py      # compare the registers against a fresh independent transcription
 python3 scripts/model.py            # refit ratings, Week 11 lines, backtest, gates, leaderboard,

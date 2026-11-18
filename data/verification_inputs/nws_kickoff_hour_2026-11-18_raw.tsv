@@ -1,0 +1,11 @@
+# Verbatim transcription of the official NWS hourly forecast for the KICKOFF HOUR of
+# each Week 11 game whose venue has a published coordinate pair AND is an outdoor US
+# venue. Read 2026-11-18 (UTC) from https://api.weather.gov/gridpoints/<grid>/forecast/hourly
+# (the grid is resolved by api.weather.gov/points/<lat>,<lon>, and the resolved grid is
+# recorded per row so the coordinate is auditable).
+#
+# A venue absent from this file was NOT read and its row stays blank + flagged. It is
+# never filled from memory or from a non-official provider.
+# Kickoff for every Week 11 game is in the NWS period whose own startTime is given.
+game_no	matchup	venue	lat	lon	nws_grid	period_number	period_start_local	period_end_local	temp_f	wind_speed_as_published	wind_direction_as_published	precip_probability_pct	short_forecast_as_published	source_url
+7	AZ at KC	ARROWHEAD STADIUM	39.0489	-94.4839	EAX/47,48	46	2026-11-19T19:00:00-06:00	2026-11-19T20:00:00-06:00	57	5 mph	S	0	Mostly Clear	https://api.weather.gov/gridpoints/EAX/47,48/forecast/hourly

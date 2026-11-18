@@ -86,9 +86,26 @@ def as_corpus_flags_only():
     return out
 
 
+def as_corpus_v2_unflagged():
+    """The v2 corpus with the neutral-site flags removed.
+
+    Added after the companion register published in PR #78 (scripts/corpus_v2.py, 2026-11-18): its
+    data/corpus_v2_summary.csv scores the model closer on 5 of the 13 games while this script's v2 fit scored 3. The only methodological difference
+    between the two is the flags, so a third 150-game corpus without them settles whether the disagreement is the
+    neutral-site treatment or the fit lineage. It is cheaper to run than to argue about.
+    """
+    out = []
+    for r in v2_register:
+        row = {k: r.get(k, "") for k in CORPUS_FIELDS}
+        row["neutral_site"] = ""
+        out.append(row)
+    return out
+
+
 VARIANTS = {
     "flags_only_137": as_corpus_flags_only(),
     "corpus_v2_150": as_corpus_from_v2(),
+    "corpus_v2_150_no_flags": as_corpus_v2_unflagged(),
 }
 
 
@@ -166,6 +183,7 @@ try:
     dirs = {name: run_variant(name, corpus, sandbox_parent) for name, corpus in VARIANTS.items()}
     runs = {name: agg(d) for name, d in dirs.items()}
     b, c = runs["flags_only_137"], runs["corpus_v2_150"]
+    d = runs["corpus_v2_150_no_flags"]
 
     # --- shared-game controls: identical fixtures, different fit -----------
     def rate_on(agg_, keys):
@@ -185,6 +203,8 @@ try:
         "side_flip_ac": sum(1 for k in ac if a["per_game"][k]["bet"] and c["per_game"][k]["bet"]
                             and a["per_game"][k]["side"] != c["per_game"][k]["side"]),
     }
+    closer_c = sum(1 for k in only_c if c["per_game"][k]["closer"])
+    closer_d = sum(1 for k in only_c if d["per_game"][k]["closer"])
 
     # --- Week 11 lines: what a re-registration would republish -------------
     def lines(base):
@@ -315,6 +335,17 @@ try:
          f"the P09 note on the decision console predicted three side picks plus one bet-gate crossing would turn "
          f"on the neutral flags. Measured: {ctrl['side_flip_ab']} side flips and {ctrl['bet_changed_ab']} "
          f"bet/no-bet changes on the flags-only fit. Recorded as a discrepancy against that note."),
+        ("Week 10 holdout: games the model is closer on",
+         f"the {ctrl['added_rows']} settled Week 10 games neither corpus had scored, flagged vs unflagged",
+         "0", f"{closer_d} of {ctrl['added_rows']}", f"{closer_c} of {ctrl['added_rows']}",
+         f"{closer_d:+d}", f"{closer_c:+d}",
+         f"cross-register reconciliation. data/corpus_v2_summary.csv (PR #78, 2026-11-18) scores the "
+         f"model closer on 5 of these 13 games against its own reference line, MAE 10.099 vs "
+         f"9.509 points. This script's unflagged 150-game fit reproduces that figure exactly ({closer_d} of 13), "
+         f"and its flagged fit gives {closer_c}: the only methodological difference between the two registers is the "
+         f"neutral-site treatment, which re-estimates the ratings and moves {abs(closer_d - closer_c)} of the 13 "
+         f"rows across the line. The registers therefore do not disagree about the model — they agree, and both say "
+         f"the model is behind its naive reference on the slice it had never been scored against."),
         ("Week 11 side picks that flip", "13 fixtures, published fair-spread sign versus each re-fit",
          "—", f"{flip_b} of 13", f"{flip_c} of 13", f"{flip_b:+d}", f"{flip_c:+d}",
          "the cost of re-registration on the live week: no published pick turns, so the sealed log would be "
@@ -346,6 +377,8 @@ try:
                                 "seal": c["seal"]},
         },
         "controls": ctrl,
+        "week10_holdout_closer": {"published": 0, "v2_unflagged": closer_d, "v2_flagged": closer_c,
+                                  "pr78_register": "5 of 13 (data/corpus_v2_summary.csv subset B)"},
         "week11_picks_flipped_flags_only": flip_b,
         "week11_picks_flipped_v2": flip_c,
         "canonical_files_written": "none — the three model_v2_research_*.csv registers and this summary only",

@@ -228,6 +228,18 @@
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  },
  {
+  "metric": "Week 10 holdout: games the model is closer on",
+  "scope": "the 13 settled Week 10 games neither corpus had scored, flagged vs unflagged",
+  "published_v1_137": "0",
+  "flags_only_137": "5 of 13",
+  "corpus_v2_150": "3 of 13",
+  "delta_flags_only": "+5",
+  "delta_v2": "+3",
+  "reading": "cross-register reconciliation. data/corpus_v2_summary.csv (PR #78, 2026-11-18) scores the model closer on 5 of these 13 games against its own reference line, MAE 10.099 vs 9.509 points. This script's unflagged 150-game fit reproduces that figure exactly (5 of 13), and its flagged fit gives 3: the only methodological difference between the two registers is the neutral-site treatment, which re-estimates the ratings and moves 2 of the 13 rows across the line. The registers therefore do not disagree about the model — they agree, and both say the model is behind its naive reference on the slice it had never been scored against.",
+  "compute_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
   "metric": "Week 11 side picks that flip",
   "scope": "13 fixtures, published fair-spread sign versus each re-fit",
   "published_v1_137": "—",

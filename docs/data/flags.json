@@ -291,7 +291,7 @@
   "flag_id": "F33",
   "category": "Sample size",
   "item": "89 out-of-sample games is too few to resolve a small edge",
-  "detail": "Every strategy is graded on 89 games (weeks 4-10 of one season). The sample-size column shows how many bets each strategy would need to reach 80% power at the effect size it observed; all of them are short. Confidence intervals remain wide even for the strategies that pass every gate. Measured 2026-11-18: completing the corpus to 150 games would take the evaluation sample from 89 to 102 games but still 7 weeks (data/model_v2_research_deltas.csv), and the model's side hit rate on those games falls to 0.578 while the naive reference improves. One season remains one season: the shortfall the register publishes is not closed by 13 games.",
+  "detail": "Every strategy is graded on 89 games (weeks 4-10 of one season). The sample-size column shows how many bets each strategy would need to reach 80% power at the effect size it observed; all of them are short. Confidence intervals remain wide even for the strategies that pass every gate. Measured 2026-11-18 from the parallel register: completing the corpus takes the evaluation sample from 89 to 102 games but still only 7 weeks, and the model's side hit rate on those games falls 0.652 -> 0.578 while the naive reference improves. The companion predictions register (PR #78, 2026-11-18) finds the model behind the reference on the 13 added games (MAE 10.099 vs 9.509). One season remains one season; 13 games do not close the shortfall the register publishes.",
   "source_url": "https://www.itl.nist.gov/div898/handbook/prc/section4/prc47.htm",
   "status": "Open — more seasons needed",
   "action_requested": "Extend the dataset under written permission, or accept wide intervals and label results exploratory."
@@ -579,7 +579,7 @@
   "flag_id": "F71",
   "category": "Methodology (partly resolved)",
   "item": "Nine 2026 games are at neutral sites but the model added home-field to all of them",
-  "detail": "The 2026 season has a record nine international games (NFL Football Operations, SRC-72). The results dataset carried no neutral-site column, so the fit and the naive reference line added the home-field term for the designated home team even though the game was not in its stadium. On the 89 out-of-sample games this changed no rounded output, because only two affected games fall inside the evaluation window (wk5 PHI at JAX, wk7 PIT at NO); the measurable effect is on the Week 11 Mexico City line (fair margin 2.5 to 2.9; model-minus-reference -6.2 to -3.3). Remediated with a neutral_site column threaded through fit(), predict() and ref_line(). | MEASURED 2026-11-18 (session cf85d485, data/neutral_site_sensitivity_2026.csv): seven settled feed games are official international games carrying a blank flag. On the published fit the home-field term is -0.403 points, so each of the seven model margins shifts by exactly 0.403 with the fit held fixed; three flip the side pick (IND at WAS, PIT at NO, CIN at ATL) and BAL at DAL crosses the pre-registered +/-3-point betting gate (1.13 to 4.03). Summed absolute margin error changes -2.821 points in favour of the current treatment, which is coincidence on seven games. This is a lower bound: it excludes the re-fit, because the ratings themselves absorb the mis-flag. The eighth in-season game (NE at DET, Munich) is one of the 13 settled games outside the feed, so its flag change would move the fit. The earlier statement that the mis-flag \"changed no rounded output\" was true only of the predictions-only panel, which holds the fit fixed and calls itself a lower bound. Re-running scripts/model.py on the same 137 games with the seven completed international games flagged as neutral gives the full effect: side hit rate 0.652 -> 0.629, bets crossing the pre-registered 3-point threshold 50 -> 54, calibration slope 0.885 -> 0.978, and no flipped side pick. Register: data/model_v2_research_deltas.csv, reproduced by python3 scripts/model_v2_research.py.",
+  "detail": "The 2026 season has a record nine international games (NFL Football Operations, SRC-72). The results dataset carried no neutral-site column, so the fit and the naive reference line added the home-field term for the designated home team even though the game was not in its stadium. On the 89 out-of-sample games this changed no rounded output, because only two affected games fall inside the evaluation window (wk5 PHI at JAX, wk7 PIT at NO); the measurable effect is on the Week 11 Mexico City line (fair margin 2.5 to 2.9; model-minus-reference -6.2 to -3.3). Remediated with a neutral_site column threaded through fit(), predict() and ref_line(). | MEASURED 2026-11-18 (session cf85d485, data/neutral_site_sensitivity_2026.csv): seven settled feed games are official international games carrying a blank flag. On the published fit the home-field term is -0.403 points, so each of the seven model margins shifts by exactly 0.403 with the fit held fixed; three flip the side pick (IND at WAS, PIT at NO, CIN at ATL) and BAL at DAL crosses the pre-registered +/-3-point betting gate (1.13 to 4.03). Summed absolute margin error changes -2.821 points in favour of the current treatment, which is coincidence on seven games. This is a lower bound: it excludes the re-fit, because the ratings themselves absorb the mis-flag. The eighth in-season game (NE at DET, Munich) is one of the 13 settled games outside the feed, so its flag change would move the fit. The earlier statement that the mis-flag \"changed no rounded output\" was true only of the predictions-only panel, which holds the fit fixed and says so itself. Re-running scripts/model.py on the same 137 games with the seven completed international games flagged neutral gives the full effect: side hit rate 0.652 -> 0.629, bets clearing the pre-registered 3-point threshold 50 -> 54, calibration slope 0.885 -> 0.978, and no flipped side pick (data/model_v2_research_deltas.csv, reproduced by python3 scripts/model_v2_research.py). The 150-game corpus with flags also changes how the 13 added Week 10 games score, which is the whole of the difference between this register and data/corpus_v2_summary.csv (see F119).",
   "source_url": "https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games",
   "status": "Resolved — full effect measured on a flags-only re-fit (v2 research panel, 2026-11-18)",
   "action_requested": "Decide with F96/P09 whether the nine-game register (data/international_games_2026.csv) becomes the neutral_site source for the historical log in a versioned re-run. Until then the published numbers stand as they are, with this measurement attached."
@@ -804,10 +804,10 @@
   "flag_id": "F96",
   "category": "Results coverage gap",
   "item": "Verified results feed is frozen at 137 games; the official standings on 2026-11-18 reflect 150",
-  "detail": "The results register (data/games_2026_results.csv, data/results_feed_2026.csv) holds 137 games: weeks 1-9 (136 games) plus the Week 10 Thursday game (the Week 10 Thursday game). Thirteen Week 10 games played on Sunday 15 and Monday 16 November are not in the register. The 2026-11-18 standings include them (data/standings_diff_2026-11-14_to_2026-11-18.csv: 13 games added). They are not ingested here because the backtest corpus is pre-registered and must not change silently; ingestion needs a dated tranche with the owner's approval. data/results_feed_v2_2026.csv now holds all 150 games through Week 10, built by scripts/results_v2.py with 14 machine checks (data/results_feed_v2_checks.csv), and reconciles 32 of 32 clubs against an independent standings read taken at 2026-11-18T05:05Z (SRC-92). The v1 registers stay at 137 rows with their pins, so no published metric changes; promoting v2 over v1 remains an owner choice on the Review console (P09), and this session recorded no choice because only a human may record one.",
+  "detail": "The results register (data/games_2026_results.csv, data/results_feed_2026.csv) holds 137 games: weeks 1-9 (136 games) plus the Week 10 Thursday game (the Week 10 Thursday game). Thirteen Week 10 games played on Sunday 15 and Monday 16 November are not in the register. The 2026-11-18 standings include them (data/standings_diff_2026-11-14_to_2026-11-18.csv: 13 games added). They are not ingested here because the backtest corpus is pre-registered and must not change silently; ingestion needs a dated tranche with the owner's approval. data/results_feed_v2_2026.csv now holds all 150 games through Week 10, built by scripts/results_v2.py with 14 machine checks (data/results_feed_v2_checks.csv) and reconciled 32 of 32 clubs against an independent standings read taken at 2026-11-18T05:05Z (SRC-98), not against a file already in the repository. The v1 registers stay at 137 rows with their pins, so no published metric changes. The companion predictions register (data/corpus_v2_2026.csv, 102 scored rows) was built the same day in PR #78 from the same 13 games; the two are different artifacts — this one is results and venue flags, theirs is model output and probabilities — and they reconcile (see F110).",
   "source_url": "https://www.nfl.com/standings/",
   "status": "Resolved as a parallel register — P09 option B implemented 2026-11-18 (session 82b83a64)",
-  "action_requested": "Owner to approve a dated tranche for the 13 Week 10 results (per-game scores from the official game centres), then re-freeze. Promote or discard the v2 register on the Review console (P09); nothing in the published record waits on it."
+  "action_requested": "Owner to approve a dated tranche for the 13 Week 10 results (per-game scores from the official game centres), then re-freeze. Owner to choose on the Review console (P09) whether v2 replaces v1 as the published corpus; nothing in the published record waits on it."
  },
  {
   "flag_id": "F97",
@@ -830,11 +830,11 @@
  {
   "flag_id": "F99",
   "category": "Coverage gap",
-  "item": "Venue transcription: 1 of 163 fixtures read from the official game centre",
-  "detail": "data/venues_2026.csv holds one venue read on 2026-11-18 from the official game centre (IND at HOU: Reliant Stadium, Houston, TX). The other 162 fixtures are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
+  "item": "Venue transcription: 13 of 163 fixtures read from the official game centre",
+  "detail": "data/venues_2026.csv holds 13 venues read on 2026-11-18 from the official game centre Game Info block: every Week 11 fixture (IND at HOU, Reliant Stadium, Houston, TX; the other 12 Week 11 games are listed on the fixture-context page). The other 150 fixtures are not read and are not inferred. The schedule page shows stadium only through hotel-search links, which are not used as a source.",
   "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
-  "status": "Unverified - most fixtures blank",
-  "action_requested": "Read each game centre page (one request each) and add a row with its URL."
+  "status": "Unverified - 150 of 163 fixtures blank",
+  "action_requested": "Read each remaining game centre page (one request each) and add a row with its URL (Week 10 and earlier, then the rest of the 2026 slate)."
  },
  {
   "flag_id": "F100",
@@ -885,7 +885,7 @@
   "flag_id": "F105",
   "category": "Results coverage gap",
   "item": "The 13 missing Week 10 games are now transcribed and reconcile 32 of 32 clubs",
-  "detail": "Closes the evidence half of F96 (the ingestion decision stays open). All 14 Week 10 finals were read from the official by-week page on 2026-11-18T04:00Z (SRC-89) and the 13 the feed does not hold were written to data/games_week10_backfill_2026.csv - scores transcribed, never computed from records. Verification is on two independent official surfaces: with the 13 rows added, all 32 clubs match today's standings read on W-L-T and points for/against; without them 26 of 32 clubs disagree. Second check: 149 wins + 149 losses + 2 ties = 300 team-games = 150 games, against 137 in the feed and 14 on the Week 10 slate. Consequence measured for the published research: the Week 11 line is fitted on 137 of 150 games, and the 89-game walk-forward corpus contains exactly one Week 10 game. Tables: data/results_feed_completeness_2026-11-18.csv (32 checks), data/week_count_reconciliation_2026-11-18.csv (7 checks), page feed-completeness.html. A third independent read of the same official page at 2026-11-18T05:05Z reproduced all 14 fixtures, both scores and the winner indicator, and the 4-club bye list, with no change against the 04:00Z transcription (V2-03, V2-04, V2-07).",
+  "detail": "Closes the evidence half of F96 (the ingestion decision stays open). All 14 Week 10 finals were read from the official by-week page on 2026-11-18T04:00Z (SRC-89) and the 13 the feed does not hold were written to data/games_week10_backfill_2026.csv - scores transcribed, never computed from records. Verification is on two independent official surfaces: with the 13 rows added, all 32 clubs match today's standings read on W-L-T and points for/against; without them 26 of 32 clubs disagree. Second check: 149 wins + 149 losses + 2 ties = 300 team-games = 150 games, against 137 in the feed and 14 on the Week 10 slate. Consequence measured for the published research: the Week 11 line is fitted on 137 of 150 games, and the 89-game walk-forward corpus contains exactly one Week 10 game. Tables: data/results_feed_completeness_2026-11-18.csv (32 checks), data/week_count_reconciliation_2026-11-18.csv (7 checks), page feed-completeness.html. A third independent read of the same official page at 2026-11-18T05:05Z reproduced all 14 fixtures, both scores and the winner indicator, and the four-club bye list, with no change against the 04:00Z transcription (checks V2-03, V2-04, V2-07).",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
   "status": "Resolved — ingested into data/results_feed_v2_2026.csv (2026-11-18, session 82b83a64)",
   "action_requested": "Owner to choose on the Review console (P09): A splice into the canonical feed and re-publish every metric as v2; B publish a parallel v2 research register and keep v1 (137 games) frozen; C keep 137 and disclose. This session changed no published feed row."
@@ -894,10 +894,10 @@
   "flag_id": "F106",
   "category": "Verification integrity",
   "item": "A 'reconciles against the standings' claim was checked against a stale standings read",
-  "detail": "The published claim that all 137 games reconcile with the official standings for all 32 teams (docs/verification.html, and the standing output of scripts/verify_results.py: 'All teams reconcile exactly with the official standings') was made against data/standings_2026_official_read_20261114.csv, a read taken before the Week 10 Sunday games (it shows BUF 7-1, NE 5-4, DET 6-2). The feed and that read were consistent with each other and stale in the same direction; re-read on 2026-11-18 the same comparison fails for 26 clubs. A reconciliation between two surfaces read on the same day, one of which was produced from the other, is weaker than it looks: it proves internal arithmetic, not currency. It prints the corpus's latest week and the standings read date, lists the dated reads available (--list), and fails loudly when the standings read is newer than the corpus: the 137-game corpus against the 2026-11-18 read now reports 26 of 32 clubs off (exactly the 26 clubs whose Week 10 game the corpus lacks), while data/results_feed_v2_2026.csv against the same read reports 0. An undated standings file prints a warning naming F106.",
+  "detail": "The published claim that all 137 games reconcile with the official standings for all 32 teams (docs/verification.html, and the standing output of scripts/verify_results.py: 'All teams reconcile exactly with the official standings') was made against data/standings_2026_official_read_20261114.csv, a read taken before the Week 10 Sunday games (it shows BUF 7-1, NE 5-4, DET 6-2). The feed and that read were consistent with each other and stale in the same direction; re-read on 2026-11-18 the same comparison fails for 26 clubs. A reconciliation between two surfaces read on the same day, one of which was produced from the other, is weaker than it looks: it proves internal arithmetic, not currency. scripts/verify_results.py now prints the ledger size and the read date on both sides, refuses to present an older read as currency, and exits non-zero when the ledger is behind the current official read: the 137-game ledger against the 2026-11-18 read reports 26 of 32 clubs off (exactly the clubs whose Week 10 game the ledger lacks) while data/results_feed_v2_2026.csv against the same read reports 0. This session added the remaining generality on top of that fix: --games and --standings take any register or dated read, --list enumerates the dated standings reads under data/, a file with no read-date column prints an F106 warning, and --allow-future-weeks reports without failing.",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
-  "status": "Resolved — scripts/verify_results.py now takes the standings read as an argument and refuses to lean on an undated file silently",
-  "action_requested": "Rule for verification records: print the read timestamp of the checked data and of the checking source, and warn when the source read is older than the newest game in the data. scripts/verify_results.py is outside this session's scope - the change is requested in COORDINATION.md rather than made here. None outstanding for the script. The wider rule — every verification record states the read timestamp of both sides — still needs to be applied by whoever owns the other verification registers."
+  "status": "Resolved — the standings read is now an argument and the pairing is printed (PR #78 mechanism, extended by session 82b83a64)",
+  "action_requested": "Rule for verification records: print the read timestamp of the checked data and of the checking source, and warn when the source read is older than the newest game in the data. scripts/verify_results.py is outside this session's scope - the change is requested in COORDINATION.md rather than made here."
  },
  {
   "flag_id": "F107",
@@ -928,20 +928,101 @@
  },
  {
   "flag_id": "F110",
-  "category": "Repo irregularity",
-  "item": "The Review console's P09 note predicts side picks and gate crossings that measurement does not reproduce",
-  "detail": "data/decision_console.csv row P09 recommends option B on the grounds that \"three side picks plus one bet-gate crossing turn on the neutral flags\". Measured on 2026-11-18 by running scripts/model.py unmodified on the same 137 games with the neutral flags honoured: 0 side picks flip and 6 games change their bet / no-bet status (50 bets become 54); on the 150-game corpus 0 of the 13 published Week 11 side picks flip. The direction of the note is right — the flags do move the gate — but both figures in it are wrong, and it was published as a prediction with no register behind it.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_v2_research_deltas.csv",
-  "status": "Irregularity - open (a published number the repository cannot re-derive)",
-  "action_requested": "Either cite the computation behind the P09 note or replace it with the measured figures in data/model_v2_research_deltas.csv. Flagged for review; it does not block anything."
+  "category": "Result change (out of sample)",
+  "item": "The model is behind its own reference line on the 13 games it had never been scored against, and behind it on totals in every cut",
+  "detail": "scripts/corpus_v2.py scores the 13 settled Week 10 games out of sample, fitting only on games before Week 10, and publishes them beside the 89 published games. Result: on the 89 published games M1 beats its own naive reference line by 1.736 points of mean absolute error per game on the side; on the 13 holdout games it is 0.591 points BEHIND the same line (model 10.099, reference 9.509), and the model was closer on only 5 of the 13. Pooled over 102 games the side gain falls from 1.736 to 1.439. On totals the model does not beat the reference in any cut: -0.113 on the published 89 and -0.266 on all 102. The intervals are not computed here and n=13 is far too small to settle anything, which is exactly why the number is published instead of the 1.736 alone: the leadership claim on the leaderboard stays open and no reward tier can be justified on the 89-game figure. No published metric was changed to produce this; the 89 rows are reproduced byte for byte before the script writes anything.",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10",
+  "status": "Recorded - non-blocking, changes how the 1.74-pt claim may be used",
+  "action_requested": "Quote the side skill as a range across corpora (1.44 to 1.74 pooled-to-published) and never quote 1.74 without the holdout row beside it. Add a game-cluster bootstrap interval on the 13-game subset before Week 12 settles."
  },
  {
   "flag_id": "F111",
-  "category": "Source behaviour",
-  "item": "Third read of the injury hub in 24 hours still renders Week 10 while its own selector lists Week 11",
-  "detail": "At 2026-11-18T05:2xZ this session read the header of https://www.nfl.com/injuries/: the page title and section label still say \"Week 10\", the week selector offers WEEK 11, and the club records printed beside the fixtures are post-Week-10 records (NE 5-5, DET 7-2, KC 7-2, ATL 3-7, WAS 3-5-1, NYG 5-3-1), all of which match the standings read of the same hour. Two reads of the same page by two sessions (04:00Z and 05:2xZ) therefore hold the same week label, so no Week 11 practice designation existed to capture at either time. This is the mechanism behind the brief's Wed/Thu/Fri cadence requirement failing: the hub does not advance on a schedule anyone can point a timer at.",
+  "category": "Verification integrity",
+  "item": "A published verification row stated page and link counts from a build that no longer exists",
+  "detail": "data/verification_report.csv row V14 published \"18 pages, 350 internal links, 1,347 external links\" as a PASS. The site now builds 47 pages (48 with the corpus page added this session) and scripts/check_links.py reports 2,379 internal and 5,133 external links. The verdict in the row (no broken links) was true; the population figures beside it had not been regenerated since the site was much smaller, so a reader checking the number would find it wrong by an order of magnitude. V14 is restated to the current run and V34 records the correction. Remaining hazard: check_links.py prints its counts to stdout and nothing pins them, so the next build can drift again without failing.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Resolved for this build - mechanism not yet automated",
+  "action_requested": "Have scripts/check_links.py write its counts to a small JSON register that build.py reads and publishes, so the count on the page is generated rather than transcribed."
+ },
+ {
+  "flag_id": "F112",
+  "category": "Register drift",
+  "item": "The published correlation audit carried a superseded C08 value for one merge after the register changed",
+  "detail": "data/correlations_computed.csv (the canonical register, written by scripts/model.py) and data/correlation_provenance.csv both carried C08 = +0.035 (p 0.8502) after the 2026-11-18 injury re-capture, and flag F102 records that move. data/correlation_audit.csv, which is what the site table reads, still carried the previous C08 = -0.064 (p 0.7264): two different numbers for the same correlation on one site, with no row saying which was current. Cause: the audit register is generated by scripts/desk.py, and desk.py was not re-run when the canonical register moved. Regenerated from the canonical file (V36). A hard assertion was added to desk.py so it now refuses to write a value that disagrees with the canonical register, which turns this class of drift into a build failure instead of a quiet difference.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Limitation - open (cadence cannot be met from this page alone)",
-  "action_requested": "A capture that must fire on a Wednesday cannot be built on a page whose week label does not advance on Wednesdays. Until the Week 11 report is observed, treat the injury series as at most one dated read per game week and keep F98/F104 open."
+  "status": "Resolved - guard added",
+  "action_requested": "None beyond the guard. Owner to confirm on F102 whether C08 stays on the published correlations page at all; its interval includes zero in both versions."
+ },
+ {
+  "flag_id": "F113",
+  "category": "Verification integrity",
+  "item": "The standings reconciliation printed an unqualified pass against a read it had already fallen 13 games behind",
+  "detail": "scripts/verify_results.py compared the 137-game ledger with data/standings_2026_snapshot.csv (read 2026-11-14) and printed \"All teams reconcile exactly with the official standings\" with no date on it, while data/captures/standings_2026-11-18.csv existed and showed 26 of 32 clubs disagreeing with the ledger. The script now takes the standings read as an argument, prints both read dates, labels the snapshot comparison as arithmetic-only, and exits non-zero on the currency comparison (V35). scripts/desk.py row RF07 is split into RF07 (arithmetic, passes) and RF07b (currency, FAILS) so the register cannot report the first as if it were the second.",
+  "source_url": "https://www.nfl.com/standings/",
+  "status": "Resolved - mechanism changed",
+  "action_requested": "None. The underlying 13-game gap stays open as F106/F105 and is now published as a failing currency check rather than a passing arithmetic one."
+ },
+ {
+  "flag_id": "F114",
+  "category": "Presentation honesty",
+  "item": "One site-wide \"data as of\" date described surfaces read up to four days apart",
+  "detail": "Every page header printed \"Data as of 2026-11-14 (UTC)\" while the injury register, the standings and the Week 10 finals on the same pages had been read on 2026-11-18. The label was true of the oldest surface and false of the newest, and a reader checking a number against the live page had no way to tell which surfaces were a day old and which were a week old. The header now names the newest read and the breakdown, and the landing page carries a per-surface freshness table giving each register its own read date, status and the reason for that date - including two registers (the sealed Week 11 forecast log and the club depth charts) that are deliberately frozen and must NOT be refreshed.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Resolved - per-surface dates published",
+  "action_requested": "Keep the freshness table updated when a surface is re-read; a stale row here is itself a finding. Owner to confirm the Week 11 lines may stay frozen through kickoff (they should)."
+ },
+ {
+  "flag_id": "F115",
+  "category": "Coverage",
+  "item": "Depth-chart parser proven on one club, not 32",
+  "detail": "scripts/depth_parse.py handles the two named parse failures (jersey-number prefixes; shared and empty slots) with 11 build-failing tests. The worked example is Green Bay (read 2026-11-18, self-labelled 'Unofficial, Nov. 10, 2026'). The parser has NOT been applied to the other 31 clubs. The Texans chart is a raster image and is refused by check DP07 rather than transcribed by eye.",
+  "source_url": "https://www.packers.com/team/depth-chart",
+  "status": "Open - coverage",
+  "action_requested": "Run the same parser over the remaining 31 club charts and record any that render as images."
+ },
+ {
+  "flag_id": "F116",
+  "category": "Source behaviour",
+  "item": "The official game-centre page publishes no roof and no playing surface",
+  "detail": "All 13 Week 11 game-centre pages read 2026-11-18 publish, under Game Info, exactly two venue fields: Location and Stadium. No roof state and no playing surface appears on the page. The roof/surface overlay therefore cannot be built from official sources; data/venue_roof_surface_week11_2026-11-18.csv leaves both columns blank and flagged on 13 of 13 rows.",
+  "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
+  "status": "Open - source gap",
+  "action_requested": "Owner decision: accept a non-NFL source class, license an environmental feed, or drop the overlay as unsatisfiable."
+ },
+ {
+  "flag_id": "F117",
+  "category": "Result",
+  "item": "Neither fitted total estimator separates from the naive league constant",
+  "detail": "Over 89 walk-forward games the mean absolute errors are A (ridge structure) 11.08, B (matchup experience) 11.07 and C (naive league constant) 10.96 points. No pair's paired-bootstrap 95% interval excludes zero (A minus B: -0.273 to +0.279). Pre-registered rule E4 fires: the collapse gate stays OPEN and all three totals keep publishing. A negative result, recorded as one.",
+  "source_url": "https://www.nfl.com/games/colts-at-texans-2026-reg-11",
+  "status": "Result recorded - non-blocking",
+  "action_requested": "Re-run when a second season of settled games exists; the sample, not the method, limits separation."
+ },
+ {
+  "flag_id": "F118",
+  "category": "Cross-source",
+  "item": "A Texans linebacker is ACT on the club page while the reserve list placed him on Reserve/Injured",
+  "detail": "The official reserve-list feed records Jacob Hummel (HOU) Reserve/Injured on 09/26/2026. The Houston Texans roster page read 2026-11-18 renders his status as ACT. The two official surfaces disagree; the row is kept as finding RF-HOU-01 rather than overwritten into agreement.",
+  "source_url": "https://www.nfl.com/teams/houston-texans/roster",
+  "status": "Open - cross-source disagreement",
+  "action_requested": "Re-read the Texans roster page after the next transaction date; if it persists, treat the status column as unreliable for this club."
+ },
+ {
+  "flag_id": "F119",
+  "category": "Repo irregularity",
+  "item": "A Review-console note publishes a prediction that measurement contradicts, and two same-day registers disagree on one count until it is reconciled",
+  "detail": "Two parts, one mechanism: an unmeasured figure published as fact. (1) data/decision_console.csv row P09 recommends option B because \"three side picks plus one bet-gate crossing turn on the neutral flags\". Measured on 2026-11-18 by running scripts/model.py unmodified on the same 137 games with the neutral flags honoured: 0 side picks flip and 6 games change their bet / no-bet status (50 bets become 54). Neither figure in the note is reproducible, and the note carries no register behind it. (2) The same day, data/corpus_v2_summary.csv (PR #78) scores the model closer on 5 of the 13 newly settled Week 10 games while this project's v2 fit scored 3 of 13; running the 150-game corpus without the neutral flags reproduces 5 exactly, so the two registers never disagreed about the model — they disagreed about one game's venue treatment, which re-estimates the ratings and moves 2 of the 13 rows. Both readings agree the model is behind its naive reference on that slice. The console text is the owner's decision surface, so it is left unedited and the discrepancy is recorded here instead.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/model_v2_research_deltas.csv",
+  "status": "Irregularity - open (a published number the repository cannot re-derive)",
+  "action_requested": "Either cite a computation behind the P09 note or replace its two figures with the measured ones in data/model_v2_research_deltas.csv. Non-blocking; published on Flagged for Review."
+ },
+ {
+  "flag_id": "F120",
+  "category": "Source behaviour",
+  "item": "Third read of the injury hub inside 24 hours still renders Week 10 while its own selector lists Week 11",
+  "detail": "At 2026-11-18T05:2xZ this session read the head of https://www.nfl.com/injuries/: the page title and section label still say \"Week 10\", the selector offers WEEK 11, and the club records printed beside the fixtures are post-Week-10 records (NE 5-5, DET 7-2, KC 7-2, ATL 3-7, WAS 3-5-1, NYG 5-3-1), all of which match the standings read of the same hour. Session f04dda73 (PR #78) independently established the same mechanism from the other direction — https://www.nfl.com/injuries/league/2026/reg11 rewrites to reg10 and serves Week 10 — so an unattended timer cannot be pointed at a URL to get a Week 11 report. Two reads of the same page by two sessions (04:00Z, 05:2xZ) therefore hold the same week label, and no Week 11 practice designation existed to capture at either time. The three Lions designations the brief lists as missing (Kerby Joseph, Cade Mays, D.J. Reed) are present as Out in both the live page and the published register.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Limitation - open (the Wed/Thu/Fri cadence has nothing to fire on)",
+  "action_requested": "Treat the injury series as at most one dated read per game week until the hub advances on its own; keep F98, F101 and F104 open. This session took a header-only read on purpose and derived no register from it."
  }
 ]
