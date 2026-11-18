@@ -1,0 +1,14 @@
+log_id,game_no,matchup,kickoff_et,frozen_spread_home,frozen_total,frozen_home_win_prob,fit_games_used,fit_weeks_used,frozen_before_kickoff,result_recorded,graded_after,source_url
+SF-01,1,IND at HOU,Thursday November 19th 8:15 PM ET,5.9,51.1,0.686,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-02,2,MIA at BUF,Sunday November 22nd 1:00 PM ET,11.2,48.2,0.820,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-03,3,BAL at CAR,Sunday November 22nd 1:00 PM ET,2.6,49.1,0.584,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-04,4,NO at CHI,Sunday November 22nd 1:00 PM ET,6.7,51.4,0.708,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-05,5,TEN at DAL,Sunday November 22nd 1:00 PM ET,5.3,53.1,0.668,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-06,6,TB at DET,Sunday November 22nd 1:00 PM ET,-0.8,44.6,0.474,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-07,7,AZ at KC,Sunday November 22nd 1:00 PM ET,10.9,46.4,0.814,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-08,8,PIT at PHI,Sunday November 22nd 1:00 PM ET,-5.8,38.6,0.317,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-09,9,NYJ at LAC,Sunday November 22nd 4:05 PM ET,-2.9,42.1,0.406,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-10,10,JAX at NYG,Sunday November 22nd 4:25 PM ET,-9.6,44.2,0.216,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-11,11,LV at DEN,Sunday November 22nd 4:25 PM ET,4.1,49.6,0.631,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-12,12,MIN at SF,Sunday November 22nd 8:20 PM ET,0.0,42.9,0.501,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11
+SF-13,13,CIN at WAS,Monday November 23rd 8:15 PM ET,-6.4,54.5,0.301,150,1-10,yes - Week 10 Sunday games not yet played at freeze time,,,https://www.nfl.com/schedules/2026/by-week/week-11

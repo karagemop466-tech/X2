@@ -1,0 +1,107 @@
+metric,v1_value_137_games_published,v2_value_150_games_this_build,change_v2_minus_v1,note,source_url
+games in the corpus,137,150,+13.0000,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+walk-forward out-of-sample games graded,89,102,+13.0000,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+"mean absolute error, naive reference line (margin, pts)",10.89,10.62,-0.2700,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+"mean absolute error, M1 (margin, pts)",9.16,9.24,+0.0800,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+MAE improvement of M1 over the reference line (pts),1.74,1.38,-0.3600,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+residual sd of the margin (pts),12.25,12.26,+0.0100,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+"calibration slope, actual on predicted",0.885,1.129,+0.2440,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+calibration slope standard error,0.28,0.252,-0.0280,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+calibration slope p against a null of 1.0,0.683,0.6092,-0.0738,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+naive reference total for Week 11,45.9,46.2,+0.3000,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+corpus rows whose neutral_site cell was blank,137,142,+5.0000,"same code, same seed; the only inputs that differ are the 13 settled Week 10 games and the eight settled international games re-flagged neutral",https://github.com/karagemop466-tech/X2/blob/main/data/corpus_v2/games_2026_results.csv
+"W11 game 1 IND at HOU — side (fair spread, home)",5.5,5.9,+0.4000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 1 IND at HOU — total (fair),50.1,51.1,+1.0000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 1 IND at HOU — moneyline (P(home win)),0.674,0.686,+0.0120,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 2 MIA at BUF — side (fair spread, home)",9.9,11.2,+1.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 2 MIA at BUF — total (fair),48.5,48.2,-0.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 2 MIA at BUF — moneyline (P(home win)),0.791,0.820,+0.0290,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 3 BAL at CAR — side (fair spread, home)",1.8,2.6,+0.8000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 3 BAL at CAR — total (fair),50.6,49.1,-1.5000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 3 BAL at CAR — moneyline (P(home win)),0.558,0.584,+0.0260,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 4 NO at CHI — side (fair spread, home)",6.9,6.7,-0.2000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 4 NO at CHI — total (fair),51.8,51.4,-0.4000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 4 NO at CHI — moneyline (P(home win)),0.713,0.708,-0.0050,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 5 TEN at DAL — side (fair spread, home)",4.9,5.3,+0.4000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 5 TEN at DAL — total (fair),49.4,53.1,+3.7000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 5 TEN at DAL — moneyline (P(home win)),0.654,0.668,+0.0140,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 6 TB at DET — side (fair spread, home)",-1.0,-0.8,+0.2000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 6 TB at DET — total (fair),46.9,44.6,-2.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 6 TB at DET — moneyline (P(home win)),0.467,0.474,+0.0070,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 7 AZ at KC — side (fair spread, home)",8.6,10.9,+2.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 7 AZ at KC — total (fair),46.5,46.4,-0.1000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 7 AZ at KC — moneyline (P(home win)),0.758,0.814,+0.0560,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 8 PIT at PHI — side (fair spread, home)",-8.5,-5.8,+2.7000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 8 PIT at PHI — total (fair),38.3,38.6,+0.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 8 PIT at PHI — moneyline (P(home win)),0.243,0.317,+0.0740,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 9 NYJ at LAC — side (fair spread, home)",-4.5,-2.9,+1.6000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 9 NYJ at LAC — total (fair),42.3,42.1,-0.2000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 9 NYJ at LAC — moneyline (P(home win)),0.357,0.406,+0.0490,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 10 JAX at NYG — side (fair spread, home)",-10.1,-9.6,+0.5000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 10 JAX at NYG — total (fair),42.9,44.2,+1.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 10 JAX at NYG — moneyline (P(home win)),0.205,0.216,+0.0110,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 11 LV at DEN — side (fair spread, home)",3.8,4.1,+0.3000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 11 LV at DEN — total (fair),51.0,49.6,-1.4000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 11 LV at DEN — moneyline (P(home win)),0.621,0.631,+0.0100,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 12 MIN at SF — side (fair spread, home)",2.9,0.3,-2.6000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 12 MIN at SF — total (fair),38.9,43.1,+4.2000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 12 MIN at SF — moneyline (P(home win)),0.592,0.510,-0.0820,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+"W11 game 13 CIN at WAS — side (fair spread, home)",-8.4,-6.4,+2.0000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 13 CIN at WAS — total (fair),52.0,54.5,+2.5000,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+W11 game 13 CIN at WAS — moneyline (P(home win)),0.247,0.301,+0.0540,originated market republished from the v2 fit,https://www.nfl.com/schedules/2026/by-week/week-11
+strategy M1 — MAE improvement (pts),1.74,1.38,-0.3600,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — MAE model,9.16,9.24,+0.0800,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — MAE reference,10.89,10.62,-0.2700,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — out-of-sample games,89,102,+13.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — bets against the reference line,50,59,+9.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — hit rate vs the reference line,0.720,0.712,-0.0080,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — mean edge (pts),8.31,7.28,-1.0300,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M1 — permutation p,0.0014,0.0022,+0.0008,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — MAE improvement (pts),1.59,1.07,-0.5200,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — MAE model,9.30,9.55,+0.2500,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — MAE reference,10.89,10.62,-0.2700,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — out-of-sample games,89,102,+13.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — bets against the reference line,58,66,+8.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — hit rate vs the reference line,0.707,0.682,-0.0250,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — mean edge (pts),7.92,6.47,-1.4500,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M2 — permutation p,0.0102,0.0624,+0.0522,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — MAE improvement (pts),1.40,0.91,-0.4900,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — MAE model,9.49,9.70,+0.2100,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — MAE reference,10.89,10.62,-0.2700,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — out-of-sample games,89,102,+13.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — bets against the reference line,58,69,+11.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — hit rate vs the reference line,0.672,0.638,-0.0340,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — mean edge (pts),6.87,5.32,-1.5500,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M3 — permutation p,0.0322,0.1260,+0.0938,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — MAE improvement (pts),1.38,1.12,-0.2600,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — MAE model,9.51,9.50,-0.0100,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — MAE reference,10.89,10.62,-0.2700,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — out-of-sample games,89,102,+13.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — bets against the reference line,44,47,+3.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — hit rate vs the reference line,0.705,0.745,+0.0400,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — mean edge (pts),7.67,7.89,+0.2200,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy M4 — permutation p,0.0020,0.0044,+0.0024,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — MAE improvement (pts),,,,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — MAE model,,,,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — MAE reference,,,,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — out-of-sample games,89,102,+13.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — bets against the reference line,24,31,+7.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — hit rate vs the reference line,0.208,0.226,+0.0180,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — mean edge (pts),7.65,6.51,-1.1400,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy P1 — permutation p,,,,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — MAE improvement (pts),-0.93,-1.12,-0.1900,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — MAE model,11.36,11.17,-0.1900,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — MAE reference,10.43,10.05,-0.3800,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — out-of-sample games,14,16,+2.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — bets against the reference line,10,11,+1.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — hit rate vs the reference line,0.500,0.545,+0.0450,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — mean edge (pts),-0.62,-0.44,+0.1800,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy R1 — permutation p,0.5057,0.3281,-0.1776,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — MAE improvement (pts),-0.11,-0.30,-0.1900,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — MAE model,11.08,10.98,-0.1000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — MAE reference,10.96,10.68,-0.2800,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — out-of-sample games,89,102,+13.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — bets against the reference line,46,55,+9.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — hit rate vs the reference line,0.522,0.491,-0.0310,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — mean edge (pts),-0.13,-0.13,+0.0000,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
+strategy T1 — permutation p,0.8114,0.5011,-0.3103,research backtest score; never a leaderboard rank (F42/F87),https://www.nfl.com/schedules/2026/by-week/week-10
