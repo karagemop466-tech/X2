@@ -1,0 +1,32 @@
+club,club_name,status,rows_offense,rows_defense,slot_cells_total,reason_blank,source_url,read_utc
+ATL,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+BAL,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+CAR,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+CHI,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+CIN,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+CLE,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+DEN,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+JAX,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+KC,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+LAC,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+LAR,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+LV,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+NE,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+NYG,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+NYJ,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+PHI,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+PIT,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+SEA,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+SF,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+TB,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+WAS,,not read this session,,,,"The club's chart was not read in this session, so no string order is published for it. Not rejected: simply unread.",https://www.nfl.com/teams/,2026-11-18
+HOU,Houston Texans,refused - image-only,,,,The page text carries the heading “Unofficial Depth Chart” and one `<img>`; there is no position/name table to transcribe. Re-confirmed by a fresh read on 2026-11-18. A structured source must be obtained; transcribing the image by eye is refused.,https://www.houstontexans.com/team/depth-chart,2026-11-18
+AZ,Arizona Cardinals,transcribed,11,12,92,,https://www.azcardinals.com/team/depth-chart,2026-11-18
+BUF,Buffalo Bills,transcribed,11,12,92,,https://www.buffalobills.com/team/depth-chart,2026-11-18
+DAL,Dallas Cowboys,transcribed,12,12,96,,https://www.dallascowboys.com/team/depth-chart,2026-11-18
+DET,Detroit Lions,transcribed,11,11,88,,https://www.detroitlions.com/team/depth-chart,2026-11-18
+GB,Green Bay Packers,transcribed,11,11,88,,https://www.packers.com/team/depth-chart,2026-11-18
+IND,Indianapolis Colts,transcribed,11,11,88,,https://www.colts.com/team/depth-chart,2026-11-18
+MIA,Miami Dolphins,transcribed,12,11,92,,https://www.miamidolphins.com/team/depth-chart,2026-11-18
+NO,New Orleans Saints,transcribed,11,12,92,,https://www.neworleanssaints.com/team/depth-chart,2026-11-18
+TEN,Tennessee Titans,transcribed,11,12,92,,https://www.tennesseetitans.com/team/depth-chart,2026-11-18
