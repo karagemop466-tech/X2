@@ -3674,7 +3674,7 @@ beats &ldquo;these two teams&rsquo; games average about 46 points&rdquo;. That i
 and it is the reading that stops a lucky in-sample win from being promoted to &ldquo;the model&rdquo;.</p>
 <h2>The comparison, pair by pair</h2>
 {table(two_est_dec, ['comparison','mean_paired_difference_pts','ci95_low','ci95_high','interval_excludes_zero','sign_test_p','n_nonzero_pairs','n_games','source_url'],
-       {'comparison':'Comparison','mean_paired_difference_pts':'Mean paired diff (pts)','ci95_low':'CI low','ci95_high':'CI high','interval_excludes_zero':'Excludes zero?','sign_test_p':'Sign-test p','n_nonzero_pairs':'Non-zero pairs','n_games':'Games'})}
+       {'comparison':'Comparison','mean_paired_difference_pts':'Mean paired diff (pts)','ci95_low':'CI low','ci95_high':'CI high','interval_excludes_zero':'Excludes zero?','sign_test_p':'Sign-test p','n_nonzero_pairs':'Non-zero pairs','n_games':'Games','source_url':'Source'})}
 <h2>Week 11, all three totals and the gaps</h2>
 {search_box('twoest-table')}
 {table(two_est_w11, ['game_no','matchup','kickoff','total_A_structure','total_B_experience','total_C_league_constant','gap_A_minus_B','gap_A_minus_C','collapse_status','source_url'],
