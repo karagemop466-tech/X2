@@ -574,7 +574,7 @@ LINK_LABEL = {"source_url": "Source ↗", "player_url": "Player page ↗", "url"
               "injury_source_url": "Injury report ↗",
               "schedule_source_url": "Schedule ↗",
               "backfill_source_url": "Week 10 slate ↗", "availability_source_url": "Injury report ↗",
-              "reserve_source_url": "Reserve list ↗",
+              "reserve_source_url": "Reserve list ↗", "roster_source_url": "Club roster ↗",
               # session 39948feb: the depth-chart diff compares two dated reads of one page,
               # and two independently built corpora are compared side by side.
               "stored_source_url": "Club chart ↗", "live_source_url": "Club chart ↗",
