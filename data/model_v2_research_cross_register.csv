@@ -1,0 +1,8 @@
+metric,this_register_v2_150,their_register_v2_150,tolerance_pts,agreement,their_published_v1,published_v1_here,v1_agreement,source_url
+games in the fitted corpus,150,150,0.5,match,137,137,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py
+out-of-sample backtest rows,102,102,0.5,match,89,89,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py
+"MAE, margin (M1) — as the summary publishes it",9.24,9.24,0.005,match,9.16,9.16,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py
+"MAE, margin (reference) — as the summary publishes it",10.62,10.62,0.005,match,10.89,10.89,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py
+calibration slope,1.129,1.129,0.0005,match,0.885,0.885,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py
+reference total for Week 11,46.2,46.2,0.05,match,45.9,45.9,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py
+corpus rows with a blank neutral flag,142,142,0.5,match,137,137,match,https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py

@@ -47,6 +47,14 @@ CORPUS_FIELDS = ["season", "week", "date_as_shown", "away_team", "away_points", 
                  "home_points", "game_url", "source_url", "neutral_site"]
 
 
+def _close(a, b, tol):
+    """Compare two published decimal strings at the looser register's tolerance."""
+    try:
+        return abs(float(a) - float(b)) <= tol + 1e-9
+    except (TypeError, ValueError):
+        return str(a).strip() == str(b).strip()
+
+
 def read(name, base=DATA):
     with open(os.path.join(base, name), encoding="utf-8", newline="") as f:
         return list(csv.DictReader(f))
@@ -171,6 +179,12 @@ def agg(base):
         "neutral_modelled": int(s["neutral_site_games_modelled"]),
         "neutral_blank": int(s["neutral_site_rows_blank"]),
         "qualified": int(s["qualified_strategies"]),
+        # the summary's published figures, kept alongside the per-game recomputations: they differ by up to
+        # 0.01 points because model_backtest.csv stores the error against the ROUNDED published line
+        "summary_mae_m1": float(s["mae_m1"]),
+        "summary_mae_reference": float(s["mae_reference"]),
+        "summary_calibration_slope": float(s["calibration_slope"]),
+        "summary_reference_total": float(s["reference_total_week11"]),
         "seal": s["forecast_log_seal_sha256"],
         "per_game": pg,
     }
@@ -361,6 +375,93 @@ try:
                      "flags_only_137": vb, "corpus_v2_150": vc, "delta_flags_only": da,
                      "delta_v2": dc, "reading": reading, "compute_url": SRC_CODE,
                      "source_url": SRC_WEEK10})
+    # --- cross-register reconciliation with the other parallel v2 build ------
+    _d = {r["metric"]: r for r in rows}   # noqa: F841 - kept for readers mapping table rows
+    # Session 39948feb (PR #80/#83) independently built a v2 corpus of the same 150 games under
+    # data/corpus_v2/ and published data/corpus_v2/corpus_version_comparison.csv. If that register
+    # is present, compare it value by value with column C here: two implementations agreeing is
+    # evidence, and a disagreement is a bug in one of them. Absent file = no comparison claimed.
+    xreg_path = os.path.join(DATA, "corpus_v2", "corpus_version_comparison.csv")
+    xreg_rows, xreg_gaps = [], []
+    # (their metric key, my summary key, this register's value, their precision)
+    PAIRS = [("games in the corpus", "games_in_fit", a if False else None, 0),
+             ("walk-forward out-of-sample games graded", "oos_rows", None, 0),
+             ("mean absolute error, M1 (margin, pts)", "summary_mae_m1", None, 2),
+             ("mean absolute error, naive reference line (margin, pts)", "summary_mae_reference", None, 2),
+             ("calibration slope, actual on predicted", "summary_calibration_slope", None, 3),
+             ("naive reference total for Week 11", "summary_reference_total", None, 1),
+             ("corpus rows whose neutral_site cell was blank", "neutral_blank", None, 0)]
+    if os.path.exists(xreg_path):
+        with open(xreg_path, encoding="utf-8", newline="") as f:
+            their = list(csv.DictReader(f))
+        their_by_metric = {r["metric"]: r for r in their}
+        LABELS = {"games_in_fit": "games in the fitted corpus", "oos_rows": "out-of-sample backtest rows",
+                  "summary_mae_m1": "MAE, margin (M1) — as the summary publishes it",
+                  "summary_mae_reference": "MAE, margin (reference) — as the summary publishes it",
+                  "summary_calibration_slope": "calibration slope", "summary_reference_total":
+                  "reference total for Week 11", "neutral_blank": "corpus rows with a blank neutral flag"}
+        for their_key, my_key, _unused, tol_nd in PAIRS:
+            th = their_by_metric.get(their_key)
+            if th is None:
+                xreg_gaps.append(f"{LABELS[my_key]}: no comparable row in their register")
+                continue
+            mv, pv = c[my_key], a[my_key]                      # v2 value, published v1 value
+            try:
+                tv, tv1 = float(th["v2_value_150_games_this_build"]), float(th["v1_value_137_games_published"])
+            except ValueError:
+                xreg_gaps.append(f"{LABELS[my_key]}: their value {th['v2_value_150_games_this_build']!r} is not numeric")
+                continue
+            # compare at the coarser published precision of the two registers
+            tol = 0.5 * 10 ** -tol_nd
+            agree = abs(tv - mv) <= tol + 1e-9
+            xreg_rows.append({
+                "metric": LABELS[my_key], "this_register_v2_150": f"{mv:.{tol_nd}f}" if tol_nd else str(int(mv)),
+                "their_register_v2_150": th["v2_value_150_games_this_build"],
+                "tolerance_pts": f"{tol:g}", "agreement": "match" if agree else "DISAGREE",
+                "their_published_v1": th["v1_value_137_games_published"],
+                "published_v1_here": (f"{pv:.{tol_nd}f}" if tol_nd else str(int(pv))),
+                "v1_agreement": "match" if abs(tv1 - pv) <= tol + 1e-9 else "differs",
+                "source_url": SRC_CODE,
+            })
+            if not agree:
+                xreg_gaps.append(f"{LABELS[my_key]}: here {mv:g} vs their register {tv:g} (tolerance {tol:g})")
+        with open(os.path.join(DATA, "model_v2_research_cross_register.csv"), "w",
+                  encoding="utf-8", newline="") as f:
+            w = csv.DictWriter(f, fieldnames=["metric", "this_register_v2_150", "their_register_v2_150",
+                                              "tolerance_pts", "agreement", "their_published_v1",
+                                              "published_v1_here", "v1_agreement", "source_url"])
+            w.writeheader()
+            for r in xreg_rows:
+                w.writerow(r)
+    n_agree = sum(1 for r in xreg_rows if r["agreement"] == "match")
+    xreg_reading = (
+        f"Independent cross-check against data/corpus_v2/corpus_version_comparison.csv, the v2 corpus another "
+        f"session built the same day from the same 13 games: {n_agree} of {len(xreg_rows)} comparable metrics "
+        f"agree at the precision both registers publish"
+        + ("" if not xreg_gaps else f"; {len(xreg_gaps)} not comparable ({'; '.join(xreg_gaps[:3])})")
+        if xreg_rows else
+        "No comparable parallel v2 register found under data/corpus_v2/ on this checkout, so no cross-check is "
+        "claimed for this run.")
+    rows.append({"metric": "Cross-register agreement with the other parallel v2 build",
+                 "scope": "same 150-game corpus, two independent implementations, compared metric by metric",
+                 "published_v1_137": "—", "flags_only_137": "—",
+                 "corpus_v2_150": f"{n_agree} of {len(xreg_rows)} match" if xreg_rows else "not run",
+                 "delta_flags_only": "—", "delta_v2": "0" if not xreg_gaps else f"{len(xreg_gaps)} gaps",
+                 "reading": xreg_reading, "compute_url": SRC_CODE,
+                 "source_url": SRC_STANDINGS})
+
+    rows.append({"metric": "Per-game recomputation versus the published summary figure",
+                 "scope": "MAE, margin (M1): mean |error| over model_backtest.csv rows versus model_summary.json's mae_m1",
+                 "published_v1_137": f"{a['mae_margin_m1']:.3f} vs {a['summary_mae_m1']:.2f}",
+                 "flags_only_137": f"{b['mae_margin_m1']:.3f} vs {b['summary_mae_m1']:.2f}",
+                 "corpus_v2_150": f"{c['mae_margin_m1']:.3f} vs {c['summary_mae_m1']:.2f}",
+                 "delta_flags_only": "—", "delta_v2": "—",
+                 "reading": "the two definitions differ by up to 0.01 points because model_backtest.csv stores the "
+                            "error against the one-decimal line the model published, while the summary scores the "
+                            "unrounded prediction. Both are published here so a reader comparing registers knows which "
+                            "figure each table holds; the cross-register row below uses the summary definition, as "
+                            "data/corpus_v2/corpus_version_comparison.csv does.",
+                 "compute_url": SRC_MODEL, "source_url": SRC_WEEK10})
     write("model_v2_research_deltas.csv", rows,
           ["metric", "scope", "published_v1_137", "flags_only_137", "corpus_v2_150",
            "delta_flags_only", "delta_v2", "reading", "compute_url", "source_url"])
@@ -381,7 +482,10 @@ try:
                                   "pr78_register": "5 of 13 (data/corpus_v2_summary.csv subset B)"},
         "week11_picks_flipped_flags_only": flip_b,
         "week11_picks_flipped_v2": flip_c,
-        "canonical_files_written": "none — the three model_v2_research_*.csv registers and this summary only",
+        "cross_register": {"comparable": len(xreg_rows), "agree": n_agree, "gaps": xreg_gaps[:6],
+                           "their_register": "data/corpus_v2/corpus_version_comparison.csv"
+                                             if os.path.exists(xreg_path) else "absent on this checkout"},
+        "canonical_files_written": "none — the four model_v2_research_* registers and this summary only",
         "reproduce": "python3 scripts/results_v2.py && python3 scripts/model_v2_research.py",
         "official_sources": [SRC_WEEK10, SRC_STANDINGS],
     }

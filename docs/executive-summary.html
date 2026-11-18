@@ -10,7 +10,7 @@
 <body>
 <header class="top">
   <div class="brand"><a href="index.html">NFL Research Dashboard</a><span class="asof">Latest read 2026-11-18 · injury report, standings and Week 10 slate read 2026-11-18; Week 11 lines and depth charts read 2026-11-14 · dates shown per source</span></div>
-  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="results-v2.html">Results register v2</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="corpus-v2.html">Pre-registered corpus</a><a href="forecast-records.html">Forecast records</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
+  <nav aria-label="Main"><a href="index.html">Home</a><a href="executive-summary.html" class=active aria-current=page>Executive summary</a><a href="model-lines.html">Model & Week 11 lines</a><a href="price-snapshots.html">Price snapshots</a><a href="originated-lines.html">Originated lines</a><a href="corpus-v2-full.html">Corpus v2 (150g)</a><a href="backtest.html">Backtest</a><a href="leaderboard.html">Leaderboard</a><a href="validation-gates.html">Validation gates</a><a href="markets.html">Market tables</a><a href="market-sheet.html">Market sheet</a><a href="props.html">Player props</a><a href="event-risk.html">Event risk</a><a href="review.html">Review console</a><a href="correlations.html">Correlations</a><a href="correlation-provenance.html">Correlation provenance</a><a href="parlays.html">Parlays</a><a href="results.html">Season results</a><a href="results-feed.html">Results feed</a><a href="results-v2.html">Results register v2</a><a href="captures.html">Captures & changes</a><a href="fixture-context.html">Fixture context</a><a href="capture-integrity.html">Capture integrity</a><a href="feed-completeness.html">Feed completeness</a><a href="corpus-v2.html">Pre-registered corpus</a><a href="forecast-records.html">Forecast records</a><a href="injuries.html">Injuries</a><a href="team-view.html">Per-team view</a><a href="games.html">Games</a><a href="depth-analysis.html">Depth exposure</a><a href="depth-deficiency.html">Deficiency tracking</a><a href="depth-replacement.html">Depth of replacement</a><a href="matchup-matrix.html">Matchup matrix 1st-4th</a><a href="strategy-lab.html">Strategy lab</a><a href="starters.html">Starters &amp; depth</a><a href="signals.html">Signals</a><a href="validation.html">Skill engine</a><a href="anti-luck.html">Anti-luck</a><a href="correlation.html">Correlation plan</a><a href="decision-path.html">Decision path</a><a href="decisions.html">Decisions</a><a href="questions.html">Questions</a><a href="requirements.html">Requirements</a><a href="suggestions.html">Suggestions</a><a href="review-path.html">Review path</a><a href="verification.html">Verification</a><a href="repo-review.html">Repo review</a><a href="cross-check.html">Independent cross-check</a><a href="repo-audit.html">Repository audit</a><a href="flagged.html">Flagged for review</a><a href="sources.html">Sources</a></nav>
 </header>
 <main>
 
@@ -175,17 +175,17 @@ SHA-256 digest, so a later edit is detectable.</li>
 </ul></div>
 <div><h3>Things that got worse - and are now visible</h3><ul>
 <li><strong>No prospective strategy has earned a rank.</strong> The historic walk-forward research is kept separate from the competition leaderboard until the frozen prospective forecasts are graded.</li>
-<li><strong>58 of 65 named injury risks cannot have their role
+<li><strong>63 of 70 named injury risks cannot have their role
 confirmed officially</strong>, so no injury adjustment can be priced (F06).</li>
 <li><strong>Player props are blocked on data the repository does not hold</strong>, though the outcomes
 themselves are obtainable from NFL.com (F31, P02).</li>
 </ul></div>
 </div>
 <h2>Decisions actually waiting on you</h2>
-<p class="note">9 decisions are recorded on the <a href="review.html">Review console</a>,
+<p class="note">8 decisions are recorded on the <a href="review.html">Review console</a>,
 0 of them decided. Each has three options, a recommendation, the file it would change, and what stays
 blocked until it is chosen. No option is pre-selected.</p>
-<div class="tablewrap"><table id="exec-decisions" class="data"><thead><tr><th>ID</th><th>Area</th><th>Decision</th><th>Recommended</th><th>Status</th><th>Stays blocked</th><th>source_url</th></tr></thead><tbody><tr><td>P01</td><td>Market data</td><td>Where do the market&#x27;s opening and closing numbers come from?</td><td>B now, A if a priced result is ever required</td><td><span class="badge ">awaiting owner choice</span></td><td>Every priced claim, every ROI figure, every staking leaderboard</td><td><a href="https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P02</td><td>Player props</td><td>Should player props be originated, and from what outcome data?</td><td>A, scoped to the Week 11 participants only</td><td><span class="badge ">awaiting owner choice</span></td><td>Every prop and prop-combo claim</td><td><a href="https://www.nfl.com/players/jared-goff/stats/logs/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P03</td><td>Injuries and depth</td><td>How is the size of an injury or a backup&#x27;s drop-off measured, rather than assumed?</td><td>A, after written permission (F16); B in the meantime</td><td><span class="badge ">awaiting owner choice</span></td><td>Any injury-based model adjustment and any depth claim</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P04</td><td>Statistical thresholds</td><td>Who approves the validation cut-offs, and is the demotion rule one-sided or two-sided?</td><td>B</td><td><span class="badge ">awaiting owner choice</span></td><td>Any statement that a strategy has been validated against an approved rule</td><td><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P05</td><td>Legal and rewards</td><td>Is any reward, entry fee or referral lawful for the owner&#x27;s jurisdiction?</td><td>B now, A before anything of value is offered</td><td><span class="badge ">awaiting owner choice</span></td><td>Any reward, prize, entry fee or referral</td><td><a href="https://wetten.overheid.nl/BWBR0002469/2025-02-12" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P06</td><td>Data rights</td><td>Is written permission needed to keep publishing NFL.com-derived data?</td><td>B now, A in parallel</td><td><span class="badge ">awaiting owner choice</span></td><td>New bulk collection, additional seasons, automated retrieval</td><td><a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P07</td><td>Sample size</td><td>Should the project wait for more games before publishing any leaderboard rank?</td><td>A, with the luck columns mandatory</td><td><span class="badge ">awaiting owner choice</span></td><td>Any claim that the top-ranked rule is the best rule</td><td><a href="https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P08</td><td>Site architecture</td><td>Should the two parallel site generators (Python docs/ and Node src/) be merged?</td><td>A</td><td><span class="badge ">awaiting owner choice</span></td><td>A single source of truth for the dashboard</td><td><a href="https://github.com/karagemop466-tech/X2" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P09</td><td>Backtest corpus</td><td>Adopt the 13 settled Week 10 games and the nine neutral-site flags, and re-publish the corpus metrics?</td><td>B</td><td><span class="badge ">awaiting owner choice</span></td><td>Nothing is blocked by waiting; the gap is disclosed on this build</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/week_count_reconciliation_2026-11-18.csv" target="_blank" rel="noopener">Source ↗</a></td></tr></tbody></table></div>
+<div class="tablewrap"><table id="exec-decisions" class="data"><thead><tr><th>ID</th><th>Area</th><th>Decision</th><th>Recommended</th><th>Status</th><th>Stays blocked</th><th>source_url</th></tr></thead><tbody><tr><td>P01</td><td>Market data</td><td>Where do the market&#x27;s opening and closing numbers come from?</td><td>B now, A if a priced result is ever required</td><td><span class="badge ">awaiting owner choice</span></td><td>Every priced claim, every ROI figure, every staking leaderboard</td><td><a href="https://support.nfl.com/hc/en-us/articles/35869698780564-If-I-place-a-bet-on-NFL-com-or-the-NFL-app-am-I-betting-with-the-NFL" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P02</td><td>Player props</td><td>Should player props be originated, and from what outcome data?</td><td>A, scoped to the Week 11 participants only</td><td><span class="badge ">awaiting owner choice</span></td><td>Every prop and prop-combo claim</td><td><a href="https://www.nfl.com/players/jared-goff/stats/logs/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P03</td><td>Injuries and depth</td><td>How is the size of an injury or a backup&#x27;s drop-off measured, rather than assumed?</td><td>A, after written permission (F16); B in the meantime</td><td><span class="badge ">awaiting owner choice</span></td><td>Any injury-based model adjustment and any depth claim</td><td><a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P04</td><td>Statistical thresholds</td><td>Who approves the validation cut-offs, and is the demotion rule one-sided or two-sided?</td><td>B</td><td><span class="badge ">awaiting owner choice</span></td><td>Any statement that a strategy has been validated against an approved rule</td><td><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P05</td><td>Legal and rewards</td><td>Is any reward, entry fee or referral lawful for the owner&#x27;s jurisdiction?</td><td>B now, A before anything of value is offered</td><td><span class="badge ">awaiting owner choice</span></td><td>Any reward, prize, entry fee or referral</td><td><a href="https://wetten.overheid.nl/BWBR0002469/2025-02-12" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P06</td><td>Data rights</td><td>Is written permission needed to keep publishing NFL.com-derived data?</td><td>B now, A in parallel</td><td><span class="badge ">awaiting owner choice</span></td><td>New bulk collection, additional seasons, automated retrieval</td><td><a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P07</td><td>Sample size</td><td>Should the project wait for more games before publishing any leaderboard rank?</td><td>A, with the luck columns mandatory</td><td><span class="badge ">awaiting owner choice</span></td><td>Any claim that the top-ranked rule is the best rule</td><td><a href="https://www.itl.nist.gov/div898/handbook/prc/section1/prc16.htm" target="_blank" rel="noopener">Source ↗</a></td></tr><tr><td>P08</td><td>Site architecture</td><td>Should the two parallel site generators (Python docs/ and Node src/) be merged?</td><td>A</td><td><span class="badge ">awaiting owner choice</span></td><td>A single source of truth for the dashboard</td><td><a href="https://github.com/karagemop466-tech/X2" target="_blank" rel="noopener">Source ↗</a></td></tr></tbody></table></div>
 
 <h2>Capture-integrity desk: changes on 2026-11-18 (session cf85d485, T102&ndash;T107)</h2>
 <ul class="findings">
@@ -242,41 +242,42 @@ session's own error, which today happens to be luck rather than design
 (<a href="decision-path.html">Review path</a>).</li>
 </ul>
 
-<h2>Added in this build: the results register completed, and the price of adopting it</h2>
+<h2>Also 2026-11-18 (session 82b83a64): the results register completed, the venue fix isolated, and three builds reconciled</h2>
 <ul class="findings">
-<li><strong>The results corpus now exists in two versions, on purpose.</strong> The published record stays 137
-games; <a href="results-v2.html">Results register v2</a> publishes 150 games through Week 10 — built by
-<code>scripts/results_v2.py</code>, 14 machine checks all passing — against an independent read of the official
-Week 10 schedule page and the official standings page taken at 2026-11-18T05:05Z. 32 of 32 clubs reconcile on
-win–loss, points for and points against; 14 of 14 winner indicators agree; the eight completed international games
-are finally flagged neutral. The model-output companion for the same games is
-<a href="corpus-v2.html">the pre-registered corpus</a>, and the two reconcile to the game.</li>
-<li><strong>Completing the corpus makes the model look worse, not better — the most decision-relevant number in
-this build.</strong> The same unmodified code, re-fitted on the completed register, drops its side hit rate against
-the naive reference from 0.652 to 0.578 and moves its calibration slope from 0.885 to 1.129. Half of that is the 13
-added games, on which the model beat the reference on a minority under either fit. A published edge that moves seven
-points when one week of results is added is not yet a measured edge — which is the argument for pre-registration,
-for the unranked leaderboard, and for refusing to rank on ROI (<a href="flagged.html">F33</a>,
-<a href="flagged.html">F110</a>, <a href="anti-luck.html">removal of luck</a>).</li>
-<li><strong>No published pick moved.</strong> Across four fits, none of the 13 Week 11 side picks flips and no
-sealed forecast line was rewritten, so the promotion decision — keep v1 or adopt v2 — is now a choice with its cost
-measured. It stays with the owner: the <a href="review.html">Review console</a> still records no decision, because an
-agent recording one would destroy what that field proves.</li>
-<li><strong>One published claim failed measurement and is now flagged.</strong> The Review console's P09 note
-asserts that three side picks and one bet-gate crossing turn on the neutral flags; measured, it is zero side picks
-and six gate crossings. The companion registers' 5-of-13 holdout count is reproduced exactly by the unflagged fit,
-and the 3-of-13 flagged count is explained by venue treatment alone (<a href="flagged.html">F119</a>). The console
-text is the owner's surface, so the flag records the discrepancy instead of editing the claim.</li>
-<li><strong>Verification records now name the read they were checked against.</strong>
-<code>scripts/verify_results.py</code> prints the ledger size and the read date on both sides, refuses to present an
-older read as currency, fails when the standings read post-dates the ledger, and takes any register or dated read as
-an argument. The 137-game ledger against today's standings read is off for 26 of 32 clubs — the corpus gap, not a
-transcription error — and the v2 register is off for 0 (<a href="flagged.html">F106</a>,
-<a href="flagged.html">F113</a>, <a href="verification.html">V37–V39</a>).</li>
+<li><strong>Three sessions answered P09 the same day, and their registers agree.</strong> This session published the
+results-and-venue half (<a href="results-v2.html">Results register v2</a>, <code>data/results_feed_v2_2026.csv</code>:
+150 games, 8 neutral-site flags, 14/14 checks); PR #78 published the scored
+predictions half (<a href="corpus-v2.html">pre-registered corpus</a>); PR #80 re-ran the whole model on 150 games
+(<a href="corpus-v2-full.html">Corpus v2</a>). The cross-register comparison — two independent implementations of the
+same splice — agrees on <strong>7 of 7</strong> comparable metrics on both the 137-game
+and the 150-game columns (<a href="verification.html">V43</a>).</li>
+<li><strong>The venue correction is now separated from the sample change, which no other page could do.</strong>
+Re-fitting the <em>unchanged</em> 137 games with only the eight settled internationals re-flagged moves the side
+hit rate 0.652 → 0.629 and takes bets across the pre-registered gate 50 → 54; adding the 13 games on top takes the
+hit rate to 0.578 and bets to 59. So roughly a third of the movement is venue treatment and two thirds is the games
+that were missing — and both readings agree that on the missing games the model is <em>behind</em> its naive
+reference. That is the strongest available argument for pre-registration, for an unranked leaderboard, and for
+refusing to rank on ROI (<a href="flagged.html">F33</a>, <a href="flagged.html">F120</a>,
+<a href="anti-luck.html">removal of luck</a>).</li>
+<li><strong>No published pick moved, and nothing sealed was re-sealed.</strong> Across four fits, none of the 13
+Week 11 side picks flips; the forecast log's SHA-256 differs in every variant, which is why the corpus is published
+as a version and the published 137-game record stands until the owner chooses.
+<code>data/decision_choices.json</code> is still empty by design.</li>
+<li><strong>A published claim in this repository failed measurement and is now flagged.</strong> The Review
+console's P09 note asserts that "three side picks plus one bet-gate crossing" turn on the neutral flags; measured,
+it is <strong>zero</strong> side picks and <strong>six</strong> gate crossings, and two independent builds agree on
+that (<a href="flagged.html">F125</a>). The note is the owner's decision surface, so the discrepancy is recorded
+beside it rather than edited into it.</li>
+<li><strong>The stale-pairing defect is fixed for every register, not just the published one.</strong>
+<code>scripts/verify_results.py</code> now prints the ledger size and both read dates, refuses to present an older
+read as currency, and takes <code>--games</code>/<code>--standings</code>/<code>--list</code> so any register can be
+reconciled against any dated read: the 137-game ledger against today's standings read is off for 26 of 32 clubs
+(the corpus gap, dated, and the same fact F119 records as "6 of 32 reconcile"), while the 150-game register is off
+for 0 (<a href="flagged.html">F106</a>, <a href="flagged.html">F113</a>, <a href="verification.html">V42</a>).</li>
 <li><strong>Still blank, still blocked, unchanged by this build:</strong> every market price
 (<a href="flagged.html">F07</a>, <a href="flagged.html">F51</a>), written NFL permission for systematic capture
-(<a href="flagged.html">F16</a>), and any Week 11 outcome, because Week 11 had not been played when these reads were
-taken (<a href="flagged.html">F120</a>).</li>
+(<a href="flagged.html">F16</a>), and any Week 11 outcome — because Week 11 had not been played when these reads were
+taken, and because the hub still renders Week 10 (<a href="flagged.html">F126</a>).</li>
 </ul>
 
 </main>

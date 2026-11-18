@@ -4,7 +4,7 @@
   "requirement (from brief)": "Collect and organize NFL information",
   "status": "Done for the 2026 season ledger and the Week 10 injury snapshot",
   "where_addressed": "Injuries; Games; News pages",
-  "blocker_or_note": "137 completed 2026 games and 345 Week 10 injury rows, both verified line by line against official sources. Player-level statistics are still not collected.",
+  "blocker_or_note": "137 completed 2026 games and 347 Week 10 injury rows, both verified line by line against official sources. Player-level statistics are still not collected.",
   "row_type": "status",
   "evidence_url": "https://www.nfl.com/injuries/"
  },
@@ -182,7 +182,7 @@
  {
   "req_id": "R21",
   "requirement (from brief)": "Originate own NFL lines (independent spread and total)",
-  "status": "Done — ridge attack/defence model fitted on 137 official results; Week 11 lines published with the reference line beside them",
+  "status": "Done — ridge attack/defence model fitted on 137 official results; Week 11 lines published with the reference line beside them. A parallel run on the complete 150-game log is published separately as corpus v2; the 137-game numbers remain the published record until P09 is decided (F105).",
   "where_addressed": "No market comparison is possible without a licensed odds feed (F07)",
   "blocker_or_note": "fact",
   "row_type": "fact",
@@ -227,7 +227,7 @@
  {
   "req_id": "R26",
   "requirement (from brief)": "Determine correlation values",
-  "status": "Done — 9 correlations computed from official results with confidence intervals and p-values",
+  "status": "Done — 13 correlations computed from official results with confidence intervals and p-values",
   "where_addressed": "Player-prop and cross-game correlations unavailable (F31)",
   "blocker_or_note": "Nine coefficients computed from official results with confidence intervals and p-values. Every value publishes its sample n beside it, and inputs come only from officially sourced numbers (the official results dataset and the official injury report); a build check now fails any correlation row without n (session ef971991, T45). Player-prop and parlay joint outcomes remain unavailable.",
   "row_type": "fact",
@@ -263,9 +263,9 @@
  {
   "req_id": "R30",
   "requirement (from brief)": "Review the repository line by line with source links and irregularities",
-  "status": "Done — 137 game rows reconciled against official standings (32/32 teams exact on W-L-T, PF, PA)",
-  "where_addressed": "Prior manual transcription of injury rows still awaits a full spot-check (F10)",
-  "blocker_or_note": "fact",
+  "status": "Irregular — the 137-game feed reconciles only 6 of 32 clubs against the official standings read 2026-11-18; the feed plus the 13 transcribed Week 10 rows reconciles 32 of 32",
+  "where_addressed": "data/corpus_v2/corpus_reconciliation.csv; feed-completeness.html; corpus-v2.html (prior manual transcription of injury rows still awaits a full spot-check, F10)",
+  "blocker_or_note": "The old 32/32 claim was checked against a standings read taken before the Week 10 Sunday games, so both sides were stale in the same direction (F106). Re-read club by club on 2026-11-18: 6/32 with 137 rows, 32/32 with 150. The transcription is right; the published corpus is stale. Choosing a corpus is P09.",
   "row_type": "fact",
   "evidence_url": "https://www.nfl.com/standings/"
  },

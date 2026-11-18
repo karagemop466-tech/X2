@@ -262,5 +262,29 @@
   "reading": "the sandbox would have written a different seal, so a re-registration must be published as a version and never as a quiet correction",
   "compute_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py",
   "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
+ },
+ {
+  "metric": "Cross-register agreement with the other parallel v2 build",
+  "scope": "same 150-game corpus, two independent implementations, compared metric by metric",
+  "published_v1_137": "—",
+  "flags_only_137": "—",
+  "corpus_v2_150": "7 of 7 match",
+  "delta_flags_only": "—",
+  "delta_v2": "0",
+  "reading": "Independent cross-check against data/corpus_v2/corpus_version_comparison.csv, the v2 corpus another session built the same day from the same 13 games: 7 of 7 comparable metrics agree at the precision both registers publish",
+  "compute_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py",
+  "source_url": "https://www.nfl.com/standings/"
+ },
+ {
+  "metric": "Per-game recomputation versus the published summary figure",
+  "scope": "MAE, margin (M1): mean |error| over model_backtest.csv rows versus model_summary.json's mae_m1",
+  "published_v1_137": "9.152 vs 9.16",
+  "flags_only_137": "9.078 vs 9.08",
+  "corpus_v2_150": "9.232 vs 9.24",
+  "delta_flags_only": "—",
+  "delta_v2": "—",
+  "reading": "the two definitions differ by up to 0.01 points because model_backtest.csv stores the error against the one-decimal line the model published, while the summary scores the unrounded prediction. Both are published here so a reader comparing registers knows which figure each table holds; the cross-register row below uses the summary definition, as data/corpus_v2/corpus_version_comparison.csv does.",
+  "compute_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model.py",
+  "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"
  }
 ]

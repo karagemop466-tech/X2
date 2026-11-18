@@ -1,0 +1,65 @@
+corpus_version,team,official_w,official_l,official_t,official_pf,official_pa,corpus_w,corpus_l,corpus_t,corpus_pf,corpus_pa,reconciles,source_url
+"v1 (137 games, published)",ATL,3,7,0,201,258,3,6,0,188,223,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",ATL,3,7,0,201,258,3,7,0,201,258,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",AZ,3,7,0,184,289,3,6,0,178,255,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",AZ,3,7,0,184,289,3,7,0,184,289,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",BAL,4,6,0,209,259,4,5,0,189,236,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",BAL,4,6,0,209,259,4,6,0,209,259,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",BUF,8,1,0,287,199,7,1,0,256,187,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",BUF,8,1,0,287,199,8,1,0,287,199,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",CAR,4,5,0,219,236,3,5,0,199,219,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",CAR,4,5,0,219,236,4,5,0,219,236,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",CHI,7,2,0,241,184,7,2,0,241,184,yes,https://www.nfl.com/standings/
+"v2 (150 games, this build)",CHI,7,2,0,241,184,7,2,0,241,184,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",CIN,7,2,0,278,193,6,2,0,240,175,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",CIN,7,2,0,278,193,7,2,0,278,193,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",CLE,6,4,0,188,220,5,4,0,161,196,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",CLE,6,4,0,188,220,6,4,0,188,220,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",DAL,4,6,0,286,282,4,5,0,246,236,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",DAL,4,6,0,286,282,4,6,0,286,282,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",DEN,7,2,0,198,186,7,2,0,198,186,yes,https://www.nfl.com/standings/
+"v2 (150 games, this build)",DEN,7,2,0,198,186,7,2,0,198,186,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",DET,7,2,0,257,199,6,2,0,222,189,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",DET,7,2,0,257,199,7,2,0,257,199,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",GB,6,4,0,226,221,6,3,0,216,191,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",GB,6,4,0,226,221,6,4,0,226,221,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",HOU,3,6,0,233,219,3,5,0,209,192,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",HOU,3,6,0,233,219,3,6,0,233,219,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",IND,3,7,0,208,271,2,7,0,184,249,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",IND,3,7,0,208,271,3,7,0,208,271,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",JAX,7,2,0,269,144,6,2,0,229,121,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",JAX,7,2,0,269,144,7,2,0,269,144,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",KC,7,2,0,237,156,6,2,0,202,143,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",KC,7,2,0,237,156,7,2,0,237,156,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",LA,6,4,0,248,187,5,4,0,214,181,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",LA,6,4,0,248,187,6,4,0,248,187,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",LAC,1,8,0,144,239,0,8,0,121,219,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",LAC,1,8,0,144,239,1,8,0,144,239,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",LV,4,6,0,251,289,4,5,0,238,268,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",LV,4,6,0,251,289,4,6,0,251,289,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",MIA,1,8,0,148,224,1,7,0,126,200,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",MIA,1,8,0,148,224,1,8,0,148,224,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",MIN,7,2,0,176,126,6,2,0,146,116,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",MIN,7,2,0,176,126,7,2,0,176,126,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",NE,5,5,0,221,242,5,4,0,211,207,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",NE,5,5,0,221,242,5,5,0,221,242,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",NO,3,6,0,202,236,3,5,0,185,216,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",NO,3,6,0,202,236,3,6,0,202,236,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",NYG,5,3,1,203,196,5,3,1,203,196,yes,https://www.nfl.com/standings/
+"v2 (150 games, this build)",NYG,5,3,1,203,196,5,3,1,203,196,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",NYJ,2,8,0,194,254,2,7,0,182,223,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",NYJ,2,8,0,194,254,2,8,0,194,254,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",PHI,2,7,0,148,221,2,7,0,148,221,yes,https://www.nfl.com/standings/
+"v2 (150 games, this build)",PHI,2,7,0,148,221,2,7,0,148,221,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",PIT,6,3,0,198,182,6,2,0,180,144,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",PIT,6,3,0,198,182,6,3,0,198,182,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",SEA,6,4,0,223,175,5,4,0,202,162,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",SEA,6,4,0,223,175,6,4,0,223,175,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",SF,8,1,0,281,196,7,1,0,235,156,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",SF,8,1,0,281,196,8,1,0,281,196,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",TB,3,6,0,202,178,3,6,0,202,178,yes,https://www.nfl.com/standings/
+"v2 (150 games, this build)",TB,3,6,0,202,178,3,6,0,202,178,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",TEN,1,8,0,167,239,1,7,0,144,199,NO,https://www.nfl.com/standings/
+"v2 (150 games, this build)",TEN,1,8,0,167,239,1,8,0,167,239,yes,https://www.nfl.com/standings/
+"v1 (137 games, published)",WAS,3,5,1,196,223,3,5,1,196,223,yes,https://www.nfl.com/standings/
+"v2 (150 games, this build)",WAS,3,5,1,196,223,3,5,1,196,223,yes,https://www.nfl.com/standings/

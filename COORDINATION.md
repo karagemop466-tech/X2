@@ -2991,85 +2991,245 @@ already uses and it is the reason the checks exist:
 rights review (F16), no legal opinion (F09/F19), no gate threshold (F17), and no edit to another session's data.
 Each is referenced as a dependency where it blocks a number.
 
-## 2026-11-18 · session `82b83a64` · claim and completion record (T125–T128; renumbered from T108–T111)
+### T124 integration record — session `8da77ba6` (2026-11-18)
 
-**Branch:** `arena/82b83a64-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67) · **Owner:** `82b83a64` · **Status:** work complete, this branch's merge recorded below
+- **PR:** https://github.com/karagemop466-tech/X2/pull/78 — `arena/8da77ba6-x2` → `main`, "T113–T117: depth-chart parsing hardened, 32-club roster/IR sweep, three published totals, venue/roof/weather overlay". The PR title keeps the T113–T117 numbering it was opened under; the final board numbering is **T120–T124** after the third collision wave, recorded above.
+- **Merge:** merged with a merge commit; `main` merge commit **`575971c06a4529f36fda3a292469dae9f5b86df2`**, merged **2026-11-18T04:59:31Z**.
+- **GitHub Pages:** the Pages build for that commit reports `status: built` (created 2026-11-18T04:59:32Z). The four new pages were fetched live and render: `docs/two-estimators.html`, `docs/roster-sweep.html`, `docs/depth-parsing.html`, `docs/venue-weather.html`.
+- **Site path correction, for the next session:** the deployed site serves the generator output under **`/X2/docs/`**, not `/X2/`. A direct `/X2/two-estimators.html` returns 404; `/X2/docs/two-estimators.html` returns the page. Every in-site link is correct (2 691 internal links, 0 broken), only hand-typed root-relative URLs are affected.
+- **Verification on the merged state:** `build.py` 52 pages, row-source and link guards pass · `drift_check.py` **43/43 registers** · `repo_audit.py` 22 checks, 0 failing · `verify_snapshot.py` 103 pass / 0 fail / 1 review · `verify_live_injuries.py` 347/347 · `check_links.py` 2 691 internal / 5 448 external, 0 broken · `npm run build && npm run verify` PASS.
+- **A pre-existing flag on `main`, not introduced here:** `verify_results.py` passes arithmetically against the 2026-11-14 snapshot (32/32 clubs) but **fails against the 2026-11-18 capture**, because the ledger holds 137 games and the current official standings imply 150. That is F106 (feed completeness) and is carried by the fourth session's feed work; it is noted here only so the next reader does not attribute it to this branch.
+- **Register IDs used (free on `main` at merge time):** **F115–F118**, **SRC-93–SRC-97**, **R65 / D65**. Three earlier collisions — F110–F113, SRC-91–92 — were resolved by re-deriving the next free ID from `main`, never by overwriting another session's rows.
 
-### Id collision, recorded before anything else
+**Follow-up PR #79 merged and deployed.** https://github.com/karagemop466-tech/X2/pull/79 → merge commit
+**`6539aa7`** (`6539aa754de25af2168e7bf2d7b3a00c2fb75587`) at 2026-11-18T04:57:13Z; Pages build for `6539aa7`
+reported `built`. Live confirmation required a cache-busting query string (`?v=6539aa7`) because GitHub Pages' CDN
+served the previous HTML for several minutes after the build finished — worth knowing for the next session: a
+`built` status is not the same as a propagated page, and a deploy check that reads the bare URL can report stale
+content as current, which is the same failure mode this session spent its time fixing in the data layer.
+`docs/verification.html` now shows V18 as *"Verified as a transcription of the 2026-11-14 read (not a currency
+claim)"*.
 
-I claimed **T108–T111** at `2effedb`, before `main` had moved. PR #78 (merged as `575971c`, carrying sessions
-`f04dda73` T114–T119 and `8da77ba6` T120–T124, whose commits still print the pre-renumbering ids T108–T113) had
-already taken that range, `data/flags.csv` on `main` ran to **F118** including an **F110** that is not my F110, and
-session `5a5c1a1d` had separately claimed T108 for venue transcription. Renumbering mine so nothing reads as a
-duplicate or overwrites a neighbour: **T125** v2 results register · **T126** re-fit study · **T127**
-`verify_results.py` generality · **T128** integration. Flags: my "unmeasured prediction" flag becomes **F119**
-(their F110, the 13-game holdout finding, is kept untouched) and the injury-hub flag becomes **F120**. Sources
-renumbered to **SRC-98…SRC-101** and verification rows to **V37…V39** after the rebase, because `main` had already
-taken SRC-91…SRC-97 and V34…V36. Where I refer to their work I say **"PR #78"**, never a session id: the repository
-labels the same branch three ways (`8da77ba6` in code comments, `f04dda73` in the README, `T108` in the commit
-subject), and I will not assert an attribution it contradicts.
+**Session f04dda73 is closed.** T114–T119 done and merged (PR #77 + #79), Pages live at
+https://karagemop466-tech.github.io/X2/, working tree clean, nothing claimed.
 
-### Task board (this session, final state)
 
-| ID | Task | Status | Files (scope) | Sources / notes |
-|----|------|--------|---------------|-----------------|
-| T125 | **P09 executed as its recommended option (B)**: a parallel v2 *results* register — 150 games through Week 10 with the eight completed official international games flagged neutral — plus an independent third read of the Week 10 schedule page and a 32-club reconciliation against a standings read taken by the same session | done | NEW `scripts/results_v2.py`, `data/results_feed_v2_2026.csv`, `data/results_feed_v2_checks.csv`, `data/results_feed_v2_summary.json`, `data/week10_live_read_2026-11-18_82b83a64.csv`, `data/standings_live_read_2026-11-18_82b83a64.csv`; append-only `data/drift_pins.csv`, `flags.csv`, `sources.csv`, `verification_report.csv`, `requirements.csv`; generated `docs/**` | https://www.nfl.com/schedules/2026/by-week/week-10 and https://www.nfl.com/standings/ read 2026-11-18T05:05Z; the dated slate at operations.nfl.com for neutral sites. **14 checks, all pass.** v1 stays frozen at 137 rows with its pins; nothing sealed was re-sealed |
-| T126 | Re-fit the published walk-forward method on the extended corpus **in a sandbox** and publish the deltas, isolating the neutral-flag fix from the sample change | done | NEW `scripts/model_v2_research.py`, `data/model_v2_research_{deltas,week11,ratings}.csv`, `data/model_v2_research_summary.json`; a section on `docs/results-v2.html` | `scripts/model.py` run unmodified in a temp root over four corpora. Side hit rate 0.652 → 0.629 (flags) → 0.578 (v2); bets 50 → 54 → 59; **0 of 13 Week 11 picks flip**; the seal differs in every variant. The unflagged 150-game fit reproduces PR #78's 5-of-13 holdout count exactly |
-| T127 | **F106** generality, on top of PR #78's fix: any register via `--games`, any dated read via `--standings`, `--list`, refusal of an undated read, and `--allow-future-weeks` to date the gap without failing | done | `scripts/verify_results.py` | 137 games vs the 2026-11-18 read: 26 of 32 clubs off, exit 1 (the gap, dated). 150 vs the same read: 0 off, exit 0. `--target both` output unchanged, so RF07/RF07b still pass |
-| T128 | Integrate this branch onto `575971c`, rebuild, run every check, PR → merge → confirm Pages | recorded below | `COORDINATION.md`, generated `docs/**`, PR | see the merge line at the end of this section |
 
-### Verification performed (everything below is against official pages this session read today)
+### Collision resolution (session 39948feb, appended at merge time)
 
-- Week 10 by-week page read a **third** time (05:05Z) after cf85d485 (04:00Z) and f04dda73: 14 games, both scores, the
-  winner indicator on every row, and the four-club bye list — identical to `games_week10_backfill_2026.csv`. The raw
-  read is retained, unparsed, in `data/week10_live_read_2026-11-18_82b83a64.csv` (18 rows) and pinned.
-- Standings page read at the same minute: 32 clubs on W-L-T-PCT-PF-PA-net, field-for-field identical to
-  `data/captures/standings_2026-11-18.csv`; the 150-game register reproduces all 32 rows exactly (V2-05, V2-06). A
-  **third independent surface** agrees: each club's record printed beside its own fixture on the schedule page equals
-  the standings page for 32 of 32 clubs (V2-07).
-- Every one of the 150 rows links to its own `nfl.com/games/{away}-at-{home}-2026-reg-{week}` page, verified by
-  rebuilding the slug from the row's own matchup and week (V2-12) — no shared, generic source URL anywhere in the
-  register.
-- Neutral-site flags come **only** from the dated slate (V2-08): 8 flagged = the 8 slate games played through Week 10,
-  set difference empty; Week 11's MIN at SF is absent because it had not been played. No venue was inferred.
-- `scripts/results_v2.py` exits non-zero if any check fails, so the build cannot publish a register that does not
-  reconcile. `drift_check` **50/50** registers · `build.py` **53 pages** with link, row-source, drift and readiness
-  guards · `check_links` clean · `repo_audit` 22 checks 0 failing, including **A05: `model.py` reproduces all 11
-  published model outputs byte for byte**, which is the proof that the frozen 137-game record survived this merge ·
-  `verify_live_injuries` 347/347 · `verify_live` 75/75 · `verify_snapshot` 0 fails · `npm run build && npm run verify`
-  PASS.
+Four sessions worked 2026-11-18 and three of them claimed the same IDs before the others pushed. This block records
+what was actually resolved, because a renumbering that is not written down is indistinguishable from a lost task.
 
-### Irregularities found (all published on the site, none suppressed)
+| Collision | Resolution |
+|---|---|
+| Task IDs `T108–T111` claimed by `39948feb`, `5a5c1a1d`, `5ddea67f`, `ddeec916` | `f04dda73` renumbered to T114–T119 on `main`. This session renumbers **T110–T113 → T125–T128**. Nothing was dropped; every block survives in this log. |
+| Flag IDs `F110–F120` claimed by three sessions (`f04dda73`, `8da77ba6`, `39948feb`) | The two that landed on `main` first keep **F110–F118**. This session's six flags end up at **F119–F124** after a second rebase. The sets are different findings and all are kept. |
+| Source IDs `SRC-91` onward claimed by three sessions | The earlier two keep **SRC-91–SRC-97**. This session's eleven sources end up at **SRC-98–SRC-108**. |
+| Page slug `corpus-v2.html` claimed by both | `f04dda73`'s page keeps the slug. This session's page is **`corpus-v2-full.html`** ("Corpus v2 (150g)"). |
+| `data/drift_pins.csv`, `data/flags.csv`, `data/sources.csv`, `data/repo_line_audit.csv` | Registers are append-ordered, so both sessions' rows were kept and only the pins were recomputed to the merged counts. |
+| Generated `docs/*.html` (30 files) | Not hand-merged: resolved by regenerating `python3 scripts/build.py` from the merged sources. |
 
-1. **F119** — the Review console's P09 note asserts that "three side picks plus one bet-gate crossing" turn on the
-   neutral flags. Measured today by re-running the published code: **0** side picks flip and **6** games change
-   bet/no-bet status (50 → 54). The note is a prediction with no register behind it. I did not edit the note — the
-   console is the owner's surface — and `data/decision_choices.json` is still empty.
-2. **F71's mitigation understated itself.** `data/neutral_site_sensitivity_2026.csv` says the mis-flag "changed no
-   rounded output" and calls itself a lower bound; that is true but it held the fit fixed. Re-fitting the same 137
-   games with the flags moves the side hit rate 0.652 → 0.629 and crosses the bet gate 50 → 54. F71 now carries the
-   measured full effect and stays resolved on that basis.
-3. **F120** — a third read of the injury hub inside 24 hours still renders **Week 10** while its own selector offers
-   Week 11, so the brief's Wed/Thu/Fri snapshot cadence cannot be met from that page at any clock time. That read was
-   deliberately partial (header and first club blocks only, SRC-101) and supports that one claim; no row count and no
-   register came from it.
-4. **My own tooling was wrong first and its checks caught it.** The first `results_v2.py` run failed 3 of 14 checks: it
-   joined the neutral-site authority on `in_results_feed = yes` (silently dropping the Munich game), built its
+**And one substantive collision that was worth more than the renumbering.** Both sessions independently took P09, and
+both built a second corpus from the same 13 games by different routes. They agree: pooled margin gain **1.439** vs
+**1.38** points from pipelines that share no code, both far below the published **1.74**. They differ on one modelling
+choice (whether the eight settled international games lose their home term), which is left to the owner rather than
+settled by either build. The comparison register is `data/corpus_v2_cross_estimate.csv` and it is published on
+`docs/corpus-v2-full.html`. Two independent estimators converging on a number that is *worse* for the project than the
+published one is the strongest evidence this session produced, and neither pipeline would have been convincing alone.
+
+## 2026-11-18 · session `39948feb` · claim (T125–T128)
+
+**Owner:** `39948feb` · **Branch:** `arena/39948feb-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged).
+**Checked the board first:** the highest IDs on `main` are T107 (cf85d485), F109, SRC-90, Q66, S50, G20, R64, D64, P09.
+This session therefore claims the free range **T125–T128** and the registers **F110+**, **SRC-91+**, **Q67+**,
+**S51+**, **G21+**, **R65+**, **D65+**.
+
+### What this session re-derived independently before claiming
+
+1. **Today's live standings, read 2026-11-18, reconcile the repo's 13 transcribed Week 10 games and NOT the
+   published feed.** All 32 club rows were read from `https://www.nfl.com/standings/` and compared, team by team,
+   on W-L-T / PF / PA against (a) `data/games_2026_results.csv` as published and (b) that file plus
+   `data/games_week10_backfill_2026.csv`. Result: **feed only = 6 of 32 clubs match; feed + 13 backfill rows =
+   32 of 32 match, 0 differ.** This reproduces F105's claim from an independent read and confirms the 13 rows are
+   correct. It also means every "137 games reconciled against the official standings" statement on the site is now
+   contradicted by the live standings, which is a *publication* problem, not a transcription problem.
+2. **All 14 Week 10 finals re-read** from `https://www.nfl.com/schedules/2026/by-week/week-10` and each one matches
+   the backfill register score for score (NE 10 DET 35, KC 35 ATL 13, HOU 24 CLE 27, MIN 30 GB 10, MIA 22 IND 24,
+   CAR 20 NO 17, BUF 31 NYJ 12, JAX 40 TEN 23, LA 34 AZ 6, SEA 21 LV 13, SF 46 DAL 40, PIT 18 CIN 38, LAC 23 BAL 20,
+   plus WAS 24 NYG 21 already in the feed).
+3. `python3 scripts/model.py` reproduces every committed model output byte for byte (run in a clean copy; `diff -rq`
+   over `data/` returned nothing), so a v2 corpus can be built without any doubt about the v1 baseline.
+
+### Task board (this session)
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T125 | **Corpus v2, published beside a frozen v1.** Decision **P09 option B**: splice the 13 verified Week 10 games and the eight settled international-game neutral-site flags into a *parallel* v2 corpus, re-run the whole pipeline on it, and publish v1 and v2 side by side with a version tag. v1 files are never edited. | **done** | `data/corpus_v2/games_2026_results.csv`, `scripts/model_v2.py`, `data/corpus_v2/*.csv`, `docs/corpus-v2.html` | P09 has blocked R38/R64/D62/D64/G20 since 2026-11-18T04:00Z and the brief forbids waiting for a human. Option B is the one option that changes no published number, so it is the only one a session may take unilaterally. |
+| T126 | **Matchup deficiency matrix, 1st–4th string**, as an interactive table: one row per club/unit/position slot, one column per string, every cell either an official-source-verified name or blank with the reason it is blank. | **done** | `data/matchup_matrix_week11.csv`, `scripts/depth_strings.py`, `scripts/matchup.py`, `docs/matchup-matrix.html` + NAV | Explicit brief requirement that has no page. Existing depth pages are exposure counts, not a string matrix. |
+| T127 | **Line-by-line verification pass against live official sources**, with a dated register, and flag every irregularity found (including stale counts inside `data/requirements.csv`). | **done** | `data/verify_39948feb_2026-11-18.csv`, `data/flags.csv` (append F110+), `data/sources.csv` (append SRC-91+) | The brief requires it every session and the corpus claim is now stale. |
+| T128 | **Integration:** rebuild, run every check, PR → `main`, merge, confirm GitHub Pages, record. | runs last | `data/decision_readiness.csv`, `data/requirements.csv`, `README.md`, `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
+
+**Not claimed:** licensed market prices (F07/F51 — no licensed feed exists), off-site storage/alerting (D17,
+outside a static host), prior-season injury archives (D08/D20/D45 — not on any official page reachable here),
+the data-rights review (F16) and the reward/reward-tier sign-off (F09/F19/F36). These stay open and blocked.
+
+### Close-out, session 39948feb (2026-11-18)
+
+| Task | Result |
+|---|---|
+| T125 | **Corpus v2 published beside a frozen v1.** The 13 verified Week 10 games plus 8 settled international neutral-site flags form `data/corpus_v2/` (150 games). `scripts/model_v2.py` hashes all 15 v1 outputs, executes `scripts/model.py` unmodified with `DATA` redirected, and fails unless all 15 hashes are unchanged afterwards. 106-metric version comparison at `data/corpus_v2/corpus_version_comparison.csv`; page at `docs/corpus-v2.html`. |
+| T126 | **Matchup deficiency matrix**, 9 clubs / 205 club-position rows / 820 string cells, at `docs/matchup-matrix.html`. Shared and empty cells are preserved as published (`slot_type`), never resolved into a fabricated order. Coverage is published as a table: 1 club refused (HOU, image-only chart), 21 unread, each with its reason. |
+| T127 | **22-check verification register** at `data/verify_39948feb_2026-11-18.csv` (15 PASS, 5 IRREGULAR, 1 FINDING, 1 PARTIAL). Flags **F110–F115** and sources **SRC-91–SRC-101** appended. `data/requirements.csv` corrected on 6 cells by `scripts/fix_requirements.py`, which refuses to run if the stale text it replaces has already changed. |
+| T128 | Rebuilt (54 pages after merging two other sessions' pages), `check_links` clean (2,900 internal / 6,209 external), `drift_check` all 43 registers match with the 2 new pins moved deliberately, `repo_audit` A12–A15, PR to `main`. |
+
+**The result that matters most is a negative one.** On the complete 150-game corpus the model's MAE improvement
+over the naive reference line is **1.38 points, not 1.74**. The naive line also improves when the missing week is
+added, so part of the published v1 edge was a small-sample artefact of the week that was absent. It is published on
+`corpus-v2.html` rather than suppressed.
+
+**Defects found and published, not silently fixed:** the 137-game feed reconciles 6 of 32 clubs against today's
+official standings (F110); 7 cells of the stored Week 10 depth-chart transcription embed editorial notes inside
+player-name fields, making shared slots indistinguishable from ranked ones (F112 — recorded with clean values beside
+them, not edited, because that file is another session's scope); the requirements register carried a false "Done"
+on R30 (F114).
+
+**Standing blockers unchanged:** licensed market prices (F07/F51), off-site storage/alerting (D17), prior-season
+injury archives (D08/D20/D45), data-rights review (F16), reward-tier sign-off (F09/F19/F36). The Week 11 forecast
+seal was **not** touched: it still records `fit_games_used=137`, which is disclosed on the verification page (V-20)
+rather than corrected, because editing it would destroy the pre-registration it exists to provide.
+
+### Second and third collisions (session 39948feb)
+
+`main` advanced twice more while this branch was open (PR #77, then #78 from `arena/8da77ba6-x2`), and each time the
+same three registers collided. What the resolution finally settled on:
+
+| Register | Final ID space for this session | Why |
+|---|---|---|
+| Task IDs | **T125–T128** (claim block left as written, renumbered once) | `f04dda73` took T114–T119 on `main`. |
+| Flags | **F119–F124** (renumbered twice: F115–F120, then F119–F124) | `f04dda73` took F110–F114; `8da77ba6` then took F115–F118. |
+| Sources | **SRC-98–SRC-108** (renumbered twice) | The same two sessions held SRC-91–SRC-97 between them. |
+| Page slug | **`corpus-v2-full.html`** | `f04dda73` owns `corpus-v2.html`. |
+
+**A defect this session introduced and caught.** Resolving the third `scripts/build.py` conflict by keeping both
+sides inserted this session's block *inside* another session's `f"""` page literal, which broke the file's syntax and
+— worse — would have silently swallowed the next session's page body if the syntax had happened to parse. `ast.parse`
+caught it. The same class of defect appeared in `data/repo_line_audit.csv`, where conflict markers survived inside a
+CSV and produced rows whose every field was null; the build's own `r["status"].startswith(...)` crashed on them.
+Both were fixed by keeping the other session's text intact and re-inserting this session's block at a statement
+boundary, then regenerating the derived register with its own script rather than hand-merging it.
+
+**The rule this session would add to the board:** do not hand-resolve a conflict inside a generated HTML string
+literal. Keep the other session's bytes, re-append your own block at a statement boundary, and regenerate the derived
+files. A conflict marker that survives inside a `f"""` block is invisible until a build very much later, and a
+conflict marker that survives inside a CSV is invisible until a consumer crashes on it — or, if it does not crash,
+becomes a published row full of nulls.
+
+## 2026-11-18 · session `82b83a64` · claim and completion record (T129–T132; renumbered twice)
+
+**Branch:** `arena/82b83a64-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67) · **Owner:** `82b83a64` · **Status:** work complete; merge record at the end of this section
+
+### Two id collisions on one day, recorded in full
+
+1. I claimed **T108–T111** at `2effedb`, while `main` was still `2db1bd7`. PR #78 (`575971c`) had already taken that
+   range (sessions `f04dda73` T114–T119 and `8da77ba6` T120–T124, whose commit subjects still print their
+   pre-renumbering ids T108–T113), and `5a5c1a1d` had separately claimed T108 for venue transcription. Renumbered to
+   T125–T128 in a first merge resolution.
+2. While that resolution was being written, PR #80/#81/#82/#83 landed (`e472436`) and took **T125–T128**, **F119–F124**,
+   **SRC-98…SRC-108**. So this session's records move once more, and the final ids are: **T129** v2 results register ·
+   **T130** the four-fit re-fit study · **T131** `verify_results.py` generality · **T132** integration. Flags
+   **F125** and **F126**. Sources **SRC-109…SRC-112**. Verification rows **V40–V43**. My first-pass ids (T108–T111,
+   F119/F120, SRC-91…94 then SRC-98…101, V34…36 then V37…39) are void; nothing under those names of mine should be
+   looked for. `git checkout --theirs` was used on the conflicted shared registers, so **every one of PR #78's and
+   PR #80's rows, statuses and links survived verbatim** and my work was re-applied on top as appends only.
+3. Where I refer to their work I write **"PR #78"** or **"PR #80"**, never a session id: the repository labels the
+   same branch `8da77ba6` in code comments, `f04dda73` in the README, and `T108` in the commit subject, and I will
+   not assert an attribution the tree contradicts.
+
+### What this session did, and how it differs from the two parallel P09 builds already on `main`
+
+| ID | Task | Status | Files | Notes |
+|----|------|--------|-------|-------|
+| T129 | P09 as its recommended option B: a parallel **results-and-venue** register, 150 games through Week 10 with the eight settled internationals flagged from the dated slate | done | NEW `scripts/results_v2.py`, `data/results_feed_v2_2026.csv`, `data/results_feed_v2_checks.csv`, `data/results_feed_v2_summary.json`, `data/week10_live_read_2026-11-18_82b83a64.csv`, `data/standings_live_read_2026-11-18_82b83a64.csv`; append-only `drift_pins.csv`, `flags.csv`, `sources.csv`, `verification_report.csv`, `requirements.csv`; generated `docs/**` | **14 checks, all pass.** V2-03 = third independent read of the Week 10 page (14 of 14 fixtures, scores *and* winner indicators, 4-club bye list); V2-05 = 150 games vs a standings read taken by this session in the same minute; V2-07 = club records on the schedule page vs the standings page, 32 of 32. v1 keeps its 137-row pins; nothing sealed was re-sealed |
+| T130 | Four fits of `scripts/model.py`, unmodified, in a temporary root — published / flags-only / v2 / v2-unflagged — published as deltas, so the venue correction is **separated** from the sample change | done | NEW `scripts/model_v2_research.py`, `data/model_v2_research_{deltas,week11,ratings,cross_register}.csv`, `data/model_v2_research_summary.json`; `docs/results-v2.html` | Side hit rate 0.652 → 0.629 → 0.578; bets 50 → 54 → 59; calibration 0.885 → 0.978 → 1.129; reference total 45.9 → 46.2; **0 of 13 Week 11 picks flip**; seal differs in all variants. Neither PR #78's nor PR #80's build isolates the flags — that is what column B is for |
+| T131 | `verify_results.py` generality on top of PR #78's fix: `--games` any register, `--standings` any dated read, `--list`, refusal of an undated read, `--allow-future-weeks` to date the gap without failing | done | `scripts/verify_results.py` | Their `--target` semantics and RF07/RF07b unchanged. 137 vs the 2026-11-18 read: 26 of 32 off, exit 1 (the same fact their F119 states as "6 of 32 reconcile"). 150 vs the same read: 0 off |
+| T132 | Integration onto `e472436`, rebuild, whole check set, PR → merge → Pages | done, see the merge line below | `COORDINATION.md`, generated `docs/**`, PR | 55 pages |
+
+### The cross-register result, which is the finding worth handing over
+
+`scripts/model_v2_research.py` compares this build's v2 figures with PR #80's
+`data/corpus_v2/corpus_version_comparison.csv` metric by metric, at the coarser published precision, and writes
+`data/model_v2_research_cross_register.csv` (pinned; `agreement=match|DISAGREE`). **7 of 7 comparable metrics agree
+on the v2 column and 7 of 7 on the v1 column** — corpus size, graded games, both MAEs, calibration slope, the Week 11
+reference total, the blank-flag count. Two sessions, two implementations of the same splice, same numbers. The only
+sub-0.01 difference found is **definitional, not numeric**: scoring MAE on the rounded published line
+(`model_backtest.csv`) versus the unrounded prediction (`model_summary.json`) — 9.152 vs 9.16 on v1, 9.232 vs 9.24
+on v2. Both figures are printed in the delta register so no reader has to guess which table holds which definition.
+This session's earlier Week 10 holdout count (3 of 13, flagged) versus PR #78's (5 of 13) also reconciles exactly:
+running my 150-game corpus **without** the flags reproduces their 5, so the registers never disagreed about the
+model — only about one fixture's venue treatment, and both say the model is behind its naive reference on the slice
+it had never been scored against.
+
+### Irregularities recorded (all published, none suppressed)
+
+1. **F125** — the Review console's P09 note asserts "three side picks plus one bet-gate crossing turn on the neutral
+   flags". Measured by re-running the published code: **0** side picks flip, **6** games change bet/no-bet status
+   (50 → 54), and an independent build agrees on the corpus numbers. The note carries no register. The console text
+   is the owner's surface, so the discrepancy is recorded beside it; `decision_choices.json` is untouched and
+   `review.py` was not re-run.
+2. **F71's mitigation understated itself** — `data/neutral_site_sensitivity_2026.csv` said the mis-flag "changed no
+   rounded output" and labelled that a lower bound; it is a lower bound, but the full effect is not negligible:
+   0.652 → 0.629 hit rate and 50 → 54 bets on unchanged fixtures. F71 now carries the measured figure and stays
+   resolved on that basis.
+3. **F126** — a third read of the injury hub inside 24 hours still renders **Week 10** while its selector offers
+   Week 11 (and PR #78 showed the `reg11` URL rewrites to `reg10`), so the brief's Wed/Thu/Fri cadence has nothing to
+   fire on at any clock time. Read deliberately partially (header only, SRC-112) and used for that one claim only —
+   no row count, no register derived.
+4. **My tooling was wrong first and its own checks caught it.** The first `results_v2.py` run failed 3 of 14 checks:
+   it joined the neutral-site authority on `in_results_feed = yes` (silently dropping the Munich game), built the
    winner-indicator expectation from the wrong string, and truncated the bye rows of my own raw read. All three were
-   fixed in the script or in the retained read, and the failures are exactly why the checks exist.
+   fixed in the script or in the retained read, and the raw read was corrected rather than quietly regenerated. This
+   is recorded because it is the reason the checks are worth having.
+5. **A numbering hazard for the board:** PR #80 published `docs/corpus-v2-full.html` and PR #78
+   `docs/corpus-v2.html`, and this session added `docs/results-v2.html`. Three "v2" pages, deliberately **not**
+   merged: results-and-venue facts, scored predictions, and a full model re-run are different claims, and pooling
+   them would remove the only evidence that any of them is right — that they were built independently and then
+   compared. Each page cross-links the other two and states the reconciliation. If a later session wants one page,
+   merge the *prose*, never the registers.
 
 ### Handoff and requests
 
 - **To whoever owns `data/decision_console.csv` / `scripts/review.py`:** P09's `why_recommended` holds the two figures
-  contradicted by F119. Either cite a computation for them or replace them with `data/model_v2_research_deltas.csv`.
-  I left both files untouched; re-running `review.py` would have overwritten their "awaiting owner choice" status
-  column with my text, which is a shared surface I do not own.
-- **If P09 is ever recorded as A:** the splice must move the `games_2026_results.csv`, `results_feed_2026.csv` and
-  `season_games_2026.csv` pins (137 → 150) and the `results_feed_checks.csv` RF01/RF02/RF06 counts together, refresh
-  `standings_2026_snapshot.csv` or point the check at a dated read, and re-issue the forecast-log seal **as a new
-  version**. `scripts/results_v2.py` is the gate for the data half; `scripts/model_v2_research.py` prices the rest in
-  ~7 s and writes only `model_v2_research_*`.
-- **Do not merge `results_feed_v2_2026.csv` with `corpus_v2_2026.csv`.** Same 13 games, different artifacts — results
-  and venue facts versus model output and probabilities — and the only reason both are trustworthy is that neither was
-  pooled. `docs/results-v2.html` and `docs/corpus-v2.html` cross-link with the reconciliation stated.
-- `scripts/verify_results.py` is now dual-heritage: PR #78's `--target` semantics unchanged, my generality on top.
+  contradicted by F125. Either cite a computation or replace them with `data/model_v2_research_deltas.csv`. I left
+  both files untouched; re-running `review.py` would have rewritten their `status` column with my text, and that is
+  a shared surface I do not own.
+- **If P09 is ever recorded as A:** the splice must move, together, the `games_2026_results.csv`,
+  `results_feed_2026.csv` and `season_games_2026.csv` pins (137 → 150), the `results_feed_checks.csv`
+  RF01/RF02/RF06 counts, `standings_2026_snapshot.csv` (or re-point the check at a dated read — see T131), and a
+  re-issued forecast-log seal, published **as a new version**. `scripts/results_v2.py` is the data gate (0.1 s,
+  exits non-zero on any failed check); `scripts/model_v2_research.py` (~7 s) writes only `model_v2_research_*` and
+  can never corrupt a published register.
+- **To PR #80's session (or whoever inherits it):** my page appends a reciprocal paragraph to
+  `docs/corpus-v2-full.html` using the documented append form — if you rebuild that page as a fresh literal, the
+  build's collision guard will (correctly) fail, and the cross-register pointer will be lost.
+- **Consolidation request, not taken unilaterally:** `data/drift_pins.csv` now pins three separate "v2" registers
+  plus two raw dated reads. That is fine, but the board may want one dated "corpus versions" index page naming which
+  register holds which kind of claim. Any session may build it; it touches shared outputs, so it belongs to a final
+  integration session.
+
+### Verification performed on the merged state (all official pages read by this session today)
+
+`drift_check` **51/51** registers · `results_v2` **14/14** checks · `verify_results` both valid pairings 32/32
+(stale pairing fails loudly, as designed) · `build.py` **55 pages**, link / row-source / drift / readiness guards
+pass · `check_links` **0 broken** · `repo_audit` 22 checks **0 failing**, including **A05: `model.py` reproduces all
+11 published model outputs byte for byte** — the direct proof that the frozen 137-game record survived this merge ·
+`verify_live_injuries` 347/347 · `verify_live` 75/75 · `verify_snapshot` 0 fail (1 pre-existing F74 review) ·
+`team_view` 347 rows reconcile · `desk.py` + `results_feed_completeness` OK · `npm run build && npm run verify`
+**PASS**.
+
+### Merge / PR record
+
+- Merged `e472436` (PRs #80–#83) into `arena/82b83a64-x2`; conflicts in 60 files resolved by keeping **their**
+  version of every shared register and page, then re-applying my work as appends with the ids in this section.
+- Sources: `SRC-109` (Week 10 page, third read, 05:05Z) · `SRC-110` (standings, same minute) · `SRC-111` (dated
+  international slate) · `SRC-112` (injury hub, header only, one claim).
+- PR link, merge commit and Pages run are recorded in the next section below this line once the push completes.

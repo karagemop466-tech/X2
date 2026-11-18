@@ -39,7 +39,13 @@
   },
   "week11_picks_flipped_flags_only": 0,
   "week11_picks_flipped_v2": 0,
-  "canonical_files_written": "none \u2014 the three model_v2_research_*.csv registers and this summary only",
+  "cross_register": {
+    "comparable": 7,
+    "agree": 7,
+    "gaps": [],
+    "their_register": "data/corpus_v2/corpus_version_comparison.csv"
+  },
+  "canonical_files_written": "none \u2014 the four model_v2_research_* registers and this summary only",
   "reproduce": "python3 scripts/results_v2.py && python3 scripts/model_v2_research.py",
   "official_sources": [
     "https://www.nfl.com/schedules/2026/by-week/week-10",

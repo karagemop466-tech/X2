@@ -1,0 +1,79 @@
+[
+ {
+  "metric": "games in the fitted corpus",
+  "this_register_v2_150": "150",
+  "their_register_v2_150": "150",
+  "tolerance_pts": "0.5",
+  "agreement": "match",
+  "their_published_v1": "137",
+  "published_v1_here": "137",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ },
+ {
+  "metric": "out-of-sample backtest rows",
+  "this_register_v2_150": "102",
+  "their_register_v2_150": "102",
+  "tolerance_pts": "0.5",
+  "agreement": "match",
+  "their_published_v1": "89",
+  "published_v1_here": "89",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ },
+ {
+  "metric": "MAE, margin (M1) — as the summary publishes it",
+  "this_register_v2_150": "9.24",
+  "their_register_v2_150": "9.24",
+  "tolerance_pts": "0.005",
+  "agreement": "match",
+  "their_published_v1": "9.16",
+  "published_v1_here": "9.16",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ },
+ {
+  "metric": "MAE, margin (reference) — as the summary publishes it",
+  "this_register_v2_150": "10.62",
+  "their_register_v2_150": "10.62",
+  "tolerance_pts": "0.005",
+  "agreement": "match",
+  "their_published_v1": "10.89",
+  "published_v1_here": "10.89",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ },
+ {
+  "metric": "calibration slope",
+  "this_register_v2_150": "1.129",
+  "their_register_v2_150": "1.129",
+  "tolerance_pts": "0.0005",
+  "agreement": "match",
+  "their_published_v1": "0.885",
+  "published_v1_here": "0.885",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ },
+ {
+  "metric": "reference total for Week 11",
+  "this_register_v2_150": "46.2",
+  "their_register_v2_150": "46.2",
+  "tolerance_pts": "0.05",
+  "agreement": "match",
+  "their_published_v1": "45.9",
+  "published_v1_here": "45.9",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ },
+ {
+  "metric": "corpus rows with a blank neutral flag",
+  "this_register_v2_150": "142",
+  "their_register_v2_150": "142",
+  "tolerance_pts": "0.5",
+  "agreement": "match",
+  "their_published_v1": "137",
+  "published_v1_here": "137",
+  "v1_agreement": "match",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py"
+ }
+]

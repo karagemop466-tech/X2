@@ -10,10 +10,10 @@ separate columns**, a strict **signal-vs-staking split** in the leaderboard, a p
 returns a live strategy to paper, and **replacement-depth tracking** (the 2nd/3rd/4th string of the replacement,
 where a source verifies it).
 
-## Latest session (82b83a64): the results register completed, and the price of adopting it
+## Latest session (82b83a64): the results register completed, the venue fix isolated, and three parallel builds reconciled
 
-Four things were built on 2026-11-18, all in parallel with the published record, and none of them rewrote a number
-the site had already published:
+Everything below was built on 2026-11-18 in parallel with the published record; none of it rewrote a number the site
+had already published, and no sealed record was re-sealed:
 
 - **Results register v2** (`docs/results-v2.html`, `data/results_feed_v2_2026.csv`, `python3 scripts/results_v2.py`).
   All **150** games through Week 10: the 137-game published feed plus the 13 settled Week 10 games, each score
@@ -31,17 +31,30 @@ the site had already published:
   variant, and the forecast-log SHA-256 would change in all of them — which is why this is a version and not a
   correction, and why no published model output was touched. The 150-unflagged fit reproduces PR #78's Week 10
   holdout count exactly (5 of 13), so the two registers reconcile and the 2-row difference is venue treatment alone
-  (**F119**).
+  (**F125**).
 - **`scripts/verify_results.py` made general** (on top of the PR #78 fix): `--games` takes any register, `--standings`
   takes any dated read, `--list` enumerates the reads available, a read that states no date is refused, and
   `--allow-future-weeks` reports a ledger that is behind without failing. The published ledger against today's
   standings read is off for **26 of 32** clubs — the corpus gap, dated, not suppressed (**F106**, **F113**,
-  `docs/verification.html` V39).
-- **Two new flags.** **F119**: the Review console's P09 note publishes a prediction — "three side picks plus one
-  bet-gate crossing" — that measurement contradicts (zero and six); the console text is the owner's surface, so the
-  discrepancy is recorded beside it rather than edited into it. **F120**: a third read of the injury hub inside 24
-  hours still renders Week 10 while its own selector lists Week 11, so a Wednesday/Thursday/Friday capture timer has
-  nothing to fire on.
+  `docs/verification.html` V40–V43).
+- **Three parallel v2 builds, reconciled rather than merged** (this is the part a reader is most likely to trip
+  over). On 2026-11-18 three sessions each answered P09 from the same 13 settled games: PR #78 published the scored
+  *predictions* register (`data/corpus_v2_2026.csv`, `docs/corpus-v2.html`), PR #80 re-ran the whole model on a
+  150-game corpus with hash proof that v1 did not move (`data/corpus_v2/`, `docs/corpus-v2-full.html`), and this
+  session published the *results-and-venue* register plus the flags-only control fit (`docs/results-v2.html`).
+  `scripts/model_v2_research.py` now compares this build with PR #80's register metric by metric and writes
+  `data/model_v2_research_cross_register.csv`: **7 of 7 comparable metrics match** on both the 137-game and the
+  150-game columns. The three registers are deliberately kept separate — pooling them would destroy the only
+  reason any of them is trustworthy, which is that each was built independently and then checked against the others.
+  The one sub-0.01 difference found is definitional, not numeric: scoring MAE against the rounded published line
+  (`model_backtest.csv`) versus the unrounded prediction (`model_summary.json`); both figures are printed so no
+  reader has to guess which is which.
+- **Two new flags.** **F125**: the Review console's P09 note publishes a prediction — "three side picks plus one
+  bet-gate crossing" — that measurement contradicts (zero and six), and two independent builds now agree on that;
+  the console text is the owner's surface, so the discrepancy is recorded beside it rather than edited into it.
+  **F126**: a third read of the injury hub inside 24 hours still renders Week 10 while its own selector lists
+  Week 11, so a Wednesday/Thursday/Friday capture timer has nothing to fire on (the same mechanism PR #78 found from
+  the URL side).
 - **Nothing was chosen on the owner's behalf.** `data/decision_choices.json` is still empty, `review.py` was not
   re-run, and the 137-game register, its pins and its hashes are byte-identical to the merge base (`drift_check`
   50/50 registers; `repo_audit` A05 confirms `model.py` still reproduces its published outputs exactly).
