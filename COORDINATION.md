@@ -2690,3 +2690,30 @@ finished work. Claimed before any file was written; nothing here overlaps a live
 | T110 | **Venue transcription, Week 10 + Week 11**: read the venue of the 27 settled/upcoming fixtures that this cycle touches from the official game centre and publish them as a dated register; leave the other 136 blank and flagged (F99 shrinks, does not close). | in progress | db00d539 | `data/venues_2026.csv` (append rows), `data/flags.csv` (F99 update) | https://www.nfl.com/games/<slug> |
 | T111 | Final integration: run every check, rebuild, PR `arena/db00d539-x2` → `main`, merge, confirm GitHub Pages, record. | pending | db00d539 | `COORDINATION.md`, generated `docs/**`, PR | runs last |
 
+### T108–T111 completion (2026-11-18, session db00d539)
+
+**Every check green on the branch state that was merged** (`arena/db00d539-x2`): `drift_check.py` 38 registers ·
+`build.py` 48 pages with the row-source and link guards · `check_links.py` 2 477 internal / 5 454 external, none
+broken · `repo_audit.py` 22 checks 0 failing · `verify_results.py` 137 games, 32/32 clubs reconcile against the
+2026-11-14 read · `verify_snapshot.py` 0 fail / 1 review (F74, pre-existing) · `capture_cross_check`,
+`two_estimator_totals`, `weekly_diff`, `corpus_v2`, `corpus_v2_effect`, `venues_week11`,
+`week11_report_probe` all re-run and reproduce · `npm run build && npm run verify` PASS.
+
+| ID | Task | Status | Files | Sources | Verification performed | Irregularities |
+|----|------|--------|-------|---------|------------------------|----------------|
+| T108 | Dated corpus tranche: 150-game v2 beside the byte-frozen 137-game v1, plus the measured consequence | done | `scripts/corpus_v2.py`, `scripts/corpus_v2_effect.py`, `data/corpus_v2_2026.csv`, `data/corpus_v2_diff.csv`, `data/corpus_v2_identity.csv`, `data/corpus_v2_effect.csv`, `data/forecast_seal_discrepancy.csv` | https://www.nfl.com/schedules/2026/by-week/week-10 · https://www.nfl.com/standings/ (both read 2026-11-18) | C1 137/137 v1 rows unchanged · C2 tranche = transcription (13) · C3 v2 reconciles 32/32 clubs, v1 fails 26/32 · C4 300 team-games / 2 = 150 · C5 official URL on every row · G1 reproduces the published v1 Week 11 line to one decimal on 13/13 · backtest identity 7/7 weeks | **F110 opened**: the sealed forecast log reproduces only when the neutral-site flag is ignored (MIN at SF sealed 2.5/38.5 vs published 2.9/38.9). Not overwritten; two owner options published. |
+| T109 | Week 11 injury-report probe with a working control | done | `scripts/week11_report_probe.py`, `data/week11_report_probe.csv` | https://www.nfl.com/injuries/ · https://www.nfl.com/injuries/league/2026/reg11 · https://www.nfl.com/injuries/league/2026/reg9 (control) | Four routes read 2026-11-18; the reg9 control renders WEEK 9 (route functional), the bare hub, `?week=11` and `/reg11` all render WEEK 10 · P1–P3 | **F111 opened** (absence, feature blocked). F101 and F104 updated with the evidence. |
+| T110 | Every Week 11 venue transcribed from the official game centre | done | `scripts/venues_week11.py`, `data/venues_2026.csv` | 13 game centres (per-row URL), e.g. https://www.nfl.com/games/vikings-at-49ers-2026-reg-11 · cross-check https://operations.nfl.com/programs-initiatives/international-growth/nfl-international-games | V1 13/13 covered · V2 away/home match the official schedule · V3 official URL per row · V4 no blank field · V5 the neutral row is outside the home market · V6 the game centre agrees with the independent international register (Estadio Banorte, Mexico City) | **F112 opened** (coverage 14 of 163); F99 updated from 1 of 163. |
+| T112 | Both total estimators published every week with the gap; collapse rule written before the result | done | `scripts/two_estimator_totals.py`, `data/two_estimator_totals.csv`, `data/two_estimator_summary.csv` | https://www.nfl.com/schedules/2026/by-week/week-4 (per-row official schedule/game-centre URL) | S1 reproduces `model_backtest.csv` at one decimal on 89/89 rows · S2 hand-computable sign check · S3 per-week n sums to 89 · S4 only allowed decision strings. Pooled MAE 11.08 (T1) vs 10.96 (T2), paired diff −0.113, cluster bootstrap [−0.98, +0.81], p 0.80 → **no winner**, both stay published | **F113 opened**: the fitted home-field term enters the model *total* (h = +0.62 pts Week 4 → −0.40 Week 11). Found by S1, published, not patched. Three arithmetic defects in this session's own first draft were also caught by S1 and are documented in the script. |
+| T114 | Weekly "what changed" diff: rank, rating, availability | done | `scripts/weekly_diff.py`, `data/weekly_diff_2026-11-18.csv` | https://www.nfl.com/injuries/ · `data/captures/injury_delta_2026-11-18.csv` | W1 no look-ahead in either fit · W2 same 32 clubs · W3 availability counts recount to the delta · W4 rank columns are permutations of 1..32. Published on both corpus versions: frozen feed moves 3 clubs (1 game between snapshots), v2 moves up to 2.52 pts (SF 10→5) | None open; the availability column is labelled a re-read delta, not week-over-week news (F111). |
+| T111 | Final integration: rebuild, run every check, PR, merge, confirm Pages, record | done | `COORDINATION.md`, generated `docs/**`, PR | — | see the check set above | — |
+
+**Register state after this cycle:** next free IDs F114, SRC-95, Q67 (still free), S51, G21, R65, D67, P10.
+`requirements.csv` 66 · `decision_readiness.csv` 66 · `readiness_mapping.csv` 66 (bijection guard passes) ·
+`flags.csv` 107 · `sources.csv` 94 · `drift_pins.csv` 38 registers.
+
+**One finding worth flagging beyond this session's scope.** Publishing the two total estimators was the first
+check in this repository that had to reproduce the model's *total* rather than its margin, and it immediately
+showed that the fitted home-field term is added to the home side only, so it displaces the total by ±0.4–0.6
+points depending on the week (F113). No published number was changed: fixing it re-fits every total, which is a
+model version, not a display fix.
