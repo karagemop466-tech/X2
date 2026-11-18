@@ -2321,3 +2321,27 @@ No unclaimed task IDs remained. This session claims no new task ID; it performs 
 **Rebase/conflict log:** `origin/main` advanced from `a78f7bf` to `2ab6ea5` (PR #54 and #55) while this task was active. The rebase conflicted in `COORDINATION.md` because session `b03f4ba1` had claimed and completed T96. Preserved the entire T96 record, renumbered this session's claim and work to T97, and kept all file additions from both sides. No other file conflicted and no work was discarded. After rebasing, integrated the new dashboard controls/removal-of-luck panel without putting historical metrics on the leaderboard; moved the two-sided fields to Strategy Lab and corrected readiness rows D04/D06/D35/D36/D39/D41 to match the generated pages.
 
 **PR / Pages:** pending; this session is on Arena's fixed branch `arena/acfebc6e-x2` and will not switch branches.
+
+
+## 2026-11-18 · session cf85d485 · claim (T102–T106)
+
+**Owner:** `cf85d485` · **Branch:** `arena/cf85d485-x2` (fixed by Arena) · **Base:** `main` @ `bd4f469` (PR #58 merged).
+
+Checked the board before claiming: no `unclaimed` ID existed on it, and the newest IDs on `main` are T101 (6ee4d13e,
+PR #58), F93, SRC-84, Q62, S44, G16, R58. This session therefore claims the free range **T102–T106**.
+
+| ID | Task | Status | Owner | Files touched | Why |
+|---|---|---|---|---|---|
+| T102 | Full live recount of the Week 10 injury report (close F83 / D43-style completeness gap left open by b03f4ba1, which checked 4 of 8 chunks) and a dated availability-capture ledger with clock time and content hash | in progress | cf85d485 | `data/live_reverification_2026-11-18.csv` (new), `data/availability_captures.csv` (new), `scripts/verify_snapshot.py` (read-only check only), `docs/**` (generated) | The brief requires a timestamped series, not one weekly snapshot; the repo holds one capture with no clock time. A second dated read is only honest if the first one is recount-verified in full. |
+| T103 | Capture-window discovery: determine what the injury hub publishes for the current week on a Wednesday before kickoff, and record the week-label drift hazard | in progress | cf85d485 | `data/availability_captures.csv`, `data/flags.csv` (F94+), `data/information_gaps.csv` (G17+), `data/questions.csv` (Q63+), `data/suggestions.csv` / `data/suggestion_review.csv` (S45+) | The cadence requirement (Wed/Thu/Fri) is unbuildable until we know what the source page returns mid-week; discovered today that the default view still renders Week 10 on 2026-11-18. |
+| T104 | Forecast-record ledger: every model output stored as a probability **plus its inputs**, per game, with a model-version hash (readiness D27) | in progress | cf85d485 | `scripts/forecast_records.py` (new), `data/forecast_records_2026.csv` (new), `data/forecast_records_week11.csv` (new), `scripts/build.py` (new page block + NAV), `docs/**` (generated) | D27 is the only core storage requirement still Partial: `model_predictions_2026.csv` holds point predictions with no inputs and no probabilities. |
+| T105 | Neutral-site / international-venue confirmation for the nine 2026 international games from official sources (G14, Q46) | in progress | cf85d485 | `data/games_2026_results.csv` (`neutral_site` column), `data/sources.csv` (SRC-85+), `docs/**` (generated) | G14 and Q46 both ask for exactly this: per-game confirmation from the official international-games list or the game-centre Stadium block. All 137 historical rows currently carry a blank `neutral_site`. |
+| T106 | Integration: rebuild, link/row checks, readiness refresh, PR to `main`, merge, confirm GitHub Pages | unclaimed → runs last | cf85d485 | `data/decision_readiness.csv`, `data/requirements.csv`, `README.md`, `COORDINATION.md`, `docs/**` (generated), PR | Required by the brief. |
+
+**Rules I will follow:** additive only to shared registers (append rows, never rewrite another session's rows); no
+value filled unless it is read from an official page in this session; anything unreadable stays blank and is flagged;
+`git pull --rebase` before every push.
+
+**Not claimed here** (still blocked on inputs this session cannot obtain): licensed market prices (F07/F51 → D01,
+D03, D32), off-site storage and alerting (D17), prior-season archives (D08, D20, D21, D45), official snap counts /
+inactive lists (D13, D16), the human price-data policy decision (D30).
