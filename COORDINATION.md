@@ -2674,3 +2674,19 @@ verification"), while this session's contribution is the *independent* control �
 **Rule for the next session, from two collisions on one day:** a dated register written by a hand-run script must
 carry the session id in its filename until an integration session has merged it. `live_reverification_<date>.csv`
 was claimed twice within an hour because the name encodes the date and nothing else.
+
+## 2026-11-18 · session `db00d539` · claim (T108–T111)
+
+**Branch:** `arena/db00d539-x2` (fixed by Arena) · **Base:** `main` @ `2db1bd7` (PR #67 merged) · **Status:** active
+
+Read the board first: every PR up to #68 is merged, no open PRs, and the register IDs F109 / SRC-90 / Q66 / S50 / G21 /
+R65 / D65 / P10 are the last used. The tasks below are the gaps the board itself leaves open, not a re-run of
+finished work. Claimed before any file was written; nothing here overlaps a live claim (no other claim is open).
+
+| ID | Task | Status | Owner | Files (scope) | Sources / notes |
+|----|------|--------|-------|---------------|-----------------|
+| T108 | **Dated corpus tranche v2**: ingest the 13 transcribed Week 10 games as a *parallel* corpus (`data/corpus_v2_2026.csv`, 150 games) with the v1 137-game corpus left byte-frozen, and publish the v1-vs-v2 walk-forward comparison so the pre-registered corpus is never silently edited. Closes the ingestion half of F96 / the decision in P09. | in progress | db00d539 | `data/corpus_v2_2026.csv` (new), `scripts/corpus_v2.py` (new), `data/flags.csv` (F96 update + new flags), `data/sources.csv` (new SRC rows), `scripts/build.py` (one new section) , generated `docs/**` | `data/games_week10_backfill_2026.csv` (transcribed 2026-11-18 from https://www.nfl.com/schedules/2026/by-week/week-10), reconciled 32/32 clubs against https://www.nfl.com/standings/ |
+| T109 | **Week 11 injury report**: live check whether the official injury hub publishes a Week 11 report, and if it does, capture it as a dated register with a per-row source; if it does not, publish the negative result with the fetch time (F101 / F104 stay honest). | in progress | db00d539 | `data/captures/injury_week11_*` (new), `data/flags.csv` (F101 update), `scripts/build.py` (capture section) | https://www.nfl.com/injuries/ |
+| T110 | **Venue transcription, Week 10 + Week 11**: read the venue of the 27 settled/upcoming fixtures that this cycle touches from the official game centre and publish them as a dated register; leave the other 136 blank and flagged (F99 shrinks, does not close). | in progress | db00d539 | `data/venues_2026.csv` (append rows), `data/flags.csv` (F99 update) | https://www.nfl.com/games/<slug> |
+| T111 | Final integration: run every check, rebuild, PR `arena/db00d539-x2` → `main`, merge, confirm GitHub Pages, record. | pending | db00d539 | `COORDINATION.md`, generated `docs/**`, PR | runs last |
+
