@@ -598,5 +598,53 @@
   "status": "Proposed",
   "row_type": "suggestion",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/capture_cross_check_2026-11-18.csv"
+ },
+ {
+  "suggestion_id": "S51",
+  "area": "Register integrity",
+  "suggestion": "Name one canonical register for each brief line before any readiness verdict is cited: either merge the 8 duplicate requirement rows into single IDs, or drop the 'one row per requirement' claim and publish the readiness table as 'one row per tracked brief line'. Either way, publish a single governing answer per distinct brief item.",
+  "benefit_for_decisions": "A reader deciding what to do next currently gets two different verdicts for the same brief line (R19/R49 Done vs Missing; R25/R51 Blocked vs Partial; R50/R58 Partial vs Blocked). One answer per question is a precondition for the readiness table being usable as a decision instrument at all.",
+  "effort": "Low - no new source, no new capture; it is an owner choice between two published registers plus a build guard",
+  "main_risk": "Merging IDs renumbers rows other pages and flags already cite, which is exactly the collision cost this board has paid repeatedly. The zero-renumbering route is to keep both IDs and declare one authoritative answer per group.",
+  "options": "A) Keep both registers, add an 'authoritative_answer_for_this_group: yes/no' column to readiness and a build check that exactly one row per duplicate group says yes. B) Merge duplicate requirement rows into one ID and renumber. C) Drop the one-row-per-requirement claim and relabel the table. Recommended: A, because it costs no renumbering and is enforceable by a check.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements_duplicate_groups.csv"
+ },
+ {
+  "suggestion_id": "S52",
+  "area": "Register integrity",
+  "suggestion": "Require every identifier citation on the site to name its register (e.g. 'decision-chain D01' or 'readiness D01'), or give each ID lane a distinct prefix, before any flag or page cites a bare label.",
+  "benefit_for_decisions": "Ten labels currently mean two different things on two pages. A reader following a citation, or the owner triaging a flag, cannot tell which object is meant without opening the register.",
+  "effort": "Low for the citation rule; medium for a prefix change, which must reach the register, its page and every flag citing it",
+  "main_risk": "A prefix change renumbers rows that existing flags already cite, which is the failure this board has paid for several times.",
+  "options": "A) Citation rule only: every mention names its register. B) Add a prefix to the decision-chain gate ids and update the page, the register and every flag citing them. C) Leave as is and rely on page context. Recommended: A now, B only if a second collision is found in practice.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/identifier_lane_collisions.csv"
+ },
+ {
+  "suggestion_id": "S53",
+  "area": "Register integrity",
+  "suggestion": "Give decision_readiness.csv a closed status vocabulary: a 'status' column limited to Done / Partial / Missing / Blocked / Irregular, plus a separate 'qualifier' column for the sentence that currently sits inside it.",
+  "benefit_for_decisions": "Every published count becomes mechanical and assertable. The summary line was wrong until 2026-11-19 because the status strings are free text, and one row still cannot be bucketed at all.",
+  "effort": "Low - one scripted split of 65 rows, plus a drift pin on the closed vocabulary",
+  "main_risk": "The free-text status is often the most informative field on the row; splitting it must preserve the sentence, not truncate it.",
+  "options": "A) Split status into a closed verdict plus a qualifier column and pin the vocabulary. B) Leave free text and keep the prefix classifier with the unclassified list published. C) Map every free-text status by hand to one of five values and drop the sentence. Recommended: A; C loses the information that makes the table readable.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/decision_readiness.csv"
+ },
+ {
+  "suggestion_id": "S54",
+  "area": "Register integrity",
+  "suggestion": "Forbid prose cells from restating a register's row count. A cell may name the file and the field; the page prints the count from the file at build time, and any count that must appear in prose is generated, not typed.",
+  "benefit_for_decisions": "Four separate published numbers in this repository were stale in the last week (F114, F133, F134, F135), every one of them a count or date typed into prose that a later data change invalidated, and every one beside a check that still said 'pass'. The rule retires the class rather than the instance.",
+  "effort": "Medium - it touches many data cells, but it can be phased: apply to every cell that names a register file first",
+  "main_risk": "Some prose counts are historical by design ('the earlier 345-row register'). The rule must allow a count that is explicitly attached to a date or a superseded state, or it will delete the audit trail.",
+  "options": "A) Forbid typed counts in prose; generate every count. B) Allow typed counts but require an adjacent file and date. C) Keep as is and rely on review. Recommended: A with an explicit exception for counts attached to a date.",
+  "status": "For review — not implemented",
+  "row_type": "decision",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
  }
 ]

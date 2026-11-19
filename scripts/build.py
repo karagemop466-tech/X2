@@ -33,8 +33,101 @@ if _drift.returncode != 0:
 # what the header shows, so the label on every page is true of the newest read rather
 # than of the oldest (T111, flag F114).
 AS_OF = "2026-11-14"
-READ_LATEST = "2026-11-18"
-READ_SUMMARY = "injury report, standings and Week 10 slate read 2026-11-18; Week 11 lines and depth charts read 2026-11-14"
+
+# -- derived read date (T213, F114 recurrence) --------------------------------
+# F114 was raised because one hard-coded date described surfaces read days apart.
+# It was fixed by printing a *different* hard-coded date, and four days later that
+# constant was already wrong: every page said "Latest read 2026-11-18" while eight
+# pages carried 2026-11-19 reads and the landing page itself described a 2026-11-19
+# re-read. A constant cannot be kept true by care, only by a check.
+#
+# So the header date is now the maximum date the registers themselves declare, and
+# the build fails if a published page names a read date newer than that maximum.
+# This is the same guard shape the repository already uses for row counts (the
+# drift alarm): the value is derived, and a divergence stops the build instead of
+# shipping.
+_READ_DATE_COLUMNS = {
+    # register                 column(s) that hold an official read date
+    "sources.csv": ["accessed_date"],
+    "availability_captures.csv": ["read_utc"],
+    "live_reverification_2026-11-14.csv": ["read_utc"],
+    "live_reverification_2026-11-18.csv": ["read_utc"],
+    "live_reverification_2026-11-18_cf85d485.csv": ["read_utc"],
+    "live_reverification_2026-11-18_f04dda73.csv": ["read_utc"],
+    "live_reverification_2026-11-19_68fc9b6c.csv": ["read_date_utc"],
+    "standings_2026_snapshot.csv": ["read_date_utc"],
+    "standings_live_read_2026-11-18_82b83a64.csv": ["read_utc"],
+    "week10_live_read_2026-11-18_82b83a64.csv": ["read_utc"],
+    "venues_2026.csv": ["read_date_utc"],
+    "venue_roof_surface_week11_2026-11-18.csv": ["read_utc"],
+    "nws_hourly_week11_2026-11-18.csv": ["read_utc"],
+    "roster_events_2026.csv": ["read_date"],
+    "roster_ir_sweep_2026-11-18.csv": ["read_utc"],
+    "roster_ir_findings_2026-11-18.csv": ["read_utc"],
+    "games_week10_backfill_2026.csv": ["read_utc"],
+    "injury_week11_2026-11-19_by_club.csv": ["read_window_utc"],
+    "depth_chart_strings_2026.csv": ["read_utc"],
+    "depth_cells_packers_2026-11-18.csv": ["read_utc"],
+    "depth_slots_packers_2026-11-18.csv": ["read_utc"],
+    "chart_rejections.csv": ["read_utc"],
+    "results_feed_2026.csv": ["verified_date"],
+    "results_feed_v2_2026.csv": ["verified_date"],
+    "results_feed_v2_82b83a64.csv": ["verified_date"],
+    "repo_line_audit.csv": ["audit_date"],
+}
+_DATE_RE = re.compile(r"\b(20\d{2}-\d{2}-\d{2})\b")
+# A read-date *claim* is a date attached to read/verify/access wording. A bare date
+# in a fixture table is a scheduled game and is allowed to be in the future.
+_READ_DATE_PHRASE = re.compile(
+    r"(?:\bread\b|\breading\b|\bre-read\b|\breread\b|\bverified\b|\bverification\b|"
+    r"\baccessed\b|\bcaptured\b|\bobserved\b|\bas of\b)"
+    r"[^.<>{}]{0,40}?(?P<d>20\d{2}-\d{2}-\d{2})",
+    re.I)
+
+
+def _declared_read_dates():
+    """Every ISO date any register declares as a read/verified/accessed date."""
+    found = {}
+    for name, cols in _READ_DATE_COLUMNS.items():
+        path = os.path.join(DATA, name)
+        if not os.path.exists(path):
+            continue
+        with open(path, encoding="utf-8-sig", newline="") as fh:
+            rows = list(csv.DictReader(fh))
+        for row in rows:
+            for col in cols:
+                for m in _DATE_RE.finditer(row.get(col) or ""):
+                    found.setdefault(m.group(1), set()).add(name)
+    return found
+
+
+_declared = _declared_read_dates()
+if not _declared:
+    raise SystemExit("BUILD FAILED: no register declares a read date, so the header date "
+                     "cannot be derived; refusing to print a hard-coded one (F114)")
+READ_LATEST = max(_declared)
+_read_dates_desc = sorted(_declared, reverse=True)
+_other_reads = [d for d in _read_dates_desc if d != READ_LATEST]
+READ_SUMMARY = (f"newest register read {READ_LATEST}"
+                + (f"; earlier reads still published for {', '.join(reversed(_other_reads))}" if _other_reads else "")
+                + "; the read date of every surface is shown beside it")
+# Why a derived date and not a sentence: the sentence is in the freshness table on
+# the landing page, which names each surface and its own date. The header must
+# carry a single true fact, and this is the only one it can carry safely.
+_FROZEN_NOTE = (
+    "Some surfaces are frozen on purpose (the Week 11 originated lines and the club "
+    "depth charts were sealed pre-kickoff; re-deriving them from newer results would "
+    "destroy what they prove). The header date is the newest read in the registers, "
+    "not the date of every number on the page.")
+
+import readiness_audit as _rd_audit  # noqa: E402  (T212: mechanics-only mapping audit)
+
+# ---------- readiness -> requirements mapping audit (T212/T214, F135) ----------
+# The landing table claims "one row per requirement". This audits that claim against
+# the two registers themselves: it never fetches a page, so it is unaffected by the
+# sandbox network limitation (F130), and it never rewrites the mapping. Counts are
+# computed here and printed wherever the claim is made.
+_rd_audit_rows, _rd_group_rows, _rd_summary = _rd_audit.audit()
 OFFICIAL_HOSTS = {
     # static.www.nfl.com serves official NFL gamebook PDFs linked from the NFL game
     # centers (T52 takeover). It is a first-party NFL host, not a third-party provider.
@@ -43,7 +136,7 @@ OFFICIAL_HOSTS = {
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
-    # session 0a0deaaf (T213, F134): Singapore government sources for the jurisdiction flag
+    # session 0a0deaaf (T213, F138): Singapore government sources for the jurisdiction flag
     "www.gra.gov.sg", "sso.agc.gov.sg",
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
@@ -2835,10 +2928,188 @@ _idx_add = (
     'that would clear it. A number is given only where the repo has a threshold for it; otherwise the basis column '
     'says so. Each row carries its register requirement ID; the readiness-to-register mapping is recorded in '
     'data/readiness_mapping.csv and is this session&rsquo;s interpretation, flagged F103 for owner review.</p>'
+    # T214: the caveat is measured, not asserted. If the counts below ever stop
+    # matching the audit, the numbers print themselves and the reader sees it.
+    + (
+        f'<p class="note"><strong>Measured limits of this table (F135).</strong> '
+        f'<code>scripts/readiness_audit.py</code> compares, row by row, the requirement text printed here with the '
+        f'requirement text of the R-id beside it. Of {_rd_summary["readiness_rows"]} rows: '
+        f'<strong>{_rd_summary["identical"] + _rd_summary["reworded"]}</strong> display the same brief item as their '
+        f'own requirement; <strong>{_rd_summary["misrouted_identical"] + _rd_summary["misrouted_near"]}</strong> display '
+        f'an item that belongs to a <em>different</em> requirement row; '
+        f'<strong>{_rd_summary["related_only"]}</strong> display an item only related to it (same domain, different '
+        f'question); and <strong>{_rd_summary["no_register_row"]}</strong> display a brief line that the requirements '
+        f'register never became a row for at all &mdash; those lines appear on no other page under an R-id. Separately, the requirements register holds '
+        f'{_rd_summary["requirements_rows"]} rows but only <strong>{_rd_summary["distinct_requirement_groups"]}</strong> '
+        f'distinct brief statements: <strong>{_rd_summary["duplicate_groups"]}</strong> groups are the same brief item '
+        f'written twice, and <strong>{_rd_summary["duplicate_groups_with_divergent_answers"]}</strong> of those groups '
+        f'carry <em>different</em> readiness answers for the same question. So &ldquo;{len(ready_rows)} of '
+        f'{len(_reg_ids)}&rdquo; counts rows, not requirements. Nothing was re-mapped or deleted here; the evidence is '
+        f'published on <a href="readiness-audit.html">Readiness mapping audit</a> so it can be checked line by line '
+        f'before this table is cited as authoritative.</p>'
+    )
     + _ready_html
 )
 
 pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + _idx_add)
+
+# ---------- Readiness mapping audit (T212/T214, F135) ----------
+# Everything on this page is computed from two CSVs by scripts/readiness_audit.py.
+# No official page is read: www.nfl.com is unreachable from the build sandbox (F130)
+# and, more to the point, this is a statement about the repository's own registers.
+_rd_pct = lambda n: f"{100.0 * n / _rd_summary['readiness_rows']:.0f}%"
+_audit_body = f"""
+<h1>Readiness mapping audit</h1>
+<p class="note">The landing page publishes a decision-readiness table and says of it: <em>&ldquo;One row per
+requirement in the requirements register&rdquo;</em>. This page tests that sentence against the two registers
+themselves, row by row, and republishes the result with the file line numbers so every row can be checked by hand.
+Nothing here is a new claim about football; it is a measurement of the repository.</p>
+
+<div class="note"><strong>Why this check needs no official source.</strong> Flag F130 records that
+<code>www.nfl.com</code> is unreachable from this build environment. That does not affect this audit: both inputs are
+files already in the repository (<code>data/decision_readiness.csv</code> and <code>data/requirements.csv</code>),
+and the comparison is a string comparison that anyone can re-run with
+<code>python3 scripts/readiness_audit.py</code>. No value on this page is an NFL datum, so no value here depends on a
+read that could not be performed.</div>
+
+<h2>The two findings, with the numbers</h2>
+<div class="tablewrap"><table class="data"><thead><tr>
+<th>Finding</th><th>Count</th><th>What it means for a reader</th></tr></thead><tbody>
+<tr><td>Rows that display the same brief item as the requirement beside them</td>
+<td>{_rd_summary['identical'] + _rd_summary['reworded']} of {_rd_summary['readiness_rows']} ({_rd_pct(_rd_summary['identical'] + _rd_summary['reworded'])})</td>
+<td>These rows can be traced to their requirement directly.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/decision_readiness.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows that display an item matching a <em>different</em> requirement better than their own</td>
+<td>{_rd_summary['misrouted_identical'] + _rd_summary['misrouted_near']}</td>
+<td>The R-id printed beside the text points at a different brief line. Reading the gate for that row gives the gate for a different requirement.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows whose item is only <em>related</em> to their own requirement</td>
+<td>{_rd_summary['related_only']}</td>
+<td>Same domain, different question. The gate may still be the right gate, but the mapping is an interpretation.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows whose item the requirements register does not describe at all</td>
+<td>{_rd_summary['no_register_row']}</td>
+<td>The brief line was tracked here but never became a requirement row, so it has no requirement ID of its own.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Same brief item published on more than one readiness row</td>
+<td>{_rd_summary['duplicate_publication']}</td>
+<td>Two rows answer one question. They are not required to agree &mdash; and the next table shows where they do not.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/decision_readiness.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+</tbody></table></div>
+
+<h2>Second finding: the register counts rows, not requirements</h2>
+<p class="note">The requirements register holds <strong>{_rd_summary['requirements_rows']}</strong> rows but only
+<strong>{_rd_summary['distinct_requirement_groups']}</strong> distinct brief statements. The surplus
+({_rd_summary['rows_absorbed_by_duplicates']} rows in {_rd_summary['duplicate_groups']} groups) is the same brief item
+written twice, usually because two sessions transcribed the same brief line under different IDs.
+<strong>{_rd_summary['duplicate_groups_with_divergent_answers']} of the {_rd_summary['duplicate_groups']}</strong> groups
+carry <em>different</em> readiness answers for the same question &mdash; so a reader looking up &ldquo;does the demotion
+gate work?&rdquo; can find two published answers that disagree, and no rule on the page says which one governs.
+This is the concrete harm: not the duplicate IDs, but the divergent verdicts under them.</p>
+"""
+_audit_body = ('<p class="note">Table 1 below lists every duplicate group with both answers side by side. Table 2 lists '
+               'all ' + str(_rd_summary['readiness_rows']) + ' readiness rows with the two strings, their similarity, '
+               'the label the mapping register recorded, and the file line numbers.</p>')
+_audit_body = ''
+
+_audit_tbl_groups = table(_rd_group_rows,
+    ["requirement_ids_in_group", "group_size", "max_pair_similarity", "requirement_text",
+     "readiness_answers", "answers_agree", "requirement_register_lines", "evidence_basis", "source_url"],
+    {"requirement_ids_in_group": "Requirement IDs", "group_size": "Rows",
+     "max_pair_similarity": "Text similarity", "requirement_text": "The brief item (once)",
+     "readiness_answers": "Published readiness answers", "answers_agree": "Answers agree?",
+     "requirement_register_lines": "Register line(s)", "evidence_basis": "Evidence", "source_url": "Source"},
+    table_id="readiness-groups-table")
+
+_audit_tbl_rows = table(_rd_audit_rows,
+    ["readiness_id", "requirement_id_printed", "match_quality_recorded", "verdict",
+     "text_similarity_to_own_requirement", "best_matching_requirement_id", "best_matching_similarity",
+     "label_agrees_with_text", "requirement_text_printed_beside_it", "brief_item_published_on_the_site",
+     "requirement_register_line", "readiness_register_line", "source_url"],
+    {"readiness_id": "ID", "requirement_id_printed": "Requirement ID printed",
+     "match_quality_recorded": "Label in mapping register", "verdict": "Measured verdict",
+     "text_similarity_to_own_requirement": "Similarity to its own R-id",
+     "best_matching_requirement_id": "Best-matching R-id", "best_matching_similarity": "Best similarity",
+     "label_agrees_with_text": "Label vs text", "requirement_text_printed_beside_it": "R-id's requirement text",
+     "brief_item_published_on_the_site": "Brief item actually published",
+     "requirement_register_line": "requirements.csv line", "readiness_register_line": "decision_readiness.csv line",
+     "source_url": "Source"},
+    table_id="readiness-audit-table", filterable=True)
+
+_audit_page = f"""
+<h1>Readiness mapping audit</h1>
+<p class="note">The landing page publishes a decision-readiness table and says of it: <em>&ldquo;One row per
+requirement in the requirements register&rdquo;</em>. This page tests that sentence against the two registers
+themselves, row by row, and republishes the result with file line numbers so every row can be checked by hand.
+Nothing here is a claim about football; it is a measurement of the repository.</p>
+
+<div class="note"><strong>Why this check needs no official source.</strong> Flag F130 records that
+<code>www.nfl.com</code> is unreachable from this build environment. That does not weaken this audit: both inputs are
+files already in the repository, and the comparison is a string comparison anyone can re-run with
+<code>python3 scripts/readiness_audit.py</code>. No value on this page is an NFL datum.</div>
+
+<h2>1. Measured summary</h2>
+<div class="tablewrap"><table class="data"><thead><tr>
+<th>Test</th><th>Result</th><th>What it means for a reader</th><th>Source</th></tr></thead><tbody>
+<tr><td>Readiness rows published</td><td>{_rd_summary['readiness_rows']}</td>
+<td>One table row per register row.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/decision_readiness.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Requirement rows in the register</td><td>{_rd_summary['requirements_rows']}</td>
+<td>The denominator the page quotes.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td><strong>Distinct brief statements in that register</strong></td><td><strong>{_rd_summary['distinct_requirement_groups']}</strong></td>
+<td>Lower than the row count: some brief lines are registered more than once. &ldquo;{_rd_summary['readiness_rows']} of {_rd_summary['requirements_rows']}&rdquo; therefore counts rows, not distinct requirements.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Duplicate groups / surplus rows</td><td>{_rd_summary['duplicate_groups']} / {_rd_summary['rows_absorbed_by_duplicates']}</td>
+<td>Table 2 lists every group.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/requirements_duplicate_groups.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td><strong>Duplicate groups with divergent answers</strong></td><td><strong>{_rd_summary['duplicate_groups_with_divergent_answers']}</strong></td>
+<td>Same question, two different published verdicts, and no rule saying which governs.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/requirements_duplicate_groups.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows displaying the same item as their own requirement</td><td>{_rd_summary['identical'] + _rd_summary['reworded']} ({_rd_pct(_rd_summary['identical'] + _rd_summary['reworded'])})</td>
+<td>Traceable directly.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows displaying an item that belongs to a different requirement row</td><td>{_rd_summary['misrouted_identical'] + _rd_summary['misrouted_near']}</td>
+<td>The R-id printed beside the text points at a different brief line.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows only <em>related</em> to their own requirement</td><td>{_rd_summary['related_only']}</td>
+<td>Same domain, different question; the gate is an interpretation.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Rows displaying a brief line the register has no requirement row for</td><td>{_rd_summary['no_register_row']}</td>
+<td>These brief lines are tracked only here; they carry no R-id of their own anywhere in the register.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Same brief item published on more than one row</td><td>{_rd_summary['duplicate_publication']}</td>
+<td>Two rows answer one question; see the divergent-answer count above.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+<tr><td>Recorded mapping label contradicted by the text</td><td>{_rd_summary['labels_contradicted']}</td>
+<td>Labels are checked against the meaning recorded in flag F103.</td>
+<td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv" target="_blank" rel="noopener">Source &nearr;</a></td></tr>
+</tbody></table></div>
+
+<h2>2. Duplicate requirement groups &mdash; the same brief item, registered twice</h2>
+<p class="note">Read the &ldquo;answers agree?&rdquo; column first. Where it says DIVERGENT, the site answers one
+question two ways. Nothing was edited to make them agree: which register is canonical is the owner's call
+(<a href="decisions.html">decisions</a>, DQ-01 onwards).</p>
+{_audit_tbl_groups}
+
+<h2>3. Every readiness row, measured</h2>
+<p class="note">Similarity is a pointer, not a verdict, and the thresholds are printed in the script
+(<code>dup_threshold {_rd_summary['dup_threshold']}</code>, <code>absent_threshold {_rd_summary['absent_threshold']}</code>)
+so the boundary can be argued with. Both strings are printed in full, so you can overrule the number by eye.
+<strong>Filter:</strong> type in the box to narrow the table.</p>
+{_audit_tbl_rows}
+
+<h2>4. What this page does not do</h2>
+<ul>
+<li>It does not re-map, renumber, delete or merge any register row. Both registers are published exactly as their
+owners left them, and <code>data/readiness_mapping.csv</code> is unchanged.</li>
+<li>It does not decide which register is canonical. That is a decision for the owner, and it is listed as such on the
+<a href="decisions.html">decisions</a> page.</li>
+<li>It does not verify any NFL value. No official page was read for this page (F130).</li>
+</ul>
+"""
+pages["readiness-audit.html"] = ("Readiness mapping audit", _audit_page)
+NAV.insert(NAV.index(("repo-audit.html", "Repository audit")), ("readiness-audit.html", "Readiness audit"))
 
 
 # ---------- per-team view, Week 10 (session 6ee4d13e, T98) ----------
@@ -2946,7 +3217,14 @@ import csv as _csv
 import sys as _sys
 _sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import drift_check as _drift_mod  # noqa: E402  (same checks as the build-time alarm above)
+import readiness_audit as _rd_audit  # noqa: E402  (T212: mechanics-only mapping audit)
 
+# ---------- readiness -> requirements mapping audit (T212/T214, F135) ----------
+# The landing table claims "one row per requirement". This audits that claim against
+# the two registers themselves: it never fetches a page, so it is unaffected by the
+# sandbox network limitation (F130), and it never rewrites the mapping. Counts are
+# computed here and printed wherever the claim is made.
+_rd_audit_rows, _rd_group_rows, _rd_summary = _rd_audit.audit()
 def _rd(rel):
     with open(os.path.join(ROOT, rel), encoding="utf-8", newline="") as _fh:
         return list(_csv.DictReader(_fh))
@@ -4532,7 +4810,7 @@ FP {_w11_pr.get('FP', 0)}. Every row links to the official page it was read from
 {_tbl(["Club", "Game", "Kickoff (ET)", "Player rows", "Out", "Questionable", "Game status blank", "DNP", "LP", "FP", "Page content", "Source"], _w11_tbl_rows, "week11-by-club")}
 <h2>Second read (2026-11-19): compared club by club</h2>
 <p class="note">Session 0a0deaaf re-read all seven chunks of the same hub and tallied each club section. Counts only; the row-level transcription is held privately. Totals from the second read: {_w11_2nd_rows} rows, {_w11_2nd_q} Questionable, {_w11_2nd_blank} with a blank game-status cell. The published single read: {_w11_meta['rows_transcribed']} rows, {_w11_gs.get('Questionable', 0)} Questionable, {_w11_gs.get('blank', 0)} blank.</p>
-<p class="warn"><strong>{_w11_n_match} of {len(_w11_2nd)} club sections match on every count.</strong> Not matching: {html.escape(_w11_mism_txt)}. Open as flag F133. Practice codes (DNP, LP, FP) match in every club, and the page-wide totals match the published practice totals.</p>
+<p class="warn"><strong>{_w11_n_match} of {len(_w11_2nd)} club sections match on every count.</strong> Not matching: {html.escape(_w11_mism_txt)}. Open as flag F137. Practice codes (DNP, LP, FP) match in every club, and the page-wide totals match the published practice totals.</p>
 {_tbl(["Club", "Rows (published)", "Rows (second read)", "Questionable (published)", "Questionable (second read)", "Blank status (published)", "Blank status (second read)", "Match", "Source"], _w11_2nd_tbl_rows, "week11-second-read")}
 <h2>What changed since the previous read</h2>
 <p><strong>Nothing to publish yet.</strong> This is the first read of the Week 11 report, so there is no earlier Week 11 read to
@@ -4545,7 +4823,7 @@ difference against. Changes are published only between two reads of the same wee
 {html.escape(_w11_meta['raw_bytes_note'])}</li>
 <li><strong>Verification status:</strong> {html.escape(_w11_meta['verification_status'])}. The structure checks pass
 (253 rows, 26 club sections, 13 games, six bye clubs, the page's game list matches the Week 11 schedule register), but the
-a second read of the same hub on the same day (section below) matches on {_w11_n_match} of {len(_w11_2nd)} club sections. The mismatch is open (flag F133): the published counts are not overwritten here, and no Week 11 designation should be used until it is resolved.</li>
+a second read of the same hub on the same day (section below) matches on {_w11_n_match} of {len(_w11_2nd)} club sections. The mismatch is open (flag F137): the published counts are not overwritten here, and no Week 11 designation should be used until it is resolved.</li>
 <li><strong>Not captured:</strong> raw HTTP bytes, a scheduled capture (the sandbox cannot reach nfl.com; the scheduled
 Wednesday/Thursday/Friday captures are blocked by F16 and F98), and any Week 11 outcome.</li>
 </ul>
@@ -4558,7 +4836,7 @@ duplicate check, and game list against <code>data/schedule_week11_2026.csv</code
 </ul>
 <h2>Open items (see Flagged for review)</h2>
 <ul>
-<li><strong>F133</strong>: Indianapolis game-status counts differ between the single read and the second read (see the table above). Open; not overwritten.</li>
+<li><strong>F137</strong>: Indianapolis game-status counts differ between the single read and the second read (see the table above). Open; not overwritten.</li>
 <li><strong>F129</strong>: single read; a second independent read is required before any Week 11 designation is used.
 One item to check: Dee Alford (BUF) is shown with a player link slug <code>deaundre-ford</code>. One Denver player listed under DEN is on the official Broncos roster page read 2026-11-19 (SRC-120), and so are the other eight Denver names in the section.</li>
 <li><strong>F126</strong>: the hub's week selector and render disagreed on 2026-11-18; the Week 11 render is now live.</li>
@@ -4573,7 +4851,7 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
     '<p class="note">Counts per club only. Player rows are held privately while the NFL terms question (F16) is open.</p>'
     '<div class="cards">'
     + card("week11-injury-capture.html", "Week 11 injury capture",
-           f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections. A second read matches {_w11_n_match} of {len(_w11_2nd)} clubs (F133 open). No delta yet: the next read starts the series.")
+           f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections. A second read matches {_w11_n_match} of {len(_w11_2nd)} clubs (F137 open). No delta yet: the next read starts the series.")
     + '</div>'))
 
 # ---------- collision guards ----------
@@ -4648,8 +4926,23 @@ for slug in pages:
             problems.append(f"{slug}: broken internal link: {href}")
     if "http://" in text.replace("http://www.w3.org", ""):
         problems.append(f"{slug}: contains plain http:// link")
+    # F114 recurrence guard: no page may name a read date newer than the newest
+    # date the registers declare. The header is derived, but a page body can still
+    # hard-code a read date, which is exactly how F114 came back the first time.
+    # Only read-date phrasing is checked: schedule and fixture dates are legitimately
+    # in the future and must not trip this.
+    for m in _READ_DATE_PHRASE.finditer(text):
+        claimed = m.group("d")
+        if claimed > READ_LATEST:
+            problems.append(
+                f"{slug}: claims a read date ({claimed}) newer than the newest register "
+                f"read date ({READ_LATEST}); either the register read date is missing "
+                f"from _READ_DATE_COLUMNS or the page is ahead of its evidence "
+                f"(context: {text[max(0, m.start() - 60):m.end() + 20]!r})")
 
 print(f"Built {len(pages)} pages into docs/. Injury rows: {tot['rows']}; teams: {tot['teams']}; depth rows: {len(depth_rows)}.")
+print(f"Derived header read date: {READ_LATEST} (from {len(_declared)} distinct declared read dates; "
+      f"{sum(len(v) for v in _declared.values())} register/date pairs).")
 for w in warnings:
     print("WARNING:", w)
 if problems:
