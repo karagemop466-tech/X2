@@ -3270,4 +3270,22 @@ source article only."
 
 | ID | Task | Status | Owner | Files this session creates or edits | Sources |
 |----|------|--------|-------|-------------------------------------|---------|
-| T133 | Dated roster-event register from the official NFL.com 2026 trades and reserve-list logs (Aug–Nov 2026), starting with the Colts' 11/10 trades; flag any Week 11 depth/availability row that names a player with a later event | in progress | d9344f5a | `data/roster_events_2026.csv` (new), `data/roster_events_checks_2026.csv` (new), `scripts/roster_events.py` (new), `data/flags.csv` (F128 appended), `data/sources.csv` (SRC-113 appended), `data/decision_readiness.csv` (D19 row only), this board. No site/nav change; the generated `docs/` is left to the integration step. | `https://www.nfl.com/transactions/league/trades/2026/11`, `https://www.nfl.com/transactions/league/reserve-list/2026/11` |
+| T133 | Dated roster-event register from the official NFL.com 2026 trades and reserve-list logs (Aug–Nov 2026), starting with the Colts' 11/10 trades; flag any Week 11 depth/availability row that names a player with a later event | done (Oct–Nov only; Aug–Sep and the Colts article carried as F128) | d9344f5a | `data/roster_events_2026.csv` (new), `data/roster_events_checks_2026.csv` (new), `scripts/roster_events.py` (new), `data/flags.csv` (F128 appended), `data/sources.csv` (SRC-113 appended), `data/decision_readiness.csv` (D19 row only), this board. No site/nav change; the generated `docs/` is left to the integration step. | `https://www.nfl.com/transactions/league/trades/2026/11`, `https://www.nfl.com/transactions/league/reserve-list/2026/11` |
+
+### T133 completion record (session `d9344f5a`, 2026-11-19)
+
+**Done for the scope it could verify.** Scope actually delivered: Oct and Nov 2026 only. August and September were not read.
+
+- **Register:** `data/roster_events_2026.csv`, **62 dated events**: 12 trades (Nov 2026 log), 25 reserve-list rows (Oct 2026 log), 25 reserve-list rows (Nov 2026 log). Every row carries its NFL.com log URL and read date (2026-11-19). Names and transaction text are as printed; no field is inferred.
+- **Confirmed from the official log (SRC-113):** Colts traded **Keenan Allen** (to SF) and **Josh Downs** (to KC) on **11/10/2026**. Jacoby Brissett moved ARI → BAL on **11/06/2026** (SRC-113).
+- **Not confirmed (kept as flags):** (a) the Colts "Week 10 release" article that the brief says carries the depth chart — not located; (b) Lamar Jackson and Tyler Huntley do **not** appear on the October or November reserve logs as read, so the brief's Baltimore injured-reserve example stays unverified until Aug–Sep are read (SRC-114).
+- **Checks:** `data/roster_events_checks_2026.csv` (`scripts/roster_events.py`): RE-01…RE-10 PASS or INFO, 0 FAIL; RE-11 (article) and RE-12 (Aug–Sep coverage) recorded as NOT CHECKED rather than as "no events".
+- **Cross-reference flags:** `data/roster_events_join_2026.csv` — 96 name hits for 27 of the 62 events in existing depth/availability registers. These are **flags, not verdicts**: none has been re-read row by row against its event date. Recorded as F128.
+- **Registers touched:** `data/flags.csv` (F128 added; pin 121 → 122), `data/sources.csv` (SRC-113…SRC-115 added; pin 112 → 115), `data/decision_readiness.csv` (D19 only: Missing → Partial), `data/drift_pins.csv` (+1 pin for the new register; the two moves above recorded with reasons).
+- **Gates run after the change:** `scripts/drift_check.py` 55/55 · `scripts/build.py` 55 pages, row-source guards pass · `scripts/check_links.py` 3,055 internal / 7,021 external, 0 broken · `scripts/repo_audit.py` exit 0 · `npm run build && npm run verify` ALL CHECKS PASSED.
+
+**Verification performed:** every row of `roster_events_2026.csv` was transcribed from the fetched NFL.com page text for its log (Nov trades: 1 chunk; Oct reserve: 2 chunks; Nov reserve: 2 chunks, all read with `hasMore: false` on the final chunk). Row counts were checked against the counts of the printed tables (RE-01…RE-03). The fetch tool gives no per-request clock time, so the read is dated, not timed.
+
+**Irregularities for review:** F128 (coverage gap and unverified claims, above). Also, the brief's Malik Willis / Kyle McCord / Lions items were not re-checked by this task.
+
+**Not claimed:** no depth row, starter, availability status or model value was changed by this task. Strategy, leaderboard, price and owner-decision registers are untouched.

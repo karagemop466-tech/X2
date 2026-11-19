@@ -1087,5 +1087,14 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/results_feed_v2_two_builds_2026-11-18.csv",
   "status": "Irregularity - resolved in the data, open as a process item",
   "action_requested": "Two rules would have prevented it: (1) a new register name should carry the session id until an integration pass merges it - the rule e2d7b11d recorded for dated reverification files, extended here to any new filename; (2) the board's task rows should record the filenames a task will create, not only the task, so a collision is visible before two sessions write. Owner to adopt or reject; both are documentation-level."
+ },
+ {
+  "flag_id": "F128",
+  "category": "Coverage gap / source limitation",
+  "item": "Roster turnover now dated from the official NFL transactions logs (Oct-Nov 2026 only); August-September not read",
+  "detail": "data/roster_events_2026.csv (T133, scripts/roster_events.py) holds 62 dated events read on 2026-11-19: 12 trades (Nov), 25 reserve-list rows (Oct), 25 reserve-list rows (Nov), each with its NFL.com log URL. Confirmed from the November trades log: the Colts traded Keenan Allen (to SF) and Josh Downs (to KC) on 11/10/2026, and Jacoby Brissett moved from ARI to BAL on 11/06/2026. NOT confirmed: (a) the Colts \"Week 10 release\" article that the brief says carries the depth chart was not located, so that article is unverified; (b) Lamar Jackson and Tyler Huntley do not appear on the October or November reserve logs as read, so the brief's Baltimore injured-reserve example is unverified until the August-September logs are read; (c) Malik Willis, Kyle McCord and the Lions statuses are not re-verified by this register. The join (data/roster_events_join_2026.csv) lists 96 name hits for 27 of the 62 events in depth/availability registers that have NOT been re-read row by row against the event dates.",
+  "source_url": "https://www.nfl.com/transactions/league/trades/2026/11 ; https://www.nfl.com/transactions/league/reserve-list/2026/10 ; https://www.nfl.com/transactions/league/reserve-list/2026/11",
+  "status": "Open - needs review",
+  "action_requested": "Read the August and September 2026 trades and reserve logs; locate the Colts Week 10 article; re-check every join hit in data/roster_events_join_2026.csv against the depth or availability row it names before any depth row is treated as current."
  }
 ]

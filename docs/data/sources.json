@@ -1118,5 +1118,35 @@
   "accessed_date": "2026-11-18",
   "used_for": "F126 only: the week label the hub renders and the club records printed beside its fixtures",
   "verification_note": "Partial read on purpose (chunk 0 of 8). It supports one claim — the page still renders the Week 10 report while the selector lists Week 11 — and no row count, so no register was derived from it and none is claimed. A full re-transcription is explicitly not asserted here."
+ },
+ {
+  "source_id": "SRC-113",
+  "title": "NFL.com 2026 NFL Transactions — Trades, November 2026 (12 rows read)",
+  "publisher": "National Football League (NFL.com)",
+  "url": "https://www.nfl.com/transactions/league/trades/2026/11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T133 roster-event register: Colts 11/10 trades (Keenan Allen, Josh Downs), Brissett 11/06 trade to BAL",
+  "verification_note": "Read with the fetch tool, single chunk (hasMore false). No clock time per request is provided; date only."
+ },
+ {
+  "source_id": "SRC-114",
+  "title": "NFL.com 2026 NFL Transactions — Reserve List, October 2026 (25 rows read)",
+  "publisher": "National Football League (NFL.com)",
+  "url": "https://www.nfl.com/transactions/league/reserve-list/2026/10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T133 roster-event register: October reserve/injured rows; BAL and Jackson/Huntley check (not found)",
+  "verification_note": "Read in 2 chunks (both read, hasMore false on chunk 2)."
+ },
+ {
+  "source_id": "SRC-115",
+  "title": "NFL.com 2026 NFL Transactions — Reserve List, November 2026 (25 rows read)",
+  "publisher": "National Football League (NFL.com)",
+  "url": "https://www.nfl.com/transactions/league/reserve-list/2026/11",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T133 roster-event register: November reserve/injured rows (Colts Carlies, Alie-Cox, Davis-Gaither; Nacua 11/12)",
+  "verification_note": "Read in 2 chunks (both read, hasMore false on chunk 2)."
  }
 ]
