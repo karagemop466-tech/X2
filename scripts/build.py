@@ -1207,6 +1207,18 @@ This page records a reviewer pass, not a guarantee. Unconfirmed values are left 
 <tr><td>Standings cross-check</td><td>Compared Week 10 listed records with the official standings page.</td><td class="ok">Records match for the teams checked. The injured-reserve players named in the news (Lamar Jackson, Malik Willis) do not appear on the injury report, consistent with reserve status rather than a game designation.</td><td><a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL standings</a></td></tr>
 <tr><td>Source allow-list</td><td>Builder rejects any table row without an HTTPS link on the reviewed official-source allow-list, and any broken internal link.</td><td class="ok">Enforced in <code>scripts/build.py</code>; the build fails otherwise.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py" target="_blank" rel="noopener">build.py</a></td></tr>
 </tbody></table></div>
+<h2>Counts for the build you are reading</h2>
+<div class="tablewrap"><table class="data"><thead><tr><th>Quantity</th><th>This build</th><th>How it is obtained</th><th>Source</th></tr></thead><tbody>
+<tr><td>HTML pages written</td><td><strong>__PAGECOUNT__</strong></td><td>Reported by the <code>scripts/check_links.py</code> run over this build.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/check_links.py" target="_blank" rel="noopener">check_links.py</a></td></tr>
+<tr><td>Internal links checked</td><td><strong>__INTERNAL__</strong></td><td>Same run. One counting authority: an independent href sweep in <code>build.py</code> disagreed with <code>check_links.py</code> by 57 links, so only the checked figure is published.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/check_links.py" target="_blank" rel="noopener">check_links.py</a></td></tr>
+<tr><td>External links checked</td><td><strong>__EXTERNAL__</strong></td><td>Same run. Every external link must be HTTPS and on the reviewed official-source allow-list, or the build fails.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/check_links.py" target="_blank" rel="noopener">check_links.py</a></td></tr>
+<tr><td>Newest register read date</td><td><strong>{READ_LATEST}</strong></td><td>Maximum read/verified date declared across {len(_READ_DATE_COLUMNS)} registers &mdash; derived, not typed (F114 recurrence).</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/build.py" target="_blank" rel="noopener">build.py</a></td></tr>
+<tr><td>Flags on the register</td><td><strong>__FLAGCOUNT__</strong></td><td>Row count of <code>data/flags.csv</code>, pinned by the drift alarm.</td><td><a href="https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv" target="_blank" rel="noopener">flags.csv</a></td></tr>
+</tbody></table></div>
+<p class="note">Two rows below (V14, V34) described &ldquo;the current build&rdquo; with page and link counts from an
+18-page and then a 47-page era. Each figure was true of the build it described and false of the next one, and each had
+already been &ldquo;corrected&rdquo; once with a fresh typed number (F134). The figures above are printed from the build
+in progress instead.</p>
 <h2>Model, ledger and link checks (session 10a76288)</h2>
 <p class="note">A second, independent set of checks covering the 2026 game ledger, the model outputs and the generated links.
 Each row names the check, how it was run, its population and its result.</p>
@@ -4959,9 +4971,41 @@ with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
 """)
 
 # ---------- checks on generated HTML ----------
+# F134 (same class as F114 and F133): a published count that is true only of the
+# build it was written on. The figures published on verification.html are measured
+# here, from this build, and never typed.
+_cl = _sp.run([sys.executable, os.path.join(ROOT, "scripts", "check_links.py")],
+              capture_output=True, text=True)
+_m = re.search(r"Checked (\d+) pages; ([\d,]+) internal links, ([\d,]+) external links",
+               _cl.stdout or "")
+if not _m:
+    raise SystemExit("BUILD FAILED: could not read link counts from scripts/check_links.py; "
+                     "refusing to publish a number no check produced.\n"
+                     + (_cl.stdout or "") + (_cl.stderr or ""))
+_link_pages, _link_int, _link_ext = int(_m.group(1)), _m.group(2), _m.group(3)
+
+# The verification table was rendered before these figures existed, so it carries
+# stable tokens; fill them now and rewrite that one page before the checks run.
+_ver_title, _ver_body = pages["verification.html"]
+_ver_body = (_ver_body.replace("__PAGECOUNT__", str(_link_pages))
+                        .replace("__INTERNAL__", _link_int)
+                        .replace("__EXTERNAL__", _link_ext)
+                        .replace("__FLAGCOUNT__", str(len(flags))))
+pages["verification.html"] = (pages["verification.html"][0], _ver_body)
+with open(os.path.join(DOCS, "verification.html"), "w", encoding="utf-8") as _f:
+    _f.write(page("verification.html", _ver_title, _ver_body, "verification.html"))
+
 problems = []
 for slug in pages:
     text = open(os.path.join(DOCS, slug), encoding="utf-8").read()
+    # A page-count claim about THIS build must equal the number check_links.py just
+    # counted. Recitals of history ("was 18 pages", "then 47 pages") are excluded so
+    # the drift stays auditable.
+    for m in re.finditer(r"(?:current build|this run)\W{0,4}[:\u2014-]?\s*(\d+)\s+pages", text, re.I):
+        if int(m.group(1)) != _link_pages:
+            problems.append(
+                f"{slug}: states {m.group(1)} pages as the current build but this build wrote "
+                f"{_link_pages} pages; make the count derived, not typed")
     # Every published table row must carry at least one HTTPS link to an
     # explicitly allow-listed official source or a first-party project record.
     for tbody in re.findall(r"<tbody>(.*?)</tbody>", text, re.S):
@@ -4998,7 +5042,7 @@ for slug in pages:
                 f"from _READ_DATE_COLUMNS or the page is ahead of its evidence "
                 f"(context: {text[max(0, m.start() - 60):m.end() + 20]!r})")
 
-print(f"Built {len(pages)} pages into docs/. Injury rows: {tot['rows']}; teams: {tot['teams']}; depth rows: {len(depth_rows)}.")
+print(f"Built {_link_pages} pages into docs/. Injury rows: {tot['rows']}; teams: {tot['teams']}; depth rows: {len(depth_rows)}.")
 print(f"Derived header read date: {READ_LATEST} (from {len(_declared)} distinct declared read dates; "
       f"{sum(len(v) for v in _declared.values())} register/date pairs).")
 for w in warnings:
