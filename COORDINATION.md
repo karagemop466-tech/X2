@@ -3898,3 +3898,25 @@ written into the cell itself. Rows corrected (line numbers as of this commit):
 row, the ID-collision notes (F127 — process, not status), and rows whose numbering collided across sessions where
 GitHub's record does not disambiguate which block's PR carried which row (those stay as their owners left them).
 No data register value was touched by T402.
+
+## 2026-11-19 · session `cdc0817c` · second claim (T305–T309)
+
+**Branch:** `arena/cdc0817c-x2` · **Base:** `main` @ `6575f18` (PR #104 merged, Pages run 44625840941 success) · **Status:** in progress.
+
+**Defect class found by the line-by-line pass (T300), confirmed by an automated cross-reference sweep:**
+
+1. **Every flag ID cited across the published registers resolves to nothing.** 46 files cite `F57`, `F58`, `F59`, `F62` — IDs that do not exist in `data/flags.csv` (the register runs F01–F56 then F63–F130; F81 records the F57–F62 gap as cosmetic). Every one of these citations points a reader at a flag that is not on the Flagged page.
+2. **`P09` is cited 41 times as "proposal P09 on the Review console" but the console has no P09 row.** `scripts/review.py` holds P01–P08 only. Reproduced: writing `{"P09": {...}}` into `data/decision_choices.json` makes `scripts/review.py` exit 1 with *"decision_choices.json names an unknown proposal: P09"*. **The owner's documented decision path for the corpus choice is broken** — the site tells the owner to record P09 on the Review console and the tool rejects it. `F125` describes a "decision_console.csv row P09" that has never existed in the repository history.
+3. **Two published notes cite the wrong flag for the same condition.** `scripts/build.py` says the price-store misreference is recorded by **F63**, but F63 is "Gate G1 (no look-ahead) was a constant True"; the misreference is recorded as **F56**. The price store's own `status` column cites **F45** (club depth charts) where the correct condition flags are F07/F31/F51.
+4. **`data/suggestion_review.csv` has 30 rows but only 26 unique `suggestion_id`s** — S41–S44 are each used twice for different topics, so the published review matrix shows duplicate IDs pointing at different proposals.
+5. **`V68-01..V68-12` exist only in session-scoped registers**, not in `data/verification_report.csv` (V01–V44), so `V68` cited in build prose does not resolve in the verification register.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T305 | Citation-resolution checker: new `scripts/check_citations.py` that resolves every `Fnn`/`Pnn`/`Vnn`/`Rnn`/`Snn`/`Qnn`/`SRC-nn`/`DQ-nn`/`DEC-nn`/`Gnn` citation in `data/**` + `scripts/**` + published pages against its register; wired into `scripts/build.py` so the build fails loudly on a dangling ID | in progress | `scripts/check_citations.py` (new), `scripts/build.py` | Makes the defect class machine-detectable instead of relying on a human sweep; the brief requires the build to fail loudly rather than publish a bad reference |
+| T306 | Repair the dangling flag citations: F57/F58/F59/F62 → the surviving flag that records the same condition (F71 neutral sites, F48 C09 formula, F75 A01–A11 scheme, F69 live re-verification, F64 skill-not-repeatable); leave the F81 gap note itself intact | in progress | `data/flags.csv`, `data/requirements.csv`, `data/suggestions.csv`, `data/suggestion_review.csv`, `data/sources.csv`, `data/verification_report.csv`, `data/repo_review_2026-11-14.csv`, `data/price_snapshots_extended.csv`, `scripts/model.py` | Each replacement is the flag whose own text records the identical condition — no new claim is created |
+| T307 | Add the missing **P09** row to the Review console so the owner can actually record the corpus decision, with the measured figures from `data/model_v2_research_deltas.csv` (not the unreproducible note F125 flags) | in progress | `scripts/review.py`, `data/decision_console.csv` | The site points the owner at P09 on the Review console in 41 places; today `review.py` rejects it. Restores the documented decision path. `data/decision_choices.json` stays empty — no path is chosen on the owner's behalf |
+| T308 | De-duplicate `data/suggestion_review.csv` IDs (S41–S44 collide) without changing any published topic text | in progress | `data/suggestion_review.csv` | Duplicate IDs make the published review matrix ambiguous |
+| T309 | Rebuild, full gate suite, PR → merge, Pages confirmation, close-out record | pending | `COORDINATION.md`, `EXECUTIVE-SUMMARY.md` | Per brief: do not wait for review |
+
+**Constraints honoured:** `data/decision_choices.json` stays empty (`{}`) — no suggestion path, option or threshold is chosen on the owner's behalf. No NFL value is changed by this session; only cross-reference IDs, one missing console row, and duplicate IDs. The sandbox cannot reach nfl.com (F130), so no new official-source read is claimed.
