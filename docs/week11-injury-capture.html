@@ -36,8 +36,7 @@ difference against. Changes are published only between two reads of the same wee
 <li><strong>Method:</strong> fetch_page tool, chunks 0-6 (totalChunks=7, hasMore=false on chunk 6) read in full; every player row transcribed by hand into the private PSV; checked by scripts/week11_capture.py against the page&#x27;s own game list and bye list, and against data/schedule_week11_2026.csv</li>
 <li><strong>Read window:</strong> chunks 1-6 read after 2026-11-19T06:53:35Z; chunk 0 read earlier in the same session (its time was not recorded); transcription file written by 2026-11-19T06:54Z (session clock; the fetch tool returns no per-request time)</li>
 <li><strong>Hash:</strong> the private transcription's sha256 is <code>263d4feb0148075dea015bf1d2e5fcdfc3430aeefab767a019dea1c76eb6db25</code>.
-The fetch tool returns processed page text, not the server's raw bytes, so no hash of the raw response exists
-(The fetch tool returns processed markdown, not the HTTP body, so no hash of the server&#x27;s raw bytes exists. The sha256 below covers the private transcription only.)</li>
+The fetch tool returns processed markdown, not the HTTP body, so no hash of the server&#x27;s raw bytes exists. The sha256 below covers the private transcription only.</li>
 <li><strong>Verification status:</strong> single transcription read, not yet independently re-read (flag F129). The structure checks pass
 (253 rows, 26 club sections, 13 games, six bye clubs, the page's game list matches the Week 11 schedule register), but the
 row content has not been independently re-read. Use the counts as a single read until a second read confirms them.</li>
