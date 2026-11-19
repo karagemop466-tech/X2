@@ -3375,7 +3375,7 @@ this task exists to correct.
 > standings page and the injury hub live on 2026-11-19. The audit's limit is true of that session, not of the
 > repository.
 
-### T135–T138 close-out · session `68fc9b6c` · 2026-11-19
+### T139–T142 close-out · session `68fc9b6c` · 2026-11-19
 
 **Outcome: done.** Four live official pages were re-read on 2026-11-19 and 12 checks re-run against the
 repository; two flags were stale and are corrected with evidence; the site was rebuilt and every verifier passed.
@@ -3540,3 +3540,32 @@ Claimed the final-integration scope (review, verify, build, PR → main → merg
 
 ### Result
 PR #94 (https://github.com/karagemop466-tech/X2/pull/94) merged to `main` as merge commit `c346de6d` via `gh pr merge 94 --merge` (no approval waited, per the brief). GitHub Pages build `1383287261` reached `status: built` for commit `c346de6d`; the site is live at https://karagemop466-tech.github.io/X2/. All checks green on the merged tree: `build.py` (55 pages, link + row-source checks), `verify_results.py` (137 games, 32/32 vs the 2026-11-14 snapshot), `verify_live.py` (75/75 units), `verify_snapshot.py` (103 pass / 0 fail / 1 review F74), `check_links.py` (3,055 internal / 7,016 external, none broken), `drift_check.py` (54/54 pins), `repo_audit.py` (22/22), `npm run build && npm run verify` (ALL CHECKS PASSED), `git diff --check` clean. Branch `arena/22ae094b-x2` is merged into `main`; nothing left open for this session.
+
+Branch `arena/22ae094b-x2` == `main` @ `38629ca` plus the new `EXECUTIVE-SUMMARY.md`. Ready for the closing PR → main → merge → Pages confirmation.
+
+
+### T142 PR, merge and deployment record — session `68fc9b6c` (2026-11-19)
+
+- **PR [#92](https://github.com/karagemop466-tech/X2/pull/92)** (`arena/68fc9b6c-x2` → `main`, "T135-T138: independent
+  2026-11-19 live re-verification; close stale flags F01 and F90") was **merged with a merge commit**
+  (`gh pr merge 92 --merge`) at **2026-11-19T06:59:31Z** as **`5892e5c`**. The title keeps the T135–T138 numbering it
+  was opened under; the board block and the flag rows use the final **T139–T142**, after `947b5e75` took
+  T135–T136 for the dual-corpus dashboard headline while this PR was open. Three renumeration rounds in one day is
+  recorded as irregularity 4 in the close-out above.
+- **Merge conflicts resolved twice, nothing discarded.** First against PR #89 (`origin/main` @ `5f45fc7`), then
+  against PR #91 (@ `222abe5`). Both times the other session's block was kept byte for byte and this session's block
+  was moved to the next free ID range. `data/drift_pins.csv` conflicts were resolved by keeping **both** sessions'
+  pins (57 total, no duplicates), and the two generated pages (`docs/captures.html`, `docs/flagged.html`) were
+  resolved by rebuilding rather than by hand-editing.
+- **All gates re-run after the final rebase and rebuild:** `build.py` 55 pages PASS · `drift_check.py` **57/57** ·
+  `repo_audit.py` 22 checks, 0 failing · `check_links.py` 3,061 internal / 7,050 external, 0 broken ·
+  `verify_68fc9b6c.py` 12/12 · `verify_snapshot.py` 103 pass / 0 fail / 1 review · `npm run build && npm run verify`
+  ALL CHECKS PASSED.
+- **GitHub Pages:** workflow run [44476189506](https://github.com/karagemop466-tech/X2/actions/runs/44476189506) on
+  `main` at `5892e5c` → **completed / success** (build and deploy). The live Flagged page
+  `https://karagemop466-tech.github.io/X2/docs/flagged.html` was fetched after the deploy and served the closed F01
+  row with its 2026-11-19 status, confirming this PR's changes are live.
+- **Post-merge correction (this follow-up PR):** the live F01/F90 rows read "session 68fc9b6c, **T134**" — a stale
+  ID left over from the first renumbering, and now colliding with `d9344f5a`'s real T134. All three rows
+  (F01, F90, F126) were repointed to **T140**/**T139** and the site is rebuilt. This is exactly the cost of the ID
+  collisions recorded above, and is why the board block now names the final range.
