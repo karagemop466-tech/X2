@@ -1,0 +1,13 @@
+check_id,result,detail
+RE-01,PASS,November trades log rows read = 12 (pinned 12; https://www.nfl.com/transactions/league/trades/2026/11)
+RE-02,PASS,October reserve-list rows read = 25 (pinned 25; https://www.nfl.com/transactions/league/reserve-list/2026/10)
+RE-03,PASS,November reserve-list rows read = 25 (pinned 25; https://www.nfl.com/transactions/league/reserve-list/2026/11)
+RE-04,PASS,every event date inside the read window 2026-10-01..2026-11-18
+RE-05,PASS,every row links to an NFL.com transactions page
+RE-06,PASS,"no duplicate (transaction, player, date, from, to)"
+RE-07,PASS,every club name maps to a standard abbreviation
+RE-08,PASS,Colts 11/10 trades present: Keenan Allen (IND to SF) and Josh Downs (IND to KC) — both WRs per the brief's description; the club-article text itself is NOT located or read (see RE-11)
+RE-09,PASS,Jacoby Brissett traded to BAL on 2026-11-06 (from ARI) is in the November trades log
+RE-10,INFO,"Lamar Jackson and Tyler Huntley are NOT on the October or November reserve logs as read; an August or September injured-reserve entry cannot be ruled out because those logs were not read, so the brief's Baltimore example stays UNVERIFIED"
+RE-11,NOT CHECKED,Colts Week 10 article (the 'release' that carries the depth chart) was not located on colts.com or nfl.com in this session; the trade dates come from the NFL trades log only
+RE-12,NOT CHECKED,August and September 2026 transaction logs were not read; this register is NOT a season-long roster-event history
