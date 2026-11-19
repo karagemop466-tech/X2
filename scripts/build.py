@@ -162,6 +162,15 @@ results_feed = read_csv("results_feed_2026.csv")
 # ---- session 79c9cb37 (T108): parallel v2 results feed (closes P09 as a parallel register) ----
 results_feed_v2 = read_csv("results_feed_v2_2026.csv")
 results_feed_v2_checks = read_csv("results_feed_v2_checks.csv")
+# Keep the published frozen v1 and the parallel 150-game research comparison distinct.
+# These are read from the checked-in comparison register; neither corpus is promoted here.
+model_v2_research_deltas = read_csv("model_v2_research_deltas.csv")
+_model_v2_by_metric = {r["metric"]: r for r in model_v2_research_deltas}
+for _required_metric in ("games in the fitted corpus", "out-of-sample backtest rows",
+                         "MAE, margin (M1)", "MAE, margin (reference line)",
+                         "Side hit rate vs reference"):
+    if _required_metric not in _model_v2_by_metric:
+        raise ValueError(f"model_v2_research_deltas.csv is missing {_required_metric!r}")
 with open(os.path.join(DATA, "model_summary.json"), encoding="utf-8") as f:
     ms = json.load(f)
 # ---- session e208ba6d: decision console, market sheet, live re-verification ----
@@ -755,6 +764,43 @@ _freshness_rows = [
      "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"},
 ]
 
+# Primary KPI comparison is deliberately versioned: the 150-game build is a
+# parallel research run, not a silent replacement of the sealed 137-game baseline.
+def _summary_value(metric, column):
+    value = _model_v2_by_metric[metric].get(column, "")
+    if value == "":
+        raise ValueError(f"blank {column} for {metric!r} in model_v2_research_deltas.csv")
+    return float(value)
+
+_v1_fit_games = int(_summary_value("games in the fitted corpus", "published_v1_137"))
+_v2_fit_games = int(_summary_value("games in the fitted corpus", "corpus_v2_150"))
+_v1_oos_games = int(_summary_value("out-of-sample backtest rows", "published_v1_137"))
+_v2_oos_games = int(_summary_value("out-of-sample backtest rows", "corpus_v2_150"))
+_v1_margin_mae = _summary_value("MAE, margin (M1)", "published_v1_137")
+_v2_margin_mae = _summary_value("MAE, margin (M1)", "corpus_v2_150")
+_v1_reference_mae = _summary_value("MAE, margin (reference line)", "published_v1_137")
+_v2_reference_mae = _summary_value("MAE, margin (reference line)", "corpus_v2_150")
+_v1_side_hit = _summary_value("Side hit rate vs reference", "published_v1_137")
+_v2_side_hit = _summary_value("Side hit rate vs reference", "corpus_v2_150")
+_v1_margin_gain = _v1_reference_mae - _v1_margin_mae
+_v2_margin_gain = _v2_reference_mae - _v2_margin_mae
+if (_v1_fit_games != len(results_games) or _v2_fit_games != len(results_feed_v2)
+        or _v1_oos_games != len(model_backtest)):
+    raise ValueError("corpus-comparison headline counts do not match the published v1/v2 ledgers")
+_v2_source_url = _model_v2_by_metric["games in the fitted corpus"]["source_url"]
+_corpus_comparison = [
+    {"corpus": "Frozen v1 · published baseline", "fit_games": _v1_fit_games,
+     "oos_games": _v1_oos_games, "margin_mae": f"{_v1_margin_mae:.3f}",
+     "reference_mae": f"{_v1_reference_mae:.3f}", "gain": f"{_v1_margin_gain:.3f}",
+     "side_hit": f"{_v1_side_hit:.1%}", "status": "Frozen; not a complete current-season feed",
+     "source_url": _v2_source_url},
+    {"corpus": "Parallel v2 · research comparison", "fit_games": _v2_fit_games,
+     "oos_games": _v2_oos_games, "margin_mae": f"{_v2_margin_mae:.3f}",
+     "reference_mae": f"{_v2_reference_mae:.3f}", "gain": f"{_v2_margin_gain:.3f}",
+     "side_hit": f"{_v2_side_hit:.1%}", "status": "Not promoted; awaiting P09 corpus choice",
+     "source_url": _v2_source_url},
+]
+
 pages["index.html"] = ("NFL Research Dashboard", f"""
 <section class="hero">
   <h1>NFL Research Dashboard</h1>
@@ -764,10 +810,16 @@ pages["index.html"] = ("NFL Research Dashboard", f"""
   <p class="note"><strong>Verification status:</strong> the Week 10 injury register ({tot['rows']} rows, {tot['teams']} clubs) was re-read from the official NFL.com page on 2026-11-18 and re-published from that read (347 rows; 32 field values and 2 rows changed since 2026-11-14). The 2026-11-14 "no discrepancies" result is <strong>superseded</strong> (F94). The 2026-11-18 comparison is a consistency check against the same transcription, <strong>not</strong> independent verification. See the <a href="verification.html">Verification record</a>.</p>
   <p class="note"><strong>Critical data-rights gate:</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot. Do not expand or automate this use pending review (Flag F16). <a href="https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions" target="_blank" rel="noopener">NFL.com terms ↗</a> · <a href="flagged.html">Flagged for Review</a>.</p>
 </section>
-{tiles([(ms['games_transcribed'], 'games transcribed and verified'), (ms['out_of_sample_games'], 'out-of-sample games graded'),
-        (ms['mae_improvement'], 'points of forecast gain vs the naive line'), (ms['strategies_tested'], 'strategies tested'),
+{tiles([(_v1_fit_games, 'games in frozen v1 baseline'), (_v1_oos_games, 'v1 out-of-sample rows'),
+        (f"{_v1_margin_gain:.2f}", 'v1 margin-MAE gain (historical points)'), (ms['qualified_strategies'], 'strategies qualified prospectively'),
         (tot['rows'], 'players listed (Week 10)'), (ms['week11_games'], 'Week 11 lines originated')])}
-<section class="hero"><h2>Decision-critical results-feed limitation</h2><p><strong>Do not treat the existing backtest corpus as a complete current-season feed.</strong> The model's published feed contains 137 games; the 2026-11-18 standings imply 150 completed games. A separately transcribed 13-game Week 10 backfill makes all 32 club records and points reconcile, while the feed as published fails for 26 of 32 clubs. The backfill is deliberately not merged into model inputs pending the documented P09 corpus decision. See <a href="feed-completeness.html">Feed completeness</a>, <a href="review-path.html">Review path</a> and <a href="flagged.html">Flagged for review</a>.</p><p>Consequently, the 89-game walk-forward statistics describe the existing historical corpus; they are not a final-season evaluation. No leaderboard strategy is ranked.</p></section>
+<h2>Backtest corpus versions — do not read one number without its version</h2>
+<p class="note">The frozen published model uses 137 games. A separate research run on a 150-game corpus is published alongside it; it is not silently substituted for v1 and awaits the P09 corpus decision. The 150-game run has 102 out-of-sample rows, but <strong>neither historical result is a prospective strategy qualification or leaderboard rank</strong>. The table's gains are reference margin MAE minus model margin MAE (positive means lower model error); side-hit rate is the share of games on which the model margin was closer than the reference margin. This is research evidence, not betting advice.</p>
+{table(_corpus_comparison, ["corpus","fit_games","oos_games","margin_mae","reference_mae","gain","side_hit","status","source_url"],
+       {"corpus":"Corpus version","fit_games":"Fit games","oos_games":"Out-of-sample rows","margin_mae":"Model margin MAE (pts)",
+        "reference_mae":"Reference margin MAE (pts)","gain":"MAE gain (pts)","side_hit":"Model closer than reference","status":"Publication status","source_url":"Official results source"}, table_id="corpus-version-comparison")}
+<p class="note">Official results context: <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">NFL Week 10 schedule</a> and <a href="https://www.nfl.com/standings/" target="_blank" rel="noopener">NFL standings</a>. Computed values are reproduced from <a href="https://github.com/karagemop466-tech/X2/blob/main/data/model_v2_research_deltas.csv" target="_blank" rel="noopener">the version-comparison register</a> and <a href="https://github.com/karagemop466-tech/X2/blob/main/scripts/model_v2_research.py" target="_blank" rel="noopener">research model script</a>. The standard leaderboard remains prospective-only and unranked.</p>
+<section class="hero"><h2>Decision-critical results-feed limitation</h2><p><strong>Do not treat the frozen v1 model corpus as a complete current-season feed.</strong> It contains 137 games; the 2026-11-18 standings imply 150 completed games. A separate v2 results register has 150 rows and reconciles against the retained 2026-11-18 standings read; it remains a parallel corpus pending the documented P09 choice, so its model results are shown above as a research comparison, not as the published v1 result. See <a href="feed-completeness.html">Feed completeness</a>, <a href="corpus-v2-full.html">Corpus v2</a>, <a href="review-path.html">Review path</a> and <a href="flagged.html">Flagged for review</a>.</p><p>The historical 89-row v1 and 102-row v2 evaluations are not final-season evaluations. No leaderboard strategy is qualified or ranked.</p></section>
 <h2>How current is each surface?</h2>
 <p class="note">Each register below was read from its official source on the date in its own row, and several of them
 deliberately are not the newest read. A single site-wide "data as of" date was true of the oldest of these and false of
@@ -822,16 +874,12 @@ pages["executive-summary.html"] = ("Executive summary", f"""
 <p class="note">The injury report was captured 2026-11-18; the other source dates are stated separately. Injury figures below are counted from the CSV and link to the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">NFL injury report</a>; Week 10 bye status is confirmed in the <a href="https://www.nfl.com/schedules/2026/by-week/week-10" target="_blank" rel="noopener">official NFL schedule</a>. The 2026-11-18 transcription check is not independent of its source transcription (F109), and permission for systematic collection/publication is not recorded (F16).</p>
 <h2>What changed in this session, and what it means</h2>
 <ul class="findings">
-<li><strong>The model does not clearly beat the baseline it is graded against.</strong> On the 89 games that have been
-published since the first session, our line beats its own naive reference line by 1.736 points of mean absolute error
-per game. On the 13 settled Week 10 games it had never been scored against, it is <strong>0.591 points behind</strong>
-the same line, and it was closer on only 5 of 13. Pooled over 102 games the side gain is 1.439. On totals it loses to
-the reference in every cut. The honest headline is therefore a range, not a number, and no staking or reward decision can
-be justified on the 1.74 alone (<a href="corpus-v2.html">Pre-registered corpus</a>, flag F110).</li>
-<li><strong>The results feed was 13 games behind, and the check that should have caught it was itself stale.</strong>
-The ledger holds 137 games; the official standings now imply 150. The reconciliation script compared only against a
-2026-11-14 read and printed an unqualified pass. It now prints both read dates, labels the old comparison arithmetic-only,
-and <strong>fails</strong> the currency comparison (<a href="feed-completeness.html">Feed completeness</a>, V35, F113).</li>
+<li><strong>The backtest headline depends on which corpus version is used.</strong> The frozen 137-game v1 has {_v1_oos_games} out-of-sample rows and a {_v1_margin_gain:.3f}-point margin-MAE gain over its reference. A parallel 150-game research fit has {_v2_oos_games} out-of-sample rows and a {_v2_margin_gain:.3f}-point gain on its own matching reference; its side-hit rate is {_v2_side_hit:.1%} versus {_v1_side_hit:.1%} for v1. The model/reference errors are displayed side by side on the <a href="index.html#corpus-version-comparison">landing page</a> and <a href="corpus-v2-full.html">Corpus v2</a>. These are historical research comparisons, not prospective qualifications; neither ranks the leaderboard, and the v2 register is not promoted while P09 remains open. No staking or reward decision is justified by either headline.</li>
+<li><strong>The frozen v1 results feed was 13 games behind the retained 2026-11-18 standings read.</strong>
+The original ledger holds 137 games; the dated standings capture implies 150. A separate 150-game results register
+reconciles to that capture but is kept parallel rather than silently replacing v1, pending P09. The reconciliation
+script now prints both read dates, labels the old comparison arithmetic-only and fails the currency comparison
+(<a href="feed-completeness.html">Feed completeness</a>, V35, F113; <a href="results-v2.html">parallel results register</a>).</li>
 <li><strong>Two numbers for one correlation were published at once.</strong> The audit register still carried C08 =
 -0.064 after the canonical register had moved to +0.035. Regenerated, and a guard now makes that drift a build failure
 (V36, F112).</li>
@@ -855,7 +903,7 @@ across three club sections match, and the one cell two sessions had disputed res
 <li><strong>Where the exposure is.</strong> Out or Doubtful players by side of ball: offense {tot['off_od']}, defense {tot['def_od']}, special teams {tot['st_od']}. Most-exposed teams by Out plus Doubtful count: {top5_txt}.</li>
 <li><strong>Quarterbacks.</strong> The news headlines on the same page report Lamar Jackson (Ravens) and Malik Willis (Dolphins) on injured reserve, and Sam Darnold (Seahawks) ruled out for Week 10. Official news names Drew Lock for Darnold (2nd string on the club chart) and Kyle McCord for Willis ("in line for first start"); no replacement is named for Lamar Jackson and the Ravens chart omits him entirely. Every row and chart rank is on the <a href="depth-deficiency.html">Replacement depth</a> page (Flags F06/F45).</li>
 <li><strong>Strategy research.</strong> Historical walk-forward analyses are retained only as backtest research, not competition rankings. The prospective leaderboard has seven registered entries and zero graded prospective samples, so it remains unranked and no reward is paid. No odds feed is connected.</li>
-<li><strong>Originated lines (new).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']} official 2026 results now produces our own spreads and totals for all {ms['week11_games']} Week 11 games. Out of sample it is {ms['mae_improvement']} points closer to the actual margin per game than a naive published reference line (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points over {ms['out_of_sample_games']} games, 95% bootstrap interval 0.76 to 2.74 points). The calibration slope is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}; 95% interval 0.328 to 1.443, p = 0.683 against slope 1.0), so there is no evidence the lines are over-shy or over-confident (Flag F48 corrected 2026-11-14).</li><li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
+<li><strong>Originated lines (frozen v1 only).</strong> A ridge attack/defence model fitted on the {ms['games_transcribed']}-game v1 corpus produces its own spreads and totals for all {ms['week11_games']} Week 11 games. On its {ms['out_of_sample_games']} out-of-sample rows it has a {ms['mae_improvement']}-point margin-MAE gain (mean absolute error {ms['mae_m1']} vs {ms['mae_reference']} points; 95% bootstrap interval 0.76 to 2.74 points). A parallel 150-game research fit is shown separately above; it is not a replacement or leaderboard result. The calibration slope for the frozen v1 is {ms['calibration_slope']} (SE {ms['calibration_slope_se']}; 95% interval 0.328 to 1.443, p = 0.683 against slope 1.0), with no evidence that the v1 lines are over-shy or over-confident (Flag F48, read dated 2026-11-14).</li><li><strong>Origination order and fair/market/difference (new).</strong> Each market is originated in a fixed order — side first, then total, then moneyline — and the model's <em>fair line</em>, the <em>market line</em> and the <em>difference</em> are published as separate columns on the <a href="model-lines.html">Model &amp; Week 11 lines</a> page. The market columns are blank: no licensed odds feed exists, so no market price can be confirmed from an official source (Flags F07, F31).</li>
 <li><strong>Price-snapshot store (new).</strong> A store now records the opening and closing number for every market this project originates — {ms['price_snapshot_rows']} rows covering the Week 11 slate and the out-of-sample window, side, total and moneyline. No official source publishes opening or closing NFL market numbers, so every opening and closing value is blank and flagged rather than inferred (Flags F07, F31, F51). The schema is in place for a rights-cleared odds feed to fill it.</li>
 <li><strong>Signal separated from staking.</strong> The prospective <a href="leaderboard.html">leaderboard</a> has no ranking yet; when it becomes eligible, signal scores and staking returns will remain separate. ROI is blank because no licensed prices exist (Flags F07, F32, F51).</li>
 <li><strong>Demotion gate (new).</strong> A demotion gate (G9) is defined and armed: a live strategy is sent back to paper the moment any of G1–G8 fails, the skill interval includes zero, or the mean edge turns negative. No strategy is live today — the qualification is disputed by the independent cross-check (F42) and wagering and rewards stay disabled — so every strategy is Paper (Flags F17, F42).</li>
@@ -865,7 +913,7 @@ across three club sections match, and the one cell two sessions had disputed res
 <li><strong>Price-snapshot store (new).</strong> All {len(price_snapshots)} originated Week 11 markets — side first, then total, then moneyline — are tracked in a store with opening and closing fields. Every price cell is blank and marked unverified: no authorised, timestamped price source exists (Flags F07, F43). The store is the piece that makes closing-line value and ROI computable the moment real prices land; until then, no ROI is estimated.</li>
 <li><strong>Demotion gate defined (new).</strong> Seven rules (D1-D7, gate G9) define how a live strategy returns to paper: signal-interval collapse, multiplicity failure, sample loss, source revision, lost clearance, and a CLV test once prices exist. Staking results can neither promote nor rescue a strategy. The rules are proposals — thresholds await the owner's statistical plan (Flag F17) — and no strategy is live, so the gate is inert today.</li>
 <li><strong>Depth of the replacement (new).</strong> Replacement events are now tracked with an explicit string depth, not just the fact of a replacement — across two tables: RD01–RD07 (Detroit and New England, where club-published charts verify order: the Patriots' backfield is already down to its 3rd/4th string, the Lions' cornerback room to its 2nd/3rd) and the T42 availability table (session 8a0bf37e), which adds fetched club-chart checks for all eleven availability rows — SEA, MIA, BAL, CLE, AZ and NYG with ranks where an official statement names the replacement, plus GB, LAR, KC and IND (session d2915d86, Flag F53 resolved) where the chart order is recorded but the rank stays blank because no official source names a replacement. Where no chart confirms the order the depth cell is blank and flagged (F06).</li>
-<li><strong>Results-feed reconciliation is point-in-time.</strong> The 137-game feed reconciles against the official standings snapshot read 2026-11-14. The official 2026-11-18 standings show 13 later Week 10 games missing; the separate backfill reconciles all 32 teams but is not merged into the model corpus pending P09. See <a href="feed-completeness.html">Feed completeness</a>.</li>
+<li><strong>Results-feed reconciliation is versioned and point-in-time.</strong> The frozen 137-game feed reconciles against the official standings snapshot read 2026-11-14; the retained 2026-11-18 standings read implies 13 later Week 10 games are missing. A separate 150-game results register reconciles all 32 teams to that later capture, and a parallel model research run is displayed above. Neither v2 artifact silently replaces the frozen v1 baseline; P09 remains open. See <a href="feed-completeness.html">Feed completeness</a> and <a href="corpus-v2-full.html">Corpus v2</a>.</li>
 <li><strong>Data rights.</strong> NFL.com terms prohibit systematic retrieval to compile a database absent express prior written consent. No permission is recorded here for the published injury snapshot; do not expand or automate this use pending review (Flag F16).</li>
 <li><strong>Legal.</strong> Government of Japan guidance says online sports betting accessed from Japan is gambling and prohibited there; this is Japan-specific and does not decide contest or reward mechanics. No legal opinion is provided (Flag F09).</li>
 </ul>
