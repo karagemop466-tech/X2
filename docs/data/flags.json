@@ -1186,5 +1186,14 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/suggestion_review.csv",
   "status": "Irregularity - open (dual rows under one ID; nothing deleted)",
   "action_requested": "Owner or a follow-up session: compare each pair against data/suggestions.csv, keep the row that matches the current proposal text, give the other a fresh ID or mark it superseded, then set unique_key=suggestion_id in data/drift_pins.csv for this register so a recurrence fails the build."
+ },
+ {
+  "flag_id": "F141",
+  "category": "Verification limitation",
+  "item": "Sandbox could not reach any official or club page on 2026-11-19, so no new official-source verification was performed",
+  "detail": "Probed from this environment on 2026-11-19: www.nfl.com, operations.nfl.com, www.packers.com and www.espn.com all returned HTTP 000 (connection refused); only github.com, api.github.com, registry.npmjs.org and pypi.org were reachable. Consequently no value introduced or touched by session 0a430c21 is marked verified against an official source, no NFL datum was changed, and nothing was inferred or filled. Every finding in this session is a statement about the repository's own registers and its own generated pages, which is reproducible offline; the commands are printed in COORDINATION.md and in each flag. This is the same limitation recorded as F130, now confirmed on a second date.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md",
+  "status": "Irregularity - open (verification limitation)",
+  "action_requested": "Re-run a live official-source pass over the pages this session touched from an environment that can reach nfl.com. The specific claims to re-check are the ones that cite a source date: the header read date (now derived), the freshness table, and the two corrected cells in Q01 and SG-01. None of them asserts an NFL fact that this session created; all rest on prior dated reads."
  }
 ]
