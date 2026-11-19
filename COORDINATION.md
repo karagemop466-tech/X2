@@ -3258,3 +3258,11 @@ of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all 
   read) · `npm run build && npm run verify` PASS.
 * **Left open on purpose:** P09 promotion, P01 pricing, F16 rights, and the F127 process rules — all owner decisions,
   none of which an agent may record. `data/decision_choices.json` remains empty.
+
+## 2026-11-19 · session `936a0eeb` · claim (T129) — scheduled availability capture: terms gate and freshness monitor
+
+Board read in full before claiming. No `unclaimed` row exists; the newest IDs on `main` are T128 (`8da77ba6`), F127 and D66-range readiness rows. Branch `arena/936a0eeb-x2` is the only branch this session may write to (session instruction), so the sessions table convention `session-<id>/<task>` is not used here.
+
+| ID | Task | Status | Owner | Files touched | Sources | Notes |
+|----|------|--------|-------|---------------|---------|-------|
+| T129 | Brief items "Automate immutable multi-day availability snapshots" / "Snapshot the injury report every Wed, Thu, Fri" / "Build immutable official availability snapshots": (a) verify the NFL terms gate against the live page, (b) decide whether a scheduled retrieval job may be built, (c) if not, record the blocker and the largest no-retrieval step that is allowed | in progress | 936a0eeb | `COORDINATION.md` only (this entry). No scraper, workflow, or capture file is created by this task. | https://www.nfl.com/legal/terms/ (read 2026-11-19) | Relates to F14, F16, F98, D17, D22, D11, D12 |
