@@ -1126,7 +1126,7 @@
   "url": "https://www.nfl.com/transactions/league/trades/2026/11",
   "type": "Official league site",
   "accessed_date": "2026-11-19",
-  "used_for": "T133 roster-event register: Colts 11/10 trades (Keenan Allen, Josh Downs), Brissett 11/06 trade to BAL",
+  "used_for": "T134 roster-event register: Colts 11/10 trades (Keenan Allen, Josh Downs), Brissett 11/06 trade to BAL",
   "verification_note": "Read with the fetch tool, single chunk (hasMore false). No clock time per request is provided; date only."
  },
  {
@@ -1136,7 +1136,7 @@
   "url": "https://www.nfl.com/transactions/league/reserve-list/2026/10",
   "type": "Official league site",
   "accessed_date": "2026-11-19",
-  "used_for": "T133 roster-event register: October reserve/injured rows; BAL and Jackson/Huntley check (not found)",
+  "used_for": "T134 roster-event register: October reserve/injured rows; BAL and Jackson/Huntley check (not found)",
   "verification_note": "Read in 2 chunks (both read, hasMore false on chunk 2)."
  },
  {
@@ -1146,7 +1146,7 @@
   "url": "https://www.nfl.com/transactions/league/reserve-list/2026/11",
   "type": "Official league site",
   "accessed_date": "2026-11-19",
-  "used_for": "T133 roster-event register: November reserve/injured rows (Colts Carlies, Alie-Cox, Davis-Gaither; Nacua 11/12)",
+  "used_for": "T134 roster-event register: November reserve/injured rows (Colts Carlies, Alie-Cox, Davis-Gaither; Nacua 11/12)",
   "verification_note": "Read in 2 chunks (both read, hasMore false on chunk 2)."
  }
 ]

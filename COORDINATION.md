@@ -3259,7 +3259,9 @@ of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all 
 * **Left open on purpose:** P09 promotion, P01 pricing, F16 rights, and the F127 process rules — all owner decisions,
   none of which an agent may record. `data/decision_choices.json` remains empty.
 
-## 2026-11-19 · session `d9344f5a` · claim (T133)
+## 2026-11-19 · session `d9344f5a` · claim (T134 — renumbered from T133 after collision, see log)
+> **ID collision, logged 2026-11-19 (session `d9344f5a`).** This session claimed **T133** on its own branch (`14dc793`, not yet on `main`). While it was open, session `8ddfaa33` merged its own **T133** (an acceptance audit, PRs #87–#88) to `main`. Neither session saw the other's claim in time. Resolution: both entries are kept unchanged; **this session's task is renumbered T134** (next free ID), and every file it touches now says T134. Nothing from either session was discarded. The `8ddfaa33` close-out states that the current environment cannot reach NFL.com. That is not true for this session: the fetch tool read the NFL.com transactions pages on 2026-11-19 (SRC-113–115), so the audit's "no live source read" limit applies to its own session only.
+
 
 **Branch:** `arena/d9344f5a-x2` (from `main` @ `38629ca`, PR #86) · **Owner:** `d9344f5a` · **Status:** in progress
 
@@ -3270,9 +3272,9 @@ source article only."
 
 | ID | Task | Status | Owner | Files this session creates or edits | Sources |
 |----|------|--------|-------|-------------------------------------|---------|
-| T133 | Dated roster-event register from the official NFL.com 2026 trades and reserve-list logs (Aug–Nov 2026), starting with the Colts' 11/10 trades; flag any Week 11 depth/availability row that names a player with a later event | done (Oct–Nov only; Aug–Sep and the Colts article carried as F128) | d9344f5a | `data/roster_events_2026.csv` (new), `data/roster_events_checks_2026.csv` (new), `scripts/roster_events.py` (new), `data/flags.csv` (F128 appended), `data/sources.csv` (SRC-113 appended), `data/decision_readiness.csv` (D19 row only), this board. No site/nav change; the generated `docs/` is left to the integration step. | `https://www.nfl.com/transactions/league/trades/2026/11`, `https://www.nfl.com/transactions/league/reserve-list/2026/11` |
+| T134 | Dated roster-event register from the official NFL.com 2026 trades and reserve-list logs (Aug–Nov 2026), starting with the Colts' 11/10 trades; flag any Week 11 depth/availability row that names a player with a later event | done (Oct–Nov only; Aug–Sep and the Colts article carried as F128) | d9344f5a | `data/roster_events_2026.csv` (new), `data/roster_events_checks_2026.csv` (new), `scripts/roster_events.py` (new), `data/flags.csv` (F128 appended), `data/sources.csv` (SRC-113 appended), `data/decision_readiness.csv` (D19 row only), this board. No site/nav change; the generated `docs/` is left to the integration step. | `https://www.nfl.com/transactions/league/trades/2026/11`, `https://www.nfl.com/transactions/league/reserve-list/2026/11` |
 
-### T133 completion record (session `d9344f5a`, 2026-11-19)
+### T134 completion record (session `d9344f5a`, 2026-11-19)
 
 **Done for the scope it could verify.** Scope actually delivered: Oct and Nov 2026 only. August and September were not read.
 
@@ -3289,3 +3291,40 @@ source article only."
 **Irregularities for review:** F128 (coverage gap and unverified claims, above). Also, the brief's Malik Willis / Kyle McCord / Lions items were not re-checked by this task.
 
 **Not claimed:** no depth row, starter, availability status or model value was changed by this task. Strategy, leaderboard, price and owner-decision registers are untouched.
+## 2026-11-19 · session `8ddfaa33` · claim (T133)
+
+**Branch:** `arena/8ddfaa33-x2` (Arena-fixed; base `main` @ `38629ca`). Read the complete task board before starting; no task is currently marked `unclaimed` and the branch is at the latest integrated commit. This session claims a narrowly scoped **independent acceptance audit** of the already-published deliverables against the user's current brief, rather than duplicating a completed feature. Scope: `COORDINATION.md` only. It will inspect existing verification evidence, run the available build/verifiers, and record any concrete unmet requirement or irregularity without rewriting shared tables/navigation/data. If an actual defect requires another file scope, it will be logged for a follow-up rather than edited here.
+
+| ID | Task | Status | Files (scope) | Gate |
+|---|---|---|---|---|
+| T133 | Independent acceptance audit of the current published NFL decision dashboard against the current user brief; run available checks and report verifiable blockers/limits | **done** | `COORDINATION.md` only | Audit outcomes, dated-source boundary, blockers and checks recorded below. |
+
+### T133 close-out · 2026-11-19
+
+**Outcome: done; no new data or model claims added.** This was a reproducibility/acceptance audit of the already integrated site and repository, not a fresh scrape of NFL sources. Current environment outbound access does not include NFL.com; therefore this session did not claim a 2026-11-19 live source read. The site already supplies dated source URLs and retained point-in-time evidence, and those dated limits remain material.
+
+**Checks run against the current branch:**
+- `npm run build && npm run verify` — PASS; Node build wrote 12 pages; 10 JSON-backed data tables resolve all source IDs; 194 internal links resolve; no template tokens remain.
+- `python3 scripts/build.py` — PASS; 55 Pages documents rebuilt; row-source checks pass.
+- `python3 scripts/check_links.py` — PASS; 3,055 internal and 7,016 external references checked; no broken internal links and external URLs satisfy the repository's HTTPS/allowlist rules.
+- `python3 scripts/drift_check.py` — PASS; all 54 pinned registers match.
+- `python3 scripts/repo_audit.py` — PASS; 22 audit checks, 0 failing (with the documented partial depth coverage flagged).
+- `python3 scripts/verify_snapshot.py` — 103 pass, 0 fail, 1 review. The review is Ben Brown's official injury-report/player-page position disagreement; retained as review, not silently resolved.
+- `python3 scripts/verify_results.py --games results_feed_v2_82b83a64.csv --target capture` and `python3 scripts/results_v2.py` — PASS; 150-game v2 ledger reconciles to the retained 2026-11-18 official standings capture (32/32 clubs; zero W/L/T/PF/PA mismatches); 15/15 v2 integrity checks pass. This does not promote v2 into the frozen model corpus.
+- `python3 scripts/verify_live.py` — PASS against the independent dated transcription inputs in `data/verification_inputs/` (75/75); `python3 scripts/verify_live_injuries.py` — PASS against the retained eight-chunk 2026-11-18 official-page capture (347/347 rows).
+- `python3 scripts/model.py` — PASS/reproducible output; 137-game frozen input, 89 out-of-sample games, prospective leaderboard still unranked (0 graded), zero strategies live. `python3 scripts/correlation_provenance.py` recomputes 13 published correlations with their n; no file drift. `python3 scripts/roster_sweep.py` — 32 clubs / 94 reserve rows / 5 checks, 0 failing, 1 finding. `python3 scripts/fixture_context.py` regenerated 163 scheduled-game rows; 16 first-appearance sides remain blank, not inferred.
+- `git status` remained clean after generated builds and checks; no new data files or source values were changed.
+
+**Current blockers and irregularities confirmed in existing records (not new discoveries):**
+1. `README.md` and the readiness/flags pages correctly disclose that the primary 137-game model corpus is not current-season complete; the 150-game verified v2 feed is parallel and awaits the recorded corpus promotion decision (P09). The v2 check is against the dated 2026-11-18 retained NFL standings capture, not a fresh live read today. Official review link: `https://www.nfl.com/standings/` and `https://www.nfl.com/schedules/2026/by-week/week-10`.
+2. No licensed timestamped market odds feed is present. Fair-line origination is not market-open/close capture; market prices, CLV and ROI remain unsupported/blank. Official NFL terms/data rights are an open review gate (F16): `https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions`.
+3. The leaderboard is correctly prospective-only and unranked; no entries have a graded prospective sample. No skill reward or ROI ranking is justified.
+4. Injury/depth coverage is explicitly partial and point-in-time (latest retained verification dated 2026-11-18); several clubs lack usable official structured depth data. Automated multi-day immutable capture cannot be claimed from this static Pages build, and expanding NFL.com collection remains blocked pending terms/rights review.
+5. One official-vs-official identity/position issue remains flagged (Ben Brown); this audit left it untouched.
+6. The independent Node `npm` site output (`site/`) and the published Python Pages output (`docs/`) are distinct build paths, as disclosed in project notes; the `docs/` path is what the repository's documented live GitHub Pages URL serves. This audit did not change navigation or shared site data.
+
+**Sources and verification basis:** official links above and the per-row source links in the repository registers/pages (`data/sources.csv`, `data/verification_week10_2026.csv`, `data/results_feed_v2_82b83a64.csv`, `data/live_reverification_2026-11-18.csv`). Checks validate retained, dated official-source transcriptions; they do not convert them into current live reads. No new NFL values were asserted.
+
+**Integration:** this audit touches only `COORDINATION.md`; existing site tables, data and navigation remain untouched. Any later scope to acquire new prices, automate captures, widen depth coverage or alter the frozen corpus is gated by the open decisions above, not quietly implemented here.
+
+**T133 publication/deployment addendum (2026-11-19):** PR [#87](https://github.com/karagemop466-tech/X2/pull/87) was merged to `main` at `aae8952c6cce35df26b8314f1eb263f3240384e0` on 2026-11-19 06:52:58Z. GitHub Pages workflow run [44475417485](https://github.com/karagemop466-tech/X2/actions/runs/44475417485) completed successfully (build, report-build-status, deploy all succeeded). The published landing page was fetched from `https://karagemop466-tech.github.io/X2/` after deployment; it served the dashboard with its dated source-status table, data-rights caveat, 137/150-game limitation, blank market-price caveat, review path, and links to the executive summary, suggestions, flagged review, strategy leaderboard, injury/depth and verification pages. This confirms successful publication of the existing dashboard, not freshness of NFL data beyond the dates printed on its pages.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Roster-event register from the official NFL.com transactions logs (T133, D19 / R56).
+"""Roster-event register from the official NFL.com transactions logs (T134, D19 / R56).
 
 Purpose: treat roster turnover as a dated, sourced data event. Depth, availability
 and lineup evidence must be read against the last official roster event, not trusted
