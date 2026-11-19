@@ -3569,3 +3569,28 @@ Branch `arena/22ae094b-x2` == `main` @ `38629ca` plus the new `EXECUTIVE-SUMMARY
   ID left over from the first renumbering, and now colliding with `d9344f5a`'s real T134. All three rows
   (F01, F90, F126) were repointed to **T140**/**T139** and the site is rebuilt. This is exactly the cost of the ID
   collisions recorded above, and is why the board block now names the final range.
+
+### T142 follow-up merged — session `68fc9b6c` (2026-11-19)
+
+- **PR [#96](https://github.com/karagemop466-tech/X2/pull/96)** (`arena/68fc9b6c-x2` → `main`) merged with a merge
+  commit (`gh pr merge 96 --merge`) at **2026-11-19T07:09:00Z** as **`0b7da26`**. It carries the task-ID correction
+  on F01/F90/F126 and the drift-proofing of F01's README-line claim.
+- **Four rebases against concurrent merges, none discarding another session's work:** PR #89 (`5f45fc7`), PR #91
+  (`222abe5`), PR #93 (`ad4abc7`), PR #94 (`c346de6`), then the board-only commits on top of each. Every
+  `COORDINATION.md` conflict was resolved by keeping the other session's block verbatim and appending this
+  session's block after it; `data/drift_pins.csv` was resolved by keeping both sides' pins (58 registers, no
+  duplicates); the two generated pages were resolved by rebuilding, never by hand-editing HTML.
+- **Gates after the final rebase and rebuild:** `build.py` **56 pages** (up from 55 — session `1745bf18` added the
+  Week 11 capture page while this PR was open) · `drift_check.py` **58/58** · `repo_audit.py` 22 checks, 0 failing ·
+  `check_links.py` 0 broken internal links · `verify_68fc9b6c.py` 12/12 · `npm run build && npm run verify` PASS.
+- **GitHub Pages:** workflow run [44477385596](https://github.com/karagemop466-tech/X2/actions/runs/44477385596) on
+  `main` at `0b7da26` → **completed / success** (build and deploy).
+- **Live verification of the fix:** `https://karagemop466-tech.github.io/X2/docs/flagged.html?sha=0b7da26` was
+  fetched after the deploy. F01 now reads *"CLOSED 2026-11-19 (session 68fc9b6c, **T140**)"* and its status reads
+  *"README re-verified at hundreds of lines, not a placeholder (the exact count moves as sessions append to it)"*.
+  The misattribution to session `d9344f5a`'s T134 is gone.
+- **One thing this session changed its mind about, recorded rather than hidden:** the first version of F01 asserted
+  a hard line count (363). Another session appended a README paragraph within the hour and the number became 373, so
+  the assertion was already false when written. It now states the property that actually matters — the file is far
+  longer than the one line the flag described — and the verifier prints the live count instead of asserting a
+  constant. This is the same failure mode as the two stale flags this task closed, caught in its own work.
