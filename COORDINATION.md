@@ -3704,10 +3704,17 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 
 | ID | Task | Status | Files (scope) | Why |
 |---|---|---|---|---|
-| T300 | Line-by-line repo review: source-link coverage per register, requirements/suggestions/flags/readiness counts, build + gate status | in progress | `COORDINATION.md`, `EXECUTIVE-SUMMARY.md` | Baseline for this session; record what is verified vs blank vs flagged |
-| T301 | Refresh `EXECUTIVE-SUMMARY.md` to the current merged state (56 pages, 58 drift pins, PR #102) | unclaimed | `EXECUTIVE-SUMMARY.md` | File is stale (PR #86 era: 55 pages, 54 pins) |
-| T302 | Rebuild + full gate suite (build, drift, repo_audit, check_links, verify_results, verify_live, verify_snapshot, npm) | unclaimed | `COORDINATION.md` | Confirm no broken site before PR |
+| T300 | Line-by-line repo review: source-link coverage per register, requirements/suggestions/flags/readiness counts, build + gate status | done | `COORDINATION.md`, `EXECUTIVE-SUMMARY.md` | Baseline for this session; record what is verified vs blank vs flagged |
+| T301 | Refresh `EXECUTIVE-SUMMARY.md` to the current merged state (56 pages, 58 drift pins, PR #102) | done | `EXECUTIVE-SUMMARY.md` | File is stale (PR #86 era: 55 pages, 54 pins) |
+| T302 | Rebuild + full gate suite (build, drift, repo_audit, check_links, verify_results, verify_live, verify_snapshot, npm) | done | `COORDINATION.md` | Confirm no broken site before PR |
 | T303 | PR → merge → GitHub Pages confirmation, record PR link and result | unclaimed | `COORDINATION.md` | Per brief: do not wait for review; flagged items do not block |
 | T304 | Handoff record: sources, verification performed, irregularities | unclaimed | `COORDINATION.md` | Board close-out |
 
 **Scope note:** no data register, script, or generated page is touched by this session except `EXECUTIVE-SUMMARY.md` (not drift-pinned; `repo_audit.py` does not read it). Owner decisions remain empty (`data/decision_choices.json` untouched) — nothing here decides anything on the owner's behalf.
+
+### T300–T302 result — session `cdc0817c` (2026-11-19)
+
+- **T300 (line-by-line review):** all 145 `data/*.csv` registers checked for source-link coverage. Every register has a source/evidence URL column filled on every row, except `data/price_snapshots.csv` / `data/price_snapshots_extended.csv` (opening/closing sources blank by design — no licensed feed, F07/F51) and `data/availability_delta_2026-11-14_to_2026-11-18.csv` (`player_url` 0/18; its summary register carries `source_url` 14/14). Counts: requirements 65, decision-readiness 65, suggestions 50 (all awaiting owner choice; `data/decision_choices.json` still empty), questions 66, decision questions 20, flags 124, correlations 9, strategies 9, games v1 137 / v2 150, injury rows 347, price snapshots 306 (blank + flagged). No published value changed; nothing inferred or filled.
+- **T301 (exec summary refresh):** `EXECUTIVE-SUMMARY.md` updated from the PR #86 era (55 pages, 54 pins, branch `arena/22ae094b-x2`) to `main` @ `b95fe2a` (56 pages, 58 pins, PR #103). File is not drift-pinned and `repo_audit.py` does not read it; no other file touched.
+- **T302 (gates):** `build.py` 56 pages PASS · `drift_check.py` 58/58 · `repo_audit.py` 22 checks, 0 failing · `check_links.py` 3,170 internal / 7,081 external, 0 broken · `verify_results.py` 137 games (26/32 clubs behind current standings read, F106) · `verify_live.py` 75/75 · `verify_snapshot.py` 103 pass / 0 fail / 1 review (Ben Brown) · `npm run build && npm run verify` ALL CHECKS PASSED · `git diff --check` clean.
+- **Irregularities:** none introduced. One process note: `main` advanced mid-session (PR #103, session `c8fedd17`) causing a `COORDINATION.md` conflict on rebase; resolved by keeping both blocks verbatim (37 HEAD lines + 15 claim lines), nothing discarded.

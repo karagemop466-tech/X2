@@ -3,7 +3,7 @@
 **Project:** X2 — NFL line generation, strategy validation, and decision support.
 **Repository:** https://github.com/karagemop466-tech/X2
 **Site (GitHub Pages):** https://karagemop466-tech.github.io/X2/ (served from `main` / root; pages under `/docs/`)
-**Branch of this session:** `arena/22ae094b-x2`, based on `main` @ `38629cad2d5daf388367a682f65de41b0fdc1bb6` (PR #86 merged).
+**Current `main`:** `b95fe2a` (PR #103 merged, 2026-11-19). This summary was refreshed by session `cdc0817c` (T301) on 2026-11-19; the prior version dated from the PR #86 era.
 
 ## Objective
 
@@ -59,8 +59,10 @@ Collect, organize, and analyze NFL lines using a complete list of requirements; 
 - **D8/D20/D21/D45:** archived prior-season data for train/validation/holdout split and designation calibration.
 - **D13/D16:** official inactive lists and snap counts (not captured anywhere in the repo).
 
-## Verification status (this session, 2026-11-19)
+## Verification status (session `cdc0817c`, 2026-11-19, on `main` @ `b95fe2a`)
 
-All checks green: `scripts/build.py` (55 pages, row-source + link checks), `verify_results.py` (137 games), `verify_live.py` (75/75 units), `verify_snapshot.py` (103 pass / 0 fail / 1 review — Ben Brown position, left flagged), `check_links.py` (3,055 internal / 7,016 external, none broken), `drift_check.py` (54/54 registers pinned), `repo_audit.py` (22 checks, 0 failing), `npm run build && npm run verify` (ALL CHECKS PASSED), `git diff --check` clean.
+All checks green: `scripts/build.py` (56 pages, row-source + link checks), `verify_results.py` (137 games; 26 of 32 clubs behind the current standings read — F106, published not suppressed), `verify_live.py` (75/75 units), `verify_snapshot.py` (103 pass / 0 fail / 1 review — Ben Brown position, left flagged), `check_links.py` (3,170 internal / 7,081 external, none broken), `drift_check.py` (58/58 registers pinned), `repo_audit.py` (22 checks, 0 failing), `npm run build && npm run verify` (ALL CHECKS PASSED). GitHub Pages status `built` for `main` at https://karagemop466-tech.github.io/X2/ .
+
+**Line-by-line audit (this session):** source-link coverage was checked across all 145 `data/*.csv` registers — every register carries a source/evidence URL column filled on every row, except the price-snapshot stores (opening/closing sources blank by design, no licensed feed — F07/F51) and one delta register's `player_url` (0/18; the register's `source_url` is filled 14/14 on its summary). Requirements 65/65, decision-readiness 65/65, suggestions 50 (all awaiting owner choice), questions 66, decision questions 20, flags 124. No published value was changed; no value was inferred or filled.
 
 **Limitation:** this sandbox's outbound network is restricted to github.com / npm / pypi, so nfl.com and other official pages could not be re-fetched live in this session. All NFL values stand as committed and previously verified by prior sessions; nothing was inferred or filled in.
