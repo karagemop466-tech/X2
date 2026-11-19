@@ -2807,9 +2807,10 @@ for _r in _w11_second:
         "No Injuries Reported on the page" if _r["page_says_no_injuries"] == "Y"
         else "Player rows listed")))
 pages["verification.html"] = (pages["verification.html"][0], pages["verification.html"][1] + f"""
-<h2>Third live pass, 2026-11-19 evening (session b94f5221) — the Week 11 delta series starts</h2>
-<p class="note">A third session re-read the official pages on 2026-11-19 evening, again without reusing any prior
-transcription, and this time the reads went through the platform page-fetch tool: <strong>official NFL.com pages are
+<h2>Third live pass, 2026-11-19 evening (session b94f5221) — the Week 11 delta, confirmed independently</h2>
+<p class="note">A third session re-read the official pages on 2026-11-19 evening, without reusing any prior
+transcription and after session 0a0deaaf's second read (22:10Z, F133), and this time the reads went through the
+platform page-fetch tool: <strong>official NFL.com pages are
 reachable from that path even though the bash shell is not</strong>, so the F130 limitation is narrower than first
 recorded (flag F130 updated on that evidence, check V94-13). Read in full: the injury hub (all 7 chunks), the
 standings (32 clubs), the Week 11 schedule, the Broncos roster page and the player page behind the Bills' "Dee
@@ -2828,7 +2829,8 @@ every count and the page's practice totals DNP 83 / LP 87 / FP 83 reproduced exa
 and 3 blank; rows (11), Out (5) and the practice split (8 DNP / 1 LP / 2 FP) are unchanged. One Indianapolis
 player therefore moved <em>off</em> Questionable between the two reads. The first-read register
 (<code>data/injury_week11_2026-11-19_by_club.csv</code>) is a point-in-time capture and was <strong>not</strong>
-edited; the second read lives in its own dated register below, and the next dated read adds one more delta row.
+edited; this third read lives in its own dated register below (0a0deaaf's second read is
+<code>data/week11_second_read_2026-11-19.csv</code>, flag F133), and the next dated read adds one more delta row.
 The moving player cannot be named from the published counts layer, because row-level data stays private while
 the terms question (F16) is open.</p>
 {table(_w11_sec_rows, ['club','game','kickoff','rows','game_status_out','game_status_questionable',
@@ -4943,17 +4945,21 @@ FP {_w11_pr.get('FP', 0)}. Every row links to the official page it was read from
 <p class="warn"><strong>{_w11_n_match} of {len(_w11_2nd)} club sections match on every count.</strong> Not matching: {html.escape(_w11_mism_txt)}. Open as flag F137. Practice codes (DNP, LP, FP) match in every club, and the page-wide totals match the published practice totals.</p>
 {_tbl(["Club", "Rows (published)", "Rows (second read)", "Questionable (published)", "Questionable (second read)", "Blank status (published)", "Blank status (second read)", "Match", "Source"], _w11_2nd_tbl_rows, "week11-second-read")}
 <h2>What changed since the previous read</h2>
-<p><strong>One dated delta is now published.</strong> A second independent read of all seven chunks (2026-11-19
-evening, session b94f5221, T311, through the platform page-fetch tool) reproduced {_w11_meta['rows_transcribed']}
-rows, the practice totals (DNP {_w11_pr.get('DNP', 0)} / LP {_w11_pr.get('LP', 0)} / FP {_w11_pr.get('FP', 0)})
-and 23 of 24 clubs exactly. The one difference: Indianapolis holds {_ind2['game_status_questionable']}
-Questionable cells at the second read against {_ind1['game_status_questionable']} at the first read
-(blank {_ind2['game_status_blank']} vs {_ind1['game_status_blank']}; rows, Out and the practice split unchanged) —
-one IND player moved off Questionable between the two reads. The first-read register is a point-in-time capture
-and was <strong>not</strong> edited; the delta lives on the <a href="verification.html">Verification</a> page and
-in <code>data/injury_week11_counts_2026-11-19_b94f5221.csv</code>, and the next dated read adds one more delta row.
+<p><strong>One dated delta is now published, and two independent readers agree on it.</strong> Session
+0a0deaaf's second read of all seven chunks (2026-11-19T22:10Z, <code>data/week11_second_read_2026-11-19.csv</code>,
+flag F133) found it first; session b94f5221's third dated read (~22:2x–22:45Z, through the platform page-fetch
+tool, T316) reproduced {_w11_meta['rows_transcribed']} rows, the practice totals (DNP {_w11_pr.get('DNP', 0)} /
+LP {_w11_pr.get('LP', 0)} / FP {_w11_pr.get('FP', 0)}) and 23 of 24 clubs exactly — and the same single difference:
+Indianapolis holds {_ind2['game_status_questionable']} Questionable cells at both later reads against
+{_ind1['game_status_questionable']} at the first read (blank {_ind2['game_status_blank']} vs
+{_ind1['game_status_blank']}; rows, Out and the practice split unchanged). With two independent later reads
+agreeing, the page changed between the first read (06:54Z) and 22:10Z — one IND player moved off Questionable —
+rather than the first transcription being off by one. The first-read register is a point-in-time capture and was
+<strong>not</strong> edited; the delta lives on the <a href="verification.html">Verification</a> page and in
+<code>data/injury_week11_counts_2026-11-19_b94f5221.csv</code>, and the next dated read adds one more delta row.
 The two open checks from the first read are closed on evidence: the Alford slug (<code>deaundre-ford</code>) is the
-official NFL.com player page for Dee Alford (CB, Buffalo Bills), and Jaylen Waddle is listed on the official
+official NFL.com player page for Dee Alford (CB, Buffalo Bills) — verified by session b94f5221 against the player
+page itself — and Jaylen Waddle is listed on the official
 Broncos roster page (#17, WR, ACT), so the DEN row is consistent with the official roster.</p>
 <h2>How this capture was made, and what is not verified</h2>
 <ul>

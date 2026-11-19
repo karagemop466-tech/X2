@@ -156,7 +156,7 @@ if failures:
     for m in failures:
         print("  - " + m)
     sys.exit(1)
-print("PASS: 13/13 V94 checks consistent; injury second read 253 rows "
+print("PASS: 13/13 V94 checks consistent; injury third dated read 253 rows "
       "(23/24 clubs identical to first read, IND delta exactly Q 4->3 / blank 2->3); "
       "practice totals 83/87/83; standings 32/32 identical to the 2026-11-18 capture; "
       "schedule 13/13 matches the observed page (MIN@SF neutral).")
