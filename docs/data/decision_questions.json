@@ -238,5 +238,17 @@
   "the_choice_you_will_face": "Research only, private tool, or published product",
   "owner": "You",
   "evidence_url": "https://github.com/karagemop466-tech/X2"
+ },
+ {
+  "q_id": "DQ-21",
+  "stage": "Gate 2",
+  "decision_topic": "Which register governs a duplicated brief line",
+  "question_that_must_be_answered": "When the same brief line appears on two requirement rows with different readiness verdicts, which verdict is the one a reader should act on?",
+  "why_it_blocks_a_decision": "The readiness table is the page that tells you what to do next. Where one brief line has two answers (Done and Missing; Blocked and Partial), a reader cannot act on it without knowing which governs.",
+  "known_now_source_backed": "Measured in-repo on 2026-11-19: 65 requirement rows, 57 distinct brief statements, 8 duplicate groups, 7 with divergent answers (data/requirements_duplicate_groups.csv, F131). No external source is needed to see this.",
+  "how_to_discover": "Read data/requirements_duplicate_groups.csv; each group lists both IDs, both verdicts and both file line numbers. Then choose a rule: keep both IDs with one declared authoritative answer (no renumbering), or merge them.",
+  "the_choice_you_will_face": "Keep both IDs and declare one authoritative answer per group (recommended, no renumbering), merge and renumber, or relabel the table as rows rather than requirements",
+  "owner": "You",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements_duplicate_groups.csv"
  }
 ]

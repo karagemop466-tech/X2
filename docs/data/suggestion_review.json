@@ -388,5 +388,57 @@
   "main_trade_off": "Twice the reads per capture, and it cannot fix a shared misreading of an ambiguous cell.",
   "current_evidence_state": "scripts/capture_cross_check.py (5 checks, all pass) and data/capture_cross_check_2026-11-18.csv; F109",
   "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/capture_cross_check_2026-11-18.csv"
+ },
+ {
+  "suggestion_id": "S51",
+  "area": "Register integrity",
+  "topic": "One canonical answer per distinct brief line",
+  "depends_on_decision": "None - the owner can choose without any new source or licence. Blocked only by the choice itself.",
+  "recommended_path": "A",
+  "recommendation_strength": "Strong on the evidence: 7 of 8 duplicate groups already publish contradictory verdicts, so the problem is not hypothetical.",
+  "paths_available": "A) Keep both IDs, add an authoritative-answer flag plus a build check | B) Merge and renumber | C) Relabel the table as rows, not requirements",
+  "why_recommended": "It is the only path that removes the ambiguity without renumbering IDs that six flags and five pages already cite. The check makes the choice stick instead of drifting like F114 did.",
+  "main_trade_off": "A leaves the duplicate rows in place, so the register still holds 65 rows for 57 statements; the label has to carry the difference.",
+  "current_evidence_state": "scripts/readiness_audit.py; data/readiness_mapping_audit.csv (65 rows); data/requirements_duplicate_groups.csv (8 groups, 7 divergent); F131",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv"
+ },
+ {
+  "suggestion_id": "S52",
+  "area": "Register integrity",
+  "topic": "Disambiguate the shared D-label lane",
+  "depends_on_decision": "None; the owner can adopt the citation rule with no source or licence.",
+  "recommended_path": "A",
+  "recommendation_strength": "Moderate - the harm is a reader error, not a wrong number, so the cost of B is not yet justified.",
+  "paths_available": "A) Citation rule | B) Prefix the decision-chain gate ids and update every citation | C) Leave as is",
+  "why_recommended": "It costs nothing, removes the ambiguity for a careful reader, and avoids renumbering rows that flags already cite.",
+  "main_trade_off": "A cannot be enforced mechanically, so a future page can still cite a bare label.",
+  "current_evidence_state": "data/identifier_lane_collisions.csv (10 labels); scripts/readiness_audit.py; F132",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/identifier_lane_collisions.csv"
+ },
+ {
+  "suggestion_id": "S53",
+  "area": "Register integrity",
+  "topic": "Closed status vocabulary for the readiness table",
+  "depends_on_decision": "None.",
+  "recommended_path": "A",
+  "recommendation_strength": "Strong - the free-text field has already produced one published miscount (F133).",
+  "paths_available": "A) Verdict column + qualifier column, vocabulary pinned | B) Keep the prefix classifier | C) Hand-map and drop the sentence",
+  "why_recommended": "It makes the headline count mechanically true and keeps the informative sentence, instead of choosing between them.",
+  "main_trade_off": "A one-off migration of 65 rows, and every page reading the status column must change in the same commit.",
+  "current_evidence_state": "F133; the build-time partition assertion in scripts/build.py; 1 row (D55) still unclassified",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
+ },
+ {
+  "suggestion_id": "S54",
+  "area": "Register integrity",
+  "topic": "No typed counts in prose",
+  "depends_on_decision": "None.",
+  "recommended_path": "A with a dated-history exception",
+  "recommendation_strength": "Strong - four instances of the same class in one week.",
+  "paths_available": "A) Generate every count | B) Allow typed counts with an adjacent file and date | C) Review only",
+  "why_recommended": "It removes the mechanism, not just the current instances, and the dated exception keeps the audit trail.",
+  "main_trade_off": "A broad edit across data cells, and reviewers lose the convenience of a number in the sentence.",
+  "current_evidence_state": "F114, F133, F134, F135; the scan attempted for F135 was withdrawn for false positives on honest text",
+  "evidence_url": "https://github.com/karagemop466-tech/X2/blob/main/data/flags.csv"
  }
 ]

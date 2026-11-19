@@ -966,10 +966,10 @@
   "flag_id": "F114",
   "category": "Presentation honesty",
   "item": "One site-wide \"data as of\" date described surfaces read up to four days apart",
-  "detail": "Every page header printed \"Data as of 2026-11-14 (UTC)\" while the injury register, the standings and the Week 10 finals on the same pages had been read on 2026-11-18. The label was true of the oldest surface and false of the newest, and a reader checking a number against the live page had no way to tell which surfaces were a day old and which were a week old. The header now names the newest read and the breakdown, and the landing page carries a per-surface freshness table giving each register its own read date, status and the reason for that date - including two registers (the sealed Week 11 forecast log and the club depth charts) that are deliberately frozen and must NOT be refreshed.",
+  "detail": "Every page header printed \"Data as of 2026-11-14 (UTC)\" while the injury register, the standings and the Week 10 finals on the same pages had been read on 2026-11-18. The label was true of the oldest surface and false of the newest, and a reader checking a number against the live page had no way to tell which surfaces were a day old and which were a week old. The header now names the newest read and the breakdown, and the landing page carries a per-surface freshness table giving each register its own read date, status and the reason for that date - including two registers (the sealed Week 11 forecast log and the club depth charts) that are deliberately frozen and must NOT be refreshed. RECURRENCE (2026-11-19, session 0a430c21): the fix itself went stale. The replacing constant READ_LATEST='2026-11-18' was printed on all 56 pages while 8 pages already carried 2026-11-19 reads, including index.html, whose own freshness table held three 2026-11-19 rows and whose 'New on 2026-11-19' section was the newest content on the page. A hard-coded date cannot be kept true by care. The header date is now DERIVED: scripts/build.py reads the declared read/verified/accessed date of 26 registers (_READ_DATE_COLUMNS), takes the maximum, and prints that. On 2026-11-19 that is 2026-11-19 (3 distinct dates, 23 register/date pairs). A build check then fails the build if any page names a read date newer than that maximum, so the same drift stops the build instead of shipping. The guard was tested by reverting the constant to 2026-11-18: it fired with 6 concrete page-level failures and the build exited non-zero.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Resolved - per-surface dates published",
-  "action_requested": "Keep the freshness table updated when a surface is re-read; a stale row here is itself a finding. Owner to confirm the Week 11 lines may stay frozen through kickoff (they should)."
+  "status": "Recurred and re-fixed 2026-11-19 (session 0a430c21) - header date is now derived, and a guard fails the build",
+  "action_requested": "Keep the derived date; when a register is re-read, record the read date in that register and the header follows automatically. Do not reintroduce a hard-coded header date. The guard only covers read-date phrasing, so a date written as prose without read/verified/accessed wording is not caught - a residual gap."
  },
  {
   "flag_id": "F115",
@@ -1132,5 +1132,68 @@
   "source_url": "https://www.gra.gov.sg/harm-minimisation/unlawful-remote-gambling-activities",
   "status": "Open - Singapore legal review needed",
   "action_requested": "Until reviewed: no wagering, referral, reward or prize use of any strategy, leaderboard or line by a person in Singapore. Owner decision and Singapore counsel required. Sources: SRC-118 (GRA) and SRC-119 (Singapore Statutes Online, Gambling Control Act 2022)."
+ },
+ {
+  "flag_id": "F135",
+  "category": "Presentation integrity",
+  "item": "The decision-readiness table does not line up with the requirements register it claims one row per",
+  "detail": "The landing page states of the readiness table: \"One row per requirement in the requirements register (65 of 65)\". scripts/readiness_audit.py compares, for every readiness row, the requirement text of the R-id it prints (data/requirements.csv) with the brief item it actually displays (data/decision_readiness.csv brief_item), and with the match_quality that data/readiness_mapping.csv records. Measured 2026-11-19 on main @ b95fe2a: 17 of 65 rows display the same brief item as their own requirement (14 identical, 3 reworded); 3 display an item that belongs to a DIFFERENT requirement row (D01->R44 and D55->R41 publish text identical to R37 and R46; D05->R47's text is 0.895 similar to R42 while its own is 0.825); 1 more (D52->R37) republishes D01's item; 9 are only related (same domain, different question); and 36 display a brief line the requirements register has no row for at all. Separately, the requirements register holds 65 rows but only 57 distinct brief statements: 8 groups are the same brief item written twice, and 7 of those 8 groups publish DIFFERENT readiness answers for the same question - R19/R49 is 'Done' vs 'Missing'; R25/R51 is 'Blocked' vs 'Partial'; R50/R58 is 'Partial' vs 'Blocked'; R42/R47 is 'not approved' vs 'Done'; R41/R46, R06/R24, R40/R53 likewise disagree. The published denominator therefore counts rows, not requirements. Nothing was re-mapped, renumbered or deleted: both registers and readiness_mapping.csv are unchanged. The evidence is published per row, with file line numbers, on docs/readiness-audit.html.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping_audit.csv",
+  "status": "Irregularity - open (register-level; not a data error)",
+  "action_requested": "Owner decides which register is canonical for a brief line that appears twice (requirements.csv row text or the readiness brief_item), and which of the two divergent readiness answers governs. Then either the duplicate requirement rows are merged under one ID, or the readiness table stops claiming one row per requirement. See decisions DQ-01 onward and suggestion S51."
+ },
+ {
+  "flag_id": "F136",
+  "category": "Presentation integrity",
+  "item": "The label \"D01\" identifies a different object on two pages of the site",
+  "detail": "data/decision-chain.csv mints gate ids D01-D10 for the ten questions that must be answered before any decision; data/decision_readiness.csv mints row ids D01-D65 for one row per requirement. The two lanes overlap on all ten labels: decision-path.html renders D01 as 'Do we have written permission (or a licence) to store, publish and derive...' while index.html renders D01 as the price-snapshot readiness row. Neither register is wrong on its own and no published value is false; the hazard is a reader carrying a bare 'D01' between pages, or a flag citing 'D01', and landing on a different object. A third register (data/demotion_gate.csv rules D1-D7) uses a similar shape without colliding on three digits. Measured by scripts/readiness_audit.py; the ten collisions are listed per label on docs/readiness-audit.html.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/identifier_lane_collisions.csv",
+  "status": "Irregularity - open (presentation; no data value wrong)",
+  "action_requested": "Owner picks a disambiguating prefix for one lane (e.g. GATE-D01 for decision-chain, leaving readiness as D01) or requires every citation to name its register. Not renumbered here, because renumbering a register that existing flags and pages cite is the collision cost this board has already paid several times. See suggestion S52."
+ },
+ {
+  "flag_id": "F137",
+  "category": "Presentation integrity",
+  "item": "The readiness status headline counted 37 of 65 rows and printed the remainder as zero",
+  "detail": "The landing page printed '13 done, 10 partial, 4 missing, 10 blocked, 0 irregular' above a 65-row table. scripts/build.py counted the status column with an exact match after splitting on ' (', so any status carrying a qualifier ('Partial — two dated reads', 'Done as a published decomposition, with a negative finding', 'Partially done — singles and one same-game two-leg parlay graded...', 'Needs review - blocking', 'Not enabled; no strategy ranked and no reward paid', 'Defined as a proposal') fell out of every bucket. 28 of 65 rows were uncounted, and the '0 irregular' figure was produced by that omission, not by measurement. No individual row's status text is wrong: each row is a precise sentence written by its author. The defect is the summary line. Fixed by classifying on the leading verdict word, asserting that the buckets partition the table (a build failure if not), and listing any row that still does not classify on the page instead of dropping it. Corrected headline: '18 done, 26 partial, 9 missing, 11 blocked, 0 irregular, 1 unclassified — 65 rows in total', with D55's own wording printed because it begins with no verdict word.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/decision_readiness.csv",
+  "status": "Resolved 2026-11-19 (session 0a430c21) - counts now partition the table, asserted at build time",
+  "action_requested": "None for the count. Owner may optionally normalise the 65 status strings to a closed vocabulary (Done/Partial/Missing/Blocked/Irregular plus a qualifier column), which would retire the unclassified row and make future summaries mechanical rather than prefix-matched. See suggestion S53."
+ },
+ {
+  "flag_id": "F138",
+  "category": "Presentation integrity",
+  "item": "Published \"current build\" link counts were stale twice - the same typed-number failure as F114 and F133",
+  "detail": "verification.html stated its link-check population as '47 pages, 2,379 internal links, 5,133 external links (re-counted on the current build)' and, earlier, '18 pages, 350 internal links, 1,347 external links'. Both figures were true of the build they were written on. On the 57-page build this session produced, the real counts are 3,284 internal and 7,194 external links. V14 and V34 had each already been 'corrected' once with a fresh typed number, which is the tell: a typed count is true only of the build it was typed on. Fixed by printing the counts from the build in progress, parsed from the output of scripts/check_links.py - one counting authority, not two, because an independent href sweep in build.py disagreed with check_links by 57 links and publishing the private rule beside a row crediting check_links would have been a new inaccuracy of the same kind. A build check now fails when any page states a page count as 'the current build' or 'this run' that differs from the number of pages actually written.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/verification_report.csv",
+  "status": "Resolved 2026-11-19 (session 0a430c21) - counts derived from check_links.py output; build guard added",
+  "action_requested": "None mechanically. Residual: the page still recites its own history ('18 pages, then 47, now 57'), deliberately, so the drift stays auditable; the owner may prefer that removed once F134 is reviewed."
+ },
+ {
+  "flag_id": "F139",
+  "category": "Presentation integrity",
+  "item": "Two prose cells still stated the 345-row injury register after it became 347",
+  "detail": "Q01 (data/questions.csv) answered 'Which injuries are currently listed for every team?' with '345 rows across 28 teams', and SG-01 (data/line_signals.csv) described its Week 10 evidence as verified on '345 rows'. The register was re-published at 347 rows from the 2026-11-18 read (F94, F107), so both cells were stale by two rows from 2026-11-18 onward. Both now state 347 and name the file and the read date, with the 345 figure kept as explicitly superseded. This is the fourth instance of one failure class in this repository: F114 (a stale 'data as of' date), F133 (a stale readiness headline that counted 37 of 65 rows) and F134 (stale 'current build' link counts). All four are a number typed into prose that a later data change invalidated, and in all four cases the published check beside it still said 'pass'. A build-time scan for prose row counts was attempted here and WITHDRAWN: on this site the honest forms ('a capture ledger ... 345 rows' describing an older capture; 'weeks 4-10 rows') cannot be separated from stale ones by a regular expression, and it produced five false positives on correct text. The alternative - a stricter rule that prose must never restate a register size - is proposed as S54.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/injuries_week10_2026.csv",
+  "status": "Resolved 2026-11-19 (session 0a430c21) - both cells corrected and sourced; no automated guard, see detail",
+  "action_requested": "Owner decides the standing rule (S54). Recommended: a prose cell may not restate a register's row count at all; it cites the file and the page prints the count. That retires this failure class instead of re-finding it a fifth time. Residual risk until then: any other cell could be stale and nothing in the build would notice."
+ },
+ {
+  "flag_id": "F140",
+  "category": "Register integrity",
+  "item": "data/suggestion_review.csv carries two different rows under each of S41, S42, S43 and S44",
+  "detail": "Eight rows share four IDs. S41 appears twice: 'Signal and staking kept apart' and 'Licensed odds feed for opening and closing prices'. S42: 'Automated weekly results refresh' and 'Closing snapshot captured at kickoff'. S43: 'Live demotion-gate status' and 'Depth-chart coverage for all 32 clubs'. S44: 'Player-prop research gated on a rights-cleared source' and 'Neutral-site correction'. The suggestions register itself (data/suggestions.csv) has one row per ID and no duplicates, so the review register has drifted from the thing it reviews: four review rows point at an ID that resolves to a different proposal. Cause not established in this pass; it predates session 0a430c21 (present on main @ 945a505) and is adjacent to, but not the same as, F135's duplicate-group finding in data/requirements.csv. No row was edited or deleted here: deciding which of each pair is the live review is an owner call, and deleting either loses work. Not gated by the build because the drift alarm's unique_key for this register is unset.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/suggestion_review.csv",
+  "status": "Irregularity - open (dual rows under one ID; nothing deleted)",
+  "action_requested": "Owner or a follow-up session: compare each pair against data/suggestions.csv, keep the row that matches the current proposal text, give the other a fresh ID or mark it superseded, then set unique_key=suggestion_id in data/drift_pins.csv for this register so a recurrence fails the build."
+ },
+ {
+  "flag_id": "F141",
+  "category": "Verification limitation",
+  "item": "Sandbox could not reach any official or club page on 2026-11-19, so no new official-source verification was performed",
+  "detail": "Probed from this environment on 2026-11-19: www.nfl.com, operations.nfl.com, www.packers.com and www.espn.com all returned HTTP 000 (connection refused); only github.com, api.github.com, registry.npmjs.org and pypi.org were reachable. Consequently no value introduced or touched by session 0a430c21 is marked verified against an official source, no NFL datum was changed, and nothing was inferred or filled. Every finding in this session is a statement about the repository's own registers and its own generated pages, which is reproducible offline; the commands are printed in COORDINATION.md and in each flag. This is the same limitation recorded as F130, now confirmed on a second date.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md",
+  "status": "Irregularity - open (verification limitation)",
+  "action_requested": "Re-run a live official-source pass over the pages this session touched from an environment that can reach nfl.com. The specific claims to re-check are the ones that cite a source date: the header read date (now derived), the freshness table, and the two corrected cells in Q01 and SG-01. None of them asserts an NFL fact that this session created; all rest on prior dated reads."
  }
 ]

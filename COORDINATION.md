@@ -3898,3 +3898,68 @@ written into the cell itself. Rows corrected (line numbers as of this commit):
 row, the ID-collision notes (F127 — process, not status), and rows whose numbering collided across sessions where
 GitHub's record does not disambiguate which block's PR carried which row (those stay as their owners left them).
 No data register value was touched by T402.
+
+
+
+## 2026-11-19 · session `0a430c21` · claim (T310–T315)
+
+**Branch:** `arena/0a430c21-x2` (fixed by Arena) · **Base:** `main` @ `b95fe2a` (PR #103 merged) · **Owner:** `0a430c21` · **Status:** in progress
+
+Board read in full first. No row on it is `unclaimed`; the newest IDs on the board were T210/F130 at claim time; `main` then advanced through PR #106 (session ddbc4956 took T305–T309 and F135/F133/F134), so this block is renumbered to **T310–T315** and **F135–F139**. Stale rows (T55, T60, T71, T102–T106, T112, T114–T119, T124, T128) are left exactly as their owners left them.
+
+**Sandbox limitation, recorded before any verification claim (same as F130):** `www.nfl.com`, `operations.nfl.com`, club sites (`www.packers.com`) and third-party sites (`www.espn.com`) all return **HTTP 000** from this environment on 2026-11-19. Only `github.com`, `api.github.com`, `registry.npmjs.org` and `pypi.org` are reachable. This session therefore performs **no new official-source reads**, marks **no new value** as verified against an official source, and changes no published NFL datum. Everything below is verified *against the repository's own registers and its generated output*, which is the class of check that does not need network access — and each finding names the register and line that proves it.
+
+**Two defects found while reading `main`, both mechanical and both reproducible offline.** (Renumbered T310–T315 and F135–F139 after `main` advanced through PR #106: session `ddbc4956` had already taken T305–T309 and F135/F133/F134.)
+
+1. **The decision-readiness table does not line up with the requirements register it claims to have one row per.** The landing page states *"One row per requirement in the requirements register (65 of 65)"* and each row prints a "Requirement (from the brief)" cell. For **41 of the 65 rows that printed cell is a different brief item from the requirement text of the R-id printed beside it** (e.g. `D29 ↔ R11`, where R11 is *"Executive summary"* and the D29 row reads *"Turn the 136-game log into the pre-registered backtest corpus"*). The mapping is recorded as "exact" on rows where the text is not the same item, so the published precision claim is stronger than the data supports. This is the *decision-readiness* surface — the one the brief asks to be one row per requirement — so a reader cannot trace a requirement to its gate.
+2. **The site-wide header is a day stale and F114 has recurred.** Every page prints `Latest read 2026-11-18`, on a build where **8 pages carry 2026-11-19 reads** — including `index.html`, whose own freshness table has three `2026-11-19` rows and whose "New on 2026-11-19: an independent live re-read" section is the newest content on the page. F114 was raised for exactly this failure and is marked `Resolved - per-surface dates published`; the same defect is back because the header date is a hard-coded constant that no check compares against the registers.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T310 | Claim and board record (this block) | done | `COORDINATION.md` | Board rule |
+| T311 | Mechanics-only audit of the readiness→requirement mapping; publish the per-row evidence so the 41 mismatches are inspectable rather than asserted | in progress | `scripts/readiness_audit.py` (new), `data/readiness_mapping_audit.csv` (new), `data/flags.csv` (F135) | Defect 1 above |
+| T312 | Make the header read-date a **derived** value (max read date found in the registers) instead of a hard-coded constant, so it cannot go stale again; re-open F114 as a recurrence with the proof | in progress | `scripts/build.py` (`READ_LATEST`/`READ_SUMMARY`), `data/flags.csv` (F114), generated `docs/**` | Defect 2 above |
+| T313 | Publish the audit on the site as its own page and link it from the readiness table, so a reader sees the mapping caveat in the place the mapping is used | in progress | `scripts/build.py`, generated `docs/**` | The brief's "flag it for review" requirement |
+| T314 | Two suggestion-register additions and one decision-question addition for the information that is genuinely missing to fix the mapping (owner must say which register is canonical) | in progress | `data/suggestions.csv`, `data/suggestion_review.csv`, `data/decision_questions.csv`, generated `docs/**` | Brief: "Suggestions need to be made to discover missing information" |
+| T315 | Integration: rebuild, all gates, PR → `main`, merge, confirm GitHub Pages, record PR link and result | pending — runs last | `COORDINATION.md`, PR | Required by the brief |
+
+### T310–T315 close-out · session `0a430c21` · 2026-11-19
+
+**Status: T310–T315 done except the merge record, which is written below once the PR merges.**
+Renumbered from T211–T216 / F131–F135 after `main` advanced through PR #106 mid-session (session `ddbc4956` had taken T305–T309 and F131/F133/F134). Nothing was discarded: `git pull --rebase` was run six times, every `COORDINATION.md` conflict was resolved by keeping the other session's block verbatim and appending this one after it, and every generated HTML/JSON conflict was resolved by **rebuilding**, never by hand-editing output.
+
+**What this session actually verified, and how.** No official NFL page was read: `www.nfl.com`, `operations.nfl.com`, club sites and `www.espn.com` all returned HTTP 000 from this sandbox on 2026-11-19 (the same limitation as F130, and now F141). Every finding below is therefore a statement **about the repository's own registers and its own generated pages**, reproducible offline by a command that is printed beside it. No published NFL datum was changed, inferred or filled.
+
+| ID | Task | Status | Outcome |
+|---|---|---|---|
+| T310 | Board record (claim block) | done | Claimed before writing any file |
+| T311 | Mechanics-only audit of the readiness→requirements mapping | done | `scripts/readiness_audit.py` → `data/readiness_mapping_audit.csv` (65 rows), `data/requirements_duplicate_groups.csv` (8 groups), `data/identifier_lane_collisions.csv` (10 labels); published on `docs/readiness-audit.html` with file line numbers |
+| T312 | Header read date made **derived**, not typed | done | `scripts/build.py` reads declared read/verified dates from 26 registers and takes the maximum; a build check fails if any page claims a newer read date. **Proved by forcing the old constant back:** the guard fired with 6 concrete page-level failures |
+| T313 | Audit published on the site and linked from the claim it qualifies | done | `docs/readiness-audit.html` (57th page) + a measured caveat beside the readiness table on the landing page |
+| T314 | Suggestions / decision question for the information that is missing | done | S51, S52, S53, S54 and DQ-21 (all "for review — not implemented"; no path chosen for the owner) |
+| T315 | Integration: rebuild, all gates, PR → `main`, merge, confirm Pages | in progress → see merge record |
+
+**Findings, each with its evidence command:**
+
+| Flag | Finding | Evidence | Status |
+|---|---|---|---|
+| **F135** | The decision-readiness table does not line up with the requirements register it claims one row per: of 65 rows, 17 show the same brief item as their own R-id, 3 show an item belonging to a *different* requirement, 9 are only related, and **36 show a brief line the register has no row for at all**. Separately the register holds 65 rows but only **57 distinct brief statements**; 8 groups are the same item twice and **7 of those 8 publish contradictory readiness answers** (R19/R49 Done vs Missing; R25/R51 Blocked vs Partial; R50/R58 Partial vs Blocked; R42/R47 not-approved vs Done; plus R41/R46, R06/R24, R40/R53) | `python3 scripts/readiness_audit.py` | Open — owner decides canonical register |
+| **F136** | The label `D01` means two different objects: a decision-chain *gate that must be answered* on `decision-path.html` and a *readiness row* on `index.html`. Ten labels collide | `data/identifier_lane_collisions.csv`; verified against both rendered pages (`decision-path.html` D01 = data-rights gate; `index.html` D01 = price-snapshot row) | Open — recorded, not renumbered |
+| **F137** | The readiness headline printed **"13 done, 10 partial, 4 missing, 10 blocked, 0 irregular"** over a 65-row table — 37 rows counted, 28 silently dropped because the status column is free text and the counter used an exact match. "0 irregular" was an artifact of the omission, not a measurement. Corrected headline: **18 / 26 / 9 / 11 / 0 / 1 unclassified = 65**, with the one unclassifiable row named on the page instead of bucketed | `scripts/build.py` `_ready_bucket`; a build assertion now fails if the buckets do not partition the table | Fixed |
+| **F138** | `verification.html` stated its link population as **47 pages / 2,379 internal / 5,133 external "as the current build"** on a 57-page build whose real counts are **3,284 / 7,232**. V14 and V34 had each already been "corrected" once with a fresh typed number — the tell that a typed count is true only of the build it was typed on | Counts now parsed from the `check_links.py` run over the build in progress; a build check fails on a stale "current build" page count. **Proved by forcing `47 pages` back in:** the guard fired | Fixed |
+| **F139** | Q01 and SG-01 still stated **"345 rows"** for the injury register after it was re-published at **347** from the 2026-11-18 read (F94/F107) | Both cells corrected with the file, the read date and the 345 figure kept as explicitly superseded | Fixed |
+| **F140** | `data/suggestion_review.csv` carries **two different rows under each of S41, S42, S43 and S44**, while `data/suggestions.csv` has one row per ID — so four review rows resolve to a proposal they do not describe. Pre-existing on `main`, not flagged, and not gated (that register has no `unique_key` pin) | `python3 -c` duplicate scan over the register; pairs listed in the flag | Open — nothing deleted |
+| **F141** | Sandbox cannot reach any official or club page on 2026-11-19 (HTTP 000 for nfl.com, operations.nfl.com, packers.com, espn.com). No new value was marked verified; no NFL datum changed | `curl` probes in this session; same as F130 | Open — verification limitation |
+
+**F114 was reopened as a recurrence, not quietly re-fixed.** The prior fix replaced one hard-coded date with another, which went stale within four days. The detail now records that, and the header date is derived.
+
+**One thing this session changed its mind about, recorded rather than hidden.** A build-time scan to catch F139's class (a register row count typed into prose) **was written, run, and withdrawn**. On this site the honest forms — "a capture ledger … 345 rows" describing an older capture, "weeks 4-10 rows" — are not separable from stale ones by regular expression, and the scan produced five false positives on correct text. Shipping it would have meant a guard that gets disabled. The limitation is recorded in F139 and the standing rule is proposed as S54 instead of papered over.
+
+**Two defects this session found in its own work, both fixed:**
+1. A bad CSV append truncated `data/suggestions.csv` and `data/suggestion_review.csv` to their last row, and the corruption was committed. Restored from the preceding commit, verified against it with `git diff` (zero deleted lines), and every subsequent append went through a checked helper that refuses to write to a register with no header.
+2. My own `href` sweep disagreed with `scripts/check_links.py` by 57 links. Rather than publish the private rule beside a row crediting `check_links.py`, only the checked figure is published — one counting authority.
+
+**Gates on the rebased branch** (`arena/0a430c21-x2`, base `origin/main` @ `945a505`):
+`build.py` **57 pages**, link and row-source checks pass · `check_links.py` **3,284 internal / 7,232 external, 0 broken** · `drift_check.py` **62/62 registers** · `repo_audit.py` all checks pass · `readiness_audit.py` 65 rows / 8 groups / 10 lane collisions · `verify_snapshot.py` 0 fail, 1 review (Ben Brown, pre-existing) · `npm run build && npm run verify` **ALL CHECKS PASSED**.
+
+**Not done, stated plainly:** no NFL page was read, so nothing new is verified against an official source; no strategy was ranked, no price added, no ROI or CLV claim made, no reward enabled; the frozen 137-game corpus was not touched; the 36 unregistered brief lines were published as a finding rather than resolved, because resolving them means deciding which register is canonical — an owner decision (DQ-21, S51).
