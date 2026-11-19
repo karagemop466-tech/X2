@@ -3783,3 +3783,26 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 - Nothing in the published Week 11 counts was overwritten. Nothing was filled from memory.
 
 **Board note on branch naming:** the brief's `session-<id>/<task>` branches were not created. The session's branch is fixed as `arena/0a0deaaf-x2`, per the branch rule for this session.
+## 2026-11-19 · session `ddbc4956` · claim (T305–T309)
+
+**Branch:** `arena/ddbc4956-x2` (this session) · **Base:** `main` @ `1253f95` (PR #102 merged) · **Status:** final integration.
+**Renumbered:** T208–T212 were taken by session `c8fedd17`; this block now uses T305–T309. Nothing discarded.
+
+**Sandbox verification limitation (recorded before any verification claim):** `www.nfl.com`, `operations.nfl.com`
+and `api.weather.gov` return connection refused (HTTP 000) from this environment; only `github.com`,
+`api.github.com` and package registries are reachable. This session therefore performed **no live official-source
+reads of NFL.com**. No new value was marked verified against an official source; nothing new was inferred or filled;
+no existing published value was changed. Recorded as flag **F131**. All existing values stand on their prior dated
+reads with source links, and every page carries source links for manual review once the official pages are reachable.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T305 | Repo line-by-line review: read key data registers, scripts and generated pages; record what is verified vs blank vs flagged; flag irregularities | in progress | `COORDINATION.md`, `README.md`, `data/*.csv`, `data/*.json`, `scripts/build.py`, `docs/*.html` | Final integration baseline. Confirm the merged `main` tree is internally consistent and every published surface is present and source-linked. Live NFL verification not possible (F131). |
+| T306 | Reconcile the two open PRs: merge the record-only PR #99; close the stale, conflicting, superseded PR #75 after confirming its deliverables already landed on `main` | in progress | GitHub action only (PR merge/close), `COORDINATION.md` record | PR #75 (open since 2026-11-18, CONFLICTING) has no commits in >24h, far past the 60-minute takeover rule; its six deliverables (corpus v2, two estimators, weekly diff, Week 11 venues, Week 11 injury probe) were each merged to `main` by later PRs. PR #99 is a mergeable COORDINATION.md-only record of an already-merged PR. |
+| T307 | Final integration verification: run every build/check script and confirm the site builds with no broken links | in progress | `scripts/build.py`, `scripts/check_links.py`, `scripts/drift_check.py`, `scripts/repo_audit.py`, `scripts/verify_results.py`, `scripts/verify_live.py`, `scripts/verify_snapshot.py`, `src/`, generated `docs/` | The brief requires the final integration session to confirm the combined data and that the site builds with no broken links before merging. |
+| T308 | Final PR: open from `arena/ddbc4956-x2` to `main`, merge, confirm GitHub Pages deploys, record PR link and result | runs last | `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
+| T309 | Handoff record: record sources, verification performed and irregularities; mark tasks done | pending | `COORDINATION.md` | Board close-out after merge. |
+
+**Verification performed (this session):** (filled in at T210)
+**Irregularities introduced this session:** F131 — sandbox verification limitation (see above).
+**No other session's work will be discarded.**
