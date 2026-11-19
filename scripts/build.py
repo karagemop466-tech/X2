@@ -182,6 +182,8 @@ event_risk = read_csv("event_risk_week11.csv")
 event_risk_summary = read_csv("event_risk_summary_week11.csv")
 injury_impact = read_csv("injury_impact_2026.csv")
 live_reverification = read_csv("live_reverification_2026-11-14.csv")
+# session 68fc9b6c (2026-11-19): second live pass, loaded here because the verification page uses it
+_reverify19 = read_csv("live_reverification_2026-11-19_68fc9b6c.csv")
 decision_console = read_csv("decision_console.csv")
 # The console is generated from data/decision_choices.json.  If the CSV was built
 # from a different JSON state than the one on disk, the page would show a decision
@@ -739,16 +741,16 @@ n_qualified = sum(1 for r in scorecard if r["status"].startswith("Qualified"))
 # script can derive; the build checks the row count and that every row has a source.
 _freshness_rows = [
     {"surface": "Week 10 injury register (347 rows)", "official_source": "NFL.com injury report",
-     "last_read": "2026-11-18", "status": "current",
-     "why_that_date": "Re-read in full and re-published on 2026-11-18; 13 clubs changed between the two reads (F94, F105).",
+     "last_read": "2026-11-18", "status": "not re-readable today",
+     "why_that_date": "Re-read in full and re-published on 2026-11-18; 13 clubs changed between the two reads (F94, F105). On 2026-11-19 the hub renders Week 11 and no longer serves the Week 10 tables, so the 347 rows cannot be re-verified today - the advance happened, unscheduled, which partly resolves F126 (V68-07).",
      "source_url": "https://www.nfl.com/injuries/"},
     {"surface": "Standings (32 clubs, 150 completed games)", "official_source": "NFL.com standings",
-     "last_read": "2026-11-18", "status": "current",
-     "why_that_date": "Read after the Week 10 slate completed. The results ledger still holds 137 games, so the currency check fails (V35, F113).",
+     "last_read": "2026-11-19", "status": "current",
+     "why_that_date": "Re-read 2026-11-19 and identical to the 2026-11-18 capture for the 24 clubs in the first page chunk; Week 11 had not kicked off, so nothing can have moved yet (V68-06). The results ledger still holds 137 games, so the currency check fails (V35, F113).",
      "source_url": "https://www.nfl.com/standings/"},
     {"surface": "Week 10 finals (13 games added to the corpus)", "official_source": "NFL.com Week 10 by-week schedule",
-     "last_read": "2026-11-18", "status": "current",
-     "why_that_date": "Transcribed from the official schedule page and reconciled 32 of 32 clubs against the standings (F105).",
+     "last_read": "2026-11-19", "status": "current",
+     "why_that_date": "Re-read independently on 2026-11-19: all 14 Week 10 finals and the four bye clubs match the v2 register (V68-01, V68-02). Originally transcribed and reconciled 32 of 32 clubs on 2026-11-18 (F105).",
      "source_url": "https://www.nfl.com/schedules/2026/by-week/week-10"},
     {"surface": "Week 11 lines and the sealed pre-kickoff forecast log", "official_source": "NFL.com Week 11 schedule",
      "last_read": "2026-11-14", "status": "frozen on purpose",
@@ -759,8 +761,8 @@ _freshness_rows = [
      "why_that_date": "Club charts are pre-injury and self-labelled unofficial; the capture date is published with every row so a reader can see the lag (F45).",
      "source_url": "https://www.detroitlions.com/team/depth-chart"},
     {"surface": "Week 11 schedule", "official_source": "NFL.com Week 11 by-week schedule",
-     "last_read": "2026-11-14", "status": "not yet re-read",
-     "why_that_date": "Confirmed game by game on 2026-11-14. Kickoff times and broadcasters can move, so this is the surface most likely to be stale.",
+     "last_read": "2026-11-19", "status": "current",
+     "why_that_date": "Re-read 2026-11-19: all 13 fixtures match on matchup, day and kickoff time, and the Mexico City international game is the only neutral-site fixture (V68-10, V68-11). Kickoff times can still move.",
      "source_url": "https://www.nfl.com/schedules/2026/by-week/week-11"},
 ]
 
@@ -2660,6 +2662,28 @@ A "unit" is one team's injury block, one team's standings line, one Week 11 game
 <p class="note"><strong>What this does and does not prove.</strong> It proves the transcription in this
 repository matches the page as served on {AS_OF}. It does not prove the page is right about a player, and it
 is not permission to re-print the page (F16).</p>
+<h2>Second live pass, 2026-11-19 (session 68fc9b6c)</h2>
+<p class="note">A separate session re-read the official pages on 2026-11-19, without reusing the 2026-11-18
+inputs, and re-derived the registers from the repository side rather than copying them. The nine checks below are
+written by <code>scripts/verify_68fc9b6c.py</code>, which exits non-zero if any of them fails, and the register it
+writes is row-count-pinned in the drift alarm (<code>data/drift_pins.csv</code>).</p>
+{tiles([(len(_reverify19), 'checks re-run against live pages'),
+        (sum(1 for r in _reverify19 if r['result'] == 'PASS'), 'passed'),
+        (2, 'stale flags corrected (F01, F90)'), (1, 'flag partly resolved (F126)')])}
+{table(_reverify19, ['check_id','result','detail','source_url','read_date_utc'],
+       {'check_id':'Check','result':'Result','detail':'What was found','source_url':'Official source',
+        'read_date_utc':'Read (UTC)'}, table_id='live-reverif-1119', filterable=True)}
+<p class="note"><strong>Two flags were stale, and are corrected rather than quietly dropped.</strong> F01 said the
+README was a one-line placeholder; it is 363 lines and has been for several sessions. F90 said the decision-readiness
+table held 45 rows against 58 requirements; both registers now hold 65 rows and the mapping between them is a
+bijection. Both rows are closed on the <a href="flagged.html">Flagged for review</a> page with the reproduction
+command that shows the claim no longer holds. What a stale flag costs is trust in the page that lists the others,
+so the correction is published here rather than made silently.</p>
+<p class="note"><strong>One source behaviour changed while this pass ran.</strong> On 2026-11-19 the injury hub renders
+Week 11. On 2026-11-18 it rendered Week 10 while its selector offered Week 11, which is what F126 recorded. The hub
+does advance; it advances on a schedule nobody publishes. That means the Week 10 register (347 rows) is now
+un-re-readable at its source, so the 347 rows are published with their read date and a stated limitation rather
+than a fresh "verified" label.</p>
 """)
 
 pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
@@ -3121,6 +3145,7 @@ for _name, _rows, _id_field in (
         ("availability_delta_summary", _avail_summary, "metric"),
         ("live_reverification_2026-11-18_cf85d485", _reverify18, "check_id"),
         ("live_reverification_2026-11-18 (d0ede22d, 75 units)", _reverify75, "check_id"),
+        ("live_reverification_2026-11-19_68fc9b6c", _reverify19, "check_id"),
         ("capture_cross_check_2026-11-18", _xcheck, "check_id"),
         ("what_changed", _what_changed, "team_abbr"),
         ("results_feed_completeness", _feed_complete, "team_abbr"),
@@ -3145,6 +3170,7 @@ for _name, _rows, _id_field in (
 # Pinned row counts: the drift alarm for the published registers themselves.
 _pin = {"availability_captures": 2, "availability_delta": 18, "availability_delta_summary": 14,
         "live_reverification_2026-11-18_cf85d485": 28, "live_reverification_2026-11-18": 75,
+        "live_reverification_2026-11-19_68fc9b6c": 12,
         "capture_cross_check_2026-11-18": 5,
         "what_changed": 32, "results_feed_completeness": 32, "week_count_reconciliation": 8,
         "games_week10_backfill": 13, "forecast_record_checks": 6, "forecast_records_2026": 178,
@@ -3154,6 +3180,7 @@ for _nm, _n in (("availability_captures", len(_captures)), ("availability_delta"
                 ("availability_delta_summary", len(_avail_summary)),
                 ("live_reverification_2026-11-18_cf85d485", len(_reverify18)),
                 ("live_reverification_2026-11-18", len(_reverify75)),
+                ("live_reverification_2026-11-19_68fc9b6c", len(_reverify19)),
                 ("capture_cross_check_2026-11-18", len(_xcheck)), ("what_changed", len(_what_changed)),
                 ("results_feed_completeness", len(_feed_complete)),
                 ("week_count_reconciliation", len(_feed_recon)), ("games_week10_backfill", len(_backfill)),
@@ -4096,6 +4123,19 @@ NAV.insert(NAV.index(("depth-replacement.html", "Depth of replacement")) + 1,
            ("matchup-matrix.html", "Matchup matrix 1st-4th"))
 
 # Landing-page pointer, kept to two lines.
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
+<h2>New on 2026-11-19: an independent live re-read of every published result</h2>
+<p class="note">A separate session re-read the official pages on 2026-11-19 without reusing the 2026-11-18
+inputs and re-derived the registers from the repository side. <strong>All 14 Week 10 finals, the four Week 10
+byes, all 13 Week 11 fixtures and the 24 standings lines visible on the first page chunk still match</strong>
+(<a href="verification.html">V68-01 to V68-12</a>). Two rows on the flag list turned out to be stale and are now
+closed with the command that shows the claim no longer holds: F01 (README called a one-line placeholder; it is 363
+lines) and F90 (readiness 45 rows against 58 requirements; both are 65 with a verified bijection). One source
+behaviour changed while the pass ran: the injury hub now renders Week 11, so the Week 10 register (347 rows) can no
+longer be re-read at its source and is published with its read date and that limitation rather than a fresh
+"verified" label (F126, partly resolved).</p>
+""")
+
 pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + f"""
 <h2>New on 2026-11-18: a second corpus version, and a real string matrix</h2>
 <ul>
