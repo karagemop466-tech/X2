@@ -1105,5 +1105,14 @@
   "source_url": "https://www.nfl.com/injuries/",
   "status": "Open - single read",
   "action_requested": "Second independent read of all seven chunks; check Waddle on the Broncos roster page and the Alford slug; only then start the Week 11 delta series (next read adds the delta)."
+ },
+ {
+  "flag_id": "F130",
+  "category": "Verification limitation",
+  "item": "Sandbox cannot reach official NFL.com pages for live verification",
+  "detail": "This session could not perform live reads of official NFL.com injury, schedule, standings, game-center or depth-chart pages: www.nfl.com and operations.nfl.com return connection refused (HTTP 000) from this environment; only github.com, api.github.com and package registries are reachable. Consequently no new value in this session was marked verified against an official source; nothing new was inferred or filled, and no existing published value was changed. All existing values stand on their prior dated reads with source links, and every page carries source links for manual review once the official pages are reachable.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Irregularity - open (verification limitation)",
+  "action_requested": "Re-run a live official-source verification pass from an environment that can reach nfl.com before treating any newly touched value as verified."
  }
 ]
