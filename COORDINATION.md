@@ -62,6 +62,7 @@ confirms the site builds with no broken links, and publishes to GitHub Pages.
 | `e2d7b11d` | `arena/e2d7b11d-x2` | **Current session (2026-11-18).** Arrived on `main` @ `bd4f469` (PR #58 merged). Claims **T102–T105**: the 58-row decision-readiness table (F90), the change-our-mind source reconciliation with build guards (F92/F93), disposition of the stale open PR #48, and the closing integration (re-verification, PR, merge, Pages). Also performed an independent full re-read of the official Week 10 injury page on 2026-11-18, found the page had changed since the 2026-11-14 transcription (345 → 347 rows), re-captured and republished it (flag F94, commit 240d9dd). Branch is fixed by Arena; no other branch is touched. |
 | `79c9cb37` | `arena/79c9cb37-x2` | **Current session (2026-11-18).** Arrived on `main` @ `2db1bd7` (PR #67 merged). Claims **T108–T111**: the canonical **v2 verified results feed** that closes decision **P09** by publishing the 13 transcribed Week 10 games as a parallel v2 register (150 games) with neutral-site flags and a fresh 2026-11-18 standings reconciliation; the **F106** read-date fix in `scripts/verify_results.py`; an independent line-by-line verification pass against official sources; and the closing integration (rebuild, checks, PR, merge, Pages). Additive only; the published 137-game corpus (`data/games_2026_results.csv`, `data/results_feed_2026.csv`) is left untouched for the owner's P09 decision. |
 | `947b5e75` | `arena/947b5e75-x2` | **Current session (2026-11-19).** Claims T135–T136 after resolving a T133 collision with session `8ddfaa33`: correct the landing-page / executive-summary headline so the frozen 137-game result and parallel 150-game research result are shown side by side with evaluation counts and an explicit no-rank warning; then integrate and verify. Scope: `scripts/build.py`, generated `docs/**`, `COORDINATION.md`. |
+| `7ff09bc2` | `arena/7ff09bc2-x2` | **Current session (2026-11-19).** Claims T305–T308: organize the published Python Pages navigation into accessible categories, make the shared latest-read label accurate for the dated Week 11 capture, run the full acceptance gates, and integrate through PR/Pages. Scope: `scripts/build.py`, `docs/assets/style.css`, generated `docs/**`, `COORDINATION.md`; no source data values changed. |
 
 ## Task board (combined — all sessions)
 
@@ -3726,3 +3727,20 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 - **Gates before merge:** the T208 list above, unchanged (no data file changed by this session, so no re-run was needed beyond the baseline).
 - **Open after this session, owned by others (not touched):** PR #75 and PR #99 (see T209), and the stale in-progress rows listed in T209. Nothing here blocks the site.
 
+
+## 2026-11-19 · session `7ff09bc2` · claim (T305–T308)
+
+**Branch:** `arena/7ff09bc2-x2` (fixed by Arena) · **Base:** `main` @ `548c5f8` (PR #105 merged) · **Status:** in progress.
+
+**Board review:** read the current task board and recent session blocks before claiming. The previously active work on the results/strategy/availability dataset is integrated; T300–T304 belongs to session `cdc0817c` and is left unchanged. T305–T308 is a new, disjoint final-integration scope. Open PRs #75 and #99 remain owned by other sessions and are not touched. The site already has the requested Questions, Suggestions, Review console, executive summary, readiness table and Flagged for Review surfaces; this task addresses a concrete usability gap in the shared site chrome rather than duplicating those deliverables.
+
+**Verification boundary:** this environment can reach GitHub and package registries but not NFL.com. No new NFL value will be verified, inferred or filled in. The header-date correction will be derived only from the retained Week 11 capture metadata and will label it as a single, not independently verified read (F129); the older source dates will remain explicit.
+
+| ID | Task | Status | Owner | Files (scope) | Why |
+|---|---|---|---|---|---|
+| T305 | Replace the 52-link flat header with accessible category groups, covering every generated page exactly once and opening the group containing the current page | in progress | 7ff09bc2 | `scripts/build.py`, `docs/assets/style.css`, generated `docs/*.html` | The flat menu is a navigation usability defect; categories make the existing pages discoverable without deleting or renaming any route. |
+| T306 | Correct the shared latest-read label to include the retained 2026-11-19 Week 11 injury-hub capture and distinguish it from older Week 10 / standings / depth / line dates | in progress | 7ff09bc2 | `scripts/build.py`, generated `docs/*.html` | The global label currently says 2026-11-18 although the repository records a later single-read Week 11 capture; no source row or capture is changed. |
+| T307 | Rebuild, check all generated routes/source-row guards, run repository gates and inspect the grouped navigation on every page | pending | 7ff09bc2 | `COORDINATION.md` (verification record), build outputs | Ensure the integration does not break routes, row-source links, registers, or the parallel Node build. |
+| T308 | Create PR from this fixed branch, merge after checks, confirm GitHub Pages, and record PR/deploy evidence | pending | 7ff09bc2 | `COORDINATION.md`, PR | Closing integration requested by the brief. |
+
+**Claimed file scope:** `scripts/build.py`, `docs/assets/style.css`, generated `docs/**`, and this task-board block only. No `data/**`, model scripts, raw captures or other session's owned files are in scope.
