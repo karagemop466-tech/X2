@@ -1,0 +1,13 @@
+check_id,result,detail,source_url,read_date_utc
+V68-01,PASS,14/14 Week 10 finals match the live official page,https://www.nfl.com/schedules/2026/by-week/week-10,2026-11-19
+V68-02,PASS,"derived bye set ['CHI', 'DEN', 'PHI', 'TB'] == official ['CHI', 'DEN', 'PHI', 'TB']; 28 of 32 clubs played",https://www.nfl.com/schedules/2026/by-week/week-10,2026-11-19
+V68-03,PASS,"Kerby Joseph/Cade Mays/D.J. Reed all Out in register: {'Kerby Joseph': 'Out', 'Cade Mays': 'Out', 'D.J. Reed': 'Out'}",https://www.nfl.com/players/kerby-joseph/,2026-11-19
+V68-04,PASS,137-game ledger reconciles to 2026-11-14 snapshot,https://www.nfl.com/standings/,2026-11-19
+V68-05,PASS,150-game v2 register reconciles to 2026-11-18 capture (32/32),https://www.nfl.com/standings/,2026-11-19
+V68-06,PASS,24/24 live standings read match the 2026-11-18 capture (Week 11 has not kicked off),https://www.nfl.com/standings/,2026-11-19
+V68-07,PASS,"Injury hub now renders Week 11 (title 'Week 11 of the 2026 Season'); F126's 'nothing to fire on' limitation is superseded — the hub does advance, with a lag. No Week 11 register is transcribed here (F16).",https://www.nfl.com/injuries/,2026-11-19
+V68-08,PASS,"README is 363 lines, not a one-line placeholder (F01 stale)",https://github.com/karagemop466-tech/X2/blob/main/README.md,2026-11-19
+V68-09,PASS,"requirements=65, readiness=65, 1:1 coverage (F90 stale)",https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping.csv,2026-11-19
+V68-10,PASS,"13/13 Week 11 fixtures match on matchup, day and kickoff time",https://www.nfl.com/schedules/2026/by-week/week-11,2026-11-19
+V68-11,PASS,"official page renders 'International Game, November 22nd' with the Mexico City logo for MIN@SF; the register flags game 12 neutral_site=Y and international_games_2026.csv carries Estadio Banorte, Mexico City - the only neutral-site Week 11 fixture in either register",https://www.nfl.com/schedules/2026/by-week/week-11,2026-11-19
+V68-12,PASS,The Week 10 injury register cannot be re-read at its source on 2026-11-19 (hub renders Week 11). The 347 rows are published with their 2026-11-18 read date and a stated limitation; no fresh 'verified' label is claimed for them. See F126 and V68-07.,https://www.nfl.com/injuries/,2026-11-19

@@ -2,11 +2,11 @@
  {
   "flag_id": "F01",
   "category": "Repo irregularity",
-  "item": "README is a one-line placeholder",
-  "detail": "README.md contained only '# X2' at commit 259c1c2 (the only commit). No description, license, data notes, or setup steps.",
-  "source_url": "https://github.com/karagemop466-tech/X2",
-  "status": "Irregularity - open",
-  "action_requested": "Confirm project purpose and whether a LICENSE is wanted."
+  "item": "README is a one-line placeholder (RESOLVED — claim was stale)",
+  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T134). The original row described commit 259c1c2 only. Re-read line by line on 2026-11-19: README.md is 363 lines and carries the project overview, the decision state as of 2026-11-18, the model summary, the per-surface freshness table and a page index. The placeholder claim no longer describes the file and is contradicted by the repository itself. The only part of the original row that survives is the LICENSE question: no LICENSE file exists at the repository root (checked 2026-11-19). That residual is an owner choice, not a documentation defect, so it is carried on the open licensing item F16/DEC-01 rather than left on this row. Reproduce: wc -l README.md; ls LICENSE*.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/README.md",
+  "status": "Resolved 2026-11-19 (session 68fc9b6c, T134) — README re-verified at 363 lines, not a placeholder",
+  "action_requested": "None for the README. The LICENSE question moves to the licensing decisions (F16, DEC-01)."
  },
  {
   "flag_id": "F02",
@@ -749,11 +749,11 @@
  {
   "flag_id": "F90",
   "category": "Register coverage",
-  "item": "Decision-readiness table has 45 rows; the requirements register has 58",
-  "detail": "data/decision_readiness.csv (45 rows, D01-D45) is the table published on the landing page. data/requirements.csv (58 rows, R01-R58) is the register. Thirteen requirement rows have no readiness row, so the landing table does not show every requirement. No row was added here because the mapping from R-rows to D-rows is the owner's to make.",
-  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/requirements.csv",
-  "status": "Open - reviewer decision",
-  "action_requested": "Owner maps each of the 58 requirement rows to a readiness row, or records which are out of scope, before the landing table is cited as complete."
+  "item": "Decision-readiness table row count vs requirements register row count (RESOLVED — mismatch no longer exists)",
+  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T134). The original row measured 45 readiness rows against 58 requirement rows. Re-counted on 2026-11-19: data/decision_readiness.csv holds 65 rows (D01-D65) and data/requirements.csv holds 65 rows (R01-R65); data/readiness_mapping.csv holds a 65-row bijection with no duplicate readiness_id or requirement_id on either side, and no disagreement between the requirement_id column of the readiness table and the mapping register (scripts/verify_68fc9b6c.py check V68-09). The landing page therefore shows one readiness row per requirement. Coverage is complete but the mapping is not yet exact: the mapping register grades 6 as exact, 11 as related, 28 as approximate, 19 as new and 1 as extension, so the owner review the original action requested is still open as an interpretation item (F103), not as a missing-row item.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping.csv",
+  "status": "Resolved 2026-11-19 (session 68fc9b6c, T134) — 65 requirements, 65 readiness rows, bijection verified",
+  "action_requested": "None on coverage. The quality of the 65 pairings stays with F103 for owner review."
  },
  {
   "flag_id": "F91",
@@ -1073,11 +1073,11 @@
  {
   "flag_id": "F126",
   "category": "Source behaviour",
-  "item": "Third read of the injury hub inside 24 hours still renders Week 10 while its own selector lists Week 11",
-  "detail": "At 2026-11-18T05:2xZ this session read the head of https://www.nfl.com/injuries/: the page title and section label still say \"Week 10\", the selector offers WEEK 11, and the club records printed beside the fixtures are post-Week-10 records (NE 5-5, DET 7-2, KC 7-2, ATL 3-7, WAS 3-5-1, NYG 5-3-1), all matching the standings read of the same hour. PR #78 established the mechanism from the other direction - https://www.nfl.com/injuries/league/2026/reg11 rewrites to reg10 and serves the Week 10 tables - so no URL reaches a Week 11 report either. Reads of the same page by four sessions on 2026-11-18 (03:39Z, 03:46Z, 04:00Z, 05:05Z-05:2xZ) therefore hold one week label, and no Week 11 practice designation existed to capture at any of those times. This is why the brief's Wed/Thu/Fri snapshot cadence cannot be met from this page. The three Lions designations the brief lists as missing (Kerby Joseph, Cade Mays, D.J. Reed) are present as Out in both the live page and the published register.",
+  "item": "Injury-hub week label lagged 24h+ on 2026-11-18; the hub did advance to Week 11 by 2026-11-19 (partial resolution)",
+  "detail": "PARTLY RESOLVED 2026-11-19 (session 68fc9b6c, T133/T134). The four 2026-11-18 reads in this row all rendered Week 10 while the selector listed Week 11, and the league path https://www.nfl.com/injuries/league/2026/reg11 rewrote to reg10 - so on that date no URL reached a Week 11 report. Re-read on 2026-11-19: the page now renders Week 11 - the hub title reads \"Week 11 of the 2026 Season\" and the first listed fixture is Thu Nov 19 IND (3-7) vs HOU (3-6). So the hub does advance; it advanced on its own, roughly 24-30 hours after the selector first offered Week 11. What stays open is the cadence the brief asks for: the lag is unannounced and not scheduled, so a Wed/Thu/Fri capture cannot be guaranteed by this page, and the 2026-11-18 Week 10 capture cannot be re-verified against today's render (the Week 10 tables are no longer served). No Week 11 rows were transcribed by this session (F16 data-rights gate still unresolved). The three Lions designations the brief lists as missing (Kerby Joseph, Cade Mays, D.J. Reed) are Out in the published Week 10 register - re-confirmed 2026-11-19 by scripts/verify_68fc9b6c.py check V68-03.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Limitation - open (the cadence has nothing to fire on)",
-  "action_requested": "Until the hub advances on its own, treat the injury series as at most one dated read per game week and keep F94, F98 and F104 open. This session read the page partially on purpose (SRC-112) and derived no register from it."
+  "status": "Partly resolved 2026-11-19 (session 68fc9b6c) — hub advanced to Week 11; advance timing still unscheduled",
+  "action_requested": "Treat the hub as a lagging, unscheduled source: one dated read per game week at most, and never assume a Week-N report is reachable after the hub flips to Week N+1. Keep F94, F98 and F104 open. A dated capture cadence needs either a rights-cleared source (F16/D22) or an accepted policy of one read per week."
  },
  {
   "flag_id": "F127",
