@@ -2857,12 +2857,42 @@ if set(_ready_map) != set(_reg_ids):
     raise SystemExit("BUILD FAILED: readiness table does not cover exactly the requirements "
                      f"register ({len(_reg_ids)} requirements): missing {sorted(set(_reg_ids) - set(_ready_map))}, "
                      f"extra {sorted(set(_ready_map) - set(_reg_ids))}")
-_ready_status = Counter(r["status"].split(" (")[0].strip() for r in ready_rows)
-_ready_done = _ready_status.get("Done", 0)
-_ready_partial = _ready_status.get("Partial", 0)
-_ready_missing = _ready_status.get("Missing", 0)
-_ready_blocked = _ready_status.get("Blocked", 0)
-_ready_irreg = _ready_status.get("Irregular", 0)
+# T212b (F133): the status column is free text, so counting it with an exact match
+# on "Done"/"Partial"/... silently dropped 28 of 65 rows and the page printed
+# "13 done, 10 partial, 4 missing, 10 blocked, 0 irregular" over a 65-row table.
+# The buckets below classify by the LEADING verdict word, which is the word the
+# register's own authors put first, and every row lands in exactly one bucket.
+# Anything that still does not classify is counted as "other" AND printed with its
+# text on the page, so a silent drop cannot happen again.
+def _ready_bucket(status):
+    s = (status or "").strip()
+    low = s.lower()
+    # Longest, most specific prefixes first.
+    for prefix, bucket in (("partially", "Partial"), ("partial", "Partial"),
+                           ("not enabled", "Missing"), ("needs review", "Missing"),
+                           ("in progress", "Missing"), ("defined as", "Missing")):
+        if low.startswith(prefix):
+            return bucket
+    word = low.split()[0] if low.split() else ""
+    return {"done": "Done", "partial": "Partial", "partially": "Partial",
+            "missing": "Missing", "blocked": "Blocked",
+            "irregular": "Irregular"}.get(word, "other")
+
+
+_ready_buckets = Counter(_ready_bucket(r["status"]) for r in ready_rows)
+_ready_done = _ready_buckets.get("Done", 0)
+_ready_partial = _ready_buckets.get("Partial", 0)
+_ready_missing = _ready_buckets.get("Missing", 0)
+_ready_blocked = _ready_buckets.get("Blocked", 0)
+_ready_irreg = _ready_buckets.get("Irregular", 0)
+_ready_other = _ready_buckets.get("other", 0)
+_ready_unclassified = [r for r in ready_rows if _ready_bucket(r["status"]) == "other"]
+if _ready_other:
+    print("WARNING: readiness statuses not classified and therefore not counted in the "
+          f"headline ({_ready_other}): " + "; ".join(r["req_id"] for r in _ready_unclassified))
+assert (_ready_done + _ready_partial + _ready_missing + _ready_blocked
+        + _ready_irreg + _ready_other) == len(ready_rows), \
+    "BUILD FAILED: readiness status buckets do not partition the table"
 _luck_rows = [
     {"strategy_id": r["strategy_id"], "strategy": r["strategy"],
      "skill": r["skill_score_mae_improvement_pts"], "skill_ci": f'{r["skill_ci_low"]} to {r["skill_ci_high"]}',
@@ -2926,7 +2956,14 @@ _idx_add = (
     '<h2>Decision readiness: one row per requirement</h2>'
     f'<p class="note">One row per requirement in the requirements register ({len(ready_rows)} of {len(_reg_ids)}). '
     f'<strong>{_ready_done} done, {_ready_partial} partial, {_ready_missing} missing, '
-    f'{_ready_blocked} blocked, {_ready_irreg} irregular.</strong> Each row names the gate that blocks it and the number '
+    f'{_ready_blocked} blocked, {_ready_irreg} irregular'
+    + (f', {_ready_other} unclassified' if _ready_other else '')
+    + f' &mdash; {len(ready_rows)} rows in total.</strong> '
+    + (('<em>Rows whose status wording does not begin with one of those five verdicts, listed rather than '
+        'silently bucketed: ' + '; '.join(
+            f'{r["req_id"]} &ldquo;{r["status"]}&rdquo;' for r in _ready_unclassified) + '.</em> ')
+       if _ready_unclassified else '')
+    + f'Each row names the gate that blocks it and the number '
     'that would clear it. A number is given only where the repo has a threshold for it; otherwise the basis column '
     'says so. Each row carries its register requirement ID; the readiness-to-register mapping is recorded in '
     'data/readiness_mapping.csv and is this session&rsquo;s interpretation, flagged F103 for owner review.</p>'
