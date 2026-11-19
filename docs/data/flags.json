@@ -1222,5 +1222,14 @@
   "source_url": "https://static.www.nfl.com/image/upload/v1794829722/gamecenter/ab582f5b-4feb-11f1-abca-2c54536568a9.pdf",
   "status": "Finding - needs review (rights gated, F16)",
   "action_requested": "Owner: decide whether to request NFL permission / read the terms (F16) before capturing Game Book playtime tables, then extend the sample beyond 2 games. Integration owner: update readiness rows D13/D16 - an official snap-count source now exists but 0 snap-count rows are captured."
+ },
+ {
+  "flag_id": "F145",
+  "category": "Finding / first capture",
+  "item": "First official inactive-list capture in this repo (14 rows, Week 11 Thursday game); the Texans article states no reasons",
+  "detail": "Session cb679d0e captured both official inactive lists for IND@HOU (kickoff 2026-11-19 8:15 PM ET) at 2026-11-19T23:56Z-2026-11-20T00:01Z: the Colts' official release 'Colts announce 7 inactive players for Week 11 game vs. Houston Texans' (colts.com, published Nov 19, 2026 at 06:45 PM, seven players with stated reasons) and the Texans' official release 'Texans Inactives: Week 11 vs Indianapolis Colts' (houstontexans.com, published Nov 19, 2026 at 05:45 PM, seven players with uniform numbers but NO stated reasons). Register: data/inactives_week11_thu_2026-11-19_cb679d0e.csv (14 rows). Findings: (1) both club sites are the working official route - the nfl.com game centre showed no inactives section at 23:47Z or 23:5xZ, and nfl.com had no Week 11 inactives article for the Thursday game at read time; (2) Texans reason cells are left BLANK and unflagged-inference free - the official article states no reasons, so none were filled from any other source; (3) designation movement between the Wednesday report and the inactives lists is now evidenced: Sauce Gardner (Questionable -> inactive), Wyatt Teller (Questionable -> inactive), Charlie Heck (Questionable -> designation removed Thursday morning -> active, stated in the Colts article), and the two Texans healthy scratches (Andrews, Thomas) are recorded as 'not on the Week 11 injury report', never as 'healthy'; (4) colts.com publishes a weekly official inactives series (Weeks 1-10 articles linked from the Week 11 article), so D13's per-game inactive capture has a standing first-party source per club that chooses to publish one.",
+  "source_url": "https://www.houstontexans.com/news/texans-inactives-week-11-vs-indianapolis-colts",
+  "status": "First capture - needs review (open, informational)",
+  "action_requested": "Integration owner: D13/R49 ('official inactive lists and snap counts captured per game') can move from 0 rows to partial on this game; extend to all 13 Week 11 games using the club-site pattern, or find the nfl.com route that renders inactives closer to kickoff."
  }
 ]

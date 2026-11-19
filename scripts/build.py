@@ -5095,6 +5095,29 @@ advance notice of the release; its publication date is not rendered on the page 
        table_id='sched-ann-table', filterable=True)}
 """)
 
+# --- T407: official inactive lists (first capture) ---
+_inactives = read_csv("inactives_week11_thu_2026-11-19_cb679d0e.csv")
+pages["inactives.html"] = ("Inactive lists", f"""
+<h1>Official inactive lists — first capture</h1>
+<p class="note"><strong>What this is:</strong> the first inactive-list rows this repository has held (readiness D13
+previously counted 0). Both official club releases for the Week 11 Thursday game (IND at HOU, kickoff 2026-11-19
+8:15 PM ET) were read live on 2026-11-19 at 23:56Z–00:01Z session clock: the <em>Colts' official release</em>
+(published Nov 19, 2026 at 06:45 PM, seven players with stated reasons) and the <em>Texans' official release</em>
+(published Nov 19, 2026 at 05:45 PM, seven players with uniform numbers). The Texans article states no reasons, so
+every Texans reason cell is <strong>blank — never inferred</strong>. The last column cross-references this session's
+second read of the <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">official injury report</a>
+for context only; it does not fill any blank. Designation movement now has evidence: Gardner and Teller went
+Questionable → inactive, Heck went Questionable → active (designation removed Thursday morning, stated in the Colts
+article). The nfl.com game centre carried no inactives section at read time — the club sites are the working
+official route. See flag <a href="flagged.html">F145</a>.</p>
+{search_box('inactives-table')}
+{table(_inactives,
+       ['club','game','player','position','uniform_no','reason_as_stated','report_status_second_read_2026_11_19','source_url','article_published','read_utc','note'],
+       {'club':'Club','game':'Game','player':'Player','position':'Pos','uniform_no':'No.','reason_as_stated':'Reason stated in the official list','report_status_second_read_2026_11_19':'Injury-report status (second read)','source_url':'Official list','article_published':'Article published','read_utc':'Read (UTC)','note':'Note'},
+       table_id='inactives-table', filterable=True)}
+""")
+NAV.insert(NAV.index(("injuries.html", "Injuries")) + 1, ("inactives.html", "Inactive lists"))
+
 # --- landing-page cards for this session's pages ---
 pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
     '<h2>Session cb679d0e additions (2026-11-19)</h2>'
@@ -5108,6 +5131,9 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
     + card("snap-count-source.html", "Snap-count source",
            "Official sources only: the Game Book's Playtime Percentage section is a real snap-count source "
            "(2 of 2 sampled), with its rights and timing caveats.")
+    + card("inactives.html", "Official inactive lists",
+           "First capture: both clubs' official inactive lists for the Week 11 Thursday game, 14 rows, "
+           "Texans reasons left blank because the official article states none.")
     + '</div>'))
 
 # ---------- collision guards ----------

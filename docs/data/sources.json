@@ -1298,5 +1298,25 @@
   "accessed_date": "2026-11-19",
   "used_for": "T408 snap-count source evaluation, row SNAP-05 (the positive finding)",
   "verification_note": "All 8 parsed chunks read 2026-11-19; 'Playtime Percentage' section found in chunks 6-7 with per-player snaps and shares by phase; header rights notice quoted verbatim in row SNAP-05."
+ },
+ {
+  "source_id": "SRC-131",
+  "title": "Colts official release: 7 inactive players for Week 11 at Houston (published Nov 19, 2026 06:45 PM)",
+  "publisher": "Indianapolis Colts (colts.com, first-party club site)",
+  "url": "https://www.colts.com/news/colts-announce-7-inactive-players-for-week-11-game-vs-houston-texans",
+  "type": "Official club site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T407 inactive-list capture: 7 IND player rows with stated reasons; Heck designation-removal note",
+  "verification_note": "Read live 2026-11-19T23:5xZ via fetch tool; all seven names transcribed from the article body; author JJ Stankevitz, Colts.com Writer."
+ },
+ {
+  "source_id": "SRC-132",
+  "title": "Texans official release: Inactives for Week 11 vs Indianapolis Colts (published Nov 19, 2026 05:45 PM)",
+  "publisher": "Houston Texans (houstontexans.com, first-party club site)",
+  "url": "https://www.houstontexans.com/news/texans-inactives-week-11-vs-indianapolis-colts",
+  "type": "Official club site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T407 inactive-list capture: 7 HOU player rows with uniform numbers, no stated reasons (left blank)",
+  "verification_note": "Read live 2026-11-19T23:5xZ via fetch tool; all seven names and numbers transcribed from the article body; no reason text exists in the article, so none was inferred."
  }
 ]
