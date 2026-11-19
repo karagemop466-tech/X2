@@ -4019,3 +4019,11 @@ Nothing was discarded and no other session's row was edited. The renumbering cos
 2. Coordination note: two parallel sessions (`ddbc4956`, `0a0deaaf`) were active during this session's window. Both conflicts and both stale-PR subjects were resolved cooperatively (union merge; PR #75/#99 dispositions match what this session had planned and were credited to `ddbc4956` above). `0a0deaaf`'s T211–T214 block and `ddbc4956`'s T305–T309 block are retained verbatim; no other session's work was discarded.
 
 **PR chain for this session:** PR #109 (substance: T402 board hygiene + T403 audit script) merged as `dc52b7a`; this close-out record lands as the follow-up record PR and its merge + Pages result is appended below.
+
+### T405 chain-close record · session `8994979a` · 2026-11-19
+
+- **PR [#111](https://github.com/karagemop466-tech/X2/pull/111)** (`arena/8994979a-x2` → `main`, the T405 close-out record + the byte-stable `docs/repo-audit.html` regeneration) merged with a merge commit (`gh pr merge 111 --merge`) as **`565c0e3`**.
+- **GitHub Pages:** workflow run **44628695661** on `main` @ `565c0e3` → **completed / success**; Pages API `status: built`.
+- **Deployed-tree check on `565c0e3`:** readiness table 65 rows (gate + clearing-number columns present), flagged page 133 rows, suggestions review 34 rows — all brief-mandated surfaces served on the deployed commit.
+- **Rebases while the record PR was open:** two more parallel merges landed (`de38645` PR #110, `f491e00` PR #112, session `0a430c21`). Each rebase conflict in `COORDINATION.md` was resolved by **union** (their blocks kept verbatim, mine appended); `docs/repo-audit.html` was resolved by **rebuilding** (register counts moved to 133 flags / 54 suggestions / 120 sources through parallel merges; the committed page was one generation stale). Gates re-run green after each rebase: build + link/row-source checks, check_links 0 broken internal, drift pins all match, repo_audit 22/22, brief_coverage 30/30, npm verify PASS, `git diff --check` clean.
+- **Session 8994979a is closed.** T400–T405 all done. No open PR from this session; no task left in progress.
