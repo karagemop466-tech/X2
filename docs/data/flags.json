@@ -3,9 +3,9 @@
   "flag_id": "F01",
   "category": "Repo irregularity",
   "item": "README is a one-line placeholder (RESOLVED — claim was stale)",
-  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T134). The original row described commit 259c1c2 only. Re-read line by line on 2026-11-19: README.md is 363 lines and carries the project overview, the decision state as of 2026-11-18, the model summary, the per-surface freshness table and a page index. The placeholder claim no longer describes the file and is contradicted by the repository itself. The only part of the original row that survives is the LICENSE question: no LICENSE file exists at the repository root (checked 2026-11-19). That residual is an owner choice, not a documentation defect, so it is carried on the open licensing item F16/DEC-01 rather than left on this row. Reproduce: wc -l README.md; ls LICENSE*.",
+  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T140). The original row described commit 259c1c2 only. Re-read line by line on 2026-11-19: README.md is 363 lines and carries the project overview, the decision state as of 2026-11-18, the model summary, the per-surface freshness table and a page index. The placeholder claim no longer describes the file and is contradicted by the repository itself. The only part of the original row that survives is the LICENSE question: no LICENSE file exists at the repository root (checked 2026-11-19). That residual is an owner choice, not a documentation defect, so it is carried on the open licensing item F16/DEC-01 rather than left on this row. Reproduce: wc -l README.md; ls LICENSE*.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/README.md",
-  "status": "Resolved 2026-11-19 (session 68fc9b6c, T134) — README re-verified at 363 lines, not a placeholder",
+  "status": "Resolved 2026-11-19 (session 68fc9b6c, T140) — README re-verified at 363 lines, not a placeholder",
   "action_requested": "None for the README. The LICENSE question moves to the licensing decisions (F16, DEC-01)."
  },
  {
@@ -750,9 +750,9 @@
   "flag_id": "F90",
   "category": "Register coverage",
   "item": "Decision-readiness table row count vs requirements register row count (RESOLVED — mismatch no longer exists)",
-  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T134). The original row measured 45 readiness rows against 58 requirement rows. Re-counted on 2026-11-19: data/decision_readiness.csv holds 65 rows (D01-D65) and data/requirements.csv holds 65 rows (R01-R65); data/readiness_mapping.csv holds a 65-row bijection with no duplicate readiness_id or requirement_id on either side, and no disagreement between the requirement_id column of the readiness table and the mapping register (scripts/verify_68fc9b6c.py check V68-09). The landing page therefore shows one readiness row per requirement. Coverage is complete but the mapping is not yet exact: the mapping register grades 6 as exact, 11 as related, 28 as approximate, 19 as new and 1 as extension, so the owner review the original action requested is still open as an interpretation item (F103), not as a missing-row item.",
+  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T140). The original row measured 45 readiness rows against 58 requirement rows. Re-counted on 2026-11-19: data/decision_readiness.csv holds 65 rows (D01-D65) and data/requirements.csv holds 65 rows (R01-R65); data/readiness_mapping.csv holds a 65-row bijection with no duplicate readiness_id or requirement_id on either side, and no disagreement between the requirement_id column of the readiness table and the mapping register (scripts/verify_68fc9b6c.py check V68-09). The landing page therefore shows one readiness row per requirement. Coverage is complete but the mapping is not yet exact: the mapping register grades 6 as exact, 11 as related, 28 as approximate, 19 as new and 1 as extension, so the owner review the original action requested is still open as an interpretation item (F103), not as a missing-row item.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/readiness_mapping.csv",
-  "status": "Resolved 2026-11-19 (session 68fc9b6c, T134) — 65 requirements, 65 readiness rows, bijection verified",
+  "status": "Resolved 2026-11-19 (session 68fc9b6c, T140) — 65 requirements, 65 readiness rows, bijection verified",
   "action_requested": "None on coverage. The quality of the 65 pairings stays with F103 for owner review."
  },
  {
@@ -1076,7 +1076,7 @@
   "item": "Injury-hub week label lagged 24h+ on 2026-11-18; the hub did advance to Week 11 by 2026-11-19 (partial resolution)",
   "detail": "PARTLY RESOLVED 2026-11-19 (session 68fc9b6c, T133/T134). The four 2026-11-18 reads in this row all rendered Week 10 while the selector listed Week 11, and the league path https://www.nfl.com/injuries/league/2026/reg11 rewrote to reg10 - so on that date no URL reached a Week 11 report. Re-read on 2026-11-19: the page now renders Week 11 - the hub title reads \"Week 11 of the 2026 Season\" and the first listed fixture is Thu Nov 19 IND (3-7) vs HOU (3-6). So the hub does advance; it advanced on its own, roughly 24-30 hours after the selector first offered Week 11. What stays open is the cadence the brief asks for: the lag is unannounced and not scheduled, so a Wed/Thu/Fri capture cannot be guaranteed by this page, and the 2026-11-18 Week 10 capture cannot be re-verified against today's render (the Week 10 tables are no longer served). No Week 11 rows were transcribed by this session (F16 data-rights gate still unresolved). The three Lions designations the brief lists as missing (Kerby Joseph, Cade Mays, D.J. Reed) are Out in the published Week 10 register - re-confirmed 2026-11-19 by scripts/verify_68fc9b6c.py check V68-03.",
   "source_url": "https://www.nfl.com/injuries/",
-  "status": "Partly resolved 2026-11-19 (session 68fc9b6c) — hub advanced to Week 11; advance timing still unscheduled",
+  "status": "Partly resolved 2026-11-19 (session 68fc9b6c, T139) — hub advanced to Week 11; advance timing still unscheduled",
   "action_requested": "Treat the hub as a lagging, unscheduled source: one dated read per game week at most, and never assume a Week-N report is reachable after the hub flips to Week N+1. Keep F94, F98 and F104 open. A dated capture cadence needs either a rights-cleared source (F16/D22) or an accepted policy of one read per week."
  },
  {
