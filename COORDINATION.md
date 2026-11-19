@@ -3374,3 +3374,70 @@ this task exists to correct.
 > cannot reach NFL.com. It can: this session read the Week 10 by-week page, the Week 11 by-week page, the
 > standings page and the injury hub live on 2026-11-19. The audit's limit is true of that session, not of the
 > repository.
+
+### T135–T138 close-out · session `68fc9b6c` · 2026-11-19
+
+**Outcome: done.** Four live official pages were re-read on 2026-11-19 and 12 checks re-run against the
+repository; two flags were stale and are corrected with evidence; the site was rebuilt and every verifier passed.
+
+**Sources read live this session (links for manual review):**
+- `https://www.nfl.com/schedules/2026/by-week/week-10` — all 14 finals, winner markers, the four byes.
+- `https://www.nfl.com/schedules/2026/by-week/week-11` — all 13 fixtures, kickoff times, the Mexico City game.
+- `https://www.nfl.com/standings/` — first page chunk (24 clubs), read 2026-11-19.
+- `https://www.nfl.com/injuries/` — read 2026-11-19; renders Week 11.
+
+**Verification performed (12 checks, all passing; `scripts/verify_68fc9b6c.py`, exits non-zero on any failure):**
+
+| Check | Result |
+|---|---|
+| V68-01 Week 10 finals vs `data/results_feed_v2_2026.csv` | **14/14 match** (scores, winners, Munich neutral site) |
+| V68-02 Week 10 byes, derived not copied | **CHI, DEN, PHI, TB**; 28 of 32 clubs played |
+| V68-03 Lions designations (D44 in the brief) | Kerby Joseph, Cade Mays, D.J. Reed **all Out** |
+| V68-04 137-game ledger vs 2026-11-14 snapshot | **32/32 clubs** reconcile |
+| V68-05 150-game v2 register vs 2026-11-18 capture | **32/32 clubs** reconcile |
+| V68-06 Live standings 2026-11-19 vs the 2026-11-18 capture | **24/24 clubs in the first chunk identical** |
+| V68-07 Does the injury hub advance? | **Yes — renders Week 11** (was Week 10 on 2026-11-18) |
+| V68-08 Flag F01 | **Stale** — README is 363 lines, not a placeholder |
+| V68-09 Flag F90 | **Stale** — 65 requirements / 65 readiness rows, bijection verified |
+| V68-10 Week 11 slate vs `data/schedule_week11_2026.csv` | **13/13 match** on matchup, day, kickoff time |
+| V68-11 Week 11 international game | **MIN@SF** at Estadio Banorte is the only neutral fixture; flagged Y in both registers |
+| V68-12 Week 10 injury hub re-readability | **Not possible today** — no fresh "verified" label claimed for the 347 rows |
+
+**Registers changed:** `data/flags.csv` (F01 and F90 closed with the reproduction command and the evidence that
+contradicts them; F126 moved to *partly resolved* with the 2026-11-19 read and its unscheduled-advance finding;
+F128 from session `d9344f5a` kept untouched, pin 121 → 122) · `data/verify_39948feb_2026-11-18.csv` (append only,
+22 → 31 checks) · `data/live_reverification_2026-11-19_68fc9b6c.csv` (new, 12 checks) ·
+`data/drift_pins.csv` (two new pins, 55 → 57) · `scripts/build.py` (the 2026-11-19 verification section, the
+per-surface freshness rows, one landing-page pointer). No price, ROI, ranking, owner decision or model value was
+added; `data/decision_choices.json` remains empty.
+
+**Gates run on the rebased tree (`main` @ `5f45fc7`, all after the final rebuild):**
+`scripts/build.py` 55 pages PASS · `scripts/drift_check.py` **57/57** · `scripts/repo_audit.py` 22 checks,
+0 failing · `scripts/check_links.py` 3,057 internal / 7,044 external, 0 broken · `scripts/verify_68fc9b6c.py`
+12/12 PASS · `scripts/verify_snapshot.py` 103 pass, 0 fail, 1 review (Ben Brown, unchanged) ·
+`scripts/verify_results.py --games results_feed_v2_82b83a64.csv --target capture` PASS (150/150, 0 mismatches) ·
+`scripts/model.py` reproducible, leaderboard still unranked · `scripts/results_v2.py` 15/15 · `npm run build &&
+npm run verify` ALL CHECKS PASSED. `scripts/verify_results.py` against the *current* standings still reports the
+documented F106/F113 failure — that is the known 137-vs-150 corpus gap, not a regression, and it is published on
+the site rather than fixed here (P09 is an owner decision).
+
+**Irregularities recorded, none blocking:**
+1. **Two flags were stale, not merely unverified.** F01 and F90 described a repository state that no longer
+   existed; a reader trusting the flag page would have been misled in both directions (one claimed a doc defect
+   where there was none, one claimed a coverage gap where coverage is complete). Both are now closed with the
+   command that demonstrates the claim is false. The lesson — flags decay like data and need their own re-read
+   date — is recorded here rather than turned into another flag.
+2. **The injury hub advances on a schedule nobody publishes.** F126's 2026-11-18 reads all rendered Week 10 while
+   the selector offered Week 11; on 2026-11-19 the same URL renders Week 11. The brief's Wed/Thu/Fri cadence still
+   cannot be guaranteed, and this is now stated as a source property instead of a capture failure.
+3. **The Week 10 injury register is no longer re-readable at its source.** Published with its 2026-11-18 read date
+   and an explicit limitation; no fresh verification label is claimed for it (V68-12).
+4. **Two ID collisions on the same day** (T133 claimed by three sessions across `main`). Both other sessions'
+   entries are kept unchanged; this session's block was renumbered T135–T138 rather than reused. The process
+   weakness is the same one F127 records: claims are made on branches that cannot see each other.
+5. **The T133 audit's environment claim is inaccurate for the repository.** Session `8ddfaa33` recorded that the
+   environment cannot reach NFL.com; this session read four NFL.com pages live. Its audit conclusions stand on the
+   retained dated evidence it cited, but the "no live read possible" limit should not be read as a repository
+   property.
+6. **The T134 session's F128 coverage gap stands** (Aug–Sep 2026 transactions never read). Not this session's
+   scope; left open exactly as recorded.
