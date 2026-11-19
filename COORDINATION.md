@@ -3283,7 +3283,7 @@ Board read in full before claiming. No `unclaimed` row exists; the newest IDs on
 
 **Irregularities (flagged; none blocks anything).**
 - **I-T129-1.** The brief asks for scheduled daily or Wed–Fri capture of the injury report and depth pages. The live terms prohibit systematic retrieval to compile a database without written consent. The brief's request and the terms conflict; the terms take precedence until consent is recorded. Owner decision required.
-- **I-T129-2.** Only §1.3 of the terms was read on 2026-11-19. The rest of the agreement (including any clause on automated access, which the page's section list suggests may exist in §§ 5–14) is unreviewed. This is the open part of D22.
+- **I-T129-2.** Only §1.3 of the terms was read on 2026-11-19. Sections 2–4 were also read; §§ 5–26 were not read, so whether any other clause addresses automated access is unknown. This is the open part of D22.
 - **I-T129-3.** The board protocol (`session-<id>/<task>` branches and worktrees) conflicts with this session's mandated single-branch rule (`arena/936a0eeb-x2` only). This session followed the mandated rule and did not create other branches. Flagged for the integration owner.
 - **I-T129-4.** The brief's "Work line by line … verify everything from official sources" cannot be satisfied in one session for the full repository; the board already holds owner-gated items (P09, P01, F16, F127 process rules, DEC-01…DEC-10) that no agent may record. They are not resolved by this entry.
 
