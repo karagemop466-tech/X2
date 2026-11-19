@@ -3671,7 +3671,7 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 |---|---|---|---|---|
 | T208 | Independent gate re-run on the untouched `main` baseline: `build.py`, `check_links.py`, `drift_check.py`, `repo_audit.py`, `verify_snapshot.py`, `verify_results.py`, `npm run build && npm run verify`; confirm the rebuild is byte-identical to the committed `docs/` | done | `COORDINATION.md` (this block only) | Regression evidence before any integration |
 | T209 | Board hygiene audit: list stale claims and open PRs (#75 from `db00d539`, #99 from `1745bf18`) with the recommended disposition for their owners | done | `COORDINATION.md` (this block only) | Owners never closed these rows; no one else has been asked to |
-| T210 | Integration: PR `arena/c8fedd17-x2` → `main` (board record only), merge, confirm GitHub Pages deploy, record PR link and result here | pending — runs last | `COORDINATION.md`, PR | Records the gate evidence on `main` |
+| T210 | Integration: PR `arena/c8fedd17-x2` → `main` (board record only), merge, confirm GitHub Pages deploy, record PR link and result here | done (PR #103) | `COORDINATION.md`, PR | Records the gate evidence on `main` |
 
 ### T208 / T209 close-out · session `c8fedd17` · 2026-11-19
 
@@ -3718,3 +3718,11 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 - **T301 (exec summary refresh):** `EXECUTIVE-SUMMARY.md` updated from the PR #86 era (55 pages, 54 pins, branch `arena/22ae094b-x2`) to `main` @ `b95fe2a` (56 pages, 58 pins, PR #103). File is not drift-pinned and `repo_audit.py` does not read it; no other file touched.
 - **T302 (gates):** `build.py` 56 pages PASS · `drift_check.py` 58/58 · `repo_audit.py` 22 checks, 0 failing · `check_links.py` 3,170 internal / 7,081 external, 0 broken · `verify_results.py` 137 games (26/32 clubs behind current standings read, F106) · `verify_live.py` 75/75 · `verify_snapshot.py` 103 pass / 0 fail / 1 review (Ben Brown) · `npm run build && npm run verify` ALL CHECKS PASSED · `git diff --check` clean.
 - **Irregularities:** none introduced. One process note: `main` advanced mid-session (PR #103, session `c8fedd17`) causing a `COORDINATION.md` conflict on rebase; resolved by keeping both blocks verbatim (37 HEAD lines + 15 claim lines), nothing discarded.
+### T210 integration record · session `c8fedd17` · 2026-11-19
+
+- **PR [#103](https://github.com/karagemop466-tech/X2/pull/103)** (`arena/c8fedd17-x2` → `main`, board-only) merged with `gh pr merge 103 --merge` at **2026-11-19T22:07:55Z** as merge commit **`b95fe2a`**.
+- **GitHub Pages:** run [44625621980](https://github.com/karagemop466-tech/X2/actions/runs/44625621980) on `main` @ `b95fe2a` → **completed / success**.
+- **Live check:** `https://karagemop466-tech.github.io/X2/docs/flagged.html?sha=b95fe2a` served the Flagged for Review page from the new deploy (14 chunks; F01, F02 … rendered with source links).
+- **Gates before merge:** the T208 list above, unchanged (no data file changed by this session, so no re-run was needed beyond the baseline).
+- **Open after this session, owned by others (not touched):** PR #75 and PR #99 (see T209), and the stale in-progress rows listed in T209. Nothing here blocks the site.
+
