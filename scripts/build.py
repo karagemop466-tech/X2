@@ -155,7 +155,12 @@ OFFICIAL_HOSTS = {
     "www.buffalobills.com", "www.buccaneers.com", "www.bengals.com", "www.denverbroncos.com",
     "www.chargers.com", "www.panthers.com", "www.commanders.com", "www.jaguars.com",
     "www.newyorkjets.com", "www.philadelphiaeagles.com", "www.steelers.com",
-    "www.49ers.com", "www.raiders.com",}
+    "www.49ers.com", "www.raiders.com",
+    # session cb679d0e (2026-11-19): two NFL-operated domains read live this session.
+    # media.nfl.com is the league's Football Communications newsroom (the dated 2026
+    # schedule announcement, T404). nextgenstats.nfl.com is the NFL's own Next Gen
+    # Stats site (snap-count source evaluation, T403).
+    "media.nfl.com", "nextgenstats.nfl.com",}
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
 # Position -> unit / side of ball. This is a classification made by this project, not an NFL field.
@@ -4998,6 +5003,105 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
     '<div class="cards">'
     + card("week11-injury-capture.html", "Week 11 injury capture",
            f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections. A second read matches {_w11_n_match} of {len(_w11_2nd)} clubs (F137 open). No delta yet: the next read starts the series.")
+    + '</div>'))
+
+# ---------- session cb679d0e (T401, T403, T404): second-read series, snap-count source, schedule announcement ----------
+# Additive only: three new pages, two NAV entries, one section appended to the
+# schedule page (games.html), one landing-page card block. No other session's
+# block or generated page content is edited. Every table row below carries an
+# allow-listed HTTPS source link (checked by the generated-HTML checks further
+# down, which run after this block).
+_w11_read2 = read_csv("injury_week11_read2_2026-11-19_cb679d0e.csv")
+_w11_series = read_csv("injury_week11_series_2026-11-19_cb679d0e.csv")
+_snap_eval = read_csv("snap_count_source_eval_2026-11-19_cb679d0e.csv")
+_sched_ann = read_csv("schedule_announcement_2026.csv")
+
+# --- T401: Week 11 second read + read-to-read delta series ---
+pages["injury-series.html"] = ("Week 11 injury series", f"""
+<h1>Week 11 injury report — second read and read-to-read series</h1>
+<p class="note"><strong>What this is:</strong> an independent second read of all seven chunks of the
+<a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">official Week 11 injury report</a>
+(read 2026-11-19T22:12Z–22:22Z session clock, session cb679d0e), counted section by section and compared
+cell by cell with the first read (T129, read 2026-11-19T06:53:35Z). <strong>Result: 0 differences</strong> —
+26 club sections, 253 player rows, every per-club practice and game-status count, and all whole-report
+totals match (DNP 83 / LP 87 / FP 83; Out 9 / Questionable 7 / Doubtful 0 / blank 237).
+The series publishes the <em>delta</em> between dated reads, never a level on its own.
+Reproduce with <code>python3 scripts/week11_read2.py</code>, which exits non-zero on any diff.</p>
+<p class="note">Two F129 items were checked against live official pages in the same session:
+(1) Dee Alford's player link (<code>deaundre-ford</code>) is his canonical official page (CB #23, Buffalo Bills, active);
+(2) Jaylen Waddle listed under DEN is correct — his official player page states Denver Broncos, active.
+A third spot check raised by this read — Kyler Murray listed under MIN — was confirmed the same way.
+Remaining limitations are flags <a href="flagged.html">F132</a> and <a href="flagged.html">F133</a>
+(the first read's row-level names are not comparable because its raw transcription is gitignored and absent from clones).</p>
+<h2>Read-to-read delta register (40 checks)</h2>
+{search_box('series-table')}
+{table(_w11_series,
+       ['check_id','scope','metric','read1_value','read2_value','delta','verdict','source_url','note'],
+       {'check_id':'Check','scope':'Scope','metric':'Metric / item','read1_value':'First read (06:53Z)','read2_value':'Second read (22:12–22:22Z)','delta':'Delta','verdict':'Verdict','source_url':'Source','note':'Note'},
+       table_id='series-table', filterable=True)}
+<h2>Second read, per club section (counts only; no player names published)</h2>
+{search_box('read2-table')}
+{table(_w11_read2,
+       ['club','game','rows','game_status_out','game_status_questionable','game_status_blank','practice_dnp','practice_lp','practice_fp','page_says_no_injuries','source_url'],
+       {'club':'Club','game':'Game','rows':'Rows','game_status_out':'Out','game_status_questionable':'Questionable','game_status_blank':'Status blank','practice_dnp':'DNP','practice_lp':'LP','practice_fp':'FP','page_says_no_injuries':'Page says none','source_url':'Report'},
+       table_id='read2-table', filterable=True)}
+""")
+NAV.insert(NAV.index(("week11-injury-capture.html", "Week 11 injuries")) + 1,
+           ("injury-series.html", "Week 11 series"))
+
+# --- T403: official snap-count source evaluation ---
+pages["snap-count-source.html"] = ("Snap-count source", f"""
+<h1>Snap-count source evaluation — does an official source exist?</h1>
+<p class="note"><strong>Why:</strong> the brief conditions the playing-time depth route on it —
+“derive depth from snap counts <em>if an official snap-count source exists</em>”. This page records one
+verdict row per official source tried, read live on 2026-11-19 by session cb679d0e. No third-party
+numbers were used or consulted.</p>
+<p class="note"><strong>Verdict: an official snap-count source EXISTS.</strong> The league's public stats
+surfaces (player stats, team stats, Next Gen Stats, Football Operations) do <em>not</em> publish snap counts,
+but every official <strong>Game Book (PDF)</strong> carries a <strong>Playtime Percentage</strong> section with
+per-player snap counts and shares by phase (Offense / Defense / Special Teams). Confirmed in
+<strong>2 of 2 sampled Game Books</strong> (WAS@NYG 11/12/2026; KC@ATL 11/15/2026). Three caveats:
+(1) Game Books publish <em>after</em> the game, so this supports retrospective depth/playing-time analysis only,
+never a pre-game lineup call; (2) the Game Book header restricts use beyond media coverage to written NFL
+permission, so systematic capture stays gated by the open rights review (F16); (3) coverage here is 2 games —
+presence in every Game Book is indicated, not proven. See flag <a href="flagged.html">F134</a>.</p>
+{search_box('snap-table')}
+{table(_snap_eval,
+       ['source_id','source','url','publishes_snap_counts','evidence','verdict','rights_or_access_note'],
+       {'source_id':'Row','source':'Official source tried','url':'Link','publishes_snap_counts':'Publishes snap counts?','evidence':'Evidence read','verdict':'Verdict','rights_or_access_note':'Rights / access note'},
+       table_id='snap-table', filterable=True)}
+""")
+NAV.insert(NAV.index(("starters.html", "Starters &amp; depth")) + 1,
+           ("snap-count-source.html", "Snap-count source"))
+
+# --- T404: the league's dated schedule announcement, beside the live schedule page ---
+pages["games.html"] = (pages["games.html"][0], pages["games.html"][1] + f"""
+<h2>The league's dated schedule announcement (2026)</h2>
+<p class="note">The brief asks for the league's dated schedule announcement beside the live schedule page.
+SCHED-01 is that announcement: the Football Communications article <em>2026 NFL Schedule Announced</em>,
+byline <strong>May 14, 2026</strong>, stating the 18-week, 272-game 2026 regular-season schedule
+(season opens Wednesday, September 9, in Seattle; Week 18 ends January 10, 2027). SCHED-02 is the league's
+advance notice of the release; its publication date is not rendered on the page itself, so that cell is
+<strong>left blank and marked unverified</strong> rather than inferred. The live schedule itself is on
+<a href="https://www.nfl.com/schedules/" target="_blank" rel="noopener">NFL.com schedules</a>.</p>
+{table(_sched_ann,
+       ['announcement_id','title','announcement_date','date_verified','url','relationship_to_live_schedule','status'],
+       {'announcement_id':'ID','title':'Announcement','announcement_date':'Dated (official)','date_verified':'Date verified on page?','url':'Link','relationship_to_live_schedule':'Relationship to the live schedule','status':'Status'},
+       table_id='sched-ann-table', filterable=True)}
+""")
+
+# --- landing-page cards for this session's pages ---
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
+    '<h2>Session cb679d0e additions (2026-11-19)</h2>'
+    '<p class="note">Independent second read of the Week 11 injury report with a published read-to-read delta; '
+    'the official snap-count source verdict; the league\'s dated schedule announcement.</p>'
+    '<div class="cards">'
+    + card("injury-series.html", "Week 11 injury series",
+           "Second read of all seven chunks: 0 differences against the first read at every published granularity, "
+           "plus the delta register and the three item checks.")
+    + card("snap-count-source.html", "Snap-count source",
+           "Official sources only: the Game Book's Playtime Percentage section is a real snap-count source "
+           "(2 of 2 sampled), with its rights and timing caveats.")
     + '</div>'))
 
 # ---------- collision guards ----------
