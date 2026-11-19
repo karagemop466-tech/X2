@@ -3,9 +3,9 @@
   "flag_id": "F01",
   "category": "Repo irregularity",
   "item": "README is a one-line placeholder (RESOLVED — claim was stale)",
-  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T140). The original row described commit 259c1c2 only. Re-read line by line on 2026-11-19: README.md is 363 lines and carries the project overview, the decision state as of 2026-11-18, the model summary, the per-surface freshness table and a page index. The placeholder claim no longer describes the file and is contradicted by the repository itself. The only part of the original row that survives is the LICENSE question: no LICENSE file exists at the repository root (checked 2026-11-19). That residual is an owner choice, not a documentation defect, so it is carried on the open licensing item F16/DEC-01 rather than left on this row. Reproduce: wc -l README.md; ls LICENSE*.",
+  "detail": "CLOSED 2026-11-19 (session 68fc9b6c, T140). The original row described commit 259c1c2 only. Re-read line by line on 2026-11-19: README.md was 363 lines at that read and 373 lines as this row was last edited, and carries the project overview, the decision state as of 2026-11-18, the model summary, the per-surface freshness table and a page index. The placeholder claim no longer describes the file and is contradicted by the repository itself. The only part of the original row that survives is the LICENSE question: no LICENSE file exists at the repository root (checked 2026-11-19). That residual is an owner choice, not a documentation defect, so it is carried on the open licensing item F16/DEC-01 rather than left on this row. Reproduce: wc -l README.md; ls LICENSE*.",
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/README.md",
-  "status": "Resolved 2026-11-19 (session 68fc9b6c, T140) — README re-verified at 363 lines, not a placeholder",
+  "status": "Resolved 2026-11-19 (session 68fc9b6c, T140) — README re-verified at hundreds of lines, not a placeholder (the exact count moves as sessions append to it; the claim is checked by 'wc -l README.md' being far above the one line the flag described)",
   "action_requested": "None for the README. The LICENSE question moves to the licensing decisions (F16, DEC-01)."
  },
  {

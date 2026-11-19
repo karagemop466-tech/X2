@@ -178,7 +178,8 @@ all_ok &= check("V68-07", True,
 with open(os.path.join(ROOT, "README.md"), encoding="utf-8") as f:
     readme_lines = sum(1 for _ in f)
 all_ok &= check("V68-08", readme_lines > 100,
-                f"README is {readme_lines} lines, not a one-line placeholder (F01 stale)")
+                f"README is {readme_lines} lines (the count moves as sessions append to it), "
+                f"not a one-line placeholder (F01 stale)")
 
 # V68-09: F90 stale
 req = read_csv("requirements.csv")
