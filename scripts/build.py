@@ -4462,6 +4462,93 @@ taken, and because the hub still renders Week 10 (<a href="flagged.html">F126</a
 </ul>
 """)
 
+# ---------- Week 11 injury-hub capture (session 1745bf18, T129-T130) ----------
+# Derived output only. scripts/week11_capture.py reads the PRIVATE row-level transcription (gitignored) and writes
+# data/injury_week11_2026-11-19_by_club.csv (counts per club, no player names) and the capture record. This block
+# renders those two files and nothing else: every number on the page is read from them, none is typed here.
+_w11_rows = read_csv("injury_week11_2026-11-19_by_club.csv")
+_w11_meta = json.load(open(os.path.join(ROOT, "data/captures/injury_week11_2026-11-19.meta.json"), encoding="utf-8"))
+_w11_src = _w11_meta["source_url"]
+check_official(_w11_src, "week11_injury_capture.source_url")
+for _r in _w11_rows:
+    check_official(_r.get("source_url", ""), f"week11_injury_capture.{_r.get('club', '?')}")
+    if not _r.get("source_url"):
+        errors.append(f"week11_injury_capture {_r.get('club', '?')}: row without an official source link")
+if len(_w11_rows) != 26:
+    errors.append(f"week11_injury_capture: {len(_w11_rows)} club rows, pinned 26")
+_w11_gs = _w11_meta["game_status_totals"]
+_w11_pr = _w11_meta["practice_totals"]
+_w11_tbl_rows = []
+for _r in _w11_rows:
+    _none = _r["page_says_no_injuries"] == "Y"
+    _w11_tbl_rows.append([
+        html.escape(_r["club"]), html.escape(_r["game"]), html.escape(_r["kickoff"]),
+        html.escape(_r["rows"]), html.escape(_r["game_status_out"]), html.escape(_r["game_status_questionable"]),
+        html.escape(_r["game_status_blank"]), html.escape(_r["practice_dnp"]), html.escape(_r["practice_lp"]),
+        html.escape(_r["practice_fp"]),
+        "No Injuries Reported on the page" if _none else "Player rows listed",
+        _lnk(_r["source_url"], "NFL.com injury report"),
+    ])
+_w11_body = f"""
+<h1>Week 11 injury report: first capture</h1>
+<p class="note"><strong>Read {html.escape(_w11_meta['read_clock_check_utc'][:10])} (UTC).</strong> The official hub moved from
+Week 10 to Week 11 between the 2026-11-18 reads and this one (flag F126 records the earlier Week 10 render). This page
+holds one dated read of the Week 11 report: counts per club, the capture record and its checks. It contains no player
+names. Row-level data stays in a private, unpublished store while the NFL terms question (flag F16) is open.</p>
+{tiles([(_w11_meta['rows_transcribed'], 'player rows read'), (_w11_meta['clubs_with_section'], 'club sections'),
+        (_w11_meta['games'], 'games on the Week 11 schedule'), (_w11_gs.get('Out', 0), 'listed Out'),
+        (_w11_gs.get('Questionable', 0), 'listed Questionable'), (_w11_gs.get('blank', 0), 'game-status cells blank')])}
+<p class="warn"><strong>A blank game-status cell is not availability.</strong> At this read {_w11_gs.get('blank', 0)} of
+{_w11_meta['rows_transcribed']} rows have an empty game-status cell. Read it as "no designation shown yet", never as
+"available" (brief rule: not listed never means available).</p>
+<h2>Club by club (counts only)</h2>
+<p class="note">Practice codes: DNP = Did Not Participate in Practice, LP = Limited Participation in Practice,
+FP = Full Participation in Practice. Totals across the page: DNP {_w11_pr.get('DNP', 0)}, LP {_w11_pr.get('LP', 0)},
+FP {_w11_pr.get('FP', 0)}. Every row links to the official page it was read from.</p>
+{_tbl(["Club", "Game", "Kickoff (ET)", "Player rows", "Out", "Questionable", "Game status blank", "DNP", "LP", "FP", "Page content", "Source"], _w11_tbl_rows, "week11-by-club")}
+<h2>What changed since the previous read</h2>
+<p><strong>Nothing to publish yet.</strong> This is the first read of the Week 11 report, so there is no earlier Week 11 read to
+difference against. Changes are published only between two reads of the same week, starting with the next read.</p>
+<h2>How this capture was made, and what is not verified</h2>
+<ul>
+<li><strong>Method:</strong> {html.escape(_w11_meta['method'])}</li>
+<li><strong>Read window:</strong> {html.escape(_w11_meta['read_window_utc'])}</li>
+<li><strong>Hash:</strong> the private transcription's sha256 is <code>{html.escape(_w11_meta['private_transcription_sha256'])}</code>.
+The fetch tool returns processed page text, not the server's raw bytes, so no hash of the raw response exists
+({html.escape(_w11_meta['raw_bytes_note'])})</li>
+<li><strong>Verification status:</strong> {html.escape(_w11_meta['verification_status'])}. The structure checks pass
+(253 rows, 26 club sections, 13 games, six bye clubs, the page's game list matches the Week 11 schedule register), but the
+row content has not been independently re-read. Use the counts as a single read until a second read confirms them.</li>
+<li><strong>Not captured:</strong> raw HTTP bytes, a scheduled capture (the sandbox cannot reach nfl.com; the scheduled
+Wednesday/Thursday/Friday captures are blocked by F16 and F98), and any Week 11 outcome.</li>
+</ul>
+<h2>Checks on this capture</h2>
+<ul>
+<li><code>scripts/week11_capture.py</code>: pinned row count (253), club sections (26), games (13), bye list, vocabularies,
+duplicate check, and game list against <code>data/schedule_week11_2026.csv</code>. It writes nothing when a check fails.</li>
+<li><code>scripts/drift_check.py</code>: the derived register is pinned to 26 rows with required non-blank columns and key
+<code>club</code> (<code>data/drift_pins.csv</code>).</li>
+</ul>
+<h2>Open items (see Flagged for review)</h2>
+<ul>
+<li><strong>F129</strong>: single read; a second independent read is required before any Week 11 designation is used.
+Two items to check: Dee Alford (BUF) is shown with a player link slug <code>deaundre-ford</code>, and Jaylen Waddle is listed under
+DEN and has not yet been checked against the Broncos roster page.</li>
+<li><strong>F126</strong>: the hub's week selector and render disagreed on 2026-11-18; the Week 11 render is now live.</li>
+<li><strong>F16</strong>: written NFL permission for systematic collection is not recorded. The Week 10 register published on
+the other pages still holds row-level data, which the brief's private-layer rule would hold back; the owner decides that.</li>
+</ul>
+"""
+pages["week11-injury-capture.html"] = ("Week 11 injury report: first capture", _w11_body)
+NAV.insert(NAV.index(("captures.html", "Captures & changes")) + 1, ("week11-injury-capture.html", "Week 11 injuries"))
+pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
+    '<h2>Week 11 injury report: first capture (read 2026-11-19)</h2>'
+    '<p class="note">Counts per club only. Player rows are held privately while the NFL terms question (F16) is open.</p>'
+    '<div class="cards">'
+    + card("week11-injury-capture.html", "Week 11 injury capture",
+           f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections, one read. No delta yet: the next read starts the series.")
+    + '</div>'))
+
 # ---------- collision guards ----------
 # Two parallel sessions can register the same page slug, or add two NAV entries
 # pointing at one file. Either silently loses a page (the later dict assignment

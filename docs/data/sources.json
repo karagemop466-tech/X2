@@ -1148,5 +1148,15 @@
   "accessed_date": "2026-11-19",
   "used_for": "T134 roster-event register: November reserve/injured rows (Colts Carlies, Alie-Cox, Davis-Gaither; Nacua 11/12)",
   "verification_note": "Read in 2 chunks (both read, hasMore false on chunk 2)."
+ },
+ {
+  "source_id": "SRC-116",
+  "title": "NFL.com injury report - Week 11 page (heading 'Injuries - WEEK 11'), read 2026-11-19 UTC",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/injuries/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T129 Week 11 capture: derived per-club counts (data/injury_week11_2026-11-19_by_club.csv) and capture record (data/captures/injury_week11_2026-11-19.meta.json)",
+  "verification_note": "Single read through the fetch tool (processed markdown, not raw HTTP bytes); row-level data held privately (gitignored). Not independently re-read; see F129."
  }
 ]

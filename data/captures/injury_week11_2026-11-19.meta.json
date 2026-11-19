@@ -1,0 +1,50 @@
+{
+  "capture_id": "INJ-W11-2026-11-19",
+  "source_url": "https://www.nfl.com/injuries/",
+  "page_heading": "Injuries - WEEK 11",
+  "page_title": "Official Latest NFL Injury Report for Players - Week 11 of the 2026 Season | NFL.com",
+  "schedule_source_url": "https://www.nfl.com/schedules/2026/by-week/week-11",
+  "read_window_utc": "chunks 1-6 read after 2026-11-19T06:53:35Z; chunk 0 read earlier in the same session (its time was not recorded); transcription file written by 2026-11-19T06:54Z (session clock; the fetch tool returns no per-request time)",
+  "read_clock_check_utc": "2026-11-19T06:53:35Z",
+  "method": "fetch_page tool, chunks 0-6 (totalChunks=7, hasMore=false on chunk 6) read in full; every player row transcribed by hand into the private PSV; checked by scripts/week11_capture.py against the page's own game list and bye list, and against data/schedule_week11_2026.csv",
+  "raw_bytes_retained": false,
+  "raw_bytes_note": "The fetch tool returns processed markdown, not the HTTP body, so no hash of the server's raw bytes exists. The sha256 below covers the private transcription only.",
+  "private_transcription": "private/injury_week11_2026-11-19.psv (gitignored; not published)",
+  "private_transcription_sha256": "263d4feb0148075dea015bf1d2e5fcdfc3430aeefab767a019dea1c76eb6db25",
+  "rows_transcribed": 253,
+  "clubs_with_section": 26,
+  "clubs_with_player_rows": 24,
+  "games": 13,
+  "games_with_player_rows": 12,
+  "no_injuries_reported_clubs": [
+    "CIN",
+    "WAS"
+  ],
+  "bye_clubs_without_section": [
+    "ATL",
+    "CLE",
+    "GB",
+    "LA",
+    "NE",
+    "SEA"
+  ],
+  "practice_totals": {
+    "DNP": 83,
+    "FP": 83,
+    "LP": 87
+  },
+  "game_status_totals": {
+    "blank": 237,
+    "Questionable": 7,
+    "Out": 9
+  },
+  "delta": "none: first read of the Week 11 report. The delta series starts with the next read (T129 follow-up). A delta is only meaningful between reads of the same week.",
+  "published_layer": "derived counts per club only (data/injury_week11_2026-11-19_by_club.csv)",
+  "raw_rows_published": false,
+  "verification_status": "single transcription read, not yet independently re-read (flag F129)",
+  "flags": [
+    "F129",
+    "F126",
+    "F16"
+  ]
+}
