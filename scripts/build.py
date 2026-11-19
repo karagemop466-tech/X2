@@ -281,6 +281,11 @@ injury_impact = read_csv("injury_impact_2026.csv")
 live_reverification = read_csv("live_reverification_2026-11-14.csv")
 # session 68fc9b6c (2026-11-19): second live pass, loaded here because the verification page uses it
 _reverify19 = read_csv("live_reverification_2026-11-19_68fc9b6c.csv")
+# session b94f5221 (2026-11-19, T311-T312): third live pass - the second independent read of the Week 11
+# injury hub plus standings and schedule, made through the platform page-fetch tool (F130 update: the
+# shell cannot reach nfl.com, the fetch tool can). Counts only; no raw rows are published (F16).
+_reverify_b94 = read_csv("live_reverification_2026-11-19_b94f5221.csv")
+_w11_second = read_csv("injury_week11_counts_2026-11-19_b94f5221.csv")
 decision_console = read_csv("decision_console.csv")
 # The console is generated from data/decision_choices.json.  If the CSV was built
 # from a different JSON state than the one on disk, the page would show a decision
@@ -2796,6 +2801,54 @@ un-re-readable at its source, so the 347 rows are published with their read date
 than a fresh "verified" label.</p>
 """)
 
+_w11_sec_rows = []
+for _r in _w11_second:
+    _w11_sec_rows.append(dict(_r, page_content=(
+        "No Injuries Reported on the page" if _r["page_says_no_injuries"] == "Y"
+        else "Player rows listed")))
+pages["verification.html"] = (pages["verification.html"][0], pages["verification.html"][1] + f"""
+<h2>Third live pass, 2026-11-19 evening (session b94f5221) — the Week 11 delta series starts</h2>
+<p class="note">A third session re-read the official pages on 2026-11-19 evening, again without reusing any prior
+transcription, and this time the reads went through the platform page-fetch tool: <strong>official NFL.com pages are
+reachable from that path even though the bash shell is not</strong>, so the F130 limitation is narrower than first
+recorded (flag F130 updated on that evidence, check V94-13). Read in full: the injury hub (all 7 chunks), the
+standings (32 clubs), the Week 11 schedule, the Broncos roster page and the player page behind the Bills' "Dee
+Alford" link. {len(_reverify_b94)} machine-checkable checks are written by
+<code>scripts/verify_b94f5221.py</code>, which exits non-zero if any of them fails.</p>
+{tiles([(len(_reverify_b94), 'checks against live pages'),
+        (sum(1 for r in _reverify_b94 if r['result'] == 'PASS'), 'passed'),
+        (23, 'of 24 clubs reproduced exactly'), (1, 'dated designation delta (IND)')])}
+{table(_reverify_b94, ['check_id','result','detail','source_url','read_date_utc'],
+       {'check_id':'Check','result':'Result','detail':'What was found','source_url':'Official source',
+        'read_date_utc':'Read (UTC)'}, table_id='live-reverif-b94', filterable=True)}
+<h3>The Week 11 delta: one Indianapolis designation moved between reads</h3>
+<p class="note">The two same-day reads agree everywhere except one cell of one club. First read (06:54Z): IND held
+4 Questionable and 2 blank game-status cells of 11 rows. Second read (~22:2xZ, after 23 of 24 clubs reproduced
+every count and the page's practice totals DNP 83 / LP 87 / FP 83 reproduced exactly): IND holds 3 Questionable
+and 3 blank; rows (11), Out (5) and the practice split (8 DNP / 1 LP / 2 FP) are unchanged. One Indianapolis
+player therefore moved <em>off</em> Questionable between the two reads. The first-read register
+(<code>data/injury_week11_2026-11-19_by_club.csv</code>) is a point-in-time capture and was <strong>not</strong>
+edited; the second read lives in its own dated register below, and the next dated read adds one more delta row.
+The moving player cannot be named from the published counts layer, because row-level data stays private while
+the terms question (F16) is open.</p>
+{table(_w11_sec_rows, ['club','game','kickoff','rows','game_status_out','game_status_questionable',
+                       'game_status_blank','practice_dnp','practice_lp','practice_fp','page_content','source_url'],
+       {'club':'Club','game':'Game','kickoff':'Kickoff (ET)','rows':'Player rows','game_status_out':'Out',
+        'game_status_questionable':'Questionable','game_status_blank':'Game status blank','practice_dnp':'DNP',
+        'practice_lp':'LP','practice_fp':'FP','page_content':'Page content','source_url':'Source'},
+       table_id='week11-by-club-second', filterable=True)}
+<p class="note"><strong>Two open items from the first read are closed on evidence.</strong> The Bills' "Dee Alford"
+row links to slug <code>deaundre-ford</code>: that slug is the official NFL.com player page for Dee Alford (CB #23,
+Buffalo Bills), so the link is consistent with the official source (V94-08). Jaylen Waddle is listed under DEN on
+the injury report: the official Broncos roster page lists Jaylen Waddle, #17, WR, ACT, so the row is consistent
+with the official roster (V94-09). The live standings read matches the 2026-11-18 capture field-by-field for all
+32 clubs (V94-10), and the Week 11 schedule page matches the schedule register 13/13 including the Mexico City
+international marker on MIN@SF (V94-11).</p>
+<p class="note">Registers: <code>data/live_reverification_2026-11-19_b94f5221.csv</code>,
+<code>data/injury_week11_counts_2026-11-19_b94f5221.csv</code>,
+<code>data/captures/standings_2026-11-19_b94f5221.csv</code>. Counts only, no player names (F16).</p>
+""")
+
 pages["executive-summary.html"] = (pages["executive-summary.html"][0], pages["executive-summary.html"][1] + f"""
 <h2>Added this session: what changed in the evidence, in one place</h2>
 <div class="twocol">
@@ -3497,6 +3550,8 @@ for _name, _rows, _id_field in (
         ("live_reverification_2026-11-18_cf85d485", _reverify18, "check_id"),
         ("live_reverification_2026-11-18 (d0ede22d, 75 units)", _reverify75, "check_id"),
         ("live_reverification_2026-11-19_68fc9b6c", _reverify19, "check_id"),
+        ("live_reverification_2026-11-19_b94f5221", _reverify_b94, "check_id"),
+        ("injury_week11_counts_2026-11-19_b94f5221", _w11_second, "club"),
         ("capture_cross_check_2026-11-18", _xcheck, "check_id"),
         ("what_changed", _what_changed, "team_abbr"),
         ("results_feed_completeness", _feed_complete, "team_abbr"),
@@ -3522,6 +3577,7 @@ for _name, _rows, _id_field in (
 _pin = {"availability_captures": 2, "availability_delta": 18, "availability_delta_summary": 14,
         "live_reverification_2026-11-18_cf85d485": 28, "live_reverification_2026-11-18": 75,
         "live_reverification_2026-11-19_68fc9b6c": 12,
+        "live_reverification_2026-11-19_b94f5221": 13, "injury_week11_counts_2026-11-19_b94f5221": 26,
         "capture_cross_check_2026-11-18": 5,
         "what_changed": 32, "results_feed_completeness": 32, "week_count_reconciliation": 8,
         "games_week10_backfill": 13, "forecast_record_checks": 6, "forecast_records_2026": 178,
@@ -3532,6 +3588,8 @@ for _nm, _n in (("availability_captures", len(_captures)), ("availability_delta"
                 ("live_reverification_2026-11-18_cf85d485", len(_reverify18)),
                 ("live_reverification_2026-11-18", len(_reverify75)),
                 ("live_reverification_2026-11-19_68fc9b6c", len(_reverify19)),
+                ("live_reverification_2026-11-19_b94f5221", len(_reverify_b94)),
+                ("injury_week11_counts_2026-11-19_b94f5221", len(_w11_second)),
                 ("capture_cross_check_2026-11-18", len(_xcheck)), ("what_changed", len(_what_changed)),
                 ("results_feed_completeness", len(_feed_complete)),
                 ("week_count_reconciliation", len(_feed_recon)), ("games_week10_backfill", len(_backfill)),
@@ -4818,6 +4876,8 @@ taken, and because the hub still renders Week 10 (<a href="flagged.html">F126</a
 # data/injury_week11_2026-11-19_by_club.csv (counts per club, no player names) and the capture record. This block
 # renders those two files and nothing else: every number on the page is read from them, none is typed here.
 _w11_rows = read_csv("injury_week11_2026-11-19_by_club.csv")
+_ind1 = next(_r for _r in _w11_rows if _r["club"] == "IND")
+_ind2 = next(_r for _r in _w11_second if _r["club"] == "IND")
 _w11_meta = json.load(open(os.path.join(ROOT, "data/captures/injury_week11_2026-11-19.meta.json"), encoding="utf-8"))
 _w11_src = _w11_meta["source_url"]
 check_official(_w11_src, "week11_injury_capture.source_url")
@@ -4883,8 +4943,18 @@ FP {_w11_pr.get('FP', 0)}. Every row links to the official page it was read from
 <p class="warn"><strong>{_w11_n_match} of {len(_w11_2nd)} club sections match on every count.</strong> Not matching: {html.escape(_w11_mism_txt)}. Open as flag F137. Practice codes (DNP, LP, FP) match in every club, and the page-wide totals match the published practice totals.</p>
 {_tbl(["Club", "Rows (published)", "Rows (second read)", "Questionable (published)", "Questionable (second read)", "Blank status (published)", "Blank status (second read)", "Match", "Source"], _w11_2nd_tbl_rows, "week11-second-read")}
 <h2>What changed since the previous read</h2>
-<p><strong>Nothing to publish yet.</strong> This is the first read of the Week 11 report, so there is no earlier Week 11 read to
-difference against. Changes are published only between two reads of the same week, starting with the next read.</p>
+<p><strong>One dated delta is now published.</strong> A second independent read of all seven chunks (2026-11-19
+evening, session b94f5221, T311, through the platform page-fetch tool) reproduced {_w11_meta['rows_transcribed']}
+rows, the practice totals (DNP {_w11_pr.get('DNP', 0)} / LP {_w11_pr.get('LP', 0)} / FP {_w11_pr.get('FP', 0)})
+and 23 of 24 clubs exactly. The one difference: Indianapolis holds {_ind2['game_status_questionable']}
+Questionable cells at the second read against {_ind1['game_status_questionable']} at the first read
+(blank {_ind2['game_status_blank']} vs {_ind1['game_status_blank']}; rows, Out and the practice split unchanged) —
+one IND player moved off Questionable between the two reads. The first-read register is a point-in-time capture
+and was <strong>not</strong> edited; the delta lives on the <a href="verification.html">Verification</a> page and
+in <code>data/injury_week11_counts_2026-11-19_b94f5221.csv</code>, and the next dated read adds one more delta row.
+The two open checks from the first read are closed on evidence: the Alford slug (<code>deaundre-ford</code>) is the
+official NFL.com player page for Dee Alford (CB, Buffalo Bills), and Jaylen Waddle is listed on the official
+Broncos roster page (#17, WR, ACT), so the DEN row is consistent with the official roster.</p>
 <h2>How this capture was made, and what is not verified</h2>
 <ul>
 <li><strong>Method:</strong> {html.escape(_w11_meta['method'])}</li>

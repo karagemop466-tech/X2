@@ -1,0 +1,33 @@
+team_abbr,team_name,wins,losses,ties,points_for,points_against,net_points,source_url,read_date_utc
+BUF,Buffalo Bills,8,1,0,287,199,88,https://www.nfl.com/standings/,2026-11-19
+NE,New England Patriots,5,5,0,221,242,-21,https://www.nfl.com/standings/,2026-11-19
+NYJ,New York Jets,2,8,0,194,254,-60,https://www.nfl.com/standings/,2026-11-19
+MIA,Miami Dolphins,1,8,0,148,224,-76,https://www.nfl.com/standings/,2026-11-19
+CIN,Cincinnati Bengals,7,2,0,278,193,85,https://www.nfl.com/standings/,2026-11-19
+PIT,Pittsburgh Steelers,6,3,0,198,182,16,https://www.nfl.com/standings/,2026-11-19
+CLE,Cleveland Browns,6,4,0,188,220,-32,https://www.nfl.com/standings/,2026-11-19
+BAL,Baltimore Ravens,4,6,0,209,259,-50,https://www.nfl.com/standings/,2026-11-19
+JAX,Jacksonville Jaguars,7,2,0,269,144,125,https://www.nfl.com/standings/,2026-11-19
+HOU,Houston Texans,3,6,0,233,219,14,https://www.nfl.com/standings/,2026-11-19
+IND,Indianapolis Colts,3,7,0,208,271,-63,https://www.nfl.com/standings/,2026-11-19
+TEN,Tennessee Titans,1,8,0,167,239,-72,https://www.nfl.com/standings/,2026-11-19
+KC,Kansas City Chiefs,7,2,0,237,156,81,https://www.nfl.com/standings/,2026-11-19
+DEN,Denver Broncos,7,2,0,198,186,12,https://www.nfl.com/standings/,2026-11-19
+LV,Las Vegas Raiders,4,6,0,251,289,-38,https://www.nfl.com/standings/,2026-11-19
+LAC,Los Angeles Chargers,1,8,0,144,239,-95,https://www.nfl.com/standings/,2026-11-19
+NYG,New York Giants,5,3,1,203,196,7,https://www.nfl.com/standings/,2026-11-19
+DAL,Dallas Cowboys,4,6,0,286,282,4,https://www.nfl.com/standings/,2026-11-19
+WAS,Washington Commanders,3,5,1,196,223,-27,https://www.nfl.com/standings/,2026-11-19
+PHI,Philadelphia Eagles,2,7,0,148,221,-73,https://www.nfl.com/standings/,2026-11-19
+DET,Detroit Lions,7,2,0,257,199,58,https://www.nfl.com/standings/,2026-11-19
+MIN,Minnesota Vikings,7,2,0,176,126,50,https://www.nfl.com/standings/,2026-11-19
+CHI,Chicago Bears,7,2,0,241,184,57,https://www.nfl.com/standings/,2026-11-19
+GB,Green Bay Packers,6,4,0,226,221,5,https://www.nfl.com/standings/,2026-11-19
+CAR,Carolina Panthers,4,5,0,219,236,-17,https://www.nfl.com/standings/,2026-11-19
+TB,Tampa Bay Buccaneers,3,6,0,202,178,24,https://www.nfl.com/standings/,2026-11-19
+NO,New Orleans Saints,3,6,0,202,236,-34,https://www.nfl.com/standings/,2026-11-19
+ATL,Atlanta Falcons,3,7,0,201,258,-57,https://www.nfl.com/standings/,2026-11-19
+SF,San Francisco 49ers,8,1,0,281,196,85,https://www.nfl.com/standings/,2026-11-19
+SEA,Seattle Seahawks,6,4,0,223,175,48,https://www.nfl.com/standings/,2026-11-19
+LA,Los Angeles Rams,6,4,0,248,187,61,https://www.nfl.com/standings/,2026-11-19
+AZ,Arizona Cardinals,3,7,0,184,289,-105,https://www.nfl.com/standings/,2026-11-19
