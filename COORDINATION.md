@@ -3898,3 +3898,27 @@ written into the cell itself. Rows corrected (line numbers as of this commit):
 row, the ID-collision notes (F127 — process, not status), and rows whose numbering collided across sessions where
 GitHub's record does not disambiguate which block's PR carried which row (those stay as their owners left them).
 No data register value was touched by T402.
+
+
+
+## 2026-11-19 · session `0a430c21` · claim (T310–T315)
+
+**Branch:** `arena/0a430c21-x2` (fixed by Arena) · **Base:** `main` @ `b95fe2a` (PR #103 merged) · **Owner:** `0a430c21` · **Status:** in progress
+
+Board read in full first. No row on it is `unclaimed`; the newest IDs on the board were T210/F130 at claim time; `main` then advanced through PR #106 (session ddbc4956 took T305–T309 and F135/F133/F134), so this block is renumbered to **T310–T315** and **F135–F139**. Stale rows (T55, T60, T71, T102–T106, T112, T114–T119, T124, T128) are left exactly as their owners left them.
+
+**Sandbox limitation, recorded before any verification claim (same as F130):** `www.nfl.com`, `operations.nfl.com`, club sites (`www.packers.com`) and third-party sites (`www.espn.com`) all return **HTTP 000** from this environment on 2026-11-19. Only `github.com`, `api.github.com`, `registry.npmjs.org` and `pypi.org` are reachable. This session therefore performs **no new official-source reads**, marks **no new value** as verified against an official source, and changes no published NFL datum. Everything below is verified *against the repository's own registers and its generated output*, which is the class of check that does not need network access — and each finding names the register and line that proves it.
+
+**Two defects found while reading `main`, both mechanical and both reproducible offline.** (Renumbered T310–T315 and F135–F139 after `main` advanced through PR #106: session `ddbc4956` had already taken T305–T309 and F135/F133/F134.)
+
+1. **The decision-readiness table does not line up with the requirements register it claims to have one row per.** The landing page states *"One row per requirement in the requirements register (65 of 65)"* and each row prints a "Requirement (from the brief)" cell. For **41 of the 65 rows that printed cell is a different brief item from the requirement text of the R-id printed beside it** (e.g. `D29 ↔ R11`, where R11 is *"Executive summary"* and the D29 row reads *"Turn the 136-game log into the pre-registered backtest corpus"*). The mapping is recorded as "exact" on rows where the text is not the same item, so the published precision claim is stronger than the data supports. This is the *decision-readiness* surface — the one the brief asks to be one row per requirement — so a reader cannot trace a requirement to its gate.
+2. **The site-wide header is a day stale and F114 has recurred.** Every page prints `Latest read 2026-11-18`, on a build where **8 pages carry 2026-11-19 reads** — including `index.html`, whose own freshness table has three `2026-11-19` rows and whose "New on 2026-11-19: an independent live re-read" section is the newest content on the page. F114 was raised for exactly this failure and is marked `Resolved - per-surface dates published`; the same defect is back because the header date is a hard-coded constant that no check compares against the registers.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T310 | Claim and board record (this block) | done | `COORDINATION.md` | Board rule |
+| T311 | Mechanics-only audit of the readiness→requirement mapping; publish the per-row evidence so the 41 mismatches are inspectable rather than asserted | in progress | `scripts/readiness_audit.py` (new), `data/readiness_mapping_audit.csv` (new), `data/flags.csv` (F135) | Defect 1 above |
+| T312 | Make the header read-date a **derived** value (max read date found in the registers) instead of a hard-coded constant, so it cannot go stale again; re-open F114 as a recurrence with the proof | in progress | `scripts/build.py` (`READ_LATEST`/`READ_SUMMARY`), `data/flags.csv` (F114), generated `docs/**` | Defect 2 above |
+| T313 | Publish the audit on the site as its own page and link it from the readiness table, so a reader sees the mapping caveat in the place the mapping is used | in progress | `scripts/build.py`, generated `docs/**` | The brief's "flag it for review" requirement |
+| T314 | Two suggestion-register additions and one decision-question addition for the information that is genuinely missing to fix the mapping (owner must say which register is canonical) | in progress | `data/suggestions.csv`, `data/suggestion_review.csv`, `data/decision_questions.csv`, generated `docs/**` | Brief: "Suggestions need to be made to discover missing information" |
+| T315 | Integration: rebuild, all gates, PR → `main`, merge, confirm GitHub Pages, record PR link and result | pending — runs last | `COORDINATION.md`, PR | Required by the brief |
