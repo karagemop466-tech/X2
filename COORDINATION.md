@@ -3266,3 +3266,27 @@ Board read in full before claiming. No `unclaimed` row exists; the newest IDs on
 | ID | Task | Status | Owner | Files touched | Sources | Notes |
 |----|------|--------|-------|---------------|---------|-------|
 | T129 | Brief items "Automate immutable multi-day availability snapshots" / "Snapshot the injury report every Wed, Thu, Fri" / "Build immutable official availability snapshots": (a) verify the NFL terms gate against the live page, (b) decide whether a scheduled retrieval job may be built, (c) if not, record the blocker and the largest no-retrieval step that is allowed | in progress | 936a0eeb | `COORDINATION.md` only (this entry). No scraper, workflow, or capture file is created by this task. | https://www.nfl.com/legal/terms/ (read 2026-11-19) | Relates to F14, F16, F98, D17, D22, D11, D12 |
+
+### T129 close-out (session 936a0eeb, 2026-11-19) — outcome: blocked by policy, nothing automated
+
+**Result.** The scheduled, multi-day capture of the NFL injury report and club depth pages was **not built**. The NFL terms in force on the read date prohibit the retrieval it would perform, and gate D22 (written terms review) is not cleared. A scheduler that fetches nfl.com would be the repository itself performing the systematic retrieval that §1.3 forbids, so building it would be a policy violation carried out by this session, not a research step. The existing blocker (F98 / D22 / F16 / R28 / D11 / D12) stands unchanged.
+
+**Verification performed (2026-11-19).**
+- Fetched https://www.nfl.com/legal/terms/ (page header: "Updated: May 16, 2024"). §1.3 "Permitted Uses" reads, verbatim: *"You may use the Services solely for your own individual non-commercial and informational purposes only. Any other use, including for any commercial purposes, is strictly prohibited without our express prior written consent. Systematic retrieval of data or other content from the Services, whether to create or compile, directly or indirectly, a collection, compilation, database, or directory, is prohibited absent our express prior written consent."* Only chunk 0 of 9 was read; §§2–26 were not reviewed, so this is not a full terms review (D22 stays open).
+- Confirmed by repository inspection: no `.github/` directory, no `cron`/workflow file, and no scheduled job exists. The existing capture (2026-11-18) was made by hand, one request per chunk (F98).
+- Re-ran `python3 scripts/build.py` (55 pages), `scripts/drift_check.py` (54/54 registers match their pins), and `scripts/check_links.py` (3,055 internal links resolve; 7,016 external links on the allowlist). The regenerated tree is byte-identical to the commit, so the build is reproducible at the base commit `38629ca`.
+
+**What is allowed without retrieving nfl.com (not done here; proposed for the owner).**
+1. A freshness monitor that reads only the dated captures already committed (`data/availability_captures.csv`, `data/captures/`) and fails when the newest capture is older than an owner-set number of days. It needs no network access and does not touch nfl.com.
+2. A manual capture template, one dated row per hand-read, with the clock time and the SHA-256 of the transcription, so the Wed/Thu/Fri series can be filled by a person under the terms the owner accepts.
+3. The routes that would actually unblock automation: a written permission from the NFL, or an authorized structured feed, both recorded as owner decisions (D22/F16).
+
+**Irregularities (flagged; none blocks anything).**
+- **I-T129-1.** The brief asks for scheduled daily or Wed–Fri capture of the injury report and depth pages. The live terms prohibit systematic retrieval to compile a database without written consent. The brief's request and the terms conflict; the terms take precedence until consent is recorded. Owner decision required.
+- **I-T129-2.** Only §1.3 of the terms was read on 2026-11-19. The rest of the agreement (including any clause on automated access, which the page's section list suggests may exist in §§ 5–14) is unreviewed. This is the open part of D22.
+- **I-T129-3.** The board protocol (`session-<id>/<task>` branches and worktrees) conflicts with this session's mandated single-branch rule (`arena/936a0eeb-x2` only). This session followed the mandated rule and did not create other branches. Flagged for the integration owner.
+- **I-T129-4.** The brief's "Work line by line … verify everything from official sources" cannot be satisfied in one session for the full repository; the board already holds owner-gated items (P09, P01, F16, F127 process rules, DEC-01…DEC-10) that no agent may record. They are not resolved by this entry.
+
+**Board state.** T129: **done** (outcome recorded as blocked by policy; no data, model or page changed). No other task was claimed or altered. Branch `arena/936a0eeb-x2` carries this entry only. No pull request was opened: the brief defers the PR and merge until every task is done, and the owner-gated items above are not done.
+
+**Sources.** https://www.nfl.com/legal/terms/ (§1.3, read 2026-11-19); https://www.nfl.com/injuries/ (the page the blocked capture would have read, not fetched in this task); repository records F14, F16, F98 (`data/flags.csv`), D11, D12, D17, D22, R28, R48 (`data/decision_readiness.csv`).
