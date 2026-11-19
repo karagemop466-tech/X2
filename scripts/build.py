@@ -2664,8 +2664,8 @@ repository matches the page as served on {AS_OF}. It does not prove the page is 
 is not permission to re-print the page (F16).</p>
 <h2>Second live pass, 2026-11-19 (session 68fc9b6c)</h2>
 <p class="note">A separate session re-read the official pages on 2026-11-19, without reusing the 2026-11-18
-inputs, and re-derived the registers from the repository side rather than copying them. The nine checks below are
-written by <code>scripts/verify_68fc9b6c.py</code>, which exits non-zero if any of them fails, and the register it
+inputs, and re-derived the registers from the repository side rather than copying them. The
+{len(_reverify19)} checks below are written by <code>scripts/verify_68fc9b6c.py</code>, which exits non-zero if any of them fails, and the register it
 writes is row-count-pinned in the drift alarm (<code>data/drift_pins.csv</code>).</p>
 {tiles([(len(_reverify19), 'checks re-run against live pages'),
         (sum(1 for r in _reverify19 if r['result'] == 'PASS'), 'passed'),
@@ -2674,7 +2674,8 @@ writes is row-count-pinned in the drift alarm (<code>data/drift_pins.csv</code>)
        {'check_id':'Check','result':'Result','detail':'What was found','source_url':'Official source',
         'read_date_utc':'Read (UTC)'}, table_id='live-reverif-1119', filterable=True)}
 <p class="note"><strong>Two flags were stale, and are corrected rather than quietly dropped.</strong> F01 said the
-README was a one-line placeholder; it is 363 lines and has been for several sessions. F90 said the decision-readiness
+README was a one-line placeholder; it runs to hundreds of lines and has for several sessions (the exact count
+moves as sessions append to it, which is why the assertion here is the property, not a constant). F90 said the decision-readiness
 table held 45 rows against 58 requirements; both registers now hold 65 rows and the mapping between them is a
 bijection. Both rows are closed on the <a href="flagged.html">Flagged for review</a> page with the reproduction
 command that shows the claim no longer holds. What a stale flag costs is trust in the page that lists the others,
