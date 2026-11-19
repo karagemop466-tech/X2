@@ -4044,3 +4044,62 @@ Nothing was discarded and no other session's row was edited. The renumbering cos
 | T320 | Integration: PR `arena/b94f5221-x2` → `main`, merge, confirm GitHub Pages deploy, record PR link and result | pending — runs last | `COORDINATION.md`, PR | Per brief: no waiting for review; flagged items do not block |
 
 **Non-overlap notes:** `cdc0817c` (T300–T304) owns `EXECUTIVE-SUMMARY.md`; this session does not touch it. `0a430c21`'s F135–F141 and `0a0deaaf`'s F133 are left exactly as their owners wrote them; this session only updates **F129 and F130** (the two flags whose requested actions this session performs). No model, price, ROI, leaderboard or corpus value is changed by this session — reads and records only.
+### T316–T319 close-out · session `b94f5221` · 2026-11-19
+
+**Status: T316–T319 done. T320 (integration) runs below in this block.**
+
+**T316 — third dated read of the Week 11 injury hub (done).** All seven chunks re-read 2026-11-19 ~22:2x–22:45Z
+through the platform page-fetch tool, without reusing any prior transcription. Result: 253 player rows, 26 club
+sections, 24 clubs with rows, CIN/WAS "No Injuries Reported", bye clubs absent — identical structure to the first
+read. Practice totals reproduce exactly (DNP 83 / LP 87 / FP 83). 23 of 24 clubs reproduce every count field
+exactly. The single difference is IND (Questionable 4→3, blank 2→3; rows 11, Out 5 and practice 8/1/2 unchanged)
+— the same delta `0a0deaaf` recorded at 22:10Z (F133). **With two independent later reads agreeing, F133's
+either/or resolves in favour of "the page changed between 06:54Z and 22:10Z"** over "the first transcription is
+off by one". The Alford (BUF) slug check is closed against the official source:
+`https://www.nfl.com/players/deaundre-ford/` is the official NFL.com player page for **Dee Alford, CB #23, Buffalo
+Bills, active** — the injury-report link is consistent with the official source. Registers published (counts only,
+no names — F16): `data/injury_week11_counts_2026-11-19_b94f5221.csv` (26 rows, pinned).
+
+**T317 — standings and schedule verification (done).** Live standings read (32 clubs, division view, both chunks)
+matches the 2026-11-18 capture field-by-field on wins/losses/ties/PF/PA/net — no Week 11 result existed at either
+read. Register: `data/captures/standings_2026-11-19_b94f5221.csv` (32 rows, pinned). Week 11 schedule page matches
+`data/schedule_week11_2026.csv` 13/13 on day, ET time, away, home and broadcast, including the MIN@SF Mexico City
+international marker (neutral_site=Y). All 26 records shown on the injury hub's game list cross-match the
+standings read. Every comparison row carries its official source link in
+`data/live_reverification_2026-11-19_b94f5221.csv` (13 checks V94-01..V94-13, pinned).
+
+**T318 — board-hygiene takeover record (done, no action required).** Both dispositions were executed by session
+`8994979a` (T400/T401) before this session's disposition ran: PR #99 merged as `a9e984d` (in this branch's
+history), PR #75 closed 2026-11-19T22:11:24Z with the supersession rationale. This session adds nothing to those
+actions and discards nothing. No stale-row edits were made by this session; `8994979a`'s T402 board reconciliation
+already covered them.
+
+**T319 — gate re-run on the rebased branch (done).** On the shipped tree (`f4fb343` on `main` @ 5d9a727):
+- `python3 scripts/build.py` → 57 pages; link and row-source checks passed.
+- `python3 scripts/verify_b94f5221.py` → PASS (13/13 V94 checks consistent; 253 rows; IND delta exactly Q 4→3 /
+  blank 2→3; standings 32/32 identical; schedule 13/13). Exits non-zero on any failure.
+- `python3 scripts/drift_check.py` → all 65 registers match their pins (3 added this session).
+- `python3 scripts/check_links.py` → 57 pages; 3,285 internal / 7,275 external links; 0 broken internal.
+- `python3 scripts/repo_audit.py` → exit 0.
+- `npm run build && npm run verify` → ALL CHECKS PASSED.
+
+**Sources (this session):** https://www.nfl.com/injuries/ (7 chunks × 2 reads); https://www.nfl.com/standings/
+(2 chunks); https://www.nfl.com/schedules/2026/by-week/week-11 (2 chunks); https://www.nfl.com/teams/denver-broncos/roster
+(chunks 0–1); https://www.nfl.com/players/deaundre-ford/ (single page). Each register row and V94 check carries its own
+source link.
+
+**Irregularities:**
+1. **None introduced by this session.** F129 and F130 are updated in place with the closure evidence; `0a0deaaf`'s
+   F133 is left untouched for its owner (this session's V94-07 supplies the evidence that resolves its either/or;
+   the flag text already says the published single-read register is unchanged, which remains true).
+2. **Carried, unchanged, owner-owned:** F16 (data rights — raw rows stay private), F133 (IND mismatch record),
+   F135–F141 (`0a430c21`), P09, P01/F07/F51, F19, F103, F128.
+3. **Process note (collision, resolved):** this session's claim was drafted as T311–T315 and renumbered to
+   T316–T320 after `0a430c21` claimed T310–T315 in parallel; the substance was reframed from "second read" to
+   "third dated read" after `0a0deaaf`'s PR #106 landed its second read mid-flight. Nothing was discarded; the
+   renumbering is recorded in the claim block above.
+
+**Files touched:** `COORDINATION.md`, `data/flags.csv` (F129/F130 in place; count unchanged 133), `data/drift_pins.csv`
+(+3 pins, 65 total), `data/live_reverification_2026-11-19_b94f5221.csv` (new), `data/injury_week11_counts_2026-11-19_b94f5221.csv`
+(new), `data/captures/standings_2026-11-19_b94f5221.csv` (new), `scripts/verify_b94f5221.py` (new), `scripts/build.py`
+(third-pass section, capture-page delta paragraph, source-link checks, pins), regenerated `docs/**`.
