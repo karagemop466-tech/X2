@@ -3594,3 +3594,34 @@ Branch `arena/22ae094b-x2` == `main` @ `38629ca` plus the new `EXECUTIVE-SUMMARY
   the assertion was already false when written. It now states the property that actually matters — the file is far
   longer than the one line the flag described — and the verifier prints the live count instead of asserting a
   constant. This is the same failure mode as the two stale flags this task closed, caught in its own work.
+
+## 2026-11-19 · session `57e0d056` · claim (T200–T207)
+
+**Branch:** `arena/57e0d056-x2` (this session) · **Base:** `main` @ `c346de6` (PR #94 merged) · **Status:** integration in progress.
+
+**Sandbox verification limitation (recorded before any verification claim):** `www.nfl.com` and `operations.nfl.com` return connection refused (HTTP 000) from this environment; only `github.com`, `api.github.com` and package registries are reachable. This session therefore performed **no live official-source reads of NFL.com**. No new value was marked verified against an official source; nothing new was inferred or filled; no existing published value was changed. Recorded as flag **F130**. All existing values stand on their prior dated reads with source links, and every page carries source links for manual review once the official pages are reachable.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T200 | Repo line-by-line review: read key data registers, scripts and generated pages; record what is verified vs blank vs flagged; flag irregularities | done (baseline recorded) | `COORDINATION.md`, `README.md`, `data/suggestions.csv`, `data/questions.csv`, `data/requirements.csv`, `data/flags.csv`, `data/strategies.json`, `scripts/build.py`, `docs/*.html` | Baseline established. Existing surfaces confirmed present and functional: suggestions (S01-S50, all awaiting owner choice), decisions (DEC-01+), questions (Q01-Q66), decision questions (DQ-01-DQ-20), information gaps (G01-G04), executive summary, landing page with decision-readiness D01-D65. Live NFL verification not possible (F130). |
+| T201 | Suggestions review workflow | adopted existing surface | `data/suggestions.csv`, `docs/suggestions.html` | All 50 proposals listed as "For review — not implemented" with options A/B/C, benefit, effort, risk and source links; no path chosen, none implemented pending owner choice. |
+| T202 | Decision prerequisites Q/I/A list | adopted existing surface | `data/decision_questions.csv`, `data/information_gaps.csv`, `docs/decisions.html`, `docs/questions.html`, landing decision-readiness table | Covered by DEC-01+, Q01-Q66, DQ-01-DQ-20, G01-G04 and landing-page readiness D01-D65 (one row per requirement with blocking gate and clearing number). |
+| T203 | Executive summary | adopted existing surface | `docs/executive-summary.html` | Present with key findings, verification status, coverage, strategy research and originated lines. No new unverified claims added (F130). |
+| T204 | Site quality: landing page + subpages, source links, no broken links | adopted existing surface | `docs/index.html`, `docs/*.html` | Present with per-surface freshness table and source-linked tables; check_links reports 0 broken internal links. |
+| T205 | Build & verify | done | `scripts/build.py`, `src/`, generated `docs/` | All gates green: build.py 55 pages + link/row-source checks; check_links 3,055 internal / 7,017 external, 0 broken; drift_check all registers match pins; repo_audit all pass; npm build && npm verify ALL CHECKS PASSED. |
+| T206 | PR & merge: open PR from `arena/57e0d056-x2` to `main`, merge, confirm GitHub Pages, record PR link and result | in progress | `COORDINATION.md`, PR #97 | PR #97 opened; merge and Pages confirmation pending. |
+| T207 | Handoff record: record sources, verification performed and irregularities; mark tasks done | pending | `COORDINATION.md` | Board close-out after merge. |
+
+**Verification performed (this session):**
+- `python3 scripts/build.py` → 55 pages; link and row-source checks passed.
+- `python3 scripts/check_links.py` → 55 pages; 3,055 internal / 7,017 external links; no broken internal links; all external https on the allow-list.
+- `python3 scripts/drift_check.py` → all registers match pins (flags.csv repinned 123 → 124 for F130).
+- `python3 scripts/repo_audit.py` → all checks pass.
+- `npm run build && npm run verify` → ALL CHECKS PASSED.
+
+**Irregularities introduced this session:**
+- **F130** — sandbox verification limitation: www.nfl.com/operations.nfl.com not reachable, so no new live official-source verification was performed; nothing inferred or filled; existing values stand on prior dated reads.
+
+**No other session's work was discarded:** d9344f5a's T133/T134 block and 8ddfaa33's T133 acceptance-audit block are both retained unchanged; F128 (roster events) and F129 (injury capture limitation) remain as recorded by those sessions. My flag is F130.
+
+**Files touched:** `COORDINATION.md`, `data/flags.csv` (F130 appended), `data/drift_pins.csv` (flags pin 123 → 124), `data/repo_line_audit.csv` (A12-flag count 123 → 124), regenerated `docs/flagged.html`, `docs/data/flags.json`, `docs/captures.html`, `docs/repo-audit.html`.
