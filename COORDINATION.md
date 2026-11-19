@@ -3963,3 +3963,31 @@ Renumbered from T211–T216 / F131–F135 after `main` advanced through PR #106 
 `build.py` **57 pages**, link and row-source checks pass · `check_links.py` **3,284 internal / 7,232 external, 0 broken** · `drift_check.py` **62/62 registers** · `repo_audit.py` all checks pass · `readiness_audit.py` 65 rows / 8 groups / 10 lane collisions · `verify_snapshot.py` 0 fail, 1 review (Ben Brown, pre-existing) · `npm run build && npm run verify` **ALL CHECKS PASSED**.
 
 **Not done, stated plainly:** no NFL page was read, so nothing new is verified against an official source; no strategy was ranked, no price added, no ROI or CLV claim made, no reward enabled; the frozen 137-game corpus was not touched; the 36 unregistered brief lines were published as a finding rather than resolved, because resolving them means deciding which register is canonical — an owner decision (DQ-21, S51).
+
+### T315 merge record · session `0a430c21` · 2026-11-19
+
+| Item | Value |
+|---|---|
+| PR | [#110](https://github.com/karagemop466-tech/X2/pull/110) — `arena/0a430c21-x2` → `main` |
+| Merged as | **`de38645`** at **2026-11-19T22:23:19Z** (`gh pr merge 110 --merge`) |
+| Pages run | [44628148142](https://github.com/karagemop466-tech/X2/actions/runs/44628148142) on `main` @ `de38645` → **completed / success** |
+| Live verification | `docs/readiness-audit.html` and `docs/index.html` fetched after deploy. The audit page renders all 65 rows, 8 duplicate groups and the 10 lane collisions with file line numbers; the landing page shows the corrected readiness headline and links the audit |
+
+**Rebases, and what they cost.** Seven `git pull --rebase` cycles against concurrent merges (PRs #103, #106, #107, #109 and others landing mid-session). Every `COORDINATION.md` conflict was resolved by keeping the other session's block verbatim and appending this session's block after it — sessions `c8fedd7`→`c8fedd17`'s and `cdc0817c`'s T300–T304 blocks are both intact. Every generated `docs/**` conflict was resolved by **rebuilding from the registers**, never by editing HTML. Every `data/flags.csv`, `suggestions.csv`, `suggestion_review.csv` and `drift_pins.csv` conflict was resolved by **ID union**, with this session's flags renumbered into the free range:
+
+| Drafted | Shipped | Reason |
+|---|---|---|
+| F131, F132, F133, F134, F135 | **F135, F136, F137, F138, F139** | `main` had taken F131 (sandbox limitation audit) and F133/F134 (IND counts, Singapore jurisdiction) |
+| T211–T216 | **T310–T315** | `main` had taken T305–T309 |
+
+Nothing was discarded and no other session's row was edited. The renumbering cost is real and is the reason F136 records that bare `D`-labels collide across registers — the same failure mode, one layer up.
+
+**What the owner should look at first, in order:**
+
+1. **F135** — *which register is canonical* for a brief line that appears twice. Seven of eight duplicate groups currently publish contradictory answers, so the readiness page answers the same question two ways. S51 proposes the zero-renumbering route (declare one authoritative answer per group, enforce it with a check).
+2. **F137** is fixed, but **S53** proposes the structural fix: a closed status vocabulary so the headline can never again silently drop rows.
+3. **F136** — pick a prefix (or adopt the citation rule in S52) before a flag cites a bare `D01` again.
+4. **F140** — `suggestion_review.csv` still has two rows under each of S41–S44; nothing was deleted.
+5. **F141** — re-run a live official-source pass from an environment that can reach nfl.com. No NFL datum was changed by this session, so this is confirmation, not repair.
+
+**The standing open queue is unchanged by this session:** P09 corpus promotion, P01/F07/F51 pricing rights, F16 NFL.com data rights, F19 Dutch-law review, F132's Singapore jurisdiction gap, F128's Aug–Sep 2026 transactions gap. `data/decision_choices.json` is still empty — nothing here decided anything on the owner's behalf.
