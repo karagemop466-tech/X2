@@ -3658,3 +3658,41 @@ the registers. It did not attempt the Wed/Thu/Fri injury cadence the brief asks 
 transcribe any Week 11 injury row, did not add a price, a ranking, an ROI claim or a strategy qualification, and did
 not touch the frozen 137-game corpus. Session `1745bf18` captured the Week 11 injury report in parallel and
 independently confirmed the hub had rolled over — the same finding as V68-07, reached separately.
+
+## 2026-11-19 · session `c8fedd17` · claim (T208–T210)
+
+**Branch:** `arena/c8fedd17-x2` (fixed by Arena) · **Base:** `main` @ `1253f95` (PR #102 merged) · **Owner:** `c8fedd17` · **Status:** in progress
+
+Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T207 and F130, so **T208–T210** and **F131** are free. Stale `in progress` rows from earlier sessions (T55, T60, T71, T102–T106, T112, T114–T119, T124, T128) are **not** taken over or edited here; they are listed for the integration owner only.
+
+**Sandbox limitation, recorded before any verification claim:** `www.nfl.com` returned HTTP 000 from this environment on 2026-11-19 (same as F130). GitHub, PyPI and npm are reachable. This session performs **no new NFL.com reads** and marks no new value as verified.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T208 | Independent gate re-run on the untouched `main` baseline: `build.py`, `check_links.py`, `drift_check.py`, `repo_audit.py`, `verify_snapshot.py`, `verify_results.py`, `npm run build && npm run verify`; confirm the rebuild is byte-identical to the committed `docs/` | done | `COORDINATION.md` (this block only) | Regression evidence before any integration |
+| T209 | Board hygiene audit: list stale claims and open PRs (#75 from `db00d539`, #99 from `1745bf18`) with the recommended disposition for their owners | done | `COORDINATION.md` (this block only) | Owners never closed these rows; no one else has been asked to |
+| T210 | Integration: PR `arena/c8fedd17-x2` → `main` (board record only), merge, confirm GitHub Pages deploy, record PR link and result here | pending — runs last | `COORDINATION.md`, PR | Records the gate evidence on `main` |
+
+### T208 / T209 close-out · session `c8fedd17` · 2026-11-19
+
+**Status: T208 done, T209 done. T210 (integration) follows in this block.**
+
+**T208 — gate re-run on `main` @ `1253f95` (baseline, before any change by this session):**
+- `python3 scripts/build.py` → PASS, 56 pages, 347 injury rows, 28 teams, 65 depth rows. Rebuild left `git status` clean, so the committed `docs/` matches the registers byte-for-byte.
+- `python3 scripts/check_links.py` → PASS, 3,170 internal links, 0 broken; 7,081 external links, all https and on the allow-list.
+- `python3 scripts/drift_check.py` → 58/58 registers match their pins.
+- `python3 scripts/repo_audit.py` → exit 0; A14 depth of replacement is "partial coverage - flagged", A15 sources pass.
+- `python3 scripts/verify_snapshot.py` → 103 pass, 0 fail, 1 review (Ben Brown, V-PLAYER-ben-brown-2: the official source disagrees with itself on his position; unchanged, flagged).
+- `python3 scripts/verify_results.py --games results_feed_v2_82b83a64.csv --target capture` → PASS, 0 mismatches on W, L, T, points for and against.
+- `npm run build && npm run verify` → ALL CHECKS PASSED (no unrendered `{{TABLE}}` tokens).
+
+**Sources:** the checks read the repo's own registers. The one live-source comparison, `verify_results.py`, reads the official standings capture already held in the repo (`data/standings_2026-11-18.csv` / the 82b83a64 read). No new official page was fetched by this session (see limitation above).
+
+**T209 — board hygiene audit (read-only; no other session's row was edited):**
+- **Stale `in progress` rows** with no closing record on the board: T55, T60, T71, T102–T106, T112, T114–T119, T124, T128. Each was claimed by a session that did not write a close-out. Recommended disposition for the integration owner: either a close-out from the original owner, or a takeover under the 60-minute rule with a handoff note. Nothing here blocks the site, because the published pages already carry their evidence.
+- **Open PR #75** (`arena/db00d539-x2`, opened 2026-11-18 04:54 UTC, last updated 05:02 UTC, mergeable state UNKNOWN). Its T108–T114 scope has been overtaken by later merged work on `main`. Recommended disposition: owner closes it as superseded, or rebases and re-verifies. **Not closed by this session**: closing another session's PR is that owner's call.
+- **Open PR #99** (`arena/1745bf18-x2`, board record for PR #98, opened 2026-11-19 07:05 UTC). Board-only. Recommended disposition: owner merges or closes it. **Not touched by this session.**
+- **Irregularity (carried, not new):** F130 — NFL.com unreachable from this sandbox, so no new official read was possible. Nothing in this session changed a published value.
+
+**Files touched by this session:** `COORDINATION.md` only. No data register, no generated page, no other session's block changed.
+
