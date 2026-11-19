@@ -3625,3 +3625,36 @@ Branch `arena/22ae094b-x2` == `main` @ `38629ca` plus the new `EXECUTIVE-SUMMARY
 **No other session's work was discarded:** d9344f5a's T133/T134 block and 8ddfaa33's T133 acceptance-audit block are both retained unchanged; F128 (roster events) and F129 (injury capture limitation) remain as recorded by those sessions. My flag is F130.
 
 **Files touched:** `COORDINATION.md`, `data/flags.csv` (F130 appended), `data/drift_pins.csv` (flags pin 123 → 124), `data/repo_line_audit.csv` (A12-flag count 123 → 124), regenerated `docs/flagged.html`, `docs/data/flags.json`, `docs/captures.html`, `docs/repo-audit.html`.
+
+### T139–T142 final merge record — session `68fc9b6c` (2026-11-19)
+
+Three PRs, three merges, all deployed. This closes the block.
+
+| PR | Merged as | At (UTC) | Pages run | Result |
+|---|---|---|---|---|
+| [#92](https://github.com/karagemop466-tech/X2/pull/92) — live re-verification, F01/F90 closed | `5892e5c` | 06:59:31 | 44476189506 | **success** |
+| [#96](https://github.com/karagemop466-tech/X2/pull/96) — task-ID correction on those flags | `0b7da26` | 07:09:00 | 44477385596 | **success** |
+| [#100](https://github.com/karagemop466-tech/X2/pull/100) — board record for #96 | `59cfe1f` | 07:10:40 | 44477600707 | **success** |
+| [#101](https://github.com/karagemop466-tech/X2/pull/101) — two stale numbers on the live verification page | `4962ed1` | 07:13:20 | 44477938964 | **success** |
+
+**What the site now carries that it did not this morning:** a dated 2026-11-19 independent pass over the Week 10
+finals, the Week 11 slate, the standings and the injury hub, with 12 machine-checkable comparison rows
+(`data/live_reverification_2026-11-19_68fc9b6c.csv`), and two flags closed on evidence instead of left to rot.
+
+**The review queue this session leaves behind, unchanged and still open (all owner decisions):** P09 corpus
+promotion, P01/F07/F51 pricing rights, F16 NFL.com data rights, F19 Dutch-law review, F103 pairing quality across
+the 65 mapped requirements, F128's Aug–Sep 2026 transactions gap. `data/decision_choices.json` remains empty —
+nothing here decided anything on the owner's behalf.
+
+**Three defects this session found in its own work, all fixed rather than noted:**
+1. F01's hard "363 lines" assertion was false within the hour (README grew to 373 as another session appended).
+   Replaced with the property that matters, and the verifier now prints the live count instead of asserting a constant.
+2. The verification page said "the nine checks below" over a table of twelve. Now derived from the register length.
+3. F01/F90/F126 attributed the closures to **T134**, which belongs to session `d9344f5a`. Repointed to T140/T139
+   and confirmed against the deployed HTML, not just the build output.
+
+**What this session did not do, stated plainly:** it read four NFL.com pages once on 2026-11-19 and compared them to
+the registers. It did not attempt the Wed/Thu/Fri injury cadence the brief asks for (blocked by F16/F98), did not
+transcribe any Week 11 injury row, did not add a price, a ranking, an ROI claim or a strategy qualification, and did
+not touch the frozen 137-game corpus. Session `1745bf18` captured the Week 11 injury report in parallel and
+independently confirmed the hub had rolled over — the same finding as V68-07, reached separately.
