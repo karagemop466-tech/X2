@@ -1114,5 +1114,23 @@
   "source_url": "https://github.com/karagemop466-tech/X2",
   "status": "Irregularity - open (verification limitation)",
   "action_requested": "Re-run a live official-source verification pass from an environment that can reach nfl.com before treating any newly touched value as verified."
+ },
+ {
+  "flag_id": "F133",
+  "category": "Verification / capture discrepancy",
+  "item": "Week 11 injury hub: Indianapolis (IND) game-status counts differ between the published single read and a second read (not overwritten)",
+  "detail": "Second read on 2026-11-19 (session 0a0deaaf, T211) read all seven chunks of https://www.nfl.com/injuries/ and tallied each club section row by row. Result: 253 rows; practice DNP 83 / LP 87 / FP 83 agree with the published meta totals; the row count agrees. Game status: Out 9 agrees; Questionable is 6 on the second read and 7 published; blank is 238 and 237. The club that differs is IND: published 4 Questionable and 2 blank. The second read shows three IND rows as Questionable and three IND rows with a blank game-status cell. Row identities are held in the private transcription and are not published, per the row-level privacy rule (F16, F129). The other 25 clubs match on all eleven counts, including Houston (HOU) with its three Questionable. From this sandbox it cannot be told whether the page changed between the two reads or the published transcription was off by one. The published read's window is recorded as 2026-11-19T06:53Z; the second read is 2026-11-19T22:10Z on the sandbox clock, which is not independently verified. The private transcription that produced the published counts is not in this clone (gitignored; see F129). Per-club comparison: data/week11_second_read_2026-11-19.csv (counts only). Script: scripts/week11_second_read.py.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - unresolved; the published single-read register is unchanged",
+  "action_requested": "Owner or capture session: (1) compare the IND rows in the private transcription with the official page; (2) if the page changed, capture a new dated read and publish a delta rather than a level; (3) do not use IND Questionable counts until resolved."
+ },
+ {
+  "flag_id": "F134",
+  "category": "Legal question / jurisdiction gap",
+  "item": "Singapore (the stated user location) is not covered by any jurisdiction flag; the registers flag only Japan (F09) and the Netherlands (F19)",
+  "detail": "The brief's stated user location is Singapore (SG). A text search of the repository found no mention of Singapore; the only jurisdiction flags cover Japan (F09) and the Netherlands (F19). Official GRA page (read 2026-11-19 via fetch_page): it is unlawful for any person to provide unlicensed remote gambling services in or from Singapore, or from outside Singapore to persons situated in Singapore; Singapore Pools (Private) Limited is the only operator licensed by GRA to provide remote gambling services; it is an offence for any person in Singapore to participate in unlicensed remote gambling activities (fine up to S$10,000, imprisonment up to 6 months, or both). Official statute page (read 2026-11-19): Singapore Statutes Online lists the Gambling Control Act 2022 (Act 15 of 2022) as the current law, with 'Current version as at 20 Nov 2026' displayed. Secondary websites say the Remote Gambling Act 2014 was repealed on 1 August 2022; that claim is not verified here and is not relied on. This repository is a research leaderboard with reward language and originated betting-style lines. Whether any element is 'remote gambling' under Singapore law is a legal question this repository does not answer. No legal conclusion is stated.",
+  "source_url": "https://www.gra.gov.sg/harm-minimisation/unlawful-remote-gambling-activities",
+  "status": "Open - Singapore legal review needed",
+  "action_requested": "Until reviewed: no wagering, referral, reward or prize use of any strategy, leaderboard or line by a person in Singapore. Owner decision and Singapore counsel required. Sources: SRC-118 (GRA) and SRC-119 (Singapore Statutes Online, Gambling Control Act 2022)."
  }
 ]

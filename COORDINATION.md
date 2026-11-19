@@ -3728,3 +3728,58 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 - **Gates before merge:** the T208 list above, unchanged (no data file changed by this session, so no re-run was needed beyond the baseline).
 - **Open after this session, owned by others (not touched):** PR #75 and PR #99 (see T209), and the stale in-progress rows listed in T209. Nothing here blocks the site.
 
+
+## 2026-11-19 · session `0a0deaaf` · claim (T211–T214)
+
+**Branch:** `arena/0a0deaaf-x2` (fixed by Arena; the `session-<id>/<task>` convention is superseded by that single branch) · **Base:** `main` @ `1253f95` (PR #102 merged) · **Status:** claimed, no data written yet except this block.
+
+**Baseline before claiming (re-run on this branch, 2026-11-19):** `python3 scripts/build.py` (56 pages, rebuild produced no diff), `scripts/check_links.py` (3,170 internal / 7,081 external, 0 broken), `scripts/drift_check.py` (58/58), `scripts/repo_audit.py` (pass), `npm run build && npm run verify` (ALL CHECKS PASSED).
+
+**Network note (recorded before any verification claim):** the sandbox shell cannot reach `www.nfl.com` (TLS error, HTTP 000), but the `fetch_page` tool can. Official NFL reads in this session therefore come from `fetch_page` on `https://www.nfl.com/injuries/`. Singapore government reads come from `fetch_page` as well.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T211 | **Independent second read of the Week 11 official injury hub** (all 26 club sections, row by row). Compare per-club counts with the single-read derived register (`data/injury_week11_2026-11-19_by_club.csv`), which F129 says has never been re-read. | in progress | `data/week11_second_read_2026-11-19.csv` (new), `data/week11_second_read_2026-11-19.txt` (transcription, new) | F129 names this as the open verification step. |
+| T212 | **Record every mismatch as a flag, not a silent overwrite.** Flag any club whose counts disagree between the two reads. Do not edit the single-read derived counts, because their private transcription is absent from this clone. | in progress | `data/flags.csv` (F133+), `data/sources.csv` (SRC-117+), `data/drift_pins.csv` | Brief: flag irregularities; never fill or infer. |
+| T213 | **Jurisdiction flag for the stated user location (Singapore).** The registers flag Japan (F09) and the Netherlands (F19) only. Record the Singapore gap as a legal-review flag, with the official text read via `fetch_page`. No legal conclusion. | in progress | `data/flags.csv` (F134), `data/sources.csv` (SRC-118/119) | The stated user location is Singapore; the repo never mentions it (grep: no hits). |
+| T214 | **Integration:** rebuild, every check, repin drift pins, PR `arena/0a0deaaf-x2` → `main`, merge, confirm GitHub Pages, record the PR and result here. | pending | `COORDINATION.md`, generated `docs/**`, PR | Runs last. |
+
+### T211–T213 close-out · session `0a0deaaf` · 2026-11-19
+
+**Status: T211 done, T212 done (flags open, owner-owned), T213 done (flag open, legal review needed), T214 in progress until the PR merges.**
+
+**Sources (read 2026-11-19 via the `fetch_page` tool; the sandbox shell cannot reach nfl.com, but the tool can):**
+- SRC-117 · NFL.com Week 11 injury hub, all seven chunks, second read: https://www.nfl.com/injuries/
+- SRC-120 · NFL.com Denver Broncos 2026 roster, three chunks (closes the F129 DEN-item check): https://www.nfl.com/teams/denver-broncos/roster
+- SRC-118 · GRA, Unlawful Remote Gambling Activities: https://www.gra.gov.sg/harm-minimisation/unlawful-remote-gambling-activities
+- SRC-119 · Gambling Control Act 2022 on Singapore Statutes Online (landing page; operative sections not read in full): https://sso.agc.gov.sg/Act/GCA2022
+
+**What was produced:**
+- `private/week11_second_read_2026-11-19.psv`: 253 row-level lines (club, player, practice code, game-status code). Gitignored. Not published.
+- `scripts/week11_second_read.py` (new): compares the private second read with the published single-read register, writes `data/week11_second_read_2026-11-19.csv` (26 club rows, counts only, no names).
+- `scripts/build.py`: one new block that renders the comparison on `week11-injury-capture.html`, updates the "single read" wording, and adds F133 to the open items. Also adds `www.gra.gov.sg` and `sso.agc.gov.sg` to the official-host allow-list (F134). The change is additive; no other block was touched.
+- `data/flags.csv`: F133 and F134 appended. `data/sources.csv`: SRC-117 to SRC-120 appended. `data/drift_pins.csv`: flags 124→126, sources 116→120, one new pin for the second-read register.
+
+**Verification performed (this session):**
+- Second read: all seven chunks read; per-club counts tallied from the transcription by script. Result: 253 rows; practice DNP 83 / LP 87 / FP 83 agree with the published meta; game status Out 9 agrees; Questionable 6 (published 7); blank 238 (published 237).
+- Club comparison: **25 of 26 club sections match on all eleven counts.** The one mismatch is IND (see F133). Houston matches exactly, including its three Questionable.
+- DEN-item check (F129 item 4): all nine Denver names in the Week 11 section appear on the official Broncos roster page (SRC-120). The one item under DEN is on that roster with a status of ACT. No player names are reproduced here.
+- Build and checks: `scripts/build.py` (56 pages), `scripts/check_links.py` (3,170 internal, 7,114 external, 0 broken), `scripts/drift_check.py` (59/59), `scripts/repo_audit.py` (22 checks, 0 failing), `npm run build && npm run verify` (ALL CHECKS PASSED).
+
+**Irregularities (flagged, not fixed; owner decisions):**
+1. **F133 (open):** IND game-status counts disagree between the published single read and the second read (Questionable 4 vs 3; blank 2 vs 3). The published counts are *not* overwritten. Either the page changed between the reads (windows 06:53Z and 22:10Z on two sandbox clocks, neither independently verified) or the single transcription is off by one. The private transcription that produced the published counts is not in this clone.
+2. **F134 (open, legal):** Singapore, the stated user location, was not covered by any jurisdiction flag. The official GRA page says unlicensed remote gambling services are unlawful in or from Singapore, or from outside Singapore to people in Singapore, and that participation is an offence. Singapore Pools is the only GRA-licensed remote operator. No legal conclusion is drawn here. Until counsel reviews, no wagering, referral, reward or prize use by a person in Singapore.
+3. **Second read is single-entry:** one reader transcribed the page. It is not double-entry, so it is a second read, not an independent verification.
+4. **Secondary claim not relied on:** several secondary sites state the Remote Gambling Act 2014 was repealed on 1 August 2022. This was not checked against an official source and is not used anywhere in the repo.
+
+**Requests to other owners (logged, not edited):**
+- **To the F129 owner (session `1745bf18`):** item 4 (one player under DEN) is closed by SRC-120. Please mark it closed in F129 when next editing that row. F129's "not independently re-read" line is now partly answered by F133 (a second read, with one mismatch).
+- **To the integration owner for F16/F98:** the NFL terms (SRC T11-S1) still prohibit systematic retrieval absent written consent. This session did single reads, not a schedule. The Wed/Thu/Fri capture the brief asks for remains blocked, and I did not automate it.
+
+**Not done, and why:**
+- No scheduled captures, no Wed/Thu/Fri cadence, no daily snapshots: blocked by F16 and F98 (NFL terms) and by the sandbox having no scheduler. Not automated.
+- No prices, odds, ROI, rankings or strategy qualifications were added. No licensed odds feed exists (F07, F51).
+- No roster, depth or Game Book values were inferred. The 32-club depth work remains as recorded by earlier sessions (T120–T121).
+- Nothing in the published Week 11 counts was overwritten. Nothing was filled from memory.
+
+**Board note on branch naming:** the brief's `session-<id>/<task>` branches were not created. The session's branch is fixed as `arena/0a0deaaf-x2`, per the branch rule for this session.

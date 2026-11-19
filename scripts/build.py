@@ -43,6 +43,8 @@ OFFICIAL_HOSTS = {
     "laws.e-gov.go.jp", "www.jpnsport.go.jp", "www.gov-online.go.jp", "www.npa.go.jp",
     "www.itl.nist.gov", "github.com", "karagemop466-tech.github.io",
     "wetten.overheid.nl", "www.kansspelautoriteit.nl", "kansspelautoriteit.nl",
+    # session 0a0deaaf (T213, F134): Singapore government sources for the jurisdiction flag
+    "www.gra.gov.sg", "sso.agc.gov.sg",
     "www.seahawks.com", "www.miamidolphins.com", "www.baltimoreravens.com", "www.clevelandbrowns.com",
     "www.azcardinals.com", "www.giants.com",
     "www.packers.com", "www.therams.com", "www.chiefs.com", "www.colts.com",
@@ -4477,6 +4479,27 @@ for _r in _w11_rows:
         errors.append(f"week11_injury_capture {_r.get('club', '?')}: row without an official source link")
 if len(_w11_rows) != 26:
     errors.append(f"week11_injury_capture: {len(_w11_rows)} club rows, pinned 26")
+# T211 (session 0a0deaaf): second read of the same hub, counts only, one row per club, compared with the single read.
+_w11_2nd = read_csv("week11_second_read_2026-11-19.csv")
+for _r in _w11_2nd:
+    check_official(_r.get("source_url", ""), f"week11_second_read.{_r.get('club', '?')}")
+if len(_w11_2nd) != 26:
+    errors.append(f"week11_second_read: {len(_w11_2nd)} club rows, pinned 26")
+_w11_n_match = sum(1 for _r in _w11_2nd if _r["match"] == "YES")
+_w11_mism = [_r for _r in _w11_2nd if _r["match"] != "YES"]
+_w11_2nd_q = sum(int(_r["second_read_questionable"]) for _r in _w11_2nd)
+_w11_2nd_blank = sum(int(_r["second_read_blank_status"]) for _r in _w11_2nd)
+_w11_2nd_rows = sum(int(_r["second_read_rows"]) for _r in _w11_2nd)
+_w11_mism_txt = "; ".join(f"{_r['club']} ({_r['mismatched_fields'].replace(';', ', ')})" for _r in _w11_mism) or "none"
+_w11_2nd_tbl_rows = []
+for _r in _w11_2nd:
+    _w11_2nd_tbl_rows.append([
+        html.escape(_r["club"]), html.escape(_r["published_rows"]), html.escape(_r["second_read_rows"]),
+        html.escape(_r["published_questionable"]), html.escape(_r["second_read_questionable"]),
+        html.escape(_r["published_blank_status"]), html.escape(_r["second_read_blank_status"]),
+        ("<strong>NO</strong> (" + html.escape(_r["mismatched_fields"].replace(";", ", ")) + ")") if _r["match"] != "YES" else "YES",
+        _lnk(_r["source_url"], "NFL.com injury report"),
+    ])
 _w11_gs = _w11_meta["game_status_totals"]
 _w11_pr = _w11_meta["practice_totals"]
 _w11_tbl_rows = []
@@ -4507,6 +4530,10 @@ names. Row-level data stays in a private, unpublished store while the NFL terms 
 FP = Full Participation in Practice. Totals across the page: DNP {_w11_pr.get('DNP', 0)}, LP {_w11_pr.get('LP', 0)},
 FP {_w11_pr.get('FP', 0)}. Every row links to the official page it was read from.</p>
 {_tbl(["Club", "Game", "Kickoff (ET)", "Player rows", "Out", "Questionable", "Game status blank", "DNP", "LP", "FP", "Page content", "Source"], _w11_tbl_rows, "week11-by-club")}
+<h2>Second read (2026-11-19): compared club by club</h2>
+<p class="note">Session 0a0deaaf re-read all seven chunks of the same hub and tallied each club section. Counts only; the row-level transcription is held privately. Totals from the second read: {_w11_2nd_rows} rows, {_w11_2nd_q} Questionable, {_w11_2nd_blank} with a blank game-status cell. The published single read: {_w11_meta['rows_transcribed']} rows, {_w11_gs.get('Questionable', 0)} Questionable, {_w11_gs.get('blank', 0)} blank.</p>
+<p class="warn"><strong>{_w11_n_match} of {len(_w11_2nd)} club sections match on every count.</strong> Not matching: {html.escape(_w11_mism_txt)}. Open as flag F133. Practice codes (DNP, LP, FP) match in every club, and the page-wide totals match the published practice totals.</p>
+{_tbl(["Club", "Rows (published)", "Rows (second read)", "Questionable (published)", "Questionable (second read)", "Blank status (published)", "Blank status (second read)", "Match", "Source"], _w11_2nd_tbl_rows, "week11-second-read")}
 <h2>What changed since the previous read</h2>
 <p><strong>Nothing to publish yet.</strong> This is the first read of the Week 11 report, so there is no earlier Week 11 read to
 difference against. Changes are published only between two reads of the same week, starting with the next read.</p>
@@ -4518,7 +4545,7 @@ difference against. Changes are published only between two reads of the same wee
 {html.escape(_w11_meta['raw_bytes_note'])}</li>
 <li><strong>Verification status:</strong> {html.escape(_w11_meta['verification_status'])}. The structure checks pass
 (253 rows, 26 club sections, 13 games, six bye clubs, the page's game list matches the Week 11 schedule register), but the
-row content has not been independently re-read. Use the counts as a single read until a second read confirms them.</li>
+a second read of the same hub on the same day (section below) matches on {_w11_n_match} of {len(_w11_2nd)} club sections. The mismatch is open (flag F133): the published counts are not overwritten here, and no Week 11 designation should be used until it is resolved.</li>
 <li><strong>Not captured:</strong> raw HTTP bytes, a scheduled capture (the sandbox cannot reach nfl.com; the scheduled
 Wednesday/Thursday/Friday captures are blocked by F16 and F98), and any Week 11 outcome.</li>
 </ul>
@@ -4531,9 +4558,9 @@ duplicate check, and game list against <code>data/schedule_week11_2026.csv</code
 </ul>
 <h2>Open items (see Flagged for review)</h2>
 <ul>
+<li><strong>F133</strong>: Indianapolis game-status counts differ between the single read and the second read (see the table above). Open; not overwritten.</li>
 <li><strong>F129</strong>: single read; a second independent read is required before any Week 11 designation is used.
-Two items to check: Dee Alford (BUF) is shown with a player link slug <code>deaundre-ford</code>, and Jaylen Waddle is listed under
-DEN and has not yet been checked against the Broncos roster page.</li>
+One item to check: Dee Alford (BUF) is shown with a player link slug <code>deaundre-ford</code>. One Denver player listed under DEN is on the official Broncos roster page read 2026-11-19 (SRC-120), and so are the other eight Denver names in the section.</li>
 <li><strong>F126</strong>: the hub's week selector and render disagreed on 2026-11-18; the Week 11 render is now live.</li>
 <li><strong>F16</strong>: written NFL permission for systematic collection is not recorded. The Week 10 register published on
 the other pages still holds row-level data, which the brief's private-layer rule would hold back; the owner decides that.</li>
@@ -4546,7 +4573,7 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
     '<p class="note">Counts per club only. Player rows are held privately while the NFL terms question (F16) is open.</p>'
     '<div class="cards">'
     + card("week11-injury-capture.html", "Week 11 injury capture",
-           f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections, one read. No delta yet: the next read starts the series.")
+           f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections. A second read matches {_w11_n_match} of {len(_w11_2nd)} clubs (F133 open). No delta yet: the next read starts the series.")
     + '</div>'))
 
 # ---------- collision guards ----------
