@@ -3265,4 +3265,32 @@ of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all 
 
 | ID | Task | Status | Files (scope) | Gate |
 |---|---|---|---|---|
-| T133 | Independent acceptance audit of the current published NFL decision dashboard against the current user brief; run available checks and report verifiable blockers/limits | in progress | `COORDINATION.md` only | Existing task board has no free unclaimed work; this audit avoids duplicating implemented features and does not claim external actions beyond repository capability. |
+| T133 | Independent acceptance audit of the current published NFL decision dashboard against the current user brief; run available checks and report verifiable blockers/limits | **done** | `COORDINATION.md` only | Audit outcomes, dated-source boundary, blockers and checks recorded below. |
+
+### T133 close-out · 2026-11-19
+
+**Outcome: done; no new data or model claims added.** This was a reproducibility/acceptance audit of the already integrated site and repository, not a fresh scrape of NFL sources. Current environment outbound access does not include NFL.com; therefore this session did not claim a 2026-11-19 live source read. The site already supplies dated source URLs and retained point-in-time evidence, and those dated limits remain material.
+
+**Checks run against the current branch:**
+- `npm run build && npm run verify` — PASS; Node build wrote 12 pages; 10 JSON-backed data tables resolve all source IDs; 194 internal links resolve; no template tokens remain.
+- `python3 scripts/build.py` — PASS; 55 Pages documents rebuilt; row-source checks pass.
+- `python3 scripts/check_links.py` — PASS; 3,055 internal and 7,016 external references checked; no broken internal links and external URLs satisfy the repository's HTTPS/allowlist rules.
+- `python3 scripts/drift_check.py` — PASS; all 54 pinned registers match.
+- `python3 scripts/repo_audit.py` — PASS; 22 audit checks, 0 failing (with the documented partial depth coverage flagged).
+- `python3 scripts/verify_snapshot.py` — 103 pass, 0 fail, 1 review. The review is Ben Brown's official injury-report/player-page position disagreement; retained as review, not silently resolved.
+- `python3 scripts/verify_results.py --games results_feed_v2_82b83a64.csv --target capture` and `python3 scripts/results_v2.py` — PASS; 150-game v2 ledger reconciles to the retained 2026-11-18 official standings capture (32/32 clubs; zero W/L/T/PF/PA mismatches); 15/15 v2 integrity checks pass. This does not promote v2 into the frozen model corpus.
+- `python3 scripts/verify_live.py` — PASS against the independent dated transcription inputs in `data/verification_inputs/` (75/75); `python3 scripts/verify_live_injuries.py` — PASS against the retained eight-chunk 2026-11-18 official-page capture (347/347 rows).
+- `python3 scripts/model.py` — PASS/reproducible output; 137-game frozen input, 89 out-of-sample games, prospective leaderboard still unranked (0 graded), zero strategies live. `python3 scripts/correlation_provenance.py` recomputes 13 published correlations with their n; no file drift. `python3 scripts/roster_sweep.py` — 32 clubs / 94 reserve rows / 5 checks, 0 failing, 1 finding. `python3 scripts/fixture_context.py` regenerated 163 scheduled-game rows; 16 first-appearance sides remain blank, not inferred.
+- `git status` remained clean after generated builds and checks; no new data files or source values were changed.
+
+**Current blockers and irregularities confirmed in existing records (not new discoveries):**
+1. `README.md` and the readiness/flags pages correctly disclose that the primary 137-game model corpus is not current-season complete; the 150-game verified v2 feed is parallel and awaits the recorded corpus promotion decision (P09). The v2 check is against the dated 2026-11-18 retained NFL standings capture, not a fresh live read today. Official review link: `https://www.nfl.com/standings/` and `https://www.nfl.com/schedules/2026/by-week/week-10`.
+2. No licensed timestamped market odds feed is present. Fair-line origination is not market-open/close capture; market prices, CLV and ROI remain unsupported/blank. Official NFL terms/data rights are an open review gate (F16): `https://support.nfl.com/hc/en-us/articles/35869743904916-NFL-com-Terms-and-Conditions`.
+3. The leaderboard is correctly prospective-only and unranked; no entries have a graded prospective sample. No skill reward or ROI ranking is justified.
+4. Injury/depth coverage is explicitly partial and point-in-time (latest retained verification dated 2026-11-18); several clubs lack usable official structured depth data. Automated multi-day immutable capture cannot be claimed from this static Pages build, and expanding NFL.com collection remains blocked pending terms/rights review.
+5. One official-vs-official identity/position issue remains flagged (Ben Brown); this audit left it untouched.
+6. The independent Node `npm` site output (`site/`) and the published Python Pages output (`docs/`) are distinct build paths, as disclosed in project notes; the `docs/` path is what the repository's documented live GitHub Pages URL serves. This audit did not change navigation or shared site data.
+
+**Sources and verification basis:** official links above and the per-row source links in the repository registers/pages (`data/sources.csv`, `data/verification_week10_2026.csv`, `data/results_feed_v2_82b83a64.csv`, `data/live_reverification_2026-11-18.csv`). Checks validate retained, dated official-source transcriptions; they do not convert them into current live reads. No new NFL values were asserted.
+
+**Integration:** this audit touches only `COORDINATION.md`; existing site tables, data and navigation remain untouched. Any later scope to acquire new prices, automate captures, widen depth coverage or alter the frozen corpus is gated by the open decisions above, not quietly implemented here.
