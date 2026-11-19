@@ -1158,5 +1158,45 @@
   "accessed_date": "2026-11-19",
   "used_for": "T129 Week 11 capture: derived per-club counts (data/injury_week11_2026-11-19_by_club.csv) and capture record (data/captures/injury_week11_2026-11-19.meta.json)",
   "verification_note": "Single read through the fetch tool (processed markdown, not raw HTTP bytes); row-level data held privately (gitignored). Not independently re-read; see F129."
+ },
+ {
+  "source_id": "SRC-117",
+  "title": "NFL.com injury report - Week 11 page (heading 'Injuries - WEEK 11'), second read 2026-11-19 (all 7 chunks)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/injuries/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T211 second read: per-club counts in data/week11_second_read_2026-11-19.csv; comparison with the single read (F133)",
+  "verification_note": "Read via fetch_page, chunks 0-6 (totalChunks=7, hasMore=false on chunk 6). Row-level names held in private/ (gitignored, not published). Counts only are published. Sandbox clock 22:10Z; the fetch tool returns no per-request time."
+ },
+ {
+  "source_id": "SRC-118",
+  "title": "GRA | Unlawful Remote Gambling Activities (Harm Minimisation)",
+  "publisher": "Gambling Regulatory Authority of Singapore (GRA)",
+  "url": "https://www.gra.gov.sg/harm-minimisation/unlawful-remote-gambling-activities",
+  "type": "Official regulator site (Singapore government)",
+  "accessed_date": "2026-11-19",
+  "used_for": "F134: statement that unlicensed remote gambling services are unlawful in or from Singapore, or from outside to persons in Singapore; Singapore Pools is the only GRA-licensed remote operator; participation is an offence (fine up to S$10,000 and/or 6 months)",
+  "verification_note": "Read in full (1 chunk) via fetch_page. Official GRA wording. No legal opinion; not a legal conclusion for this project."
+ },
+ {
+  "source_id": "SRC-119",
+  "title": "Gambling Control Act 2022 (Act 15 of 2022) - Singapore Statutes Online",
+  "publisher": "Attorney-General's Chambers, Singapore (Singapore Statutes Online)",
+  "url": "https://sso.agc.gov.sg/Act/GCA2022",
+  "type": "Official legislation database (Singapore government)",
+  "accessed_date": "2026-11-19",
+  "used_for": "F134: identifies the current statute (Gambling Control Act 2022) and its version history; the operative offence text is not quoted here",
+  "verification_note": "Landing page read via fetch_page (chunk 0 of 14). The page shows 'Current version as at 20 Nov 2026'. Operative sections not read in full in this session; the GRA page (SRC-118) is the source relied on for the offence summary."
+ },
+ {
+  "source_id": "SRC-120",
+  "title": "Denver Broncos 2026 Player Roster | NFL.com",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/teams/denver-broncos/roster",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "F129 item 4 (one Denver player listed under DEN on the Week 11 hub): all nine Denver names in the Week 11 section appear on this roster page",
+  "verification_note": "Read in 3 chunks via fetch_page (hasMore=false on chunk 2). Name-level match only; roster status codes as printed (ACT, DEV, PUP, RES, RSR, CUT); the meaning of each code is not restated here. Injury status is NOT taken from this page."
  }
 ]
