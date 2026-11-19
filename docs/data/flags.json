@@ -1096,5 +1096,14 @@
   "source_url": "https://www.nfl.com/transactions/league/trades/2026/11 ; https://www.nfl.com/transactions/league/reserve-list/2026/10 ; https://www.nfl.com/transactions/league/reserve-list/2026/11",
   "status": "Open - needs review",
   "action_requested": "Read the August and September 2026 trades and reserve logs; locate the Colts Week 10 article; re-check every join hit in data/roster_events_join_2026.csv against the depth or availability row it names before any depth row is treated as current."
+ },
+ {
+  "flag_id": "F129",
+  "category": "Verification / capture",
+  "item": "Week 11 injury report captured once: published layer is counts only; raw rows private",
+  "detail": "On 2026-11-19 the injury hub renders Week 11 (\"Injuries - WEEK 11\"). F126 recorded the hub still rendering Week 10 at 2026-11-18T05:2xZ, so the rollover happened between those reads. The Week 11 capture holds 253 player rows: 24 clubs with rows, 2 clubs reading \"No Injuries Reported\" (CIN, WAS), 13 games, 6 bye clubs. Every structural check passes against the page's own game list, the Week 11 schedule register (data/schedule_week11_2026.csv) and the bye list. The row content was transcribed once by hand and has NOT been re-read: no independent second read exists. Raw rows are held in private/ (gitignored, not published), per the brief's private-layer rule and F16. Game status is blank for 237 of 253 rows at this read; a blank cell is not evidence of availability. Two items to check: (a) Dee Alford (BUF) is shown with a player link slug 'deaundre-ford'; (b) Jaylen Waddle is listed under DEN and has not been checked against the Broncos roster page.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - single read",
+  "action_requested": "Second independent read of all seven chunks; check Waddle on the Broncos roster page and the Alford slug; only then start the Week 11 delta series (next read adds the delta)."
  }
 ]

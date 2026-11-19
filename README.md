@@ -162,6 +162,16 @@ Five pages added by session `d0d9d19f`, each covering a requirement the earlier 
   published correlation, with each previously published value recomputed from the ledger.
 - **Repository audit** (`docs/repo-audit.html`) — 22 checks against live official pages and recomputations, 0 failing.
 
+### Also new (session 1745bf18, T129-T130): Week 11 injury-hub capture
+
+The official injury hub now renders **Week 11** (it still rendered Week 10 on 2026-11-18; flag F126). One dated read of
+the Week 11 report is recorded: 253 player rows, 26 club sections, 13 games, six bye clubs. The page
+[Week 11 injury report: first capture](https://karagemop466-tech.github.io/X2/docs/week11-injury-capture.html)
+publishes **counts per club only**. The row-level transcription stays in `private/` (gitignored, never published) while
+the NFL terms question (F16) is open. Built by `scripts/week11_capture.py`, pinned in `data/drift_pins.csv`.
+The read is a single transcription, not independently re-read (F129), and no delta exists yet: a delta needs a second
+read of the same week.
+
 ### Also new (session 79c9cb37): the v2 verified results feed
 
 - **v2 results feed** (`docs/results.html`, `data/results_feed_v2_2026.csv`, built by
