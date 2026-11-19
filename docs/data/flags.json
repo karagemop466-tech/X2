@@ -1177,5 +1177,14 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/injuries_week10_2026.csv",
   "status": "Resolved 2026-11-19 (session 0a430c21) - both cells corrected and sourced; no automated guard, see detail",
   "action_requested": "Owner decides the standing rule (S54). Recommended: a prose cell may not restate a register's row count at all; it cites the file and the page prints the count. That retires this failure class instead of re-finding it a fifth time. Residual risk until then: any other cell could be stale and nothing in the build would notice."
+ },
+ {
+  "flag_id": "F140",
+  "category": "Register integrity",
+  "item": "data/suggestion_review.csv carries two different rows under each of S41, S42, S43 and S44",
+  "detail": "Eight rows share four IDs. S41 appears twice: 'Signal and staking kept apart' and 'Licensed odds feed for opening and closing prices'. S42: 'Automated weekly results refresh' and 'Closing snapshot captured at kickoff'. S43: 'Live demotion-gate status' and 'Depth-chart coverage for all 32 clubs'. S44: 'Player-prop research gated on a rights-cleared source' and 'Neutral-site correction'. The suggestions register itself (data/suggestions.csv) has one row per ID and no duplicates, so the review register has drifted from the thing it reviews: four review rows point at an ID that resolves to a different proposal. Cause not established in this pass; it predates session 0a430c21 (present on main @ 945a505) and is adjacent to, but not the same as, F135's duplicate-group finding in data/requirements.csv. No row was edited or deleted here: deciding which of each pair is the live review is an owner call, and deleting either loses work. Not gated by the build because the drift alarm's unique_key for this register is unset.",
+  "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/suggestion_review.csv",
+  "status": "Irregularity - open (dual rows under one ID; nothing deleted)",
+  "action_requested": "Owner or a follow-up session: compare each pair against data/suggestions.csv, keep the row that matches the current proposal text, give the other a fresh ID or mark it superseded, then set unique_key=suggestion_id in data/drift_pins.csv for this register so a recurrence fails the build."
  }
 ]
