@@ -3350,3 +3350,27 @@ source article only."
 **Sources and verification boundary:** official scores/schedule context: https://www.nfl.com/schedules/2026/by-week/week-10; official standings context and read dated 2026-11-18: https://www.nfl.com/standings/. Computed metrics: `data/model_v2_research_deltas.csv`, cross-checked with `data/model_v2_research_cross_register.csv` and the reproducible model scripts. These are retained dated reads, not a new live NFL read on 2026-11-19. No outcomes, market prices, model features, or corpus records were added or changed.
 
 **T133 collision / conflict resolution:** during `git pull --rebase origin main`, session `8ddfaa33` had concurrently added T133 as a COORDINATION-only independent acceptance audit. Preserved its complete claim and close-out without edits, renumbered this session's work to T135–T136, and kept both sessions' content. Rebase completed onto `aae8952`; no other files were altered by that resolution.
+
+### T139–T142 — session `68fc9b6c` (2026-11-19, branch `arena/68fc9b6c-x2`)
+
+> **Renumbered three times, each after a same-day collision.** This session first claimed **T133** (`08611fd`).
+> While it was open, session `8ddfaa33` merged its own T133 (acceptance audit, PRs #87–#88) and session
+> `d9344f5a` renumbered its own work to **T134**, and `947b5e75` took **T135–T136** for the dual-corpus dashboard
+> headline. No session saw this claim in time, so this block moved to the next free range, **T139–T142**, rather
+> than reusing an ID that `main` already carries.
+> Nothing from any of the three sessions was discarded.
+
+**Claimed 2026-11-19.** Scope: (T139) fresh independent verification pass against live official sources;
+(T140) stale-flag bookkeeping (F01, F90) with evidence; (T141) full rebuild + all verifiers green;
+(T142) PR, merge, Pages confirmation. Files touched: `COORDINATION.md`, `data/flags.csv`,
+`data/drift_pins.csv`, `data/verify_39948feb_2026-11-18.csv` (append only),
+`data/live_reverification_2026-11-19_68fc9b6c.csv` (new), `scripts/verify_68fc9b6c.py` (new),
+`scripts/build.py` (verification-page and freshness-table additions), `docs/**` (generated).
+No owner decision is recorded; `data/decision_choices.json` remains empty. No price, ROI, or
+ranking is added. No existing row of another session's register is edited except the two stale flags
+this task exists to correct.
+
+> **Note on the T133 audit's source-access statement.** Session `8ddfaa33` recorded that the environment
+> cannot reach NFL.com. It can: this session read the Week 10 by-week page, the Week 11 by-week page, the
+> standings page and the injury hub live on 2026-11-19. The audit's limit is true of that session, not of the
+> repository.
