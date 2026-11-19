@@ -4103,3 +4103,22 @@ source link.
 (+3 pins, 65 total), `data/live_reverification_2026-11-19_b94f5221.csv` (new), `data/injury_week11_counts_2026-11-19_b94f5221.csv`
 (new), `data/captures/standings_2026-11-19_b94f5221.csv` (new), `scripts/verify_b94f5221.py` (new), `scripts/build.py`
 (third-pass section, capture-page delta paragraph, source-link checks, pins), regenerated `docs/**`.
+
+### T320 integration record · session `b94f5221` · 2026-11-19
+
+- **PR [#114](https://github.com/karagemop466-tech/X2/pull/114)** (`arena/b94f5221-x2` → `main`) — third dated live
+  verification pass (T316–T319), F129/F130 resolved on evidence, V94 registers pinned — **merged as `8157494`**
+  at 2026-11-19 22:31 UTC (merge state CLEAN at merge time, no conflicts: the branch was rebased onto `main` @
+  `5d9a727` immediately before opening the PR).
+- **GitHub Pages:** workflow run on `main` @ `8157494` → **completed / success**; Pages API `status: built` at
+  check time. Deployed-tree content verified live: `docs/verification.html` renders the "Third live pass,
+  2026-11-19 evening (session b94f5221)" section with checks V94-01..V94-13 and links to
+  `data/injury_week11_counts_2026-11-19_b94f5221.csv`; `docs/week11-injury-capture.html` renders the third-dated-read
+  delta paragraph; the header derives its read date (2026-11-19) from the registers rather than a typed constant.
+- **Gates at merge time (on the exact merged tree):** `build.py` 57 pages + row-source/link guards;
+  `verify_b94f5221.py` PASS (13/13); `drift_check.py` 65/65 pins; `check_links.py` 3,285 internal / 7,275 external,
+  0 broken; `repo_audit.py` exit 0; `npm run build && npm run verify` ALL CHECKS PASSED; rebuild leaves `git status`
+  clean.
+- **Session `b94f5221` is closed.** T316–T320 all done. No open PR from this session; no task left in progress.
+  Flags owned elsewhere (F133, F135–F141, F16, P09, P01/F07/F51, F19, F103, F128) are untouched and remain with
+  their owners.
