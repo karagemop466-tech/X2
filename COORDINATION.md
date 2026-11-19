@@ -3783,3 +3783,41 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 - Nothing in the published Week 11 counts was overwritten. Nothing was filled from memory.
 
 **Board note on branch naming:** the brief's `session-<id>/<task>` branches were not created. The session's branch is fixed as `arena/0a0deaaf-x2`, per the branch rule for this session.
+## 2026-11-19 · session `ddbc4956` · claim (T305–T309)
+
+**Branch:** `arena/ddbc4956-x2` (this session) · **Base:** `main` @ `1253f95` (PR #102 merged) · **Status:** final integration.
+**Renumbered:** T208–T212 were taken by session `c8fedd17`; this block now uses T305–T309. Nothing discarded.
+
+**Sandbox verification limitation (recorded before any verification claim):** `www.nfl.com`, `operations.nfl.com`
+and `api.weather.gov` return connection refused (HTTP 000) from this environment; only `github.com`,
+`api.github.com` and package registries are reachable. This session therefore performed **no live official-source
+reads of NFL.com**. No new value was marked verified against an official source; nothing new was inferred or filled;
+no existing published value was changed. Recorded as flag **F131**. All existing values stand on their prior dated
+reads with source links, and every page carries source links for manual review once the official pages are reachable.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T305 | Repo line-by-line review: read key data registers, scripts and generated pages; record what is verified vs blank vs flagged; flag irregularities | **done** | `COORDINATION.md`, `README.md`, `data/*.csv`, `data/*.json`, `scripts/build.py`, `docs/*.html` | Final integration baseline. Confirm the merged `main` tree is internally consistent and every published surface is present and source-linked. Live NFL verification not possible (F131). |
+| T306 | Reconcile the two open PRs: merge the record-only PR #99; close the stale, conflicting, superseded PR #75 after confirming its deliverables already landed on `main` | **done** | GitHub action only (PR merge/close), `COORDINATION.md` record | PR #75 (open since 2026-11-18, CONFLICTING) has no commits in >24h, far past the 60-minute takeover rule; its six deliverables (corpus v2, two estimators, weekly diff, Week 11 venues, Week 11 injury probe) were each merged to `main` by later PRs. PR #99 is a mergeable COORDINATION.md-only record of an already-merged PR. |
+| T307 | Final integration verification: run every build/check script and confirm the site builds with no broken links | **done** | `scripts/build.py`, `scripts/check_links.py`, `scripts/drift_check.py`, `scripts/repo_audit.py`, `scripts/verify_results.py`, `scripts/verify_live.py`, `scripts/verify_snapshot.py`, `src/`, generated `docs/` | The brief requires the final integration session to confirm the combined data and that the site builds with no broken links before merging. |
+| T308 | Final PR: open from `arena/ddbc4956-x2` to `main`, merge, confirm GitHub Pages deploys, record PR link and result | **in progress** | `COORDINATION.md`, generated `docs/**`, PR | Required by the brief. |
+| T309 | Handoff record: record sources, verification performed and irregularities; mark tasks done | pending | `COORDINATION.md` | Board close-out after merge. |
+
+**Verification performed (this session):**
+- `python3 scripts/build.py` → PASS, 56 pages, 347 injury rows, 28 teams, 65 depth rows; link + row-source checks passed; rebuild left `git status` clean (committed `docs/` matches registers byte-for-byte).
+- `python3 scripts/check_links.py` → PASS, 56 pages; 3,170 internal / 7,081 external links; 0 broken internal; all external https and on the allow-list.
+- `python3 scripts/drift_check.py` → PASS, 58/58 registers match their pins.
+- `python3 scripts/repo_audit.py` → exit 0; 22 checks, 0 failing (A14 depth-of-replacement is "partial coverage - flagged", A15 sources pass).
+- `python3 scripts/verify_live.py` → PASS, 75/75 units matched, 0 discrepancies.
+- `python3 scripts/verify_snapshot.py` → 103 pass, 0 fail, 1 review (Ben Brown, V-PLAYER-ben-brown-2: official source disagrees with itself on position; unchanged, flagged).
+- `python3 scripts/verify_results.py` → the known **F106/F96** condition: the frozen 137-game published feed is 13 games behind the current standings read, so 26/32 clubs do not reconcile. This is a published data-completeness flag, not a broken site; the v2 150-game corpus reconciles 32/32. No build failure.
+- `npm run build && npm run verify` → ALL CHECKS PASSED (12 pages, no unrendered `{{TABLE}}` tokens).
+- `git diff --check` → clean.
+- Line-by-line surface review: all 11 key pages present (index, executive-summary, flagged, suggestions, leaderboard, markets, price-snapshots, correlations, decisions, questions, repo-audit); landing page decision-readiness table carries 65 rows (D01–D65), one per requirement, with `blocking_gate` and `number_that_clears_it` columns; Flagged page carries 131 source links.
+
+**T306 — open-PR reconciliation (done):**
+- **PR #99** (`arena/1745bf18-x2`, COORDINATION.md-only record of the already-merged PR #98) was **merged** with `gh pr merge 99 --merge` as merge commit `a9e984d`.
+- **PR #75** (`arena/db00d539-x2`, opened 2026-11-18 04:54 UTC, last updated 05:02 UTC, CONFLICTING with current `main`) was **closed as superseded** with an advisory comment. Verified before closing that every one of its six deliverables landed on `main` via later merged PRs (corpus v2 → `data/corpus_v2_2026.csv` + `docs/corpus-v2.html`; both total estimators → `data/model_totals_two_estimators_week11.csv` + `data/estimator_walkforward_2026.csv`; weekly diff → `data/what_changed_2026-11-14_to_2026-11-18.csv`; Week 11 venues → `data/venues_2026.csv`; Week 11 injury state → F126/F129). Its two substantive findings are preserved/resolved on `main`: the forecast-seal discrepancy is addressed via **F71** and the `forecast_records` reproduction mechanism (`neutral_site_as_modelled` / `reproduced_published_line`); the "no Week 11 report" probe is superseded by **F126/F129** (the hub advanced to Week 11 and was captured 2026-11-19). Its unique tranche/probe/seal CSVs were intermediate working artifacts of deliverables authoritative on `main` in better form; no unique finding was lost.
+
+**Irregularities introduced this session:** F131 — sandbox verification limitation (see above). No published value was changed, inferred or filled.
+**No other session's work was discarded:** `c8fedd17`'s T208–T210 block and `cdc0817c`'s T300–T304 block are both retained verbatim after the rebase conflict resolution.
