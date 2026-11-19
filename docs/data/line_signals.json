@@ -5,7 +5,7 @@
   "signal_name": "Verified absence &amp; practice trend",
   "signal_definition": "Count of players marked Out or Doubtful on each side of the ball, plus a weighted practice trend (Did Not Participate = 0, Limited = 1, Full = 2) across report days",
   "why_it_could_matter": "Availability of a confirmed starter changes the expected lineup; the practice trend carries information the single game-status label does not",
-  "verification_now": "Out/Doubtful counts by unit are verified for Week 10 (345 rows, re-checked field by field); practice trend needs more than one report version",
+  "verification_now": "Out/Doubtful counts by unit are verified for Week 10 (347 rows in the current register, re-checked field by field; the 2026-11-14 read held 345 and is superseded, F94); practice trend needs more than one report version",
   "data_needed": "Multiple dated report versions per week (Tue/Wed/Thu) for the same game",
   "leakage_risk": "A forecast that uses Thursday's report to predict Thursday's line; use only the last report before the cutoff",
   "time_available": "Final report before kickoff",

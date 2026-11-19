@@ -4971,6 +4971,13 @@ with open(os.path.join(ROOT, "index.html"), "w", encoding="utf-8") as f:
 """)
 
 # ---------- checks on generated HTML ----------
+# F135 - checked and deliberately NOT gated. The two real instances of a stale row
+# count in prose (Q01 "345 rows across 28 teams", SG-01 "345 rows") were corrected by
+# hand. A build-time scan was attempted and withdrawn: the honest patterns ("a
+# capture ledger ... 345 rows", "weeks 4-10 rows") are indistinguishable from stale
+# ones by regular expression, and a guard that fires on correct text gets disabled.
+# The limitation is recorded on the flag and in suggestion S54 instead of being
+# papered over with a check that does not work.
 # F134 (same class as F114 and F133): a published count that is true only of the
 # build it was written on. The figures published on verification.html are measured
 # here, from this build, and never typed.

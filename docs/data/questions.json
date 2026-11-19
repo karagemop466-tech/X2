@@ -4,7 +4,7 @@
   "area": "Injuries",
   "question": "Which injuries are currently listed for every team?",
   "status": "Answered for Week 10 snapshot",
-  "known_facts_verified": "345 rows across 28 teams (NFL.com Week 10 2026)",
+  "known_facts_verified": "347 rows across 28 teams (data/injuries_week10_2026.csv, re-published from the 2026-11-18 read; the 2026-11-14 register held 345 and is superseded — see F94)",
   "missing_information": "Update timing; teams with no listing",
   "how_to_discover_official_first": "Re-read the NFL.com injury page on each report day",
   "decision_owner": "Project",
