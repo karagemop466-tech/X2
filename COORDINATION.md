@@ -3460,11 +3460,11 @@ Board read in full first. Found the injury hub has **rolled over to Week 11** (p
 |----|------|--------|-------|---------------|------------------|
 | T129 | Capture the Week 11 official injury report: one dated read, every row kept in a **private, gitignored** store, a published per-club derived summary (counts, not names), a sha256 of the transcription, and flags for everything not yet verified | done | 1745bf18 | `private/` (gitignored, never published), `data/captures/injury_week11_2026-11-19*`, `scripts/week11_capture.py` (new), `data/drift_pins.csv` (one row appended), `data/flags.csv` (F129 appended), `data/sources.csv` (SRC-116 appended) | Brief: capture the report with a timestamp and retained hash; publish derived analysis only while the NFL terms (F16) are unread; keep raw row-level data private. |
 | T130 | Publish the Week 11 capture page (`week11-injury-capture.html`) with its NAV and landing card, built from T129's register only | done | 1745bf18 | `scripts/build.py` (new block at the end, one NAV insert, one card), generated `docs/**` | Makes the new read visible on the site without touching any other session's block. |
-| T131 | Integration: build, `check_links`, `drift_check`, `repo_audit`, PR → `main`, merge, confirm GitHub Pages, record here | in progress | 1745bf18 | `COORDINATION.md`, `README.md` (one paragraph), PR | Runs last. |
+| T131 | Integration: build, `check_links`, `drift_check`, `repo_audit`, PR → `main`, merge, confirm GitHub Pages, record here | done | 1745bf18 | `COORDINATION.md`, `README.md` (one paragraph), PR | Runs last. |
 
 ### T129 / T130 close-out · session 1745bf18 · 2026-11-19
 
-**Status: done (capture and page); T131 integration in progress below.**
+**Status: done (capture, page and integration).**
 
 **Sources (fetched 2026-11-19 UTC, all official NFL.com):**
 - Week 11 injury report, heading "Injuries - WEEK 11": https://www.nfl.com/injuries/ (seven chunks, `hasMore=false` on chunk 6).
@@ -3495,4 +3495,13 @@ Board read in full first. Found the injury hub has **rolled over to Week 11** (p
 7. **Board hygiene:** several rows still show `in progress` or `pending` from earlier sessions (for example T55, T60, T71, T102–T106, T114–T119, T124, T112, T128). Their owners did not close them. This session did not edit them.
 
 **Still open (owner or blocked, not claimed by this session):** F16 (data rights), F98/D22 (scheduled capture blocked: no nfl.com access from this sandbox, and terms), F07/F51 (no licensed odds feed, so no market prices), P09 (corpus choice), F17 (demotion thresholds), F127 (session-collision process rules).
+
+### T131 integration record · session 1745bf18 · 2026-11-19
+
+- **PR [#93](https://github.com/karagemop466-tech/X2/pull/93)** (`arena/1745bf18-x2` → `main`, "T129-T131: Week 11 injury-hub capture") merged with a merge commit **`ad4abc7a18ca87519571892462a1944d5740a60f`** at **2026-11-19T07:02:27Z**. No approval was sought, per the standing brief.
+- **Rebases:** `main` advanced four times while the PR was open (PRs #89/#90, #91, #92, #95). Each time the branch was rebased. Conflicts were confined to `COORDINATION.md` (both sides kept) and to the registers and generated pages (resolved by taking `main`'s version and re-applying this session's rows). The IDs F128 and SRC-113…115 were taken on `main` by session `d9344f5a` (T134), so this session's entries are **F129** and **SRC-116**. Pins: flags 122→123 and sources 115→116 (main's counts plus this session's rows).
+- **GitHub Pages:** run **44476563295** on `ad4abc7` → **success**; the Pages API reports `built`. The first Pages run after the merge (44476402660) built the previous `main` (`0d595d5`), so it does not verify this change. Verified by reading the live page: https://karagemop466-tech.github.io/X2/docs/week11-injury-capture.html shows 253 rows, 26 club sections, 13 games, 9 Out, 7 Questionable, 237 blank, and the per-club table with a source link on every row.
+- **Follow-up (same branch, separate PR):** the method note repeated a sentence about processed page text. Removed in the build; no number changed.
+- **Checks on the merged tree** (all run before the merge): `scripts/build.py` (56 pages), `scripts/week11_capture.py` (pins), `scripts/check_links.py` (3,164 internal links, 0 broken), `scripts/drift_check.py` (58/58), `scripts/repo_audit.py` (pass), `npm run build && npm run verify` (ALL CHECKS PASSED).
+- **Not verified, carried forward:** the Week 11 row content is a single read (F129). The Waddle and Alford items are still open. No delta exists yet.
 
