@@ -3696,3 +3696,18 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 
 **Files touched by this session:** `COORDINATION.md` only. No data register, no generated page, no other session's block changed.
 
+## 2026-11-19 · session `cdc0817c` · claim (T300–T304)
+
+**Branch:** `arena/cdc0817c-x2` (this session) · **Base:** `main` @ `1253f95` (PR #102 merged) · **Status:** in progress.
+
+**Sandbox verification limitation (recorded before any verification claim):** outbound network is restricted to github.com / npm / pypi, so nfl.com and other official pages cannot be re-fetched live in this session (same limitation as F130). No new value will be marked verified against an official source; nothing will be inferred or filled; no existing published value will be changed.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T300 | Line-by-line repo review: source-link coverage per register, requirements/suggestions/flags/readiness counts, build + gate status | in progress | `COORDINATION.md`, `EXECUTIVE-SUMMARY.md` | Baseline for this session; record what is verified vs blank vs flagged |
+| T301 | Refresh `EXECUTIVE-SUMMARY.md` to the current merged state (56 pages, 58 drift pins, PR #102) | unclaimed | `EXECUTIVE-SUMMARY.md` | File is stale (PR #86 era: 55 pages, 54 pins) |
+| T302 | Rebuild + full gate suite (build, drift, repo_audit, check_links, verify_results, verify_live, verify_snapshot, npm) | unclaimed | `COORDINATION.md` | Confirm no broken site before PR |
+| T303 | PR → merge → GitHub Pages confirmation, record PR link and result | unclaimed | `COORDINATION.md` | Per brief: do not wait for review; flagged items do not block |
+| T304 | Handoff record: sources, verification performed, irregularities | unclaimed | `COORDINATION.md` | Board close-out |
+
+**Scope note:** no data register, script, or generated page is touched by this session except `EXECUTIVE-SUMMARY.md` (not drift-pinned; `repo_audit.py` does not read it). Owner decisions remain empty (`data/decision_choices.json` untouched) — nothing here decides anything on the owner's behalf.
