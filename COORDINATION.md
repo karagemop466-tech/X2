@@ -4122,3 +4122,92 @@ source link.
 - **Session `b94f5221` is closed.** T316–T320 all done. No open PR from this session; no task left in progress.
   Flags owned elsewhere (F133, F135–F141, F16, P09, P01/F07/F51, F19, F103, F128) are untouched and remain with
   their owners.
+## 2026-11-19 · session `cb679d0e` · claim (T406–T410)
+
+**Branch:** `arena/cb679d0e-x2` (fixed by Arena) · **Base:** `main` @ `b95fe2a` (PR #103 merged) · **Owner:** `cb679d0e` · **Status:** in progress
+
+Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T210 / F131 / SRC-116; open PR #104 (session `cdc0817c`) has taken T300–T304, so this session claims **T406–T410**, **F142+**, **SRC-121+**. **ID renumbering note (2026-11-19T23:0xZ):** the claim was first written as T401–T405 / F132+ / SRC-117+ against `main` @ `b95fe2a`; `main` then advanced through PRs #104–#115 while this session worked, and sessions `8994979a` (T400–T405), `0a0deaaf` (F133/SRC-117), `b94f5221` and others took those IDs. On rebase every one of this session's IDs was renumbered above the current maxima (tasks T406–T410, flags F142–F144, sources SRC-121–SRC-130); no other session's row was edited.
+
+**Capability note (recorded before any verification claim):** unlike the sessions that recorded F130/F131, this session's `fetch_page` tool **can** reach `www.nfl.com` and `operations.nfl.com` (first confirmed 2026-11-19T22:1xZ: the official standings page returned live content). The sandbox `curl` path still returns HTTP 000, so all live reads in this session go through `fetch_page` and carry their read clock. No value will be marked verified without a live official read in this session.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T406 | Independent second read of the official Week 11 injury report (all seven chunks, later clock time on 2026-11-19) with a full per-club recount; publish the second read as its own register and a dated read-to-read delta against T129's first read; check the two open F129 items (Waddle listed under DEN; Alford player-link slug) | done (result below) | `data/injury_week11_read2_2026-11-19_cb679d0e.csv` (new), `data/injury_week11_series_2026-11-19_cb679d0e.csv` (new), `scripts/week11_read2.py` (new), `data/flags.csv` (append), `data/sources.csv` (append), `data/drift_pins.csv` (append + re-pin), generated `docs/**` | F129's own action line: "Second independent read of all seven chunks; check Waddle ... and the Alford slug; only then start the Week 11 delta series (next read adds the delta)." |
+| T407 | Official inactive-list capture attempt for the Week 11 Thursday game (IND@HOU, kickoff 2026-11-19 20:15 ET = 2026-11-20T01:15Z) from the official game centre, with the read clock; if the list is not yet published at read time the row stays blank and is flagged, never inferred | done (result below; both clubs' official lists published at 23:45Z and captured) | `data/inactives_week11_thu_2026-11-19_cb679d0e.csv` (new), `data/flags.csv` (append), `data/sources.csv` (append), `data/drift_pins.csv` (append), generated `docs/**` | Brief: "Capture official inactive lists ... no active list or snap share is captured" — the first official inactive list of the season for this repo |
+| T408 | Evaluate whether an **official** snap-count source exists, as the brief conditions it ("derive depth from snap counts **if an official snap-count source exists**"): read the official NFL stats/operations pages live, publish one verdict row per source tried with its link, and state plainly whether the snap-count starter proxy is unblocked or stays blocked. No third-party numbers. | done (result below; official source EXISTS) | `data/snap_count_source_eval_2026-11-19_cb679d0e.csv` (new), `data/flags.csv` (append), `data/sources.csv` (append), `data/drift_pins.csv` (append), generated `docs/**` | Unblocks or keeps blocked the "snap counts as starter proxy" and SG-05 depth-order routes |
+| T409 | Publish the league's **dated** 2026 schedule announcement beside the live schedule page, quoted from the official announcement article with its publication date | done (result below; section live on games.html) | `data/schedule_announcement_2026.csv` (new), `scripts/build.py` (additive sections only), generated `docs/**` | Brief: "Publish the league's dated schedule announcement beside the live schedule page" — no such row exists on the site today |
+| T410 | Integration: rebuild, run every check (`build`, `check_links`, `drift_check`, `repo_audit`, `verify_results`, `verify_snapshot`, `npm`), PR `arena/cb679d0e-x2` → `main`, merge, confirm GitHub Pages, record the PR link and result here | in progress — gates green, PR opens next | `COORDINATION.md`, generated `docs/**`, PR | Required by the brief |
+
+**Scope note:** no other session's block, register row or generated page is edited except by appending my own IDs; shared registers are appended only (flags, sources, drift pins); `scripts/build.py` gets one additive section for T404 only. `data/decision_choices.json` is untouched — nothing here decides anything on the owner's behalf.
+
+### T406–T409 close-out · session `cb679d0e` · 2026-11-19/20
+
+**T406 — independent concurrent second read of the Week 11 injury hub (done).** All seven chunks re-read
+2026-11-19T22:12Z–22:22Z (session clock) via the fetch tool, section by section, then compared cell by cell with
+T129's first read (06:53Z) by `scripts/week11_read2.py`. Result: **25 of 26 club sections match on all eleven
+counts; IND differs** — first read published Questionable 4 / blank 2, this read counts 3 / 3 (Questionable =
+Gardner, Gould, Rhodes; blank = Carlies, Heck, Tucker), so report-wide totals are Questionable 6 and blank 238
+against the published 7 / 237; rows (253), practice totals (83/87/83), Out 9, Doubtful 0,13 games and the two
+no-injury clubs all agree. This read is a **fourth dated point** and independently reproduces session `0a0deaaf`'s
+second read (F133 on main, 22:10Z) and session `b94f5221`'s third read (T316): all three later reads say 3 / 3.
+F129's two open items are resolved from live official pages: (a) the `deaundre-ford` slug **is** Dee Alford's
+canonical official page (CB #23, Buffalo Bills, active; the alternate `dee-alford` URL renders an empty template —
+official-site defect, not a report error); (b) Jaylen Waddle under DEN is correct (player page states Denver
+Broncos, active; main's SRC-120 separately roster-checked all nine DEN names). New spot check: Kyler Murray under
+MIN confirmed (player page: Minnesota Vikings, active). Registers: `data/injury_week11_read2_2026-11-19_cb679d0e.csv`
+(26 rows) and `data/injury_week11_series_2026-11-19_cb679d0e.csv` (40 rows: 25 MATCH, 1 DIFFERS, 3 item checks).
+Flags: **F142** (the IND discrepancy, cross-referenced with F133 on main), **F143** (first read's raw rows are
+gitignored and absent from clones, so page-change vs transcription-error cannot be told).
+
+**Irregularity recorded against this session's own draft:** the first local draft of the read-2 register typed the
+IND Questionable/blank cells from the published first read instead of counting them (a rubber-stamp error: three
+questionable names were recorded as four). It was caught while reconciling against `0a0deaaf`'s F133 **before the
+commit ever landed**, corrected against this session's own chunk-0 fetch, and the landed register is the correct
+3 / 3. The script's semantics were also changed in the same commit: a dated difference is now published as
+`DIFFERS` and exits zero; non-zero only for structural faults. Nothing published anywhere claims "0 differences".
+
+**T407 — first official inactive-list capture (done, earlier than the blank-and-flag fallback).** Both official
+club releases for IND@HOU read live at 2026-11-19T23:56Z–00:01Z: colts.com (published 06:45 PM, 7 players with
+stated reasons) and houstontexans.com (published 05:45 PM, 7 players with uniform numbers, **no stated reasons →
+cells blank, never inferred**). Register `data/inactives_week11_thu_2026-11-19_cb679d0e.csv` (14 rows, pinned) is
+the repo's first inactive-list data — D13 previously counted 0. The nfl.com game centre carried no inactives
+section at 23:47Z or later; club sites are the working official route, and colts.com publishes a weekly inactives
+series (Weeks 1–10 linked from the Week 11 article). Designation movement now evidenced: Gardner and Teller
+Questionable → inactive; Heck Questionable → active (designation removed Thursday morning, stated in the Colts
+article); Andrews and Thomas recorded as "not on the Week 11 injury report", never as "healthy".
+Flag **F145**. Sources SRC-131/SRC-132.
+
+**T408 — official snap-count source evaluation (done; the answer is YES, with caveats).** Four public league
+surfaces read live and found **without** snap counts: player stats (11 categories), team stats (offense/defense/ST
+categories), Next Gen Stats (Top Plays/Passing/Rushing/Receiving/Game Center), Football Operations tracking page
+(participation reports exist *internally*; "Time on Field" listed as an example). But the official **Game Book
+(PDF) carries a "Playtime Percentage" section with per-player snap counts and shares by phase** — verified in
+**2 of 2 sampled Game Books** (WAS@NYG 11/12/2026 chunks 6–7 of 8; KC@ATL 11/15/2026 final chunk, linked live from
+the official game centre's "Download Game Book" link). Verdict for the brief's route (b): the official source
+**exists**, so retrospective playing-time depth analysis is unblocked in principle; three caveats keep it gated —
+(a) Game Books publish after the game, never for a pre-game lineup call; (b) the Game Book header restricts use
+beyond media coverage to written NFL permission, so systematic capture stays behind F16; (c) coverage is 2 games —
+presence in every Game Book is indicated, not proven. Register `data/snap_count_source_eval_2026-11-19_cb679d0e.csv`
+(6 rows, pinned), flag **F144**, sources SRC-125–SRC-130. **Request for the integration owner:** readiness rows
+D13/D16 and the SG-05 depth-order route should cite F144 — an official snap-count source now exists but 0
+snap-count rows are captured.
+
+**T409 — the league's dated schedule announcement, beside the schedule page (done).** Read live from the league's
+Football Communications newsroom: **"2026 NFL Schedule Announced", byline May 14, 2026** (18-week, 272-game
+schedule; season opens Wednesday, September 9 in Seattle; Week 18 ends January 10, 2027), plus the advance notice
+"2026 NFL schedule powered by AWS to be released Thursday, May 14" whose **publication date is not rendered on
+the page → date cell left blank and marked unverified**, never inferred. Register `data/schedule_announcement_2026.csv`
+(2 rows, pinned); the section is appended to the live schedule page (`docs/games.html`). `media.nfl.com` (league
+newsroom) and `nextgenstats.nfl.com` were added to the build's HTTPS allow-list with a comment; `www.colts.com`
+and `www.houstontexans.com` were already allow-listed.
+
+**Gates on this branch after T407 (evidence for T410):** `build.py` **60 pages** PASS (row-source + link checks) ·
+`drift_check.py` **70/70** · `repo_audit.py` 22 checks, 0 failing (A14 partial-flagged as known) · `check_links.py`
+**3,635 internal / 7,390 external, 0 broken** · `verify_live.py` 75/75 · `verify_snapshot.py` 0 fail / 1 review
+(Ben Brown, known) · `verify_results.py` 137 games with the known F106 condition (26/32 clubs behind the current
+standings read — published, flagged, not a regression) · `npm run build && npm run verify` ALL CHECKS PASSED ·
+`git diff --check` clean. Site opens from 56 to **60 pages** (injury-series, snap-count-source, inactives, plus
+the schedule-announcement section on games.html).
+
+**Scope note kept:** `data/decision_choices.json` untouched; no owner decision taken anywhere; no third-party
+number published; every new table row carries an allow-listed official HTTPS link.
