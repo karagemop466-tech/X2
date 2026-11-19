@@ -4514,8 +4514,7 @@ difference against. Changes are published only between two reads of the same wee
 <li><strong>Method:</strong> {html.escape(_w11_meta['method'])}</li>
 <li><strong>Read window:</strong> {html.escape(_w11_meta['read_window_utc'])}</li>
 <li><strong>Hash:</strong> the private transcription's sha256 is <code>{html.escape(_w11_meta['private_transcription_sha256'])}</code>.
-The fetch tool returns processed page text, not the server's raw bytes, so no hash of the raw response exists
-({html.escape(_w11_meta['raw_bytes_note'])})</li>
+{html.escape(_w11_meta['raw_bytes_note'])}</li>
 <li><strong>Verification status:</strong> {html.escape(_w11_meta['verification_status'])}. The structure checks pass
 (253 rows, 26 club sections, 13 games, six bye clubs, the page's game list matches the Week 11 schedule register), but the
 row content has not been independently re-read. Use the counts as a single read until a second read confirms them.</li>
