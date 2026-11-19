@@ -64,6 +64,7 @@ ABSENT_THRESHOLD = 0.60  # nothing in the register comes close
 
 OUT_CSV = os.path.join(DATA, "readiness_mapping_audit.csv")
 OUT_GROUPS = os.path.join(DATA, "requirements_duplicate_groups.csv")
+OUT_LANES = os.path.join(DATA, "identifier_lane_collisions.csv")
 
 
 def _norm(s):
@@ -172,6 +173,45 @@ def audit():
         w.writeheader()
         w.writerows(group_rows)
 
+    # ---- 1b. identifier lanes ---------------------------------------------
+    # Several registers mint IDs of the form D<n> for different things: the
+    # decision-chain gates ("Gate #", D01..D10), the readiness rows (D01..D65),
+    # the demotion-gate rules and the decision-queue ids. A bare "D01" is
+    # therefore ambiguous on a site whose navigation includes all of them, and a
+    # reader cross-referencing "D01" between two pages can land on a different
+    # object. This is measured, not fixed here: the fix renumbers a register that
+    # other flags and pages cite, which is the owner's call (see F132).
+    chain_path = os.path.join(DATA, "decision-chain.csv")
+    lane_rows = []
+    if os.path.exists(chain_path):
+        with open(chain_path, encoding="utf-8-sig", newline="") as fh:
+            chain = list(csv.DictReader(fh))
+        chain_line = _line_index("decision-chain.csv", "gate_id")
+        ready_ids = {r["req_id"].strip() for r in ready}
+        for c in chain:
+            gid = (c.get("gate_id") or "").strip()
+            if gid in ready_ids:
+                lane_rows.append({
+                    "identifier": gid,
+                    "lane_a_register": "data/decision-chain.csv (a gate that must be answered)",
+                    "lane_a_meaning": c.get("decision_needed") or "",
+                    "lane_a_line": chain_line.get(gid, ""),
+                    "lane_b_register": "data/decision_readiness.csv (a requirement's readiness row)",
+                    "lane_b_meaning": next((x["brief_item"] for x in ready
+                                            if x["req_id"].strip() == gid), ""),
+                    "lane_b_line": ready_line.get(gid, ""),
+                    "collision_is": "same label, different object",
+                    "evidence_basis": "ID equality across two registers, checked by scripts/readiness_audit.py",
+                    "source_url": "https://github.com/karagemop466-tech/X2/blob/main/data/decision-chain.csv",
+                })
+    with open(OUT_LANES, "w", encoding="utf-8", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(lane_rows[0].keys()) if lane_rows else
+                           ["identifier", "lane_a_register", "lane_a_meaning", "lane_a_line",
+                            "lane_b_register", "lane_b_meaning", "lane_b_line", "collision_is",
+                            "evidence_basis", "source_url"])
+        w.writeheader()
+        w.writerows(lane_rows)
+
     # ---- 2 & 3. per-readiness-row checks ----------------------------------
     seen_brief = {}
     for r in ready:
@@ -267,6 +307,7 @@ def audit():
         "related_only": n(lambda x: x["verdict"] == "related to, but not the same item as, its own requirement"),
         "duplicate_publication": n(lambda x: bool(x["same_brief_item_on_another_row"])),
         "labels_contradicted": n(lambda x: x["label_agrees_with_text"].startswith("NO")),
+        "lane_collisions": len(lane_rows),
         "dup_threshold": DUP_THRESHOLD,
         "absent_threshold": ABSENT_THRESHOLD,
     }
@@ -288,7 +329,9 @@ def main():
     print(f"  register has no row for the brief line ... {s['no_register_row']}")
     print(f"  same brief item published twice .......... {s['duplicate_publication']}")
     print(f"  recorded match_quality contradicted ...... {s['labels_contradicted']}")
-    print(f"wrote {os.path.relpath(OUT_CSV, ROOT)} and {os.path.relpath(OUT_GROUPS, ROOT)}")
+    print(f"identifier labels shared by two different registers ... {s['lane_collisions']}")
+    print(f"wrote {os.path.relpath(OUT_CSV, ROOT)}, {os.path.relpath(OUT_GROUPS, ROOT)} "
+          f"and {os.path.relpath(OUT_LANES, ROOT)}")
 
 
 if __name__ == "__main__":

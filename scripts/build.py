@@ -128,6 +128,8 @@ import readiness_audit as _rd_audit  # noqa: E402  (T212: mechanics-only mapping
 # sandbox network limitation (F130), and it never rewrites the mapping. Counts are
 # computed here and printed wherever the claim is made.
 _rd_audit_rows, _rd_group_rows, _rd_summary = _rd_audit.audit()
+with open(os.path.join(DATA, "identifier_lane_collisions.csv"), encoding="utf-8-sig", newline="") as _f:
+    _lane_rows = list(csv.DictReader(_f))
 OFFICIAL_HOSTS = {
     # static.www.nfl.com serves official NFL gamebook PDFs linked from the NFL game
     # centers (T52 takeover). It is a first-party NFL host, not a third-party provider.
@@ -3036,6 +3038,13 @@ _audit_tbl_rows = table(_rd_audit_rows,
      "source_url": "Source"},
     table_id="readiness-audit-table", filterable=True)
 
+_audit_tbl_lanes = table(_lane_rows,
+    ["identifier", "lane_a_register", "lane_a_meaning", "lane_b_register", "lane_b_meaning", "collision_is", "source_url"],
+    {"identifier": "Label", "lane_a_register": "Register A", "lane_a_meaning": "What it means there",
+     "lane_b_register": "Register B", "lane_b_meaning": "What it means there",
+     "collision_is": "Collision", "source_url": "Source"},
+    table_id="identifier-lane-table")
+
 _audit_page = f"""
 <h1>Readiness mapping audit</h1>
 <p class="note">The landing page publishes a decision-readiness table and says of it: <em>&ldquo;One row per
@@ -3099,6 +3108,16 @@ so the boundary can be argued with. Both strings are printed in full, so you can
 <strong>Filter:</strong> type in the box to narrow the table.</p>
 {_audit_tbl_rows}
 
+{_audit_tbl_lanes}
+
+<h2>4. One more collision the same reading turned up: the label &ldquo;D01&rdquo; means two things</h2>
+<p class="note">While checking the readiness IDs, the same identifier shape appears in a second register for a completely
+different object. On <a href="decision-path.html">Decision path</a>, <code>D01</code> is the first <em>gate that must be
+answered</em> (&ldquo;Do we have written permission&hellip;&rdquo;). On this site&rsquo;s landing page, <code>D01</code>
+is the first <em>readiness row</em> (the price-snapshot store). Ten labels are shared this way. Nothing is wrong with
+either register on its own; the risk is a reader carrying &ldquo;D01&rdquo; from one page to another and landing on a
+different object. This is recorded, not renumbered &mdash; renumbering a register that existing flags and pages already
+cite is the owner&rsquo;s call (F132).</p>
 <h2>4. What this page does not do</h2>
 <ul>
 <li>It does not re-map, renumber, delete or merge any register row. Both registers are published exactly as their
@@ -3225,6 +3244,8 @@ import readiness_audit as _rd_audit  # noqa: E402  (T212: mechanics-only mapping
 # sandbox network limitation (F130), and it never rewrites the mapping. Counts are
 # computed here and printed wherever the claim is made.
 _rd_audit_rows, _rd_group_rows, _rd_summary = _rd_audit.audit()
+with open(os.path.join(DATA, "identifier_lane_collisions.csv"), encoding="utf-8-sig", newline="") as _f:
+    _lane_rows = list(csv.DictReader(_f))
 def _rd(rel):
     with open(os.path.join(ROOT, rel), encoding="utf-8", newline="") as _fh:
         return list(_csv.DictReader(_fh))
