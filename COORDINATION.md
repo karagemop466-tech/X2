@@ -3658,3 +3658,17 @@ the registers. It did not attempt the Wed/Thu/Fri injury cadence the brief asks 
 transcribe any Week 11 injury row, did not add a price, a ranking, an ROI claim or a strategy qualification, and did
 not touch the frozen 137-game corpus. Session `1745bf18` captured the Week 11 injury report in parallel and
 independently confirmed the hub had rolled over — the same finding as V68-07, reached separately.
+
+## 2026-11-19 · session `c8fedd17` · claim (T208–T210)
+
+**Branch:** `arena/c8fedd17-x2` (fixed by Arena) · **Base:** `main` @ `1253f95` (PR #102 merged) · **Owner:** `c8fedd17` · **Status:** in progress
+
+Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T207 and F130, so **T208–T210** and **F131** are free. Stale `in progress` rows from earlier sessions (T55, T60, T71, T102–T106, T112, T114–T119, T124, T128) are **not** taken over or edited here; they are listed for the integration owner only.
+
+**Sandbox limitation, recorded before any verification claim:** `www.nfl.com` returned HTTP 000 from this environment on 2026-11-19 (same as F130). GitHub, PyPI and npm are reachable. This session performs **no new NFL.com reads** and marks no new value as verified.
+
+| ID | Task | Status | Files (scope) | Why |
+|---|---|---|---|---|
+| T208 | Independent gate re-run on the untouched `main` baseline: `build.py`, `check_links.py`, `drift_check.py`, `repo_audit.py`, `verify_snapshot.py`, `verify_results.py`, `npm run build && npm run verify`; confirm the rebuild is byte-identical to the committed `docs/` | in progress | `COORDINATION.md` (this block only) | Regression evidence before any integration |
+| T209 | Board hygiene audit: list stale claims and open PRs (#75 from `db00d539`, #99 from `1745bf18`) with the recommended disposition for their owners | in progress | `COORDINATION.md` (this block only) | Owners never closed these rows; no one else has been asked to |
+| T210 | Integration: PR `arena/c8fedd17-x2` → `main` (board record only), merge, confirm GitHub Pages deploy, record PR link and result here | pending — runs last | `COORDINATION.md`, PR | Records the gate evidence on `main` |
