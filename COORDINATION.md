@@ -3258,3 +3258,16 @@ of the merged branch: **15/15 checks pass, 54/54 drift pins pass, 55 pages, all 
   read) · `npm run build && npm run verify` PASS.
 * **Left open on purpose:** P09 promotion, P01 pricing, F16 rights, and the F127 process rules — all owner decisions,
   none of which an agent may record. `data/decision_choices.json` remains empty.
+
+## 2026-11-19 · session `d9344f5a` · claim (T133)
+
+**Branch:** `arena/d9344f5a-x2` (from `main` @ `38629ca`, PR #86) · **Owner:** `d9344f5a` · **Status:** in progress
+
+Read the full board first. Every brief item already has a task row, and most are closed. The remaining open gap in
+the brief that the sandbox can verify is **D19 / R56 — "treat roster turnover as a first-class data event"**, which the
+decision-readiness register still marks *Missing*: "No roster-event register exists; the Colts trades are described in a
+source article only."
+
+| ID | Task | Status | Owner | Files this session creates or edits | Sources |
+|----|------|--------|-------|-------------------------------------|---------|
+| T133 | Dated roster-event register from the official NFL.com 2026 trades and reserve-list logs (Aug–Nov 2026), starting with the Colts' 11/10 trades; flag any Week 11 depth/availability row that names a player with a later event | in progress | d9344f5a | `data/roster_events_2026.csv` (new), `data/roster_events_checks_2026.csv` (new), `scripts/roster_events.py` (new), `data/flags.csv` (F128 appended), `data/sources.csv` (SRC-113 appended), `data/decision_readiness.csv` (D19 row only), this board. No site/nav change; the generated `docs/` is left to the integration step. | `https://www.nfl.com/transactions/league/trades/2026/11`, `https://www.nfl.com/transactions/league/reserve-list/2026/11` |
