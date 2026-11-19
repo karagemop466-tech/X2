@@ -158,8 +158,8 @@ OFFICIAL_HOSTS = {
     "www.49ers.com", "www.raiders.com",
     # session cb679d0e (2026-11-19): two NFL-operated domains read live this session.
     # media.nfl.com is the league's Football Communications newsroom (the dated 2026
-    # schedule announcement, T404). nextgenstats.nfl.com is the NFL's own Next Gen
-    # Stats site (snap-count source evaluation, T403).
+    # schedule announcement, T409). nextgenstats.nfl.com is the NFL's own Next Gen
+    # Stats site (snap-count source evaluation, T408).
     "media.nfl.com", "nextgenstats.nfl.com",}
 PROJECT_REPO_PATH = "/karagemop466-tech/X2"
 
@@ -5005,7 +5005,7 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
            f"{_w11_meta['rows_transcribed']} player rows, {_w11_meta['clubs_with_section']} club sections. A second read matches {_w11_n_match} of {len(_w11_2nd)} clubs (F137 open). No delta yet: the next read starts the series.")
     + '</div>'))
 
-# ---------- session cb679d0e (T401, T403, T404): second-read series, snap-count source, schedule announcement ----------
+# ---------- session cb679d0e (T406, T408, T409): second-read series, snap-count source, schedule announcement ----------
 # Additive only: three new pages, two NAV entries, one section appended to the
 # schedule page (games.html), one landing-page card block. No other session's
 # block or generated page content is edited. Every table row below carries an
@@ -5016,23 +5016,28 @@ _w11_series = read_csv("injury_week11_series_2026-11-19_cb679d0e.csv")
 _snap_eval = read_csv("snap_count_source_eval_2026-11-19_cb679d0e.csv")
 _sched_ann = read_csv("schedule_announcement_2026.csv")
 
-# --- T401: Week 11 second read + read-to-read delta series ---
+# --- T406: Week 11 second read + read-to-read delta series ---
 pages["injury-series.html"] = ("Week 11 injury series", f"""
 <h1>Week 11 injury report — second read and read-to-read series</h1>
 <p class="note"><strong>What this is:</strong> an independent second read of all seven chunks of the
 <a href="https://www.nfl.com/injuries/" target="_blank" rel="noopener">official Week 11 injury report</a>
 (read 2026-11-19T22:12Z–22:22Z session clock, session cb679d0e), counted section by section and compared
-cell by cell with the first read (T129, read 2026-11-19T06:53:35Z). <strong>Result: 0 differences</strong> —
-26 club sections, 253 player rows, every per-club practice and game-status count, and all whole-report
-totals match (DNP 83 / LP 87 / FP 83; Out 9 / Questionable 7 / Doubtful 0 / blank 237).
-The series publishes the <em>delta</em> between dated reads, never a level on its own.
-Reproduce with <code>python3 scripts/week11_read2.py</code>, which exits non-zero on any diff.</p>
+cell by cell with the first read (T129, read 2026-11-19T06:53:35Z). <strong>Result: 25 of 26 club
+sections match on every counted cell; one section differs — IND.</strong> Agreed across both reads: 26 club
+sections, 253 player rows, all practice counts (DNP 83 / LP 87 / FP 83), Out 9, Doubtful 0, 13 games and the
+two "No Injuries Reported" clubs. The difference: the first read published IND Questionable 4 / blank 2; this
+read counts 3 / 3 (Questionable = Gardner, Gould, Rhodes), so the report-wide totals are Questionable 6 and
+blank 238 on the live page at this clock. This independently reproduces session 0a0deaaf's second read at
+22:10Z (flag <a href="flagged.html">F133</a> on main); the IND count is unsettled and is recorded as flag
+<a href="flagged.html">F142</a> here. The series publishes the <em>delta</em> between dated reads, never a
+level on its own. Reproduce with <code>python3 scripts/week11_read2.py</code>, which exits non-zero only on
+structural problems — a dated difference is published as a finding, not hidden.</p>
 <p class="note">Two F129 items were checked against live official pages in the same session:
 (1) Dee Alford's player link (<code>deaundre-ford</code>) is his canonical official page (CB #23, Buffalo Bills, active);
 (2) Jaylen Waddle listed under DEN is correct — his official player page states Denver Broncos, active.
 A third spot check raised by this read — Kyler Murray listed under MIN — was confirmed the same way.
-Remaining limitations are flags <a href="flagged.html">F132</a> and <a href="flagged.html">F133</a>
-(the first read's row-level names are not comparable because its raw transcription is gitignored and absent from clones).</p>
+The remaining limitation is flag <a href="flagged.html">F143</a>: the first read's row-level names are not
+comparable because its raw transcription is gitignored and absent from clones.</p>
 <h2>Read-to-read delta register (40 checks)</h2>
 {search_box('series-table')}
 {table(_w11_series,
@@ -5049,7 +5054,7 @@ Remaining limitations are flags <a href="flagged.html">F132</a> and <a href="fla
 NAV.insert(NAV.index(("week11-injury-capture.html", "Week 11 injuries")) + 1,
            ("injury-series.html", "Week 11 series"))
 
-# --- T403: official snap-count source evaluation ---
+# --- T408: official snap-count source evaluation ---
 pages["snap-count-source.html"] = ("Snap-count source", f"""
 <h1>Snap-count source evaluation — does an official source exist?</h1>
 <p class="note"><strong>Why:</strong> the brief conditions the playing-time depth route on it —
@@ -5074,7 +5079,7 @@ presence in every Game Book is indicated, not proven. See flag <a href="flagged.
 NAV.insert(NAV.index(("starters.html", "Starters &amp; depth")) + 1,
            ("snap-count-source.html", "Snap-count source"))
 
-# --- T404: the league's dated schedule announcement, beside the live schedule page ---
+# --- T409: the league's dated schedule announcement, beside the live schedule page ---
 pages["games.html"] = (pages["games.html"][0], pages["games.html"][1] + f"""
 <h2>The league's dated schedule announcement (2026)</h2>
 <p class="note">The brief asks for the league's dated schedule announcement beside the live schedule page.
@@ -5097,8 +5102,9 @@ pages["index.html"] = (pages["index.html"][0], pages["index.html"][1] + (
     'the official snap-count source verdict; the league\'s dated schedule announcement.</p>'
     '<div class="cards">'
     + card("injury-series.html", "Week 11 injury series",
-           "Second read of all seven chunks: 0 differences against the first read at every published granularity, "
-           "plus the delta register and the three item checks.")
+           "Second read of all seven chunks: 25 of 26 club sections match the first read; IND differs "
+           "(Questionable 4 to 3), independently confirming the finding already flagged on main. "
+           "Delta register and three item checks included.")
     + card("snap-count-source.html", "Snap-count source",
            "Official sources only: the Game Book's Playtime Percentage section is a real snap-count source "
            "(2 of 2 sampled), with its rights and timing caveats.")

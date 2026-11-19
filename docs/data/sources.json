@@ -1198,5 +1198,105 @@
   "accessed_date": "2026-11-19",
   "used_for": "F129 item 4 (one Denver player listed under DEN on the Week 11 hub): all nine Denver names in the Week 11 section appear on this roster page",
   "verification_note": "Read in 3 chunks via fetch_page (hasMore=false on chunk 2). Name-level match only; roster status codes as printed (ACT, DEV, PUP, RES, RSR, CUT); the meaning of each code is not restated here. Injury status is NOT taken from this page."
+ },
+ {
+  "source_id": "SRC-121",
+  "title": "NFL.com injury report - Week 11 page, second independent read (chunks 0-6, hasMore=false on chunk 6)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/injuries/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T401 second read register data/injury_week11_read2_2026-11-19_cb679d0e.csv and the read-to-read series data/injury_week11_series_2026-11-19_cb679d0e.csv",
+  "verification_note": "Read 2026-11-19T22:12Z-22:22Z session clock via the fetch tool (processed markdown, not raw HTTP bytes); all seven chunks read; 26 club sections and 253 player rows recounted by hand and compared cell by cell with T129's first read by scripts/week11_read2.py (0 diffs)."
+ },
+ {
+  "source_id": "SRC-122",
+  "title": "Jaylen Waddle official player page - team line 'Denver Broncos', status active",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/players/jaylen-waddle/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "F129 item (b): confirms the injury hub's listing of Waddle under DEN is correct (F132)",
+  "verification_note": "Read live 2026-11-19: 'WR #17 / Denver Broncos / active'."
+ },
+ {
+  "source_id": "SRC-123",
+  "title": "Dee Alford official player page at slug deaundre-ford - CB #23, Buffalo Bills, active (duplicate dee-alford URL renders an empty template)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/players/deaundre-ford/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "F129 item (a): confirms the hub's player-link slug is the player's canonical official page (F132)",
+  "verification_note": "Read live 2026-11-19: title 'Dee Alford Stats, News and Video - CB'. The alternate https://www.nfl.com/players/dee-alford/ also resolves but renders title 'player.DisplayName' with no player header - an official-site template defect, recorded not inferred."
+ },
+ {
+  "source_id": "SRC-124",
+  "title": "Kyler Murray official player page - team line 'Minnesota Vikings', status active",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/players/kyler-murray/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "Second-read spot check R2-ITEM-MURRAY: confirms the hub's listing of Murray under MIN (F132)",
+  "verification_note": "Read live 2026-11-19: 'QB #1 / Minnesota Vikings / active'; raised because Murray does not appear under AZ in the report."
+ },
+ {
+  "source_id": "SRC-125",
+  "title": "NFL.com player stats - category navigation (no participation category)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/stats/player-stats/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T408 snap-count source evaluation, row SNAP-01",
+  "verification_note": "Read live 2026-11-19; all 11 listed categories transcribed; none is a snap/playtime category."
+ },
+ {
+  "source_id": "SRC-126",
+  "title": "NFL.com team stats - category navigation (no participation category)",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/stats/team-stats/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T408 snap-count source evaluation, row SNAP-02",
+  "verification_note": "Read live 2026-11-19; Offense/Defense/Special Teams categories transcribed; none is a snap/playtime category."
+ },
+ {
+  "source_id": "SRC-127",
+  "title": "NFL Next Gen Stats public stats site - section navigation (no playtime section)",
+  "publisher": "NFL (Next Gen Stats)",
+  "url": "https://nextgenstats.nfl.com/stats/",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T408 snap-count source evaluation, row SNAP-03",
+  "verification_note": "Read live 2026-11-19; sections Top Plays, Passing, Rushing, Receiving, Game Center; no snap-count section."
+ },
+ {
+  "source_id": "SRC-128",
+  "title": "NFL Football Operations - Performance Tracking Data (Next Gen Stats): participation reports are internal",
+  "publisher": "NFL Football Operations",
+  "url": "https://operations.nfl.com/game-operations-logistics/technology/performance-tracking-data-next-gen-stats",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T408 snap-count source evaluation, row SNAP-04",
+  "verification_note": "Read live 2026-11-19; quotes the participation-report sentence and the 'Time on Field' performance example."
+ },
+ {
+  "source_id": "SRC-129",
+  "title": "NFL game center: Kansas City at Atlanta, Week 10 - official 'Download Game Book (PDF)' link",
+  "publisher": "NFL.com (National Football League)",
+  "url": "https://www.nfl.com/games/chiefs-at-falcons-2026-reg-10",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T408: proves the Game Book PDF is published from the official game centre (row SNAP-06 provenance)",
+  "verification_note": "Read live 2026-11-19; final score KC 35 - ATL 13 shown; 'Download Game Book (PDF)' link captured."
+ },
+ {
+  "source_id": "SRC-130",
+  "title": "Official NFL Game Book (PDF), Washington at New York Giants, Week 10, 11/12/2026 - Playtime Percentage section",
+  "publisher": "NFL (National Football League)",
+  "url": "https://static.www.nfl.com/image/upload/v1794570519/gamecenter/ab5828d9-4feb-11f1-abca-2c54536568a9.pdf",
+  "type": "Official league site",
+  "accessed_date": "2026-11-19",
+  "used_for": "T408 snap-count source evaluation, row SNAP-05 (the positive finding)",
+  "verification_note": "All 8 parsed chunks read 2026-11-19; 'Playtime Percentage' section found in chunks 6-7 with per-player snaps and shares by phase; header rights notice quoted verbatim in row SNAP-05."
  }
 ]

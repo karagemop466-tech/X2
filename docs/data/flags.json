@@ -1195,5 +1195,32 @@
   "source_url": "https://github.com/karagemop466-tech/X2/blob/main/COORDINATION.md",
   "status": "Irregularity - open (verification limitation)",
   "action_requested": "Re-run a live official-source pass over the pages this session touched from an environment that can reach nfl.com. The specific claims to re-check are the ones that cite a source date: the header read date (now derived), the freshness table, and the two corrected cells in Q01 and SG-01. None of them asserts an NFL fact that this session created; all rest on prior dated reads."
+ },
+ {
+  "flag_id": "F142",
+  "category": "Verification / capture",
+  "item": "Week 11 injury hub re-read independently twice on 2026-11-19: 25 of 26 club sections match the first read; IND differs (Questionable 4 to 3, blank 2 to 3)",
+  "detail": "Session cb679d0e performed a second independent read of all seven chunks of https://www.nfl.com/injuries/ (heading 'Injuries - WEEK 11') on 2026-11-19T22:12Z-22:22Z, after the first read at 06:53Z (T129). Agreements: 26 club sections, 253 player rows, every practice count (DNP 83 / LP 87 / FP 83), Out 9, Doubtful 0, 13 games, 2 'No Injuries Reported' clubs (CIN, WAS), and 25 of 26 club sections on all eleven counts. Difference: IND. First read published Questionable=4 and blank=2; this read counts Questionable=3 (Sauce Gardner, Anthony Gould, Luke Rhodes) and blank=3 (Jaylon Carlies, Charlie Heck, Dalton Tucker), so the report-wide Questionable total is 6 and blank 238 on the live page at this clock. This independently reproduces session 0a0deaaf's second read at 22:10Z (flag F133 on main); session b94f5221's third dated read (T316) is also on main. Registers: data/injury_week11_read2_2026-11-19_cb679d0e.csv (26 rows) and data/injury_week11_series_2026-11-19_cb679d0e.csv (40 rows: 25 MATCH, 1 DIFFERS, 3 item checks), reproduced by scripts/week11_read2.py. F129's two open items are resolved: (a) the Dee Alford slug deaundre-ford is his canonical official page (CB #23, Buffalo Bills, active); (b) Jaylen Waddle under DEN is correct (official player page: Denver Broncos, active); a third spot check - Kyler Murray under MIN - was confirmed the same way. Residual limitation recorded as F143. Whether the page changed after 06:53Z or the first read miscounted cannot be told from here, because the first read's raw rows are gitignored and absent from clones.",
+  "source_url": "https://www.nfl.com/injuries/",
+  "status": "Open - IND discrepancy; two independent second reads agree with each other (F133 on main)",
+  "action_requested": "Owner or capture session: (1) if the first read's private transcription can be retrieved, compare its IND rows against this register; (2) otherwise treat the IND Questionable count as unsettled and publish a dated delta rather than a level; (3) do not use IND Questionable=4 (first read) or =3 (second reads) as settled until resolved."
+ },
+ {
+  "flag_id": "F143",
+  "category": "Reproducibility / capture",
+  "item": "Week 11 raw transcription is not retrievable outside the capturing session",
+  "detail": "T129's row-level Week 11 transcription was written to private/injury_week11_2026-11-19.psv, which is gitignored; its sha256 (263d4feb0148075dea015bf1d2e5fcdfc3430aeefab767a019dea1c76eb6db25) is recorded in data/captures/injury_week11_2026-11-19.meta.json, but the file itself is absent from clones, so no other session can re-hash it or compare its row-level names against a second read. The Week 10 capture by contrast is committed at data/captures/injury_week10_2026-11-18.psv. Consequence: T401's second read corroborates every published count and total but cannot diff player names against the first read. The private layer is correct under the brief's data-split rule while F16 is open; the reproducibility gap is the cost of that rule and is recorded here rather than worked around.",
+  "source_url": "https://github.com/karagemop466-tech/X2",
+  "status": "Open - owner decision (private layer vs reproducibility)",
+  "action_requested": "Owner decides whether the Week 11 raw capture is committed like Week 10's, kept private with a published per-row hash list, or left as is."
+ },
+ {
+  "flag_id": "F144",
+  "category": "Finding / source evaluation",
+  "item": "An official snap-count source exists: the NFL Game Book's Playtime Percentage section (2 of 2 sampled)",
+  "detail": "Session cb679d0e evaluated the brief's route (b) condition ('derive depth from snap counts if an official snap-count source exists') on 2026-11-19. The league's public stats surfaces do not publish snap counts: player stats (11 categories, none participation), team stats (no participation category), Next Gen Stats (Top Plays/Passing/Rushing/Receiving/Game Center), and the Football Operations tracking page (participation reports exist internally; 'Time on Field' listed as an example, no public table). But the official Game Book PDF carries a 'Playtime Percentage' section with per-player snap counts and shares by phase (Offense/Defense/Special Teams). Verified in 2 of 2 sampled Game Books: WAS@NYG 11/12/2026 and KC@ATL 11/15/2026. Register: data/snap_count_source_eval_2026-11-19_cb679d0e.csv (6 rows). Three caveats: (1) Game Books publish AFTER the game, so the source supports retrospective depth/playing-time analysis only, never a pre-game lineup call; (2) the Game Book header restricts use beyond media coverage to written NFL permission, so systematic capture stays gated by the open rights review F16 (SRC-20 recorded the same restriction earlier); (3) coverage here is 2 games - presence in every Game Book is indicated, not proven.",
+  "source_url": "https://static.www.nfl.com/image/upload/v1794829722/gamecenter/ab582f5b-4feb-11f1-abca-2c54536568a9.pdf",
+  "status": "Finding - needs review (rights gated, F16)",
+  "action_requested": "Owner: decide whether to request NFL permission / read the terms (F16) before capturing Game Book playtime tables, then extend the sample beyond 2 games. Integration owner: update readiness rows D13/D16 - an official snap-count source now exists but 0 snap-count rows are captured."
  }
 ]
