@@ -4136,7 +4136,7 @@ Board read in full first. No row is `unclaimed`. The newest IDs on `main` are T2
 | T407 | Official inactive-list capture attempt for the Week 11 Thursday game (IND@HOU, kickoff 2026-11-19 20:15 ET = 2026-11-20T01:15Z) from the official game centre, with the read clock; if the list is not yet published at read time the row stays blank and is flagged, never inferred | done (result below; both clubs' official lists published at 23:45Z and captured) | `data/inactives_week11_thu_2026-11-19_cb679d0e.csv` (new), `data/flags.csv` (append), `data/sources.csv` (append), `data/drift_pins.csv` (append), generated `docs/**` | Brief: "Capture official inactive lists ... no active list or snap share is captured" — the first official inactive list of the season for this repo |
 | T408 | Evaluate whether an **official** snap-count source exists, as the brief conditions it ("derive depth from snap counts **if an official snap-count source exists**"): read the official NFL stats/operations pages live, publish one verdict row per source tried with its link, and state plainly whether the snap-count starter proxy is unblocked or stays blocked. No third-party numbers. | done (result below; official source EXISTS) | `data/snap_count_source_eval_2026-11-19_cb679d0e.csv` (new), `data/flags.csv` (append), `data/sources.csv` (append), `data/drift_pins.csv` (append), generated `docs/**` | Unblocks or keeps blocked the "snap counts as starter proxy" and SG-05 depth-order routes |
 | T409 | Publish the league's **dated** 2026 schedule announcement beside the live schedule page, quoted from the official announcement article with its publication date | done (result below; section live on games.html) | `data/schedule_announcement_2026.csv` (new), `scripts/build.py` (additive sections only), generated `docs/**` | Brief: "Publish the league's dated schedule announcement beside the live schedule page" — no such row exists on the site today |
-| T410 | Integration: rebuild, run every check (`build`, `check_links`, `drift_check`, `repo_audit`, `verify_results`, `verify_snapshot`, `npm`), PR `arena/cb679d0e-x2` → `main`, merge, confirm GitHub Pages, record the PR link and result here | in progress — gates green, PR opens next | `COORDINATION.md`, generated `docs/**`, PR | Required by the brief |
+| T410 | Integration: rebuild, run every check (`build`, `check_links`, `drift_check`, `repo_audit`, `verify_results`, `verify_snapshot`, `npm`), PR `arena/cb679d0e-x2` → `main`, merge, confirm GitHub Pages, record the PR link and result here | done (PR #116 merged as 6cf7790; Pages run 44642107878 success; record below, carried by follow-up PR) | `COORDINATION.md`, generated `docs/**`, PR | Required by the brief |
 
 **Scope note:** no other session's block, register row or generated page is edited except by appending my own IDs; shared registers are appended only (flags, sources, drift pins); `scripts/build.py` gets one additive section for T404 only. `data/decision_choices.json` is untouched — nothing here decides anything on the owner's behalf.
 
@@ -4211,3 +4211,33 @@ the schedule-announcement section on games.html).
 
 **Scope note kept:** `data/decision_choices.json` untouched; no owner decision taken anywhere; no third-party
 number published; every new table row carries an allow-listed official HTTPS link.
+
+### T410 integration record · session `cb679d0e` · 2026-11-20
+
+- **PR [#116](https://github.com/karagemop466-tech/X2/pull/116)** (`arena/cb679d0e-x2` → `main`, T406–T409
+  content: Week 11 fourth dated read + series, first official inactive lists, snap-count source verdict, dated
+  schedule announcement, four new pages) merged with `gh pr merge 116 --merge` at **2026-11-19T23:59:05Z** as
+  merge commit **`6cf7790`**. No review waited on, per the brief; flagged items (F142–F145, known F106/F133)
+  do not block and were recorded instead.
+- **GitHub Pages:** run [44642107878](https://github.com/karagemop466-tech/X2/actions/runs/44642107878) on
+  `main` @ `6cf7790` → **completed / success** (build 26s, deploy 8s; job ✓ in 26s, deploy ✓ in 8s,
+  report-build-status ✓ in 4s).
+- **Live checks of the deployed tree** (platform fetch; sandbox `curl` still gets HTTP 000 on github.io):
+  `docs/inactives.html` serves all 14 inactive rows with both clubs' official links;
+  `docs/injury-series.html` serves the honest 25-of-26/IND-DIFFERS headline with F133/F142 cross-references;
+  `docs/games.html` serves the dated schedule-announcement section (SCHED-01 dated 2026-05-14 verified,
+  SCHED-02 blank + marked unverified); site total **60 pages** (was 56).
+- **Gates on the merged tree (run just before the PR):** `build.py` 60 pages PASS · `drift_check.py` 70/70 ·
+  `repo_audit.py` 0 failing · `check_links.py` 3,635 internal / 7,390 external, 0 broken ·
+  `verify_live.py` 75/75 · `verify_snapshot.py` 0 fail / 1 known review · `verify_results.py` known F106
+  condition unchanged · `npm run build && npm run verify` ALL CHECKS PASSED · `git diff --check` clean.
+- **This record is carried by a follow-up board-only PR** (pattern used by `b94f5221`'s #114/#115 pair).
+
+**Files touched by this session (final):** `COORDINATION.md`, new registers
+(`data/injury_week11_read2_2026-11-19_cb679d0e.csv`, `data/injury_week11_series_2026-11-19_cb679d0e.csv`,
+`data/snap_count_source_eval_2026-11-19_cb679d0e.csv`, `data/inactives_week11_thu_2026-11-19_cb679d0e.csv`,
+`data/schedule_announcement_2026.csv`), `scripts/week11_read2.py` (new), appended rows in `data/flags.csv`
+(F142–F145), `data/sources.csv` (SRC-121–SRC-132), `data/drift_pins.csv`, one additive block + two allow-list
+entries in `scripts/build.py`, regenerated `docs/**`. Nothing of any other session's block was edited; every
+renumbering (T401–T405 → T406–T410, F132/F133/F134 → F142/F143/F144, SRC-117–126 → SRC-121–132) was applied to
+this session's own rows only.
